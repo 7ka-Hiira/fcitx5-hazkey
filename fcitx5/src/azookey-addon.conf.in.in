@@ -1,0 +1,9 @@
+[Addon]
+Name=azooKey
+Category=InputMethod
+Version=@PROJECT_VERSION@
+Library=fcitx5-azookey
+Type=SharedLibrary
+OnDemand=True
+Configurable=True
+Icon=azookey

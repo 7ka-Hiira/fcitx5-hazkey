@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component type="addon">
+  <id>org.fcitx.Fcitx5.Addon.azooKey</id>
+  <extends>org.fcitx.Fcitx5</extends>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>BSD-3-Clause</project_license>
+  <name>fcitx5-azookey</name>
+  <icon type="cached">azookey.png</icon>
+  <summary>azooKey Japanese Input</summary>
+  <project_group>Fcitx</project_group>
+  <releases>
+    <release version="0.0.1" date="2024-04-20"/>
+  </releases>
+</component>
