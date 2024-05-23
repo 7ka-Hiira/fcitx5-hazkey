@@ -35,7 +35,6 @@ namespace fcitx
     {
       return;
     }
-    FCITX_INFO() << "Surrounding: " << keyEvent.inputContext()->surroundingText();
     FCITX_INFO() << "Key: " << keyEvent.key().toString();
     auto *state = keyEvent.inputContext()->propertyFor(&factory_);
     state->keyEvent(keyEvent);
@@ -50,108 +49,125 @@ namespace fcitx
 
   void azooKeyState::keyEvent(KeyEvent &event)
   {
-    if (!buffer_.empty())
+    FCITX_INFO() << "Key: " << event.key().toString();
+    if (composingText_ == nullptr)
+    {
+      if (!event.key().isSimple())
+      {
+        return event.filter();
+      }
+      composingText_ = kkc_get_composing_text();
+    }
+    else
     {
       if (event.key().check(FcitxKey_BackSpace))
       {
-        buffer_.backspace();
-        updateUI();
+        kkc_delete_backward(composingText_);
+        updatePreedit();
         return event.filterAndAccept();
       }
       if (event.key().check(FcitxKey_Return))
       {
         ic_->commitString(event.inputContext()->inputPanel().clientPreedit().toStringForCommit());
         reset();
-        buffer_.clear();
-        kanjiMode = false;
         return event.filterAndAccept();
       }
       if (event.key().check(FcitxKey_Shift_L) ||
           event.key().check(FcitxKey_Shift_R))
       {
-        kanjiMode = true;
         return event.filterAndAccept();
       }
       if (event.key().check(FcitxKey_Escape))
       {
         reset();
-        kanjiMode = false;
         return event.filterAndAccept();
       }
-      if (!event.key().isSimple())
+      if (event.key().check(FcitxKey_space))
       {
-        FCITX_INFO() << "Complex key: " << event.key().sym();
+        showCandidateList();
         return event.filterAndAccept();
-      }
-    }
-    else
-    {
-      if (!event.key().isSimple())
-      {
-        return;
       }
     }
 
-    buffer_.type(event.key().sym());
-    updateUI();
+    if (event.key().isSimple())
+    {
+      kkc_input_text(composingText_, const_cast<char *>(event.key().toString().c_str()));
+    }
+
+    updatePreedit();
     return event.filterAndAccept();
   }
 
-  void azooKeyState::updateUI()
+  void azooKeyState::showCandidateList()
+  {
+    if (composingText_ == nullptr)
+    {
+      return;
+    }
+    char **candidates = kkc_get_candidates(composingText_, engine_->getKkcConfig());
+    std::vector<std::string> candidatesStr;
+    for (int i = 0; candidates[i] != nullptr; i++)
+    {
+      candidatesStr.push_back(candidates[i]);
+    }
+
+    auto &inputPanel = ic_->inputPanel();
+    inputPanel.reset();
+    inputPanel.setCandidateList(std::make_unique<azooKeyCandidateList>(
+        engine_, ic_, &candidatesStr));
+    ic_->updateUserInterface(fcitx::UserInterfaceComponent::InputPanel);
+
+    kkc_free_candidates(candidates);
+  }
+
+  void azooKeyState::updatePreedit()
   {
     auto &inputPanel = ic_->inputPanel();
     inputPanel.reset();
-    if (!buffer_.empty())
+    if (composingText_ != nullptr)
     {
-      char *hiragana = kkc_ascii2hiragana(buffer_.userInput().c_str(),
-                                          engine_->getKkcConfig());
-
-      char **converted = kkc_convert(hiragana, engine_->getKkcConfig());
-      kkc_free_ascii2hiragana(hiragana);
-      std::vector<std::string> candidatesStr;
-      for (int i = 0; converted[i] != nullptr; i++)
-      {
-        candidatesStr.push_back(converted[i]);
-      }
-
-      inputPanel.setCandidateList(std::make_unique<azooKeyCandidateList>(
-          engine_, ic_, &candidatesStr));
+      char *converted = kkc_get_first_candidate(composingText_, engine_->getKkcConfig());
 
       if (ic_->capabilityFlags().test(CapabilityFlag::Preedit))
       {
-        fcitx::Text preedit(*converted, fcitx::TextFormatFlag::HighLight);
+        fcitx::Text preedit(converted, fcitx::TextFormatFlag::HighLight);
         inputPanel.setClientPreedit(preedit);
       }
       else
       {
-        fcitx::Text preedit(*converted);
+        fcitx::Text preedit(converted);
         inputPanel.setPreedit(preedit);
       }
-      kkc_free_convert(converted);
+      if (strlen(converted) == 0)
+      {
+        kkc_free_composing_text(composingText_);
+        composingText_ = nullptr;
+      }
+      kkc_free_first_candidate(converted);
     }
     ic_->updateUserInterface(fcitx::UserInterfaceComponent::InputPanel);
     ic_->updatePreedit();
   }
 
   azooKeyCandidateList::azooKeyCandidateList(azooKeyEngine *engine, InputContext *ic,
-                         std::vector<std::string> *candidatesStr)
-        : engine_(engine), ic_(ic), candidates_{}
-    {
-      setPageable(this);
-      setCursorMovable(this);
+                                             std::vector<std::string> *candidatesStr)
+      : engine_(engine), ic_(ic), candidates_{}
+  {
+    setPageable(this);
+    setCursorMovable(this);
 
-      totalSize_ = candidatesStr->size();
-      size_ = std::min(totalSize_, 10);
-      totalPage_ = size_ / 10;
-      for (int i = 0; i < size_; i++)
-      {
-        Text label;
-        label.append(std::to_string((i + 1) % 10));
-        label.append(". ");
-        candidates_.emplace_back(std::make_unique<azooKeyCandidateWord>(engine_, candidatesStr->at(i)));
-        labels_.push_back(label);
-      }
+    totalSize_ = candidatesStr->size();
+    size_ = std::min(totalSize_, 10);
+    totalPage_ = size_ / 10;
+    for (int i = 0; i < size_; i++)
+    {
+      Text label;
+      label.append(std::to_string((i + 1) % 10));
+      label.append(". ");
+      candidates_.emplace_back(std::make_unique<azooKeyCandidateWord>(engine_, candidatesStr->at(i)));
+      labels_.push_back(label);
     }
+  }
 
   FCITX_ADDON_FACTORY(azooKeyEngineFactory);
 

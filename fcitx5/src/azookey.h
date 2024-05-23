@@ -2,6 +2,7 @@
 #define _FCITX5_AZOOKEY_AZOOKEY_H_
 
 #include <fcitx-utils/inputbuffer.h>
+#include <fcitx-utils/key.h>
 #include <fcitx/addonfactory.h>
 #include <fcitx/addonmanager.h>
 #include <fcitx/candidatelist.h>
@@ -21,23 +22,26 @@ namespace fcitx
   {
   public:
     azooKeyState(InputContext *ic, azooKeyEngine *engine)
-        : engine_(engine), ic_(ic) {}
+        : engine_(engine), ic_(ic)
+    {
+      composingText_ = nullptr;
+    }
 
     void keyEvent(KeyEvent &keyEvent);
-    void updateUI();
+    std::string japaneseSymbolsToUTF8(std::string *key);
+    void showCandidateList();
+    void updatePreedit();
     void reset()
     {
-      buffer_.clear();
-      updateUI();
+      kkc_free_composing_text(composingText_);
+      composingText_ = nullptr;
+      updatePreedit();
     }
-    bool isKanjiMode() const { return kanjiMode; }
 
   private:
     azooKeyEngine *engine_;
     InputContext *ic_;
-    InputBuffer buffer_{{InputBufferOption::AsciiOnly,
-                         InputBufferOption::FixedCursor}};
-    bool kanjiMode = false;
+    ComposingText *composingText_;
   };
 
   class azooKeyEngine : public InputMethodEngineV2
@@ -84,7 +88,7 @@ namespace fcitx
     {
       auto *state = ic->propertyFor(engine_->factory());
       state->reset();
-      state->updateUI();
+      state->updatePreedit();
     }
 
   private:
@@ -93,20 +97,20 @@ namespace fcitx
   };
 
   class azooKeyCandidateList : public fcitx::CandidateList,
-  public fcitx::PageableCandidateList,
-  public fcitx::CursorMovableCandidateList
+                               public fcitx::PageableCandidateList,
+                               public fcitx::CursorMovableCandidateList
   {
   public:
     azooKeyCandidateList(azooKeyEngine *engine, InputContext *ic,
                          std::vector<std::string> *candidatesStr);
 
     const Text &label(int idx) const override { return labels_[idx]; }
-    
+
     const CandidateWord &candidate(int idx) const override
     {
       return *candidates_[idx];
     }
-    
+
     int size() const override { return size_; }
     CandidateLayoutHint layoutHint() const override
     {
@@ -116,12 +120,12 @@ namespace fcitx
     // Todo
     bool hasNext() const override { return currentPage_ < totalPage_; }
     bool hasPrev() const override { return currentPage_ > 0; }
-    void prev() override { return; } 
-    void next()  override { return; } 
-    bool usedNextBefore() const override { return false; } 
-    void prevCandidate() override { return; } 
-    void nextCandidate() override { return; } 
-    int cursorIndex() const override { return cursor_; } 
+    void prev() override { return; }
+    void next() override { return; }
+    bool usedNextBefore() const override { return false; }
+    void prevCandidate() override { return; }
+    void nextCandidate() override { return; }
+    int cursorIndex() const override { return cursor_; }
 
   private:
     void generate(std::vector<std::string> *candidatesStr);
