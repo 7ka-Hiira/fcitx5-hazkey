@@ -41,8 +41,9 @@ class azooKeyEngine : public InputMethodEngineV2 {
  public:
   azooKeyEngine(Instance *instance);
   void keyEvent(const InputMethodEntry &entry, KeyEvent &keyEvent) override;
-
   void reset(const InputMethodEntry &, InputContextEvent &event) override;
+  void activate(const InputMethodEntry &, InputContextEvent &) override;
+  void deactivate(const InputMethodEntry &, InputContextEvent &) override;
 
   auto factory() const { return &factory_; }
   auto conv() const { return conv_; }

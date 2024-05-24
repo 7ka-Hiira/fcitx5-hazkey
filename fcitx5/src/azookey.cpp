@@ -29,6 +29,18 @@ void azooKeyEngine::keyEvent(const InputMethodEntry &entry,
   state->keyEvent(keyEvent);
 }
 
+void azooKeyEngine::activate(const InputMethodEntry &entry,
+                             InputContextEvent &event) {
+  auto *state = event.inputContext()->propertyFor(&factory_);
+  state->reset();
+}
+
+void azooKeyEngine::deactivate(const InputMethodEntry &entry,
+                               InputContextEvent &event) {
+  auto *state = event.inputContext()->propertyFor(&factory_);
+  state->reset();
+}
+
 void azooKeyEngine::reset(const InputMethodEntry &, InputContextEvent &event) {
   auto *state = event.inputContext()->propertyFor(&factory_);
   state->reset();
