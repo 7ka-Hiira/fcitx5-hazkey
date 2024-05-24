@@ -24,7 +24,6 @@ if [ -z "$INSTALL_PREFIX" ]; then
 fi
 
 # install azookey libs
-chmod +x ./install.sh
 sudo -E ./install.sh
 
 # build fcitx5 module

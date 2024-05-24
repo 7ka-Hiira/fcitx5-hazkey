@@ -1,4 +1,4 @@
-add_library(fcitx5-azookey SHARED azookey.cpp)
+add_library(fcitx5-azookey SHARED azookey.cpp candidatelist.cpp)
 target_link_libraries(fcitx5-azookey PRIVATE Fcitx5::Core Fcitx5::Config PkgConfig::LIBAZOOKEY)
 
 set_target_properties(fcitx5-azookey PROPERTIES PREFIX "")
