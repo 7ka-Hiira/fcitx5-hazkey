@@ -11,6 +11,8 @@
 #include <fcitx/instance.h>
 #include <iconv.h>
 
+#include "candidatelist.h"
+
 namespace fcitx {
 
 class azooKeyEngine;
@@ -24,17 +26,16 @@ class azooKeyState : public InputContextProperty {
 
   void keyEvent(KeyEvent &keyEvent);
   void candidateKeyEvent(KeyEvent &keyEvent,
-                         std::shared_ptr<CommonCandidateList> candidateList);
+                         std::shared_ptr<azooKeyCandidateList> candidateList);
   void preeditKeyEvent(
       KeyEvent &keyEvent,
-      std::shared_ptr<CommonCandidateList> PreeditCandidateList);
+      std::shared_ptr<azooKeyCandidateList> PreeditCandidateList);
 
   bool isShowingPreedit() const { return composingText_ != nullptr; }
   bool isCandidateMode() const { return isCandidateMode_; }
 
   void showCandidateList();
   void showPredictCandidateList();
-  void hideList();
   void updateUI();
   void reset() {
     if (composingText_ != nullptr) {
@@ -42,7 +43,6 @@ class azooKeyState : public InputContextProperty {
     }
     composingText_ = nullptr;
     isCandidateMode_ = false;
-    hideList();
     updateUI();
   }
 
@@ -67,6 +67,14 @@ class azooKeyEngine : public InputMethodEngineV2 {
   auto activate() const { return true; }
   auto instance() const { return instance_; }
   auto getKkcConfig() const { return kkc_config_; }
+
+  KeyList getSelectionKeys() {
+    return {
+        Key{FcitxKey_1}, Key{FcitxKey_2}, Key{FcitxKey_3}, Key{FcitxKey_4},
+        Key{FcitxKey_5}, Key{FcitxKey_6}, Key{FcitxKey_7}, Key{FcitxKey_8},
+        Key{FcitxKey_9}, Key{FcitxKey_0},
+    };
+  }
 
  private:
   Instance *instance_;

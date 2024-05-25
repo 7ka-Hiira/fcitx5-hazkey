@@ -5,6 +5,12 @@
 #include <fcitx/inputcontext.h>
 #include <iconv.h>
 
+namespace fcitx {
+class azooKeyEngine;
+class azooKeyCandidateWord;
+class azooKeyCandidateList;
+}  // namespace fcitx
+
 #include "azookey.h"
 
 namespace fcitx {
@@ -20,6 +26,17 @@ class azooKeyCandidateWord : public CandidateWord {
  private:
   azooKeyEngine *engine_;
 };
+
+class azooKeyCandidateList : public CommonCandidateList {
+ public:
+  // azooKeyCandidateList() {}
+
+  void updateAUX(InputContext *ic);
+  void setDefaultStyle(KeyList selectionKeys);
+
+ private:
+};
+
 }  // namespace fcitx
 
 #endif  // FCITX5_AZOOKEY_CANDIDATELIST_H

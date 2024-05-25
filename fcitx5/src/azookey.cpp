@@ -4,12 +4,6 @@
 
 namespace fcitx {
 
-static const KeyList selectionKeys = {
-    Key{FcitxKey_1}, Key{FcitxKey_2}, Key{FcitxKey_3}, Key{FcitxKey_4},
-    Key{FcitxKey_5}, Key{FcitxKey_6}, Key{FcitxKey_7}, Key{FcitxKey_8},
-    Key{FcitxKey_9}, Key{FcitxKey_0},
-};
-
 azooKeyEngine::azooKeyEngine(Instance *instance)
     : instance_(instance), factory_([this](InputContext &ic) {
         return new azooKeyState(&ic, this);
@@ -26,7 +20,7 @@ void azooKeyEngine::keyEvent(const InputMethodEntry &entry,
   }
 
   auto *state = keyEvent.inputContext()->propertyFor(&factory_);
-  auto candidateList = std::dynamic_pointer_cast<CommonCandidateList>(
+  auto candidateList = std::dynamic_pointer_cast<azooKeyCandidateList>(
       keyEvent.inputContext()->inputPanel().candidateList());
   if (state->isCandidateMode()) {
     state->candidateKeyEvent(keyEvent, candidateList);
@@ -50,12 +44,12 @@ void azooKeyState::keyEvent(KeyEvent &event) {
 }
 
 void azooKeyState::candidateKeyEvent(
-    KeyEvent &event, std::shared_ptr<CommonCandidateList> candidateList) {
+    KeyEvent &event, std::shared_ptr<azooKeyCandidateList> candidateList) {
   if (event.key().check(FcitxKey_Return)) {
     candidateList->candidate(candidateList->cursorIndex()).select(ic_);
     reset();
   } else if (event.key().check(FcitxKey_BackSpace)) {
-    hideList();
+    isCandidateMode_ = false;
     updateUI();
     return event.accept();
   } else if (event.key().check(FcitxKey_space) ||
@@ -73,8 +67,8 @@ void azooKeyState::candidateKeyEvent(
     return event.filterAndAccept();
   } else if (event.key().check(FcitxKey_Escape)) {
     reset();
-  } else if (event.key().checkKeyList(selectionKeys)) {
-    auto index = event.key().keyListIndex(selectionKeys);
+  } else if (event.key().checkKeyList(engine_->getSelectionKeys())) {
+    auto index = event.key().keyListIndex(engine_->getSelectionKeys());
     candidateList->candidate(index).select(ic_);
     reset();
   } else if (event.key().isSimple()) {
@@ -91,7 +85,7 @@ void azooKeyState::candidateKeyEvent(
 
 void azooKeyState::preeditKeyEvent(
     KeyEvent &event,
-    std::shared_ptr<CommonCandidateList> PreeditCandidateList) {
+    std::shared_ptr<azooKeyCandidateList> PreeditCandidateList) {
   if (event.key().check(FcitxKey_Return)) {
     ic_->commitString(
         event.inputContext()->inputPanel().clientPreedit().toStringForCommit());
@@ -100,8 +94,7 @@ void azooKeyState::preeditKeyEvent(
     kkc_delete_backward(composingText_);
     isCandidateMode_ = false;
   } else if (event.key().check(FcitxKey_Tab)) {
-    PreeditCandidateList->setCursorIndex(1);
-    PreeditCandidateList->setPageSize(9);
+    PreeditCandidateList->setDefaultStyle(engine_->getSelectionKeys());
     ic_->updateUserInterface(UserInterfaceComponent::InputPanel);
     isCandidateMode_ = true;
     return event.filterAndAccept();
@@ -139,21 +132,18 @@ void azooKeyState::showCandidateList() {
   }
   char **candidates =
       kkc_get_candidates(composingText_, engine_->getKkcConfig(), false, 9);
-
-  auto candidateList = std::make_unique<CommonCandidateList>();
-  candidateList->setLayoutHint(CandidateLayoutHint::Vertical);
-  candidateList->setSelectionKey(selectionKeys);
+  auto candidateList = std::make_unique<azooKeyCandidateList>();
   for (int i = 0; candidates[i] != nullptr; i++) {
+    FCITX_INFO() << i;
     candidateList->append(
         std::make_unique<azooKeyCandidateWord>(engine_, candidates[i]));
   }
-  candidateList->setPageSize(9);
-  candidateList->setCursorPositionAfterPaging(
-      CursorPositionAfterPaging::ResetToFirst);
-  candidateList->setCursorIndex(0);
+  candidateList->setDefaultStyle(engine_->getSelectionKeys());
+
   auto &inputPanel = ic_->inputPanel();
   inputPanel.reset();
   inputPanel.setCandidateList(std::move(candidateList));
+
   ic_->updateUserInterface(UserInterfaceComponent::InputPanel);
   isCandidateMode_ = true;
   kkc_free_candidates(candidates);
@@ -169,29 +159,21 @@ void azooKeyState::showPredictCandidateList() {
     composingText_ = nullptr;
     return;
   }
-  auto candidateList = std::make_unique<CommonCandidateList>();
-  candidateList->setLayoutHint(CandidateLayoutHint::Vertical);
-  candidateList->setSelectionKey(selectionKeys);
+
+  auto candidateList = std::make_unique<azooKeyCandidateList>();
   for (int i = 0; candidates[i] != nullptr; i++) {
     candidateList->append(
         std::make_unique<azooKeyCandidateWord>(engine_, candidates[i]));
   }
   candidateList->setPageSize(4);
-  candidateList->setCursorPositionAfterPaging(
-      CursorPositionAfterPaging::ResetToFirst);
+
   auto &inputPanel = ic_->inputPanel();
   inputPanel.setAuxUp(Text("[Tabキーで選択]"));
   inputPanel.setCandidateList(std::move(candidateList));
+
   ic_->updateUserInterface(UserInterfaceComponent::InputPanel);
   isCandidateMode_ = false;
   kkc_free_candidates(candidates);
-}
-
-void azooKeyState::hideList() {
-  auto &inputPanel = ic_->inputPanel();
-  inputPanel.reset();
-  isCandidateMode_ = false;
-  ic_->updateUserInterface(UserInterfaceComponent::InputPanel);
 }
 
 void azooKeyState::updateUI() {
