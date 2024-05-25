@@ -9,8 +9,8 @@ if [ ! -d "$INSTALL_PREFIX/lib" ] || [ ! -d "$INSTALL_PREFIX/include" ]; then
 fi
 
 # install azookey libs
-mkdir $INSTALL_PREFIX/lib/azookey
-mkdir $INSTALL_PREFIX/include/azookey
+mkdir -p $INSTALL_PREFIX/lib/azookey
+mkdir -p $INSTALL_PREFIX/include/azookey
 
 install -m644 .build/release/libazookey-kkc.so $INSTALL_PREFIX/lib/azookey
 install -m644 libazookey_kkc.h $INSTALL_PREFIX/include/azookey

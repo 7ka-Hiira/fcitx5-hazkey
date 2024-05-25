@@ -25,7 +25,7 @@ public struct KkcConfig {
   }
 
   let options = ConvertRequestOptions.withDefaultDictionary(
-    N_best: 4,
+    N_best: 9,
     requireJapanesePrediction: false,
     requireEnglishPrediction: false,
     keyboardLanguage: .ja_JP,
@@ -40,7 +40,7 @@ public struct KkcConfig {
     sharedContainerURL: dictDir,
     zenzaiMode: .off,
     //zenzaiMode: .on(weight: zenaiModel),
-    metadata: .init(versionString: "Your app version X")
+    metadata: .init(versionString: "fcitx5-azooKey 0.0.1")
   )
   let config = KkcConfig(convertOptions: options)
   let configPtr = UnsafeMutablePointer<KkcConfig>.allocate(capacity: 1)
@@ -80,14 +80,14 @@ public func inputText(
   }
   var string = String(cString: stringPtr)
   switch string {
-  case "minus":
+  case "-":
     string = "ー"
-  case "comma":
+  case ",":
     string = "、"
-  case "period":
+  case ".":
     string = "。"
-  case "space":
-    string = " "
+  case " ":
+    string = "　"
   default:
     break
   }
@@ -122,7 +122,8 @@ public func moveCursor(composingTextPtr: UnsafeMutablePointer<ComposingText>?, o
 
 @_silgen_name("kkc_get_candidates")
 @MainActor public func getCandidates(
-  composingTextPtr: UnsafeMutablePointer<ComposingText>?, kkcConfigPtr: UnsafePointer<KkcConfig>?
+  composingTextPtr: UnsafeMutablePointer<ComposingText>?, kkcConfigPtr: UnsafePointer<KkcConfig>?,
+  isPredictMode: Bool?, nBest: Int?
 ) -> UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>? {
   guard let composingTextPtr = composingTextPtr else {
     return nil
@@ -130,9 +131,21 @@ public func moveCursor(composingTextPtr: UnsafeMutablePointer<ComposingText>?, o
   guard let kkcConfigPointer = kkcConfigPtr else {
     return nil
   }
+  if composingTextPtr.pointee.isEmpty {
+    return nil
+  }
 
   let composingText = composingTextPtr.pointee
-  let options = kkcConfigPointer.pointee.convertOptions
+  var options = kkcConfigPointer.pointee.convertOptions
+
+  if nBest != nil {
+    options.N_best = nBest!
+  }
+
+  if isPredictMode != nil && isPredictMode! {
+    options.requireJapanesePrediction = true
+    options.requireEnglishPrediction = true
+  }
 
   let converter = KanaKanjiConverter()
   let converted = converter.requestCandidates(composingText, options: options)
@@ -158,28 +171,6 @@ public func freeCandidates(ptr: UnsafeMutablePointer<UnsafeMutablePointer<Int8>?
     index += 1
   }
   ptr.deallocate()
-}
-
-@_silgen_name("kkc_get_first_candidate")
-@MainActor public func getFirstCandidate(
-  composingTextPtr: UnsafeMutablePointer<ComposingText>?, kkcConfigPtr: UnsafePointer<KkcConfig>?
-) -> UnsafeMutablePointer<Int8>? {
-  guard let composingTextPtr = composingTextPtr else {
-    return nil
-  }
-  guard let kkcConfigPointer = kkcConfigPtr else {
-    return nil
-  }
-
-  let composingText = composingTextPtr.pointee
-  var options = kkcConfigPointer.pointee.convertOptions
-
-  options.N_best = 1
-
-  let converter = KanaKanjiConverter()
-  let converted = converter.requestCandidates(composingText, options: options)
-  let result = converted.mainResults.first?.text
-  return strdup(result ?? "")
 }
 
 @_silgen_name("kkc_free_first_candidate")

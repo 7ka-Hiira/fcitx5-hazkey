@@ -23,30 +23,48 @@ class azooKeyState : public InputContextProperty {
   }
 
   void keyEvent(KeyEvent &keyEvent);
+  void candidateKeyEvent(KeyEvent &keyEvent,
+                         std::shared_ptr<CommonCandidateList> candidateList);
+  void preeditKeyEvent(
+      KeyEvent &keyEvent,
+      std::shared_ptr<CommonCandidateList> PreeditCandidateList);
+
+  bool isShowingPreedit() const { return composingText_ != nullptr; }
+  bool isCandidateMode() const { return isCandidateMode_; }
+
   void showCandidateList();
-  void updatePreedit();
+  void showPredictCandidateList();
+  void hideList();
+  void updateUI();
   void reset() {
-    kkc_free_composing_text(composingText_);
+    if (composingText_ != nullptr) {
+      kkc_free_composing_text(composingText_);
+    }
     composingText_ = nullptr;
-    updatePreedit();
+    isCandidateMode_ = false;
+    hideList();
+    updateUI();
   }
 
  private:
   azooKeyEngine *engine_;
   InputContext *ic_;
   ComposingText *composingText_;
+  bool isCandidateMode_;
+  char *convertedPtr_;
+  bool showingCandidateList_;
 };
 
 class azooKeyEngine : public InputMethodEngineV2 {
  public:
   azooKeyEngine(Instance *instance);
   void keyEvent(const InputMethodEntry &entry, KeyEvent &keyEvent) override;
-  void reset(const InputMethodEntry &, InputContextEvent &event) override;
+  // void reset(const InputMethodEntry &, InputContextEvent &event) override;
   void activate(const InputMethodEntry &, InputContextEvent &) override;
   void deactivate(const InputMethodEntry &, InputContextEvent &) override;
 
   auto factory() const { return &factory_; }
-  auto conv() const { return conv_; }
+  auto activate() const { return true; }
   auto instance() const { return instance_; }
   auto getKkcConfig() const { return kkc_config_; }
 
