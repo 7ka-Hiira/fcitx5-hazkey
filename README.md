@@ -8,7 +8,6 @@ WIP: Azookey input method for fcitx5
   - cmake
   - pkgconf 
 
-
 ### 1. リポジトリのクローン
 ```sh
 $ git clone https://github.com/7ka-Hiira/fcitx5-azookey.git
