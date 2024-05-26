@@ -137,6 +137,19 @@ public func deleteForward(composingTextPtr: UnsafeMutablePointer<ComposingText>?
   composingTextPtr.pointee.deleteForwardFromCursorPosition(count: 1)
 }
 
+@_silgen_name("kkc_complete_prefix")
+public func completePrefix(
+  composingTextPtr: UnsafeMutablePointer<ComposingText>?, correspondingCount: Int
+) {
+  guard let composingTextPtr = composingTextPtr else {
+    return
+  }
+  print("correspondingCount: \(correspondingCount)")
+
+  composingTextPtr.pointee.prefixComplete(correspondingCount: correspondingCount)
+  print("composingTextPtr.pointee: \(composingTextPtr.pointee)")
+}
+
 @_silgen_name("kkc_move_cursor")
 public func moveCursor(composingTextPtr: UnsafeMutablePointer<ComposingText>?, offset: Int)
   -> Int
@@ -197,14 +210,7 @@ public func moveCursor(composingTextPtr: UnsafeMutablePointer<ComposingText>?, o
     // about this structure, see header file
     result.append(strdup(candidate.text))
     result.append(strdup(preeditHiragana))
-
-    var correspondingCount = candidate.correspondingCount
-    withUnsafeMutablePointer(to: &correspondingCount) { intPtr in
-      let correspondingCountPtr = intPtr.withMemoryRebound(
-        to: Int8.self, capacity: MemoryLayout<Int>.size
-      ) { $0 }
-      result.append(correspondingCountPtr)
-    }
+    result.append(strdup(String(candidate.correspondingCount)))
   }
 
   let resultPointer = UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>.allocate(

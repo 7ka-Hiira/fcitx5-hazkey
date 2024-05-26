@@ -20,6 +20,8 @@ void *kkc_free_composing_hiragana(char *hiraganaPtr);
 void kkc_input_text(ComposingText *composingTextPtr, const char *stringPtr);
 void kkc_delete_backward(ComposingText *composingTextPtr);
 void kkc_delete_forward(ComposingText *composingTextPtr);
+void kkc_complete_prefix(ComposingText *composingTextPtr,
+                         int correspondingCount);
 
 int kkc_move_cursor(ComposingText *composingTextPtr, int cursorIndex);
 

@@ -51,14 +51,19 @@ void azooKeyState::preeditKeyEvent(
       kkc_delete_backward(composingText_);
       preparePreeditOnKeyEvent();
       break;
+    case FcitxKey_Up:
     case FcitxKey_Tab:
       PreeditCandidateList->setDefaultStyle(config_->getSelectionKeys());
       setCandidateCursorAUX(PreeditCandidateList.get());
       isCandidateMode_ = true;
       break;
+    case FcitxKey_Down:
+      PreeditCandidateList->setDefaultStyle(config_->getSelectionKeys());
+      advanceCandidateCursor(PreeditCandidateList.get());
+      isCandidateMode_ = true;
+      break;
     case FcitxKey_space:
       prepareNormalCandidateList();
-      convertToFirstCandidate();
       break;
     case FcitxKey_Escape:
       reset();
@@ -80,13 +85,25 @@ void azooKeyState::candidateKeyEvent(
 
   auto key = event.key();
   auto keysym = key.sym();
+  std::vector<std::string> preedit;
   switch (keysym) {
+    case FcitxKey_Right:
     case FcitxKey_Return:
-      ic_->commitString(event.inputContext()
-                            ->inputPanel()
-                            .clientPreedit()
-                            .toStringForCommit());
-      reset();
+      preedit = candidateList->azooKeyCandidate(candidateList->cursorIndex())
+                    .getPreedit();
+      ic_->commitString(preedit[0]);
+      if (preedit.size() > 1) {
+        auto correspondingCount =
+            candidateList->azooKeyCandidate(candidateList->cursorIndex())
+                .correspondingCount();
+        kkc_complete_prefix(composingText_, correspondingCount);
+        prepareNormalCandidateList();
+        // convertToFirstCandidate();
+      } else {
+        reset();
+      }
+      updateUI();
+      return event.filterAndAccept();
       break;
     case FcitxKey_BackSpace:
       preparePreeditOnKeyEvent();
@@ -137,7 +154,6 @@ void azooKeyState::prepareCandidateList(bool isPredictMode, int nBest) {
         candidatesStructure[i + 2]));
   }
   candidateList->setDefaultStyle(config_->getSelectionKeys());
-
   ic_->inputPanel().reset();
   if (isPredictMode) {
     candidateList->setPageSize(4);
@@ -145,6 +161,7 @@ void azooKeyState::prepareCandidateList(bool isPredictMode, int nBest) {
   } else {
     candidateList->setDefaultStyle(config_->getSelectionKeys());
     setCandidateCursorAUX(candidateList.get());
+    setPreedit(candidateList->candidate(0).text());
   }
 
   ic_->inputPanel().setCandidateList(std::move(candidateList));
@@ -183,7 +200,7 @@ void azooKeyState::setCandidateCursorAUX(azooKeyCandidateList *candidateList) {
   ic_->inputPanel().setAuxUp(Text(label));
 }
 
-void azooKeyState::setPreedit(Text &text) {
+void azooKeyState::setPreedit(Text text) {
   if (ic_->capabilityFlags().test(CapabilityFlag::Preedit)) {
     ic_->inputPanel().setClientPreedit(text);
   } else {
@@ -236,6 +253,7 @@ void azooKeyState::preparePreeditOnKeyEvent() {
   FCITX_DEBUG() << "azooKeyState preparePreeditOnKeyEvent";
 
   if (composingText_ == nullptr) {
+    reset();
     return;
   }
   auto hiragana = kkc_get_composing_hiragana(composingText_);

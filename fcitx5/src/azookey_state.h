@@ -50,7 +50,7 @@ class azooKeyState : public InputContextProperty {
   // update aux; label on the candidate list like "[1/100]"
   void setCandidateCursorAUX(azooKeyCandidateList *candidateList);
   // set the preedit text
-  void setPreedit(Text &text);
+  void setPreedit(Text text);
 
   // convert the current preedit text to the first candidate
   // get the candidate list and set first candidate as preedit

@@ -16,15 +16,18 @@ class azooKeyCandidateWord : public CandidateWord {
     setText(Text(text));
     candidate_ = std::move(text);
     hiragana_ = std::move(hiragana);
-    corresponding_count_ = std::move(*correspondingCount);
+    corresponding_count_ = std::atoi(correspondingCount);
   }
 
   // candidate select event: commit and reset the input context
   void select(InputContext* ic) const override;
   // return the preedit string
   std::vector<std::string> getPreedit() const {
+    if (hiragana_.empty()) return {candidate_};
     return {candidate_, hiragana_};
   }
+  // return the corresponding count
+  int correspondingCount() const { return corresponding_count_; }
 
  private:
   std::string candidate_;
