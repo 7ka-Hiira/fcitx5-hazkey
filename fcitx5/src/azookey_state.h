@@ -16,8 +16,10 @@ class azooKeyState : public InputContextProperty {
   // handle key event. call candidateKeyEvent or preeditKeyEvent
   // depends on the current mode
   void keyEvent(KeyEvent &keyEvent);
-  // set the preedit text. it won't update the UI
-  void setPreedit(const std::string &text);
+  // set the preedit text; prediction mode
+  void setSimplePreedit(const std::string &text);
+  // set the preedit text; multi-segment mode
+  void setMultiSegmentPreedit(std::vector<std::string> &texts, int cursor);
   // update the UI: candidate list and preedit text
   // other funcions don't update the UI so you need to call this
   void updateUI();
@@ -47,6 +49,8 @@ class azooKeyState : public InputContextProperty {
   void backCandidateCursor(azooKeyCandidateList *candidateList);
   // update aux; label on the candidate list like "[1/100]"
   void setCandidateCursorAUX(azooKeyCandidateList *candidateList);
+  // set the preedit text
+  void setPreedit(Text &text);
 
   // convert the current preedit text to the first candidate
   // get the candidate list and set first candidate as preedit

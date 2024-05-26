@@ -175,12 +175,38 @@ public func moveCursor(composingTextPtr: UnsafeMutablePointer<ComposingText>?, o
     options.requireJapanesePrediction = true
     options.requireEnglishPrediction = true
   }
+
+  let hiragana = composingText.convertTarget
   let converter = KanaKanjiConverter()
   let converted = converter.requestCandidates(composingText, options: options)
-  let result = converted.mainResults
-    .map { $0.text }
-    .map { strdup($0) }
-    .map { UnsafeMutablePointer(mutating: $0) }
+
+  var result: [UnsafeMutablePointer<Int8>?] = []
+
+  for candidate in converted.mainResults {
+    let candidateRubyLen = candidate.data.map { $0.ruby }.map { $0.count }.reduce(0, +)
+    var preeditHiragana: String
+
+    if candidateRubyLen < hiragana.count {
+      let preeditHiraganaIndex = hiragana.index(
+        hiragana.startIndex, offsetBy: candidateRubyLen)
+      preeditHiragana = String(hiragana[preeditHiraganaIndex...])
+    } else {
+      preeditHiragana = ""
+    }
+
+    // about this structure, see header file
+    result.append(strdup(candidate.text))
+    result.append(strdup(preeditHiragana))
+
+    var correspondingCount = candidate.correspondingCount
+    withUnsafeMutablePointer(to: &correspondingCount) { intPtr in
+      let correspondingCountPtr = intPtr.withMemoryRebound(
+        to: Int8.self, capacity: MemoryLayout<Int>.size
+      ) { $0 }
+      result.append(correspondingCountPtr)
+    }
+  }
+
   let resultPointer = UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>.allocate(
     capacity: result.count + 1)
   resultPointer.initialize(from: result, count: result.count)

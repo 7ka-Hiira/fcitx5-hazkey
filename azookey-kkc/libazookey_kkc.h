@@ -5,9 +5,8 @@
 extern "C" {
 #endif
 
-struct KkcConfig;
+struct ComposingText;
 typedef struct KkcConfig KkcConfig;
-typedef struct ComposingText ComposingText;
 
 const KkcConfig *kkc_get_config(void);
 void kkc_free_config(const KkcConfig *kkcConfigPtr);
@@ -24,6 +23,26 @@ void kkc_delete_forward(ComposingText *composingTextPtr);
 
 int kkc_move_cursor(ComposingText *composingTextPtr, int cursorIndex);
 
+//
+// return value: UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>?
+// length: candidateCounnt * 3
+//
+// converted text: candidate text. its ruby may be longer or shorter than input
+// convertedRubyLen: length of the ruby of converted text
+// subHiragana: part of whole hiragana [convertedRubyLen...]
+//
+// ----------------------------------------
+// | index | candidate | pointee kind     |
+// |-------|-----------|------------------|
+// | 0     | 0         | converted text   |
+// | 1     | 0         | subHiragana      |
+// | 2     | 0         | convertedRubyLen |
+// | 3     | 1         | converted text   |
+// | 4     | 1         | subHiragana      |
+// | 5     | 1         | convertedRubyLen |
+// | 6     | 2         | converted text   |
+// | ...   | ...       | ...              |
+//
 char **kkc_get_candidates(ComposingText *composingTextPtr,
                           const KkcConfig *kkcConfigPtr, bool isPredictMode,
                           int nBest);
