@@ -4,7 +4,6 @@
 #include <azookey/libazookey_kkc.h>
 #include <fcitx/candidatelist.h>
 #include <fcitx/inputcontext.h>
-#include <iconv.h>
 
 namespace fcitx {
 
