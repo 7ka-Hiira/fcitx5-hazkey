@@ -27,23 +27,22 @@ func genDefaultConfig() -> KkcConfig {
     print("Error creating directory: \(error)")
   }
 
-  // todo: keep this in fcitx5 side
   let options = ConvertRequestOptions.withDefaultDictionary(
-    N_best: 1,
+    N_best: 9,
     requireJapanesePrediction: false,
     requireEnglishPrediction: false,
     keyboardLanguage: .ja_JP,
     typographyLetterCandidate: true,
     unicodeCandidate: true,
     englishCandidateInRoman2KanaInput: true,
-    fullWidthRomanCandidate: false,
-    halfWidthKanaCandidate: false,
+    fullWidthRomanCandidate: true,
+    halfWidthKanaCandidate: true,
     learningType: .nothing,
-    maxMemoryCount: 1000,
+    maxMemoryCount: 65536,
     memoryDirectoryURL: dictDir,
     sharedContainerURL: dictDir,
     zenzaiMode: .off,
-    // zenzaiMode: .on(weight: zenaiModel),
+    //zenzaiMode: .on(weight: zenaiModel),
     metadata: .init(versionString: "fcitx5-azooKey 0.0.1")
   )
   return KkcConfig(convertOptions: options)
@@ -67,9 +66,9 @@ public func freeConfig(ptr: OpaquePointer?) {
 @_silgen_name("kkc_get_composing_text_instance")
 @MainActor public func getComposingTextInstance() -> UnsafeMutablePointer<ComposingText>? {
   let composingText = ComposingText()
-  let composingTextPointer = UnsafeMutablePointer<ComposingText>.allocate(capacity: 1)
-  composingTextPointer.initialize(to: composingText)
-  return composingTextPointer
+  let composingTextPtr = UnsafeMutablePointer<ComposingText>.allocate(capacity: 1)
+  composingTextPtr.initialize(to: composingText)
+  return composingTextPtr
 }
 
 @_silgen_name("kkc_free_composing_text_instance")
@@ -165,7 +164,7 @@ public func moveCursor(composingTextPtr: UnsafeMutablePointer<ComposingText>?, o
   composingTextPtr: UnsafeMutablePointer<ComposingText>?,
   kkcConfigPtr: OpaquePointer?,
   isPredictMode: Bool?, nBest: Int?
-) -> UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>? {
+) -> UnsafeMutablePointer<UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>?>? {
   guard let composingTextPtr = composingTextPtr else {
     return nil
   }
@@ -193,43 +192,65 @@ public func moveCursor(composingTextPtr: UnsafeMutablePointer<ComposingText>?, o
   let converter = KanaKanjiConverter()
   let converted = converter.requestCandidates(composingText, options: options)
 
-  var result: [UnsafeMutablePointer<Int8>?] = []
+  var result: [UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>?] = []
 
   for candidate in converted.mainResults {
+    var candidatePtrList: [UnsafeMutablePointer<Int8>?] = []
+
     let candidateRubyLen = candidate.data.map { $0.ruby }.map { $0.count }.reduce(0, +)
-    var preeditHiragana: String
+    let unconvertedHiragana: String
 
     if candidateRubyLen < hiragana.count {
-      let preeditHiraganaIndex = hiragana.index(
+      let convertedIndex = hiragana.index(
         hiragana.startIndex, offsetBy: candidateRubyLen)
-      preeditHiragana = String(hiragana[preeditHiraganaIndex...])
+      unconvertedHiragana = String(hiragana[convertedIndex...])
     } else {
-      preeditHiragana = ""
+      unconvertedHiragana = ""
     }
 
     // about this structure, see header file
-    result.append(strdup(candidate.text))
-    result.append(strdup(preeditHiragana))
-    result.append(strdup(String(candidate.correspondingCount)))
+    candidatePtrList.append(strdup(candidate.text))  // todo: add description such as [[全]カタカナ]
+    candidatePtrList.append(strdup(""))  // todo: usage description like mozc
+    candidatePtrList.append(strdup(unconvertedHiragana))
+    candidatePtrList.append(strdup(String(candidate.correspondingCount)))
+
+    for data in candidate.data {
+      candidatePtrList.append(strdup(data.word))
+      candidatePtrList.append(strdup(String(data.ruby.count)))
+    }
+
+    let candidatePtrListPtr = UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>.allocate(
+      capacity: candidatePtrList.count + 1)
+    candidatePtrListPtr.initialize(from: candidatePtrList, count: candidatePtrList.count)
+    candidatePtrListPtr[candidatePtrList.count] = nil
+    result.append(candidatePtrListPtr)
   }
 
-  let resultPointer = UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>.allocate(
-    capacity: result.count + 1)
-  resultPointer.initialize(from: result, count: result.count)
-  resultPointer[result.count] = nil
+  let resultPtr = UnsafeMutablePointer<UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>?>
+    .allocate(
+      capacity: result.count + 1)
+  resultPtr.initialize(from: result, count: result.count)
+  resultPtr[result.count] = nil
 
-  return resultPointer
+  return resultPtr
 }
 
 @_silgen_name("kkc_free_candidates")
-public func freeCandidates(ptr: UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>?) {
+public func freeCandidates(
+  ptr: UnsafeMutablePointer<UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>?>?
+) {
   guard let ptr = ptr else {
     return
   }
-  var index = 0
-  while let p = ptr[index] {
-    free(p)
-    index += 1
+  var i = 0
+  while ptr[i] != nil {
+    var j = 0
+    while ptr[i]![j] != nil {
+      free(ptr[i]![j])
+      j += 1
+    }
+    ptr[i]?.deallocate()
+    i += 1
   }
   ptr.deallocate()
 }

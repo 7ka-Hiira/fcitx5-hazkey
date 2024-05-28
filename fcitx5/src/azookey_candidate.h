@@ -10,12 +10,17 @@ namespace fcitx {
 class azooKeyCandidateWord : public CandidateWord {
  public:
   // azooKeyCandidateWord constructor
-  azooKeyCandidateWord(char* text, char* hiragana, char* correspondingCount)
-      : CandidateWord(Text(text)) {
+  azooKeyCandidateWord(const char* text, const char* hiragana,
+                       const int correspondingCount,
+                       const std::vector<std::string> parts,
+                       const std::vector<int> partLens)
+      : CandidateWord(Text(text)),
+        candidate_(std::move(text)),
+        hiragana_(std::move(hiragana)),
+        corresponding_count_(correspondingCount),
+        parts_(std::move(parts)),
+        part_lens_(std::move(partLens)) {
     setText(Text(text));
-    candidate_ = std::move(text);
-    hiragana_ = std::move(hiragana);
-    corresponding_count_ = std::atoi(correspondingCount);
   }
 
   // candidate select event: commit and reset the input context
@@ -29,9 +34,11 @@ class azooKeyCandidateWord : public CandidateWord {
   int correspondingCount() const { return corresponding_count_; }
 
  private:
-  std::string candidate_;
-  std::string hiragana_;
-  int corresponding_count_;
+  const std::string candidate_;
+  const std::string hiragana_;
+  const int corresponding_count_;
+  const std::vector<std::string> parts_;
+  const std::vector<int> part_lens_;
 };
 
 class azooKeyCandidateList : public CommonCandidateList {

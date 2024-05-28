@@ -141,18 +141,25 @@ void azooKeyState::prepareCandidateList(bool isPredictMode, int nBest) {
     return;
   }
 
-  auto **candidatesStructure = kkc_get_candidates(
+  auto ***candidatesStructure = kkc_get_candidates(
       composingText_, config_->getKkcConfig(), isPredictMode, nBest);
 
   auto candidateList = std::make_unique<azooKeyCandidateList>();
-  for (int i = 0; (candidatesStructure[i] != nullptr &&
-                   candidatesStructure[i + 1] != nullptr &&
-                   candidatesStructure[i + 2] != nullptr);
-       i += 3) {
+  for (int i = 0; candidatesStructure[i] != nullptr; i++) {
+    std::vector<std::string> parts;
+    std::vector<int> partLens;
+    for (int j = 4; (candidatesStructure[i][j] != nullptr &&
+                     candidatesStructure[i][j + 1] != nullptr);
+         j += 2) {
+      parts.push_back(candidatesStructure[i][j]);
+      partLens.push_back(atoi(candidatesStructure[i][j + 1]));
+    }
+
     candidateList->append(std::make_unique<azooKeyCandidateWord>(
-        candidatesStructure[i], candidatesStructure[i + 1],
-        candidatesStructure[i + 2]));
+        candidatesStructure[i][0], candidatesStructure[i][2],
+        atoi(candidatesStructure[i][3]), parts, partLens));
   }
+
   candidateList->setDefaultStyle(config_->getSelectionKeys());
   ic_->inputPanel().reset();
   if (isPredictMode) {
@@ -166,7 +173,7 @@ void azooKeyState::prepareCandidateList(bool isPredictMode, int nBest) {
 
   ic_->inputPanel().setCandidateList(std::move(candidateList));
   isCandidateMode_ = !isPredictMode;
-  // kkc_free_candidates(candidatesStructure);
+  kkc_free_candidates(candidatesStructure);
 }
 
 void azooKeyState::prepareNormalCandidateList() {
@@ -209,9 +216,8 @@ void azooKeyState::setPreedit(Text text) {
 }
 
 void azooKeyState::setSimplePreedit(const std::string &text) {
-  auto preedit = Text(text, TextFormatFlag::Underline);
-  preedit.setCursor(0);
-  setPreedit(preedit);
+  std::vector<std::string> texts = {text};
+  setMultiSegmentPreedit(texts, -1);
 }
 
 void azooKeyState::setMultiSegmentPreedit(std::vector<std::string> &texts,
@@ -235,18 +241,18 @@ void azooKeyState::convertToFirstCandidate() {
   if (composingText_ == nullptr) {
     return;
   }
-  auto **candidates =
+  auto ***candidates =
       kkc_get_candidates(composingText_, config_->getKkcConfig(), false, 1);
   if (candidates == nullptr) {
     composingText_ = nullptr;
     return;
-  } else if (candidates[0] == nullptr || candidates[1] == nullptr) {
+  } else if (candidates[0] == nullptr) {
     kkc_free_candidates(candidates);
     return;
   }
-  auto preedit = candidates[0] + *candidates[1];
+  auto preedit = candidates[0][0] + *candidates[0][2];
   setSimplePreedit(preedit);
-  // kkc_free_candidates(candidates);
+  kkc_free_candidates(candidates);
 }
 
 void azooKeyState::preparePreeditOnKeyEvent() {

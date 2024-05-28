@@ -26,29 +26,35 @@ void kkc_complete_prefix(ComposingText *composingTextPtr,
 int kkc_move_cursor(ComposingText *composingTextPtr, int cursorIndex);
 
 //
-// return value: UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>?
-// length: candidateCounnt * 3
+// return value:
+// UnsafeMutablePointer<UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>?>?
 //
-// converted text: candidate text. its ruby may be longer or shorter than input
-// convertedRubyLen: length of the ruby of converted text
-// subHiragana: part of whole hiragana [convertedRubyLen...]
+// candidate: candidate text shown in list
+// description: description of the candidate. mostly empty ("")
+// subHiragana: hiragana for non-converted parts
+// correspondingCount: corresponding key count of the candidate
+// firstCorrepsondingCount: corresponding key count of the first candidate
+// Part: One of the converted phrases
+// PartLen: Length of ruby of the converted phrase
 //
-// ----------------------------------------
-// | index | candidate | pointee kind     |
-// |-------|-----------|------------------|
-// | 0     | 0         | converted text   |
-// | 1     | 0         | subHiragana      |
-// | 2     | 0         | convertedRubyLen |
-// | 3     | 1         | converted text   |
-// | 4     | 1         | subHiragana      |
-// | 5     | 1         | convertedRubyLen |
-// | 6     | 2         | converted text   |
-// | ...   | ...       | ...              |
+// Example of element array in the return value array:
+// -----------------------------------
+// | index | kind                    |
+// -----------------------------------
+// | 0     | candidate               |
+// | 1     | description             |
+// | 2     | subHiragana             |
+// | 3     | correspondingCount      |
+// | 4     | Part1                   |
+// | 5     | PartLen1                |
+// | 6     | Part2                   |
+// | 7     | PartLen2                |
+// | ...   | ...                     |
 //
-char **kkc_get_candidates(ComposingText *composingTextPtr,
-                          const KkcConfig *kkcConfigPtr, bool isPredictMode,
-                          int nBest);
-void kkc_free_candidates(char **candidatesPtr);
+char ***kkc_get_candidates(ComposingText *composingTextPtr,
+                           const KkcConfig *kkcConfigPtr, bool isPredictMode,
+                           int nBest);
+void kkc_free_candidates(char ***candidatesPtr);
 
 #ifdef __cplusplus
 }
