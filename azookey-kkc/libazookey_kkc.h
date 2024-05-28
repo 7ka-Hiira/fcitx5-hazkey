@@ -33,23 +33,24 @@ int kkc_move_cursor(ComposingText *composingTextPtr, int cursorIndex);
 // description: description of the candidate. mostly empty ("")
 // subHiragana: hiragana for non-converted parts
 // correspondingCount: corresponding key count of the candidate
-// firstCorrepsondingCount: corresponding key count of the first candidate
+// liveTextCompatible: whether the candidate has same length with input
 // Part: One of the converted phrases
 // PartLen: Length of ruby of the converted phrase
 //
 // Example of element array in the return value array:
-// -----------------------------------
-// | index | kind                    |
-// -----------------------------------
-// | 0     | candidate               |
-// | 1     | description             |
-// | 2     | subHiragana             |
-// | 3     | correspondingCount      |
-// | 4     | Part1                   |
-// | 5     | PartLen1                |
-// | 6     | Part2                   |
-// | 7     | PartLen2                |
-// | ...   | ...                     |
+// ---------------------------------
+// | index | kind                  |
+// ---------------------------------
+// | 0     | candidate             |
+// | 1     | description           |
+// | 2     | subHiragana           |
+// | 3     | correspondingCount    |
+// | 4     | liveTextCompatible    |
+// | 5     | Part1                 |
+// | 6     | PartLen1              |
+// | 7     | Part2                 |
+// | 8     | PartLen2              |
+// | ...   | ...                   |
 //
 char ***kkc_get_candidates(ComposingText *composingTextPtr,
                            const KkcConfig *kkcConfigPtr, bool isPredictMode,

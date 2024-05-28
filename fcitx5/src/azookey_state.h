@@ -7,19 +7,18 @@
 
 #include "azookey_candidate.h"
 #include "azookey_config.h"
+#include "azookey_preedit.h"
 
 namespace fcitx {
 class azooKeyState : public InputContextProperty {
  public:
-  azooKeyState(InputContext *ic) : ic_(ic) { composingText_ = nullptr; }
+  azooKeyState(InputContext *ic) : ic_(ic), preedit_(azooKeyPreedit(ic)) {
+    composingText_ = nullptr;
+  }
 
   // handle key event. call candidateKeyEvent or preeditKeyEvent
   // depends on the current mode
   void keyEvent(KeyEvent &keyEvent);
-  // set the preedit text; prediction mode
-  void setSimplePreedit(const std::string &text);
-  // set the preedit text; multi-segment mode
-  void setMultiSegmentPreedit(std::vector<std::string> &texts, int cursor);
   // update the UI: candidate list and preedit text
   // other funcions don't update the UI so you need to call this
   void updateUI();
@@ -37,7 +36,7 @@ class azooKeyState : public InputContextProperty {
       std::shared_ptr<azooKeyCandidateList> PreeditCandidateList);
 
   // base function to prepare candidate list
-  void prepareCandidateList(bool isPredictMode, int nBest);
+  void prepareCandidateList(bool isPredictMode, bool updatePreedit, int nBest);
   // prepare candidate list for normal conversion
   void prepareNormalCandidateList();
   // prepare candidate list for prediction. shorter than normal
@@ -49,19 +48,16 @@ class azooKeyState : public InputContextProperty {
   void backCandidateCursor(azooKeyCandidateList *candidateList);
   // update aux; label on the candidate list like "[1/100]"
   void setCandidateCursorAUX(azooKeyCandidateList *candidateList);
-  // set the preedit text
-  void setPreedit(Text text);
 
-  // convert the current preedit text to the first candidate
-  // get the candidate list and set first candidate as preedit
-  void convertToFirstCandidate();
   // prepare preedit text from the composing text
-  void preparePreeditOnKeyEvent();
+  void updateOnPreeditMode();
 
-  // shared pointer to the configuration
-  std::shared_ptr<azooKeyConfig> config_;
   // fcitx input context pointer
   InputContext *ic_;
+  // shared pointer to the configuration
+  std::shared_ptr<azooKeyConfig> config_;
+  // preedit class
+  azooKeyPreedit preedit_;
   // composing text information pointer used by libazookey-kkc
   ComposingText *composingText_;
   // true if the current mode is candidate mode

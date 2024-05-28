@@ -200,10 +200,19 @@ public func moveCursor(composingTextPtr: UnsafeMutablePointer<ComposingText>?, o
     let candidateRubyLen = candidate.data.map { $0.ruby }.map { $0.count }.reduce(0, +)
     let unconvertedHiragana: String
 
+    var liveTextCompatible = 0
+    let InvalidLastCharactersForLive: [String.Element] = ["ゃ", "ゅ", "ょ", "ぁ", "ぃ", "ぅ", "ぇ", "ぉ"]
     if candidateRubyLen < hiragana.count {
       let convertedIndex = hiragana.index(
         hiragana.startIndex, offsetBy: candidateRubyLen)
       unconvertedHiragana = String(hiragana[convertedIndex...])
+    } else if candidateRubyLen == hiragana.count
+      && (hiragana.count >= 3
+        || (hiragana.count == 2
+          && !InvalidLastCharactersForLive.contains(hiragana.last!)))
+    {
+      unconvertedHiragana = ""
+      liveTextCompatible = 1
     } else {
       unconvertedHiragana = ""
     }
@@ -213,6 +222,7 @@ public func moveCursor(composingTextPtr: UnsafeMutablePointer<ComposingText>?, o
     candidatePtrList.append(strdup(""))  // todo: usage description like mozc
     candidatePtrList.append(strdup(unconvertedHiragana))
     candidatePtrList.append(strdup(String(candidate.correspondingCount)))
+    candidatePtrList.append(strdup(String(liveTextCompatible)))
 
     for data in candidate.data {
       candidatePtrList.append(strdup(data.word))
