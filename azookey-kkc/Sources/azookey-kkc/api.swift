@@ -243,10 +243,16 @@ public func getComposingAlphabetHalfwidth(
     return nil
   }
   let composingText = composingTextPtr.pointee
-  let romaji = composingText.input.map { String($0.character) }.joined()
+  let romaji = composingText.input.map {
+    var character = $0.character
+    if character == "ん" {
+      character = "n"
+    }
+    return String(character)
+  }.joined()
   if style == 0 {
     return strdup(romaji.lowercased())
-  } else if style == 2 {
+  } else if style == 1 {
     return strdup(romaji.uppercased())
   } else {
     return strdup(romaji.capitalized)
@@ -263,7 +269,13 @@ public func getComposingAlphabetFullwidth(
     return nil
   }
   let composingText = composingTextPtr.pointee
-  let romaji = composingText.input.map { String($0.character) }.joined()
+  let romaji = composingText.input.map {
+    var character = $0.character
+    if character == "ん" {
+      character = "n"
+    }
+    return String(character)
+  }.joined()
   let fullwidthRomaji = romaji.map { character in
     let unicodeScalar = character.unicodeScalars.first!
     if let halfwidthUnicodeScalar = UnicodeScalar(unicodeScalar.value + 0xFEE0) {
@@ -274,7 +286,7 @@ public func getComposingAlphabetFullwidth(
   }.joined()
   if style == 0 {
     return strdup(fullwidthRomaji.lowercased())
-  } else if style == 2 {
+  } else if style == 1 {
     return strdup(fullwidthRomaji.uppercased())
   } else {
     return strdup(fullwidthRomaji.capitalized)
