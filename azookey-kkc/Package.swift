@@ -25,7 +25,10 @@ let package = Package(
       dependencies: [
         .product(
           name: "KanaKanjiConverterModuleWithDefaultDictionary",
-          package: "AzooKeyKanaKanjiConverter")
+          package: "AzooKeyKanaKanjiConverter"),
+        .product(
+          name: "SwiftUtils",
+          package: "AzooKeyKanaKanjiConverter"),
       ]
     ),
     .testTarget(

@@ -22,8 +22,11 @@ void azooKeyState::keyEvent(KeyEvent &event) {
         preeditKeyEvent(event, candidateList);
     } else {
         auto key = event.key();
-        if (!key.check(FcitxKey_Return) && !key.check(FcitxKey_space) &&
-            key.isSimple()) {
+        if (key.check(FcitxKey_space)) {
+            ic_->commitString("　");
+        } else if (key.isSimple() ||
+                   (key.sym() >= 0x04a1 && key.sym() <= 0x04df)) {
+            // 0x04a1 - 0x04dd is the range of kana keys
             composingText_ = kkc_get_composing_text_instance();
             kkc_input_text(composingText_,
                            Key::keySymToUTF8(key.sym()).c_str());
@@ -121,6 +124,7 @@ void azooKeyState::preeditKeyEvent(
         case FcitxKey_Escape:
             reset();
             break;
+        case FcitxKey_kana_fullstop:
         case FcitxKey_period:
             ic_->commitString(event.inputContext()
                                   ->inputPanel()
@@ -129,6 +133,7 @@ void azooKeyState::preeditKeyEvent(
             ic_->commitString("。");
             reset();
             break;
+        case FcitxKey_kana_conjunctive:
         case FcitxKey_comma:
             ic_->commitString(event.inputContext()
                                   ->inputPanel()
@@ -138,7 +143,8 @@ void azooKeyState::preeditKeyEvent(
             reset();
             break;
         default:
-            if (key.isSimple()) {
+            if (key.isSimple() ||
+                (key.sym() >= 0x04a1 && key.sym() <= 0x04df)) {
                 kkc_input_text(composingText_,
                                Key::keySymToUTF8(keysym).c_str());
                 updateOnPreeditMode();
@@ -255,7 +261,12 @@ void azooKeyState::candidateKeyEvent(
                 } else {
                     reset();
                 }
-            } else if (key.isSimple()) {
+            } else if (key.isSimple() ||
+                       (key.sym() >= 0x04a1 && key.sym() <= 0x04df)) {
+                ic_->commitString(
+                    ic_->inputPanel().preedit().toStringForCommit());
+                reset();
+                composingText_ = kkc_get_composing_text_instance();
                 kkc_input_text(composingText_,
                                Key::keySymToUTF8(keysym).c_str());
             } else {

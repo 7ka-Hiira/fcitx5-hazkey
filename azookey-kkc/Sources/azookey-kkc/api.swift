@@ -1,5 +1,6 @@
 import Foundation
 import KanaKanjiConverterModuleWithDefaultDictionary
+import SwiftUtils
 
 ///
 /// Config
@@ -94,8 +95,43 @@ public func inputText(
   guard let stringPtr = stringPtr else {
     return
   }
+
   var string = String(cString: stringPtr)
+
+  let inputStyle: InputStyle
+  if string.unicodeScalars.first?.properties.isAlphabetic ?? false {
+    inputStyle = .roman2kana
+  } else {
+    inputStyle = .direct
+  }
+
+  if let firstChar = string.unicodeScalars.first, (0x30A0...0x30FF).contains(firstChar.value) {
+    string = String(Character(UnicodeScalar(firstChar.value - 96)!))
+  }
+
   switch string {
+  case "゛":
+    if let lastElem = composingTextPtr.pointee.input.last {
+      composingTextPtr.pointee.deleteBackwardFromCursorPosition(count: 1)
+      let dakutened = CharacterUtils.dakuten(lastElem.character)
+      if dakutened == lastElem.character {
+        composingTextPtr.pointee.insertAtCursorPosition(
+          String(lastElem.character), inputStyle: lastElem.inputStyle)
+      } else {
+        string = String(dakutened)
+      }
+    }
+  case "゜":
+    if let lastElem = composingTextPtr.pointee.input.last {
+      composingTextPtr.pointee.deleteBackwardFromCursorPosition(count: 1)
+      let handakutened = CharacterUtils.handakuten(lastElem.character)
+      if handakutened == lastElem.character {
+        composingTextPtr.pointee.insertAtCursorPosition(
+          String(lastElem.character), inputStyle: lastElem.inputStyle)
+      } else {
+        string = String(handakutened)
+      }
+    }
   case "-":
     string = "ー"
   case ",":
@@ -107,7 +143,8 @@ public func inputText(
   default:
     break
   }
-  composingTextPtr.pointee.insertAtCursorPosition(string, inputStyle: InputStyle.roman2kana)
+
+  composingTextPtr.pointee.insertAtCursorPosition(string, inputStyle: inputStyle)
 }
 
 @_silgen_name("kkc_delete_backward")
@@ -133,10 +170,8 @@ public func completePrefix(
   guard let composingTextPtr = composingTextPtr else {
     return
   }
-  print("correspondingCount: \(correspondingCount)")
 
   composingTextPtr.pointee.prefixComplete(correspondingCount: correspondingCount)
-  print("composingTextPtr.pointee: \(composingTextPtr.pointee)")
 }
 
 @_silgen_name("kkc_move_cursor")
