@@ -1,17 +1,17 @@
-#ifndef _FCITX5_AZOOKEY_AZOOKEY_CONFIG_H_
-#define _FCITX5_AZOOKEY_AZOOKEY_CONFIG_H_
+#ifndef _FCITX5_HAZUKEY_HAZUKEY_CONFIG_H_
+#define _FCITX5_HAZUKEY_HAZUKEY_CONFIG_H_
 
-#include <azookey/libazookey_kkc.h>
 #include <fcitx-utils/key.h>
 #include <fcitx-utils/log.h>
+#include <hazukey/libhazukey_kkc.h>
 
 namespace fcitx {
 
-class azooKeyConfig {
+class HazukeyConfig {
    public:
-    // azooKeyConfig constructor
-    azooKeyConfig() {
-        FCITX_DEBUG() << "azooKeyConfig constructor";
+    // HazukeyConfig constructor
+    HazukeyConfig() {
+        FCITX_DEBUG() << "HazukeyConfig constructor";
         kkc_config_ = kkc_get_config();
     }
 
@@ -27,4 +27,4 @@ class azooKeyConfig {
 };
 }  // namespace fcitx
 
-#endif  // _FCITX5_AZOOKEY_AZOOKEY_CONFIG_H_
+#endif  // _FCITX5_HAZUKEY_HAZUKEY_CONFIG_H_

@@ -1,0 +1,7 @@
+[InputMethod]
+Name=Hazukey
+Icon=hazukey
+Label=Hazukey
+LangCode=ja
+Addon=hazukey
+Configurable=True

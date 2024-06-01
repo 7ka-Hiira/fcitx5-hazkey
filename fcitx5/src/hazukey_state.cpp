@@ -1,20 +1,20 @@
-#include "azookey_state.h"
+#include "hazukey_state.h"
 
 #include <algorithm>
 #include <numeric>
 
-#include "azookey_candidate.h"
-#include "azookey_config.h"
+#include "hazukey_candidate.h"
+#include "hazukey_config.h"
 
 namespace fcitx {
 
 constexpr int NormalCandidateListNBest = 9;
 constexpr int PredictCandidateListNBest = 4;
 
-void azooKeyState::keyEvent(KeyEvent &event) {
-    FCITX_DEBUG() << "azooKeyState keyEvent";
+void HazukeyState::keyEvent(KeyEvent &event) {
+    FCITX_DEBUG() << "HazukeyState keyEvent";
 
-    auto candidateList = std::dynamic_pointer_cast<azooKeyCandidateList>(
+    auto candidateList = std::dynamic_pointer_cast<HazukeyCandidateList>(
         event.inputContext()->inputPanel().candidateList());
 
     if (isCandidateMode_) {
@@ -40,10 +40,10 @@ void azooKeyState::keyEvent(KeyEvent &event) {
     }
 }
 
-void azooKeyState::preeditKeyEvent(
+void HazukeyState::preeditKeyEvent(
     KeyEvent &event,
-    std::shared_ptr<azooKeyCandidateList> PreeditCandidateList) {
-    FCITX_DEBUG() << "azooKeyState preeditKeyEvent";
+    std::shared_ptr<HazukeyCandidateList> PreeditCandidateList) {
+    FCITX_DEBUG() << "HazukeyState preeditKeyEvent";
 
     auto key = event.key();
     auto keysym = key.sym();
@@ -73,7 +73,7 @@ void azooKeyState::preeditKeyEvent(
         case FcitxKey_space:
             prepareNormalCandidateList();
             advanceCandidateCursor(
-                std::dynamic_pointer_cast<azooKeyCandidateList>(
+                std::dynamic_pointer_cast<HazukeyCandidateList>(
                     ic_->inputPanel().candidateList()));
             break;
         case FcitxKey_F6:
@@ -156,9 +156,9 @@ void azooKeyState::preeditKeyEvent(
     return event.filterAndAccept();
 }
 
-void azooKeyState::candidateKeyEvent(
-    KeyEvent &event, std::shared_ptr<azooKeyCandidateList> candidateList) {
-    FCITX_DEBUG() << "azooKeyState candidateKeyEvent";
+void HazukeyState::candidateKeyEvent(
+    KeyEvent &event, std::shared_ptr<HazukeyCandidateList> candidateList) {
+    FCITX_DEBUG() << "HazukeyState candidateKeyEvent";
 
     auto key = event.key();
     auto keysym = key.sym();
@@ -172,13 +172,13 @@ void azooKeyState::candidateKeyEvent(
                 reset();
             } else {
                 preedit = candidateList
-                              ->azooKeyCandidate(candidateList->cursorIndex())
+                              ->HazukeyCandidate(candidateList->cursorIndex())
                               .getPreedit();
                 ic_->commitString(preedit[0]);
                 if (preedit.size() > 1) {
                     auto correspondingCount =
                         candidateList
-                            ->azooKeyCandidate(candidateList->cursorIndex())
+                            ->HazukeyCandidate(candidateList->cursorIndex())
                             .correspondingCount();
                     kkc_complete_prefix(composingText_, correspondingCount);
                     prepareNormalCandidateList();
@@ -251,11 +251,11 @@ void azooKeyState::candidateKeyEvent(
             if (key.checkKeyList(config_->getSelectionKeys())) {
                 auto localIndex = key.keyListIndex(config_->getSelectionKeys());
                 preedit =
-                    candidateList->azooKeyCandidate(localIndex).getPreedit();
+                    candidateList->HazukeyCandidate(localIndex).getPreedit();
                 ic_->commitString(preedit[0]);
                 if (preedit.size() > 1) {
                     auto correspondingCount =
-                        candidateList->azooKeyCandidate(localIndex)
+                        candidateList->HazukeyCandidate(localIndex)
                             .correspondingCount();
                     kkc_complete_prefix(composingText_, correspondingCount);
                     prepareNormalCandidateList();
@@ -279,7 +279,7 @@ void azooKeyState::candidateKeyEvent(
     return event.filterAndAccept();
 }
 
-void azooKeyState::directCharactorConversion(ConversionMode mode) {
+void HazukeyState::directCharactorConversion(ConversionMode mode) {
     char *converted = nullptr;
     switch (mode) {
         case ConversionMode::None:
@@ -318,9 +318,9 @@ void azooKeyState::directCharactorConversion(ConversionMode mode) {
     kkc_free_text(converted);
 }
 
-void azooKeyState::prepareCandidateList(bool isPredictMode, bool updatePreedit,
+void HazukeyState::prepareCandidateList(bool isPredictMode, bool updatePreedit,
                                         int nBest) {
-    FCITX_DEBUG() << "azooKeyState prepareCandidateList";
+    FCITX_DEBUG() << "HazukeyState prepareCandidateList";
     if (composingText_ == nullptr) {
         return;
     }
@@ -331,7 +331,7 @@ void azooKeyState::prepareCandidateList(bool isPredictMode, bool updatePreedit,
     std::vector<std::string> preeditSegments = {};
     bool preeditFound = false;
 
-    auto candidateList = std::make_unique<azooKeyCandidateList>();
+    auto candidateList = std::make_unique<HazukeyCandidateList>();
     for (int i = 0; candidates[i] != nullptr; i++) {
         std::vector<std::string> parts;
         std::vector<int> partLens;
@@ -344,7 +344,7 @@ void azooKeyState::prepareCandidateList(bool isPredictMode, bool updatePreedit,
         }
 
         // append words to the candidate list
-        candidateList->append(std::make_unique<azooKeyCandidateWord>(
+        candidateList->append(std::make_unique<HazukeyCandidateWord>(
             candidates[i][0], candidates[i][2], atoi(candidates[i][3]), parts,
             partLens));
 
@@ -375,7 +375,7 @@ void azooKeyState::prepareCandidateList(bool isPredictMode, bool updatePreedit,
     ic_->inputPanel().setCandidateList(std::move(candidateList));
     auto newCandidateList = ic_->inputPanel().candidateList();
     setCandidateCursorAUX(
-        std::static_pointer_cast<azooKeyCandidateList>(newCandidateList));
+        std::static_pointer_cast<HazukeyCandidateList>(newCandidateList));
     if (isPredictMode) {
         ic_->inputPanel().setAuxUp(Text("[Tabキーで選択]"));
     }
@@ -383,42 +383,42 @@ void azooKeyState::prepareCandidateList(bool isPredictMode, bool updatePreedit,
     kkc_free_candidates(candidates);
 }
 
-void azooKeyState::prepareNormalCandidateList() {
+void HazukeyState::prepareNormalCandidateList() {
     prepareCandidateList(false, true, NormalCandidateListNBest);
 }
 
-void azooKeyState::preparePredictCandidateList() {
+void HazukeyState::preparePredictCandidateList() {
     prepareCandidateList(true, true, PredictCandidateListNBest);
 }
 
-void azooKeyState::advanceCandidateCursor(
-    std::shared_ptr<azooKeyCandidateList> candidateList) {
+void HazukeyState::advanceCandidateCursor(
+    std::shared_ptr<HazukeyCandidateList> candidateList) {
     candidateList->nextCandidate();
     setCandidateCursorAUX(candidateList);
-    auto text = candidateList->azooKeyCandidate(candidateList->cursorIndex())
+    auto text = candidateList->HazukeyCandidate(candidateList->cursorIndex())
                     .getPreedit();
 
     preedit_.setMultiSegmentPreedit(text, 0);
 }
 
-void azooKeyState::backCandidateCursor(
-    std::shared_ptr<azooKeyCandidateList> candidateList) {
+void HazukeyState::backCandidateCursor(
+    std::shared_ptr<HazukeyCandidateList> candidateList) {
     candidateList->prevCandidate();
     setCandidateCursorAUX(candidateList);
-    auto text = candidateList->azooKeyCandidate(candidateList->cursorIndex())
+    auto text = candidateList->HazukeyCandidate(candidateList->cursorIndex())
                     .getPreedit();
     preedit_.setMultiSegmentPreedit(text, 0);
 }
 
-void azooKeyState::setCandidateCursorAUX(
-    std::shared_ptr<azooKeyCandidateList> candidateList) {
+void HazukeyState::setCandidateCursorAUX(
+    std::shared_ptr<HazukeyCandidateList> candidateList) {
     auto label = "[" + std::to_string(candidateList->globalCursorIndex() + 1) +
                  "/" + std::to_string(candidateList->totalSize()) + "]";
     ic_->inputPanel().setAuxUp(Text(label));
 }
 
-void azooKeyState::updateOnPreeditMode() {
-    FCITX_DEBUG() << "azooKeyState updateOnPreeditMode";
+void HazukeyState::updateOnPreeditMode() {
+    FCITX_DEBUG() << "HazukeyState updateOnPreeditMode";
 
     if (composingText_ == nullptr) {
         reset();
@@ -435,19 +435,19 @@ void azooKeyState::updateOnPreeditMode() {
     preparePredictCandidateList();
 }
 
-void azooKeyState::updateUI() {
+void HazukeyState::updateUI() {
     ic_->updateUserInterface(UserInterfaceComponent::InputPanel);
     ic_->updatePreedit();
 }
 
-void azooKeyState::loadConfig(std::shared_ptr<azooKeyConfig> &config) {
+void HazukeyState::loadConfig(std::shared_ptr<HazukeyConfig> &config) {
     if (config_ == nullptr) {
         config_ = config;
     }
 }
 
-void azooKeyState::reset() {
-    FCITX_DEBUG() << "azooKeyState reset";
+void HazukeyState::reset() {
+    FCITX_DEBUG() << "HazukeyState reset";
     if (composingText_ != nullptr) {
         kkc_free_composing_text_instance(composingText_);
     }

@@ -1,5 +1,5 @@
-#ifndef LIBAZOOKEY_KKC_H
-#define LIBAZOOKEY_KKC_H
+#ifndef LIBHAZUKEY_H
+#define LIBHAZUKEY_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -68,4 +68,4 @@ void kkc_free_candidates(char ***candidatesPtr);
 }
 #endif
 
-#endif  // LIBAZOOKEY_KKC_H
+#endif  // LIBHAZUKEY_H

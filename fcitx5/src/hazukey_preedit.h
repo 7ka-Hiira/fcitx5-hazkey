@@ -1,14 +1,14 @@
-#ifndef _FCITX5_AZOOKEY_AZOOKEY_PREEDIT_H_
-#define _FCITX5_AZOOKEY_AZOOKEY_PREEDIT_H_
+#ifndef _FCITX5_HAZUKEY_HAZUKEY_PREEDIT_H_
+#define _FCITX5_HAZUKEY_HAZUKEY_PREEDIT_H_
 
-#include <azookey/libazookey_kkc.h>
 #include <fcitx/inputcontext.h>
 #include <fcitx/inputpanel.h>
+#include <hazukey/libhazukey_kkc.h>
 
 namespace fcitx {
-class azooKeyPreedit {
+class HazukeyPreedit {
    public:
-    azooKeyPreedit(InputContext *ic) : ic_(ic) {}
+    HazukeyPreedit(InputContext *ic) : ic_(ic) {}
 
     // set the preedit text; prediction mode
     void setSimplePreedit(const std::string &text);
@@ -24,4 +24,4 @@ class azooKeyPreedit {
 
 }  // namespace fcitx
 
-#endif  // _FCITX5_AZOOKEY_AZOOKEY_PREEDIT_H_
+#endif  // _FCITX5_HAZUKEY_HAZUKEY_PREEDIT_H_

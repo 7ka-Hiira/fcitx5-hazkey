@@ -1,16 +1,16 @@
-#ifndef FCITX5_AZOOKEY_AZOOKEY_CANDIDATE_H_
-#define FCITX5_AZOOKEY_AZOOKEY_CANDIDATE_H_
+#ifndef FCITX5_HAZUKEY_HAZUKEY_CANDIDATE_H_
+#define FCITX5_HAZUKEY_HAZUKEY_CANDIDATE_H_
 
-#include <azookey/libazookey_kkc.h>
 #include <fcitx/candidatelist.h>
 #include <fcitx/inputcontext.h>
+#include <hazukey/libhazukey_kkc.h>
 
 namespace fcitx {
 
-class azooKeyCandidateWord : public CandidateWord {
+class HazukeyCandidateWord : public CandidateWord {
    public:
-    // azooKeyCandidateWord constructor
-    azooKeyCandidateWord(const char* text, const char* hiragana,
+    // HazukeyCandidateWord constructor
+    HazukeyCandidateWord(const char* text, const char* hiragana,
                          const int correspondingCount,
                          const std::vector<std::string> parts,
                          const std::vector<int> partLens)
@@ -41,10 +41,10 @@ class azooKeyCandidateWord : public CandidateWord {
     const std::vector<int> part_lens_;
 };
 
-class azooKeyCandidateList : public CommonCandidateList {
+class HazukeyCandidateList : public CommonCandidateList {
    public:
-    const azooKeyCandidateWord& azooKeyCandidate(int localIndex) const {
-        return static_cast<const azooKeyCandidateWord&>(candidate(localIndex));
+    const HazukeyCandidateWord& HazukeyCandidate(int localIndex) const {
+        return static_cast<const HazukeyCandidateWord&>(candidate(localIndex));
     }
     // set fcitx5-mozc-like default style for the candidate list
     void setDefaultStyle(KeyList selectionKeys);
@@ -52,4 +52,4 @@ class azooKeyCandidateList : public CommonCandidateList {
 
 }  // namespace fcitx
 
-#endif  // FCITX5_AZOOKEY_AZOOKEY_CANDIDATE_H_
+#endif  // FCITX5_HAZUKEY_HAZUKEY_CANDIDATE_H_

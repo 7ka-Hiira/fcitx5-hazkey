@@ -1,18 +1,18 @@
-#ifndef _FCITX5_AZOOKEY_AZOOKEY_STATE_H_
-#define _FCITX5_AZOOKEY_AZOOKEY_STATE_H_
+#ifndef _FCITX5_HAZUKEY_HAZUKEY_STATE_H_
+#define _FCITX5_HAZUKEY_HAZUKEY_STATE_H_
 
-#include <azookey/libazookey_kkc.h>
 #include <fcitx/inputcontext.h>
 #include <fcitx/inputpanel.h>
+#include <hazukey/libhazukey_kkc.h>
 
-#include "azookey_candidate.h"
-#include "azookey_config.h"
-#include "azookey_preedit.h"
+#include "hazukey_candidate.h"
+#include "hazukey_config.h"
+#include "hazukey_preedit.h"
 
 namespace fcitx {
-class azooKeyState : public InputContextProperty {
+class HazukeyState : public InputContextProperty {
    public:
-    azooKeyState(InputContext *ic) : ic_(ic), preedit_(azooKeyPreedit(ic)) {
+    HazukeyState(InputContext *ic) : ic_(ic), preedit_(HazukeyPreedit(ic)) {
         composingText_ = nullptr;
     }
 
@@ -22,7 +22,7 @@ class azooKeyState : public InputContextProperty {
     // update the UI: candidate list and preedit text
     // other funcions don't update the UI so you need to call this
     void updateUI();
-    void loadConfig(std::shared_ptr<azooKeyConfig> &config);
+    void loadConfig(std::shared_ptr<HazukeyConfig> &config);
     // reset to the initial state
     void reset();
 
@@ -43,11 +43,11 @@ class azooKeyState : public InputContextProperty {
     void directCharactorConversion(ConversionMode mode);
     // handle key event in candidate mode
     void candidateKeyEvent(KeyEvent &keyEvent,
-                           std::shared_ptr<azooKeyCandidateList> candidateList);
+                           std::shared_ptr<HazukeyCandidateList> candidateList);
     // handle key event in preedit mode
     void preeditKeyEvent(
         KeyEvent &keyEvent,
-        std::shared_ptr<azooKeyCandidateList> PreeditCandidateList);
+        std::shared_ptr<HazukeyCandidateList> PreeditCandidateList);
 
     // base function to prepare candidate list
     void prepareCandidateList(bool isPredictMode, bool updatePreedit,
@@ -59,13 +59,13 @@ class azooKeyState : public InputContextProperty {
 
     // advance the cursor in the candidate list, update aux, set preedit text
     void advanceCandidateCursor(
-        std::shared_ptr<azooKeyCandidateList> candidateList);
+        std::shared_ptr<HazukeyCandidateList> candidateList);
     // back the cursor in the candidate list, update aux, set preedit text
     void backCandidateCursor(
-        std::shared_ptr<azooKeyCandidateList> candidateList);
+        std::shared_ptr<HazukeyCandidateList> candidateList);
     // update aux; label on the candidate list like "[1/100]"
     void setCandidateCursorAUX(
-        std::shared_ptr<azooKeyCandidateList> candidateList);
+        std::shared_ptr<HazukeyCandidateList> candidateList);
 
     // prepare preedit text from the composing text
     void updateOnPreeditMode();
@@ -73,10 +73,10 @@ class azooKeyState : public InputContextProperty {
     // fcitx input context pointer
     InputContext *ic_;
     // shared pointer to the configuration
-    std::shared_ptr<azooKeyConfig> config_;
+    std::shared_ptr<HazukeyConfig> config_;
     // preedit class
-    azooKeyPreedit preedit_;
-    // composing text information pointer used by libazookey-kkc
+    HazukeyPreedit preedit_;
+    // composing text information pointer used by libhazukey-kkc
     ComposingText *composingText_;
     // true if the current mode is candidate mode
     bool isCandidateMode_ = false;
@@ -86,4 +86,4 @@ class azooKeyState : public InputContextProperty {
 
 }  // namespace fcitx
 
-#endif  // _FCITX5_AZOOKEY_AZOOKEY_STATE_H_
+#endif  // _FCITX5_HAZUKEY_HAZUKEY_STATE_H_

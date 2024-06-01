@@ -1,15 +1,14 @@
-#include "azookey_preedit.h"
-
-#include "azookey_candidate.h"
-#include "azookey_config.h"
-#include "azookey_state.h"
+#include "hazukey_candidate.h"
+#include "hazukey_config.h"
+#include "hazukey_preedit.h"
+#include "hazukey_state.h"
 
 namespace fcitx {
 
 constexpr int NormalCandidateListNBest = 18;
 constexpr int PredictCandidateListNBest = 4;
 
-void azooKeyPreedit::setPreedit(Text text) {
+void HazukeyPreedit::setPreedit(Text text) {
     if (ic_->capabilityFlags().test(CapabilityFlag::Preedit)) {
         ic_->inputPanel().setClientPreedit(text);
     } else {
@@ -17,12 +16,12 @@ void azooKeyPreedit::setPreedit(Text text) {
     }
 }
 
-void azooKeyPreedit::setSimplePreedit(const std::string &text) {
+void HazukeyPreedit::setSimplePreedit(const std::string &text) {
     std::vector<std::string> texts = {text};
     setMultiSegmentPreedit(texts, -1);
 }
 
-void azooKeyPreedit::setMultiSegmentPreedit(std::vector<std::string> &texts,
+void HazukeyPreedit::setMultiSegmentPreedit(std::vector<std::string> &texts,
                                             int cursorSegment = 0) {
     auto preedit = Text();
     for (int i = 0; i < int(texts.size()); i++) {
