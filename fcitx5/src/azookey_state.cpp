@@ -71,6 +71,22 @@ void azooKeyState::preeditKeyEvent(
     case FcitxKey_Escape:
       reset();
       break;
+    case FcitxKey_period:
+      ic_->commitString(event.inputContext()
+                            ->inputPanel()
+                            .clientPreedit()
+                            .toStringForCommit());
+      ic_->commitString("。");
+      reset();
+      break;
+    case FcitxKey_comma:
+      ic_->commitString(event.inputContext()
+                            ->inputPanel()
+                            .clientPreedit()
+                            .toStringForCommit());
+      ic_->commitString("、");
+      reset();
+      break;
     default:
       if (key.isSimple()) {
         kkc_input_text(composingText_, Key::keySymToUTF8(keysym).c_str());
@@ -101,7 +117,6 @@ void azooKeyState::candidateKeyEvent(
                 .correspondingCount();
         kkc_complete_prefix(composingText_, correspondingCount);
         prepareNormalCandidateList();
-        // setLivePreedit();
       } else {
         reset();
       }
