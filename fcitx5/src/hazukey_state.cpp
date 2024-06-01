@@ -244,6 +244,24 @@ void HazukeyState::candidateKeyEvent(
             FunctionConversionMode_ = mode2;
             ic_->inputPanel().candidateList().reset();
             break;
+        case FcitxKey_kana_fullstop:
+        case FcitxKey_period:
+            ic_->commitString(event.inputContext()
+                                  ->inputPanel()
+                                  .clientPreedit()
+                                  .toStringForCommit());
+            ic_->commitString("。");
+            reset();
+            break;
+        case FcitxKey_kana_conjunctive:
+        case FcitxKey_comma:
+            ic_->commitString(event.inputContext()
+                                  ->inputPanel()
+                                  .clientPreedit()
+                                  .toStringForCommit());
+            ic_->commitString("、");
+            reset();
+            break;
         case FcitxKey_Escape:
             reset();
             break;
