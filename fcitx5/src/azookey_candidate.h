@@ -43,8 +43,8 @@ class azooKeyCandidateWord : public CandidateWord {
 
 class azooKeyCandidateList : public CommonCandidateList {
    public:
-    const azooKeyCandidateWord& azooKeyCandidate(int idx) const {
-        return static_cast<const azooKeyCandidateWord&>(candidate(idx));
+    const azooKeyCandidateWord& azooKeyCandidate(int localIndex) const {
+        return static_cast<const azooKeyCandidateWord&>(candidate(localIndex));
     }
     // set fcitx5-mozc-like default style for the candidate list
     void setDefaultStyle(KeyList selectionKeys);

@@ -16,6 +16,7 @@ void azooKeyState::keyEvent(KeyEvent &event) {
 
     auto candidateList = std::dynamic_pointer_cast<azooKeyCandidateList>(
         event.inputContext()->inputPanel().candidateList());
+
     if (isCandidateMode_) {
         candidateKeyEvent(event, candidateList);
     } else if (composingText_ != nullptr) {
@@ -248,13 +249,13 @@ void azooKeyState::candidateKeyEvent(
             break;
         default:
             if (key.checkKeyList(config_->getSelectionKeys())) {
-                auto index = key.keyListIndex(config_->getSelectionKeys());
-                candidateList->candidate(index).select(ic_);
+                auto localIndex = key.keyListIndex(config_->getSelectionKeys());
+                preedit =
+                    candidateList->azooKeyCandidate(localIndex).getPreedit();
                 ic_->commitString(preedit[0]);
                 if (preedit.size() > 1) {
                     auto correspondingCount =
-                        candidateList
-                            ->azooKeyCandidate(candidateList->cursorIndex())
+                        candidateList->azooKeyCandidate(localIndex)
                             .correspondingCount();
                     kkc_complete_prefix(composingText_, correspondingCount);
                     prepareNormalCandidateList();
