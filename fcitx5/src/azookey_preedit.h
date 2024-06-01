@@ -7,19 +7,19 @@
 
 namespace fcitx {
 class azooKeyPreedit {
- public:
-  azooKeyPreedit(InputContext *ic) : ic_(ic) {}
+   public:
+    azooKeyPreedit(InputContext *ic) : ic_(ic) {}
 
-  // set the preedit text; prediction mode
-  void setSimplePreedit(const std::string &text);
-  // set the preedit text; multi-segment mode
-  void setMultiSegmentPreedit(std::vector<std::string> &texts, int cursor);
-  // set the preedit text
-  void setPreedit(Text text);
+    // set the preedit text; prediction mode
+    void setSimplePreedit(const std::string &text);
+    // set the preedit text; multi-segment mode
+    void setMultiSegmentPreedit(std::vector<std::string> &texts, int cursor);
+    // set the preedit text
+    void setPreedit(Text text);
 
- private:
-  // fcitx input context pointer
-  InputContext *ic_;
+   private:
+    // fcitx input context pointer
+    InputContext *ic_;
 };
 
 }  // namespace fcitx

@@ -8,22 +8,22 @@
 namespace fcitx {
 
 class azooKeyConfig {
- public:
-  // azooKeyConfig constructor
-  azooKeyConfig() {
-    FCITX_DEBUG() << "azooKeyConfig constructor";
-    kkc_config_ = kkc_get_config();
-  }
+   public:
+    // azooKeyConfig constructor
+    azooKeyConfig() {
+        FCITX_DEBUG() << "azooKeyConfig constructor";
+        kkc_config_ = kkc_get_config();
+    }
 
-  // return keylist used for candidate selection
-  const KeyList getSelectionKeys();
+    // return keylist used for candidate selection
+    const KeyList getSelectionKeys();
 
-  // return the kkc config used for conversion
-  const KkcConfig *getKkcConfig() { return kkc_config_; }
+    // return the kkc config used for conversion
+    const KkcConfig *getKkcConfig() { return kkc_config_; }
 
- private:
-  // kkc config
-  const KkcConfig *kkc_config_;
+   private:
+    // kkc config
+    const KkcConfig *kkc_config_;
 };
 }  // namespace fcitx
 
