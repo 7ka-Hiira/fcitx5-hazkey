@@ -159,7 +159,7 @@ void azooKeyState::candidateKeyEvent(
     switch (keysym) {
         case FcitxKey_Right:
         case FcitxKey_Return:
-            if (FunctionConversionMode_ == ConversionMode::None) {
+            if (FunctionConversionMode_ != ConversionMode::None) {
                 ic_->commitString(
                     ic_->inputPanel().preedit().toStringForCommit());
                 reset();

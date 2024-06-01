@@ -46,7 +46,7 @@ int kkc_move_cursor(ComposingText *composingTextPtr, int cursorIndex);
 //
 // Example of element array in the return value array:
 // ---------------------------------
-// | index | kind                  |
+// | index | value                 |
 // ---------------------------------
 // | 0     | candidate             |
 // | 1     | description           |
