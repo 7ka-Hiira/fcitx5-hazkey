@@ -1,6 +1,10 @@
 import Foundation
 import KanaKanjiConverterModuleWithDefaultDictionary
 
+///
+/// Config
+///
+
 public class KkcConfig {
   let convertOptions: ConvertRequestOptions
 
@@ -63,6 +67,10 @@ public func freeConfig(ptr: OpaquePointer?) {
   Unmanaged<KkcConfig>.fromOpaque(UnsafeRawPointer(ptr)).release()
 }
 
+///
+/// ComposingText
+///
+
 @_silgen_name("kkc_get_composing_text_instance")
 @MainActor public func getComposingTextInstance() -> UnsafeMutablePointer<ComposingText>? {
   let composingText = ComposingText()
@@ -76,24 +84,6 @@ public func freeComposingTextInstance(ptr: UnsafeMutablePointer<ComposingText>?)
   ptr?.deinitialize(count: 1)
   ptr?.deallocate()
 }
-
-@_silgen_name("kkc_get_composing_hiragana")
-public func getComposingHiragana(composingTextPtr: UnsafeMutablePointer<ComposingText>?)
-  -> UnsafeMutablePointer<Int8>?
-{
-  guard let composingTextPtr = composingTextPtr else {
-    return nil
-  }
-  let composingText = composingTextPtr.pointee
-  let hiragana = composingText.convertTarget
-  return strdup(hiragana)
-}
-
-@_silgen_name("kkc_free_composing_hiragana")
-public func freeComposingHiragana(ptr: UnsafeMutablePointer<Int8>?) {
-  free(ptr)
-}
-
 @_silgen_name("kkc_input_text")
 public func inputText(
   composingTextPtr: UnsafeMutablePointer<ComposingText>?, stringPtr: UnsafePointer<Int8>?
@@ -158,6 +148,112 @@ public func moveCursor(composingTextPtr: UnsafeMutablePointer<ComposingText>?, o
   }
   return composingTextPtr.pointee.moveCursorFromCursorPosition(count: offset)
 }
+
+///
+/// ComposingText -> Characters
+///
+
+@_silgen_name("kkc_get_composing_hiragana")
+public func getComposingHiragana(composingTextPtr: UnsafeMutablePointer<ComposingText>?)
+  -> UnsafeMutablePointer<Int8>?
+{
+  guard let composingTextPtr = composingTextPtr else {
+    return nil
+  }
+  let composingText = composingTextPtr.pointee
+  let hiragana = composingText.convertTarget
+  return strdup(hiragana)
+}
+
+@_silgen_name("kkc_get_composing_katakana_fullwidth")
+public func getComposingKatakanaFullwidth(composingTextPtr: UnsafeMutablePointer<ComposingText>?)
+  -> UnsafeMutablePointer<Int8>?
+{
+  guard let composingTextPtr = composingTextPtr else {
+    return nil
+  }
+  let composingText = composingTextPtr.pointee
+  let hiragana = composingText.convertTarget
+  let katakana = hiragana.applyingTransform(.hiraganaToKatakana, reverse: false) ?? hiragana
+  return strdup(katakana)
+}
+
+@_silgen_name("kkc_free_composing_katakana_fullwidth")
+public func freeComposingKatakanaFullwidth(ptr: UnsafeMutablePointer<Int8>?) {
+  free(ptr)
+}
+
+@_silgen_name("kkc_get_composing_katakana_halfwidth")
+public func getComposingKatakanaHalfwidth(composingTextPtr: UnsafeMutablePointer<ComposingText>?)
+  -> UnsafeMutablePointer<Int8>?
+{
+  guard let composingTextPtr = composingTextPtr else {
+    return nil
+  }
+  let composingText = composingTextPtr.pointee
+  let hiragana = composingText.convertTarget
+  let katakana = hiragana.applyingTransform(.hiraganaToKatakana, reverse: false) ?? hiragana
+  let halfwidthKatakana =
+    katakana.applyingTransform(.fullwidthToHalfwidth, reverse: false) ?? katakana
+  return strdup(halfwidthKatakana)
+}
+
+@_silgen_name("kkc_get_composing_raw_halfwidth")
+public func getComposingAlphabetHalfwidth(
+  composingTextPtr: UnsafeMutablePointer<ComposingText>?, style: Int
+)
+  -> UnsafeMutablePointer<Int8>?
+{
+  guard let composingTextPtr = composingTextPtr else {
+    return nil
+  }
+  let composingText = composingTextPtr.pointee
+  let romaji = composingText.input.map { String($0.character) }.joined()
+  if style == 0 {
+    return strdup(romaji.lowercased())
+  } else if style == 2 {
+    return strdup(romaji.uppercased())
+  } else {
+    return strdup(romaji.capitalized)
+  }
+}
+
+@_silgen_name("kkc_get_composing_raw_fullwidth")
+public func getComposingAlphabetFullwidth(
+  composingTextPtr: UnsafeMutablePointer<ComposingText>?, style: Int
+)
+  -> UnsafeMutablePointer<Int8>?
+{
+  guard let composingTextPtr = composingTextPtr else {
+    return nil
+  }
+  let composingText = composingTextPtr.pointee
+  let romaji = composingText.input.map { String($0.character) }.joined()
+  let fullwidthRomaji = romaji.map { character in
+    let unicodeScalar = character.unicodeScalars.first!
+    if let halfwidthUnicodeScalar = UnicodeScalar(unicodeScalar.value + 0xFEE0) {
+      return String(Character(halfwidthUnicodeScalar))
+    } else {
+      return String(character)
+    }
+  }.joined()
+  if style == 0 {
+    return strdup(fullwidthRomaji.lowercased())
+  } else if style == 2 {
+    return strdup(fullwidthRomaji.uppercased())
+  } else {
+    return strdup(fullwidthRomaji.capitalized)
+  }
+}
+
+@_silgen_name("kkc_free_text")
+public func freeText(ptr: UnsafeMutablePointer<Int8>?) {
+  free(ptr)
+}
+
+///
+/// Candidates
+///
 
 @_silgen_name("kkc_get_candidates")
 @MainActor public func getCandidates(
@@ -263,9 +359,4 @@ public func freeCandidates(
     i += 1
   }
   ptr.deallocate()
-}
-
-@_silgen_name("kkc_free_first_candidate")
-public func freeFirstCandidate(ptr: UnsafeMutablePointer<Int8>?) {
-  free(ptr)
 }

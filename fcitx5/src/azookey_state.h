@@ -27,6 +27,20 @@ class azooKeyState : public InputContextProperty {
   void reset();
 
  private:
+  enum class ConversionMode {
+    None,
+    Hiragana,
+    KatakanaFullwidth,
+    KatakanaHalfwidth,
+    RawFullwidthUpper,
+    RawFullwidthLower,
+    RawFullwidthCapitalized,
+    RawHalfwidthUpper,
+    RawHalfwidthLower,
+    RawHalfwidthCapitalized
+  };
+
+  void directCharactorConversion(ConversionMode mode);
   // handle key event in candidate mode
   void candidateKeyEvent(KeyEvent &keyEvent,
                          std::shared_ptr<azooKeyCandidateList> candidateList);
@@ -43,11 +57,13 @@ class azooKeyState : public InputContextProperty {
   void preparePredictCandidateList();
 
   // advance the cursor in the candidate list, update aux, set preedit text
-  void advanceCandidateCursor(azooKeyCandidateList *candidateList);
+  void advanceCandidateCursor(
+      std::shared_ptr<azooKeyCandidateList> candidateList);
   // back the cursor in the candidate list, update aux, set preedit text
-  void backCandidateCursor(azooKeyCandidateList *candidateList);
+  void backCandidateCursor(std::shared_ptr<azooKeyCandidateList> candidateList);
   // update aux; label on the candidate list like "[1/100]"
-  void setCandidateCursorAUX(azooKeyCandidateList *candidateList);
+  void setCandidateCursorAUX(
+      std::shared_ptr<azooKeyCandidateList> candidateList);
 
   // prepare preedit text from the composing text
   void updateOnPreeditMode();
@@ -61,7 +77,9 @@ class azooKeyState : public InputContextProperty {
   // composing text information pointer used by libazookey-kkc
   ComposingText *composingText_;
   // true if the current mode is candidate mode
-  bool isCandidateMode_;
+  bool isCandidateMode_ = false;
+  // function key conversion mode
+  ConversionMode FunctionConversionMode_ = ConversionMode::None;
 };
 
 }  // namespace fcitx

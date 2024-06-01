@@ -2,8 +2,7 @@
 
 namespace fcitx {
 void azooKeyCandidateWord::select(InputContext *ic) const {
-  ic->commitString(text().toString());
-  ic->reset();
+  ic->commitString(candidate_);
 }
 
 void azooKeyCandidateList::setDefaultStyle(KeyList selectionKeys) {

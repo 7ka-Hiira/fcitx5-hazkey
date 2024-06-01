@@ -57,16 +57,64 @@ void azooKeyState::preeditKeyEvent(
     case FcitxKey_Up:
     case FcitxKey_Tab:
       PreeditCandidateList->setDefaultStyle(config_->getSelectionKeys());
-      setCandidateCursorAUX(PreeditCandidateList.get());
+      setCandidateCursorAUX(PreeditCandidateList);
       isCandidateMode_ = true;
       break;
     case FcitxKey_Down:
       PreeditCandidateList->setDefaultStyle(config_->getSelectionKeys());
-      advanceCandidateCursor(PreeditCandidateList.get());
+      advanceCandidateCursor(PreeditCandidateList);
       isCandidateMode_ = true;
       break;
     case FcitxKey_space:
       prepareNormalCandidateList();
+      advanceCandidateCursor(std::dynamic_pointer_cast<azooKeyCandidateList>(
+          ic_->inputPanel().candidateList()));
+      break;
+    case FcitxKey_F6:
+      directCharactorConversion(ConversionMode::Hiragana);
+      FunctionConversionMode_ = ConversionMode::Hiragana;
+      break;
+    case FcitxKey_F7:
+      directCharactorConversion(ConversionMode::KatakanaFullwidth);
+      FunctionConversionMode_ = ConversionMode::KatakanaFullwidth;
+      break;
+    case FcitxKey_F8:
+      directCharactorConversion(ConversionMode::KatakanaHalfwidth);
+      FunctionConversionMode_ = ConversionMode::KatakanaHalfwidth;
+      break;
+    case FcitxKey_F9:
+      ConversionMode mode;
+      switch (FunctionConversionMode_) {
+        case ConversionMode::RawFullwidthLower:
+          mode = ConversionMode::RawFullwidthUpper;
+          break;
+        case ConversionMode::RawFullwidthUpper:
+          mode = ConversionMode::RawFullwidthCapitalized;
+          break;
+        default:
+          mode = ConversionMode::RawFullwidthLower;
+          break;
+      }
+      directCharactorConversion(mode);
+      FunctionConversionMode_ = mode;
+      ic_->inputPanel().candidateList().reset();
+      break;
+    case FcitxKey_F10:
+      ConversionMode mode2;
+      switch (FunctionConversionMode_) {
+        case ConversionMode::RawHalfwidthLower:
+          mode2 = ConversionMode::RawHalfwidthUpper;
+          break;
+        case ConversionMode::RawHalfwidthUpper:
+          mode2 = ConversionMode::RawHalfwidthCapitalized;
+          break;
+        default:
+          mode2 = ConversionMode::RawHalfwidthLower;
+          break;
+      }
+      directCharactorConversion(mode2);
+      FunctionConversionMode_ = mode2;
+      ic_->inputPanel().candidateList().reset();
       break;
     case FcitxKey_Escape:
       reset();
@@ -108,20 +156,23 @@ void azooKeyState::candidateKeyEvent(
   switch (keysym) {
     case FcitxKey_Right:
     case FcitxKey_Return:
-      preedit = candidateList->azooKeyCandidate(candidateList->cursorIndex())
-                    .getPreedit();
-      ic_->commitString(preedit[0]);
-      if (preedit.size() > 1) {
-        auto correspondingCount =
-            candidateList->azooKeyCandidate(candidateList->cursorIndex())
-                .correspondingCount();
-        kkc_complete_prefix(composingText_, correspondingCount);
-        prepareNormalCandidateList();
-      } else {
+      if (FunctionConversionMode_ == ConversionMode::None) {
+        ic_->commitString(ic_->inputPanel().preedit().toStringForCommit());
         reset();
+      } else {
+        preedit = candidateList->azooKeyCandidate(candidateList->cursorIndex())
+                      .getPreedit();
+        ic_->commitString(preedit[0]);
+        if (preedit.size() > 1) {
+          auto correspondingCount =
+              candidateList->azooKeyCandidate(candidateList->cursorIndex())
+                  .correspondingCount();
+          kkc_complete_prefix(composingText_, correspondingCount);
+          prepareNormalCandidateList();
+        } else {
+          reset();
+        }
       }
-      updateUI();
-      return event.filterAndAccept();
       break;
     case FcitxKey_BackSpace:
       updateOnPreeditMode();
@@ -129,10 +180,56 @@ void azooKeyState::candidateKeyEvent(
     case FcitxKey_space:
     case FcitxKey_Tab:
     case FcitxKey_Down:
-      advanceCandidateCursor(candidateList.get());
+      advanceCandidateCursor(candidateList);
       break;
     case FcitxKey_Up:
-      backCandidateCursor(candidateList.get());
+      backCandidateCursor(candidateList);
+      break;
+    case FcitxKey_F6:
+      directCharactorConversion(ConversionMode::Hiragana);
+      FunctionConversionMode_ = ConversionMode::Hiragana;
+      break;
+    case FcitxKey_F7:
+      directCharactorConversion(ConversionMode::KatakanaFullwidth);
+      FunctionConversionMode_ = ConversionMode::KatakanaFullwidth;
+      break;
+    case FcitxKey_F8:
+      directCharactorConversion(ConversionMode::KatakanaHalfwidth);
+      FunctionConversionMode_ = ConversionMode::KatakanaHalfwidth;
+      break;
+    case FcitxKey_F9:
+      ConversionMode mode;
+      switch (FunctionConversionMode_) {
+        case ConversionMode::RawFullwidthLower:
+          mode = ConversionMode::RawFullwidthUpper;
+          break;
+        case ConversionMode::RawFullwidthUpper:
+          mode = ConversionMode::RawFullwidthCapitalized;
+          break;
+        default:
+          mode = ConversionMode::RawFullwidthLower;
+          break;
+      }
+      directCharactorConversion(mode);
+      FunctionConversionMode_ = mode;
+      break;
+    case FcitxKey_F10:
+      ConversionMode mode2;
+      switch (FunctionConversionMode_) {
+        case ConversionMode::RawHalfwidthLower:
+          mode2 = ConversionMode::RawHalfwidthUpper;
+          break;
+        case ConversionMode::RawHalfwidthUpper:
+          mode2 = ConversionMode::RawHalfwidthCapitalized;
+          break;
+        default:
+          mode2 = ConversionMode::RawHalfwidthLower;
+          break;
+      }
+      isCandidateMode_ = false;
+      directCharactorConversion(mode2);
+      FunctionConversionMode_ = mode2;
+      ic_->inputPanel().candidateList().reset();
       break;
     case FcitxKey_Escape:
       reset();
@@ -141,7 +238,16 @@ void azooKeyState::candidateKeyEvent(
       if (key.checkKeyList(config_->getSelectionKeys())) {
         auto index = key.keyListIndex(config_->getSelectionKeys());
         candidateList->candidate(index).select(ic_);
-        reset();
+        ic_->commitString(preedit[0]);
+        if (preedit.size() > 1) {
+          auto correspondingCount =
+              candidateList->azooKeyCandidate(candidateList->cursorIndex())
+                  .correspondingCount();
+          kkc_complete_prefix(composingText_, correspondingCount);
+          prepareNormalCandidateList();
+        } else {
+          reset();
+        }
       } else if (key.isSimple()) {
         kkc_input_text(composingText_, Key::keySymToUTF8(keysym).c_str());
       } else {
@@ -151,6 +257,45 @@ void azooKeyState::candidateKeyEvent(
   }
   updateUI();
   return event.filterAndAccept();
+}
+
+void azooKeyState::directCharactorConversion(ConversionMode mode) {
+  char *converted = nullptr;
+  switch (mode) {
+    case ConversionMode::None:
+      return;
+    case ConversionMode::Hiragana:
+      converted = kkc_get_composing_hiragana(composingText_);
+      break;
+    case ConversionMode::KatakanaFullwidth:
+      converted = kkc_get_composing_katakana_fullwidth(composingText_);
+      break;
+    case ConversionMode::KatakanaHalfwidth:
+      converted = kkc_get_composing_katakana_halfwidth(composingText_);
+      break;
+    case ConversionMode::RawFullwidthUpper:
+      converted = kkc_get_composing_raw_fullwidth(composingText_, 1);
+      break;
+    case ConversionMode::RawFullwidthLower:
+      converted = kkc_get_composing_raw_fullwidth(composingText_, 0);
+      break;
+    case ConversionMode::RawFullwidthCapitalized:
+      converted = kkc_get_composing_raw_fullwidth(composingText_, 2);
+      // converted[0] = ::toupper(converted[0]);
+      break;
+    case ConversionMode::RawHalfwidthUpper:
+      converted = kkc_get_composing_raw_halfwidth(composingText_, 1);
+      break;
+    case ConversionMode::RawHalfwidthLower:
+      converted = kkc_get_composing_raw_halfwidth(composingText_, 0);
+      break;
+    case ConversionMode::RawHalfwidthCapitalized:
+      converted = kkc_get_composing_raw_halfwidth(composingText_, 2);
+      // converted[0] = ::toupper(converted[0]);
+      break;
+  }
+  preedit_.setSimplePreedit(converted);
+  kkc_free_text(converted);
 }
 
 void azooKeyState::prepareCandidateList(bool isPredictMode, bool updatePreedit,
@@ -193,10 +338,8 @@ void azooKeyState::prepareCandidateList(bool isPredictMode, bool updatePreedit,
   ic_->inputPanel().reset();
   if (isPredictMode) {
     candidateList->setPageSize(4);
-    ic_->inputPanel().setAuxUp(Text("[Tabキーで選択]"));
   } else {
     candidateList->setDefaultStyle(config_->getSelectionKeys());
-    setCandidateCursorAUX(candidateList.get());
     preedit_.setPreedit(candidateList->candidate(0).text());
   }
 
@@ -205,10 +348,16 @@ void azooKeyState::prepareCandidateList(bool isPredictMode, bool updatePreedit,
   } else if (updatePreedit) {
     auto hiragana = kkc_get_composing_hiragana(composingText_);
     preedit_.setSimplePreedit(hiragana);
-    kkc_free_composing_hiragana(hiragana);
+    kkc_free_text(hiragana);
   }
 
   ic_->inputPanel().setCandidateList(std::move(candidateList));
+  auto newCandidateList = ic_->inputPanel().candidateList();
+  setCandidateCursorAUX(
+      std::static_pointer_cast<azooKeyCandidateList>(newCandidateList));
+  if (isPredictMode) {
+    ic_->inputPanel().setAuxUp(Text("[Tabキーで選択]"));
+  }
   isCandidateMode_ = !isPredictMode;
   kkc_free_candidates(candidates);
 }
@@ -221,7 +370,8 @@ void azooKeyState::preparePredictCandidateList() {
   prepareCandidateList(true, true, PredictCandidateListNBest);
 }
 
-void azooKeyState::advanceCandidateCursor(azooKeyCandidateList *candidateList) {
+void azooKeyState::advanceCandidateCursor(
+    std::shared_ptr<azooKeyCandidateList> candidateList) {
   candidateList->nextCandidate();
   setCandidateCursorAUX(candidateList);
   auto text = candidateList->azooKeyCandidate(candidateList->cursorIndex())
@@ -230,7 +380,8 @@ void azooKeyState::advanceCandidateCursor(azooKeyCandidateList *candidateList) {
   preedit_.setMultiSegmentPreedit(text, 0);
 }
 
-void azooKeyState::backCandidateCursor(azooKeyCandidateList *candidateList) {
+void azooKeyState::backCandidateCursor(
+    std::shared_ptr<azooKeyCandidateList> candidateList) {
   candidateList->prevCandidate();
   setCandidateCursorAUX(candidateList);
   auto text = candidateList->azooKeyCandidate(candidateList->cursorIndex())
@@ -238,7 +389,8 @@ void azooKeyState::backCandidateCursor(azooKeyCandidateList *candidateList) {
   preedit_.setMultiSegmentPreedit(text, 0);
 }
 
-void azooKeyState::setCandidateCursorAUX(azooKeyCandidateList *candidateList) {
+void azooKeyState::setCandidateCursorAUX(
+    std::shared_ptr<azooKeyCandidateList> candidateList) {
   auto label = "[" + std::to_string(candidateList->globalCursorIndex() + 1) +
                "/" + std::to_string(candidateList->totalSize()) + "]";
   ic_->inputPanel().setAuxUp(Text(label));
@@ -281,6 +433,7 @@ void azooKeyState::reset() {
   ic_->inputPanel().reset();
   composingText_ = nullptr;
   isCandidateMode_ = false;
+  FunctionConversionMode_ = ConversionMode::None;
 }
 
 }  // namespace fcitx
