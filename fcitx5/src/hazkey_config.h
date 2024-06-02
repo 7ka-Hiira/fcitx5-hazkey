@@ -3,15 +3,15 @@
 
 #include <fcitx-utils/key.h>
 #include <fcitx-utils/log.h>
-#include <hazukey/libhazukey.h>
+#include <hazkey/libhazkey.h>
 
 namespace fcitx {
 
-class HazukeyConfig {
+class HazkeyConfig {
    public:
-    // HazukeyConfig constructor
-    HazukeyConfig() {
-        FCITX_DEBUG() << "HazukeyConfig constructor";
+    // HazkeyConfig constructor
+    HazkeyConfig() {
+        FCITX_DEBUG() << "HazkeyConfig constructor";
         kkc_config_ = kkc_get_config();
     }
 

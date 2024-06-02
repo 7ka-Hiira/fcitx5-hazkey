@@ -3,16 +3,16 @@
 
 #include <fcitx/inputcontext.h>
 #include <fcitx/inputpanel.h>
-#include <hazukey/libhazukey.h>
+#include <hazkey/libhazkey.h>
 
-#include "hazukey_candidate.h"
-#include "hazukey_config.h"
-#include "hazukey_preedit.h"
+#include "hazkey_candidate.h"
+#include "hazkey_config.h"
+#include "hazkey_preedit.h"
 
 namespace fcitx {
-class HazukeyState : public InputContextProperty {
+class HazkeyState : public InputContextProperty {
    public:
-    HazukeyState(InputContext *ic) : ic_(ic), preedit_(HazukeyPreedit(ic)) {
+    HazkeyState(InputContext *ic) : ic_(ic), preedit_(HazkeyPreedit(ic)) {
         composingText_ = nullptr;
     }
 
@@ -21,7 +21,7 @@ class HazukeyState : public InputContextProperty {
     // handle key event. call candidateKeyEvent or preeditKeyEvent
     // depends on the current mode
     void keyEvent(KeyEvent &keyEvent);
-    void loadConfig(std::shared_ptr<HazukeyConfig> &config);
+    void loadConfig(std::shared_ptr<HazkeyConfig> &config);
     // reset to the initial state
     void reset();
 
@@ -44,18 +44,18 @@ class HazukeyState : public InputContextProperty {
     void directCharactorConversion(ConversionMode mode);
     // handle key event in candidate mode
     void candidateKeyEvent(KeyEvent &keyEvent,
-                           std::shared_ptr<HazukeyCandidateList> candidateList);
+                           std::shared_ptr<HazkeyCandidateList> candidateList);
     // handle key event in preedit mode
     void preeditKeyEvent(
         KeyEvent &keyEvent,
-        std::shared_ptr<HazukeyCandidateList> PreeditCandidateList);
+        std::shared_ptr<HazkeyCandidateList> PreeditCandidateList);
 
     // base function to prepare candidate list
     // make sure composingText_ is not nullptr
     void showCandidateList(showCandidateMode mode, int nBest);
     std::vector<std::vector<std::string>> getCandidates(bool isPredictMode,
                                                         int nBest);
-    std::unique_ptr<HazukeyCandidateList> createCandidateList(
+    std::unique_ptr<HazkeyCandidateList> createCandidateList(
         std::vector<std::vector<std::string>> candidates,
         std::shared_ptr<std::vector<std::string>> preeditSegments);
 
@@ -68,24 +68,24 @@ class HazukeyState : public InputContextProperty {
 
     // update the candidate cursor
     void updateCandidateCursor(
-        std::shared_ptr<HazukeyCandidateList> candidateList);
+        std::shared_ptr<HazkeyCandidateList> candidateList);
     // advance the cursor in
     // the candidate list,
     // update aux, set
     // preedit text
     void advanceCandidateCursor(
-        std::shared_ptr<HazukeyCandidateList> candidateList);
+        std::shared_ptr<HazkeyCandidateList> candidateList);
     // back the cursor in
     // the candidate list,
     // update aux, set
     // preedit text
     void backCandidateCursor(
-        std::shared_ptr<HazukeyCandidateList> candidateList);
+        std::shared_ptr<HazkeyCandidateList> candidateList);
     // update aux; label on
     // the candidate list
     // like "[1/100]"
     void setCandidateCursorAUX(
-        std::shared_ptr<HazukeyCandidateList> candidateList);
+        std::shared_ptr<HazkeyCandidateList> candidateList);
 
     // check if the key
     // event is inputable
@@ -97,13 +97,13 @@ class HazukeyState : public InputContextProperty {
     InputContext *ic_;
     // shared pointer to the
     // configuration
-    std::shared_ptr<HazukeyConfig> config_;
+    std::shared_ptr<HazkeyConfig> config_;
     // preedit class
-    HazukeyPreedit preedit_;
+    HazkeyPreedit preedit_;
     // composing text
     // information pointer
     // used by
-    // libhazukey-kkc
+    // libhazkey-kkc
     ComposingText *composingText_;
     // true if the current
     // mode is candidate

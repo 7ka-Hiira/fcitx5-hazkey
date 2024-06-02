@@ -3,17 +3,17 @@
 
 #include <fcitx/candidatelist.h>
 #include <fcitx/inputcontext.h>
-#include <hazukey/libhazukey.h>
+#include <hazkey/libhazkey.h>
 
 namespace fcitx {
 
-class HazukeyCandidateWord : public CandidateWord {
+class HazkeyCandidateWord : public CandidateWord {
    public:
-    HazukeyCandidateWord(const int index, const std::string& text,
-                         const std::string& hiragana,
-                         const int correspondingCount,
-                         const std::vector<std::string> parts,
-                         const std::vector<int> partLens)
+    HazkeyCandidateWord(const int index, const std::string& text,
+                        const std::string& hiragana,
+                        const int correspondingCount,
+                        const std::vector<std::string> parts,
+                        const std::vector<int> partLens)
         : CandidateWord(Text(text)),
           index_(index),
           candidate_(std::move(text)),
@@ -40,12 +40,12 @@ class HazukeyCandidateWord : public CandidateWord {
     const std::vector<int> part_lens_;
 };
 
-class HazukeyCandidateList : public CommonCandidateList {
+class HazkeyCandidateList : public CommonCandidateList {
    public:
     // always vertical
     CandidateLayoutHint layoutHint() const override;
 
-    const HazukeyCandidateWord& getCandidate(int localIndex) const;
+    const HazkeyCandidateWord& getCandidate(int localIndex) const;
 
     void focus(KeyList selectionKeys);
 

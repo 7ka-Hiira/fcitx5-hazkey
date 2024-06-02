@@ -1,17 +1,17 @@
-#include "hazukey_state.h"
+#include "hazkey_state.h"
 
 #include <algorithm>
 #include <numeric>
 
-#include "hazukey_candidate.h"
-#include "hazukey_config.h"
+#include "hazkey_candidate.h"
+#include "hazkey_config.h"
 
 namespace fcitx {
 
 constexpr int NormalCandidateListNBest = 9;
 constexpr int PredictCandidateListNBest = 4;
 
-bool HazukeyState::isInputableEvent(const KeyEvent &event) {
+bool HazkeyState::isInputableEvent(const KeyEvent &event) {
     auto key = event.key();
     if (key.check(FcitxKey_space) || key.isSimple() ||
         (key.sym() >= 0x04a1 && key.sym() <= 0x04df)) {
@@ -21,10 +21,10 @@ bool HazukeyState::isInputableEvent(const KeyEvent &event) {
     return false;
 }
 
-void HazukeyState::keyEvent(KeyEvent &event) {
-    FCITX_DEBUG() << "HazukeyState keyEvent";
+void HazkeyState::keyEvent(KeyEvent &event) {
+    FCITX_DEBUG() << "HazkeyState keyEvent";
 
-    auto candidateList = std::dynamic_pointer_cast<HazukeyCandidateList>(
+    auto candidateList = std::dynamic_pointer_cast<HazkeyCandidateList>(
         event.inputContext()->inputPanel().candidateList());
 
     if (candidateList != nullptr && candidateList->focused()) {
@@ -52,10 +52,10 @@ void HazukeyState::keyEvent(KeyEvent &event) {
     }
 }
 
-void HazukeyState::preeditKeyEvent(
+void HazkeyState::preeditKeyEvent(
     KeyEvent &event,
-    std::shared_ptr<HazukeyCandidateList> PreeditCandidateList) {
-    FCITX_DEBUG() << "HazukeyState preeditKeyEvent";
+    std::shared_ptr<HazkeyCandidateList> PreeditCandidateList) {
+    FCITX_DEBUG() << "HazkeyState preeditKeyEvent";
 
     auto key = event.key();
     auto keysym = key.sym();
@@ -80,7 +80,7 @@ void HazukeyState::preeditKeyEvent(
         case FcitxKey_space:
             showNonPredictCandidateList();
             advanceCandidateCursor(
-                std::dynamic_pointer_cast<HazukeyCandidateList>(
+                std::dynamic_pointer_cast<HazkeyCandidateList>(
                     ic_->inputPanel().candidateList()));
             break;
         case FcitxKey_F6:
@@ -124,9 +124,9 @@ void HazukeyState::preeditKeyEvent(
     return event.filterAndAccept();
 }
 
-void HazukeyState::candidateKeyEvent(
-    KeyEvent &event, std::shared_ptr<HazukeyCandidateList> candidateList) {
-    FCITX_DEBUG() << "HazukeyState candidateKeyEvent";
+void HazkeyState::candidateKeyEvent(
+    KeyEvent &event, std::shared_ptr<HazkeyCandidateList> candidateList) {
+    FCITX_DEBUG() << "HazkeyState candidateKeyEvent";
 
     auto key = event.key();
     auto keysym = key.sym();
@@ -231,7 +231,7 @@ void HazukeyState::candidateKeyEvent(
     return event.filterAndAccept();
 }
 
-void HazukeyState::directCharactorConversion(ConversionMode mode) {
+void HazkeyState::directCharactorConversion(ConversionMode mode) {
     char *converted = nullptr;
     switch (mode) {
         case ConversionMode::Hiragana:
@@ -261,8 +261,8 @@ void HazukeyState::directCharactorConversion(ConversionMode mode) {
 // updatePreedit: whether to update preedit text. currently always true
 // nBest: number of candidates to show.
 // TODO: make avobe configurable
-void HazukeyState::showCandidateList(showCandidateMode mode, int nBest) {
-    FCITX_DEBUG() << "HazukeyState showCandidateList";
+void HazkeyState::showCandidateList(showCandidateMode mode, int nBest) {
+    FCITX_DEBUG() << "HazkeyState showCandidateList";
 
     bool enabledPreeditConversion =
         mode == showCandidateMode::PredictWithLivePreedit ||
@@ -298,7 +298,7 @@ void HazukeyState::showCandidateList(showCandidateMode mode, int nBest) {
     ic_->inputPanel().setCandidateList(std::move(candidateList));
 }
 
-std::vector<std::vector<std::string>> HazukeyState::getCandidates(
+std::vector<std::vector<std::string>> HazkeyState::getCandidates(
     bool enabledPreeditConversion, int nBest) {
     auto ***candidates =
         kkc_get_candidates(composingText_, config_->getKkcConfig(),
@@ -315,10 +315,10 @@ std::vector<std::vector<std::string>> HazukeyState::getCandidates(
     return candidateList;
 }
 
-std::unique_ptr<HazukeyCandidateList> HazukeyState::createCandidateList(
+std::unique_ptr<HazkeyCandidateList> HazkeyState::createCandidateList(
     std::vector<std::vector<std::string>> candidates,
     std::shared_ptr<std::vector<std::string>> preeditSegments = nullptr) {
-    auto candidateList = std::make_unique<HazukeyCandidateList>();
+    auto candidateList = std::make_unique<HazkeyCandidateList>();
     // for (const auto &candidate : candidates) {
     for (size_t i = 0; i < candidates.size(); i++) {
         auto candidate = candidates[i];
@@ -326,12 +326,12 @@ std::unique_ptr<HazukeyCandidateList> HazukeyState::createCandidateList(
         std::vector<int> partLens;
 
         // collect parts and part lengths
-        // more about candidate format, see azookey-kkc/libhazukey.h
+        // more about candidate format, see azookey-kkc/libhazkey.h
         for (size_t j = 5; j < candidate.size() - 1; j += 2) {
             parts.push_back(candidate[j]);
             partLens.push_back(stoi(candidate[j + 1]));
         }
-        candidateList->append(std::make_unique<HazukeyCandidateWord>(
+        candidateList->append(std::make_unique<HazkeyCandidateWord>(
             i, candidate[0], candidate[2], stoi(candidate[3]), parts,
             partLens));
 
@@ -344,7 +344,7 @@ std::unique_ptr<HazukeyCandidateList> HazukeyState::createCandidateList(
     return candidateList;
 }
 
-void HazukeyState::showNonPredictCandidateList() {
+void HazkeyState::showNonPredictCandidateList() {
     if (composingText_ == nullptr) {
         return;
     }
@@ -352,15 +352,15 @@ void HazukeyState::showNonPredictCandidateList() {
     showCandidateList(showCandidateMode::NonPredictWithFirstPreedit,
                       NormalCandidateListNBest);
 
-    auto newCandidateList = std::dynamic_pointer_cast<HazukeyCandidateList>(
+    auto newCandidateList = std::dynamic_pointer_cast<HazkeyCandidateList>(
         ic_->inputPanel().candidateList());
     newCandidateList->focus(config_->getSelectionKeys());
 
     setCandidateCursorAUX(
-        std::static_pointer_cast<HazukeyCandidateList>(newCandidateList));
+        std::static_pointer_cast<HazkeyCandidateList>(newCandidateList));
 }
 
-void HazukeyState::showPredictCandidateList() {
+void HazkeyState::showPredictCandidateList() {
     if (composingText_ == nullptr) {
         return;
     }
@@ -373,54 +373,54 @@ void HazukeyState::showPredictCandidateList() {
     showCandidateList(showCandidateMode::PredictWithLivePreedit,
                       PredictCandidateListNBest);
 
-    auto newCandidateList = std::dynamic_pointer_cast<HazukeyCandidateList>(
+    auto newCandidateList = std::dynamic_pointer_cast<HazkeyCandidateList>(
         ic_->inputPanel().candidateList());
     newCandidateList->setPageSize(PredictCandidateListNBest);
 
     ic_->inputPanel().setAuxUp(Text("[Tabキーで選択]"));
 }
 
-void HazukeyState::completePrefix(int correspondingCount) {
+void HazkeyState::completePrefix(int correspondingCount) {
     kkc_complete_prefix(composingText_, correspondingCount);
     // no need for predictions since the conversion is in progress
     showNonPredictCandidateList();
 }
 
-void HazukeyState::updateCandidateCursor(
-    std::shared_ptr<HazukeyCandidateList> candidateList) {
+void HazkeyState::updateCandidateCursor(
+    std::shared_ptr<HazkeyCandidateList> candidateList) {
     setCandidateCursorAUX(candidateList);
     auto text =
         candidateList->getCandidate(candidateList->cursorIndex()).getPreedit();
     preedit_.setMultiSegmentPreedit(text, 0);
 }
 
-void HazukeyState::advanceCandidateCursor(
-    std::shared_ptr<HazukeyCandidateList> candidateList) {
+void HazkeyState::advanceCandidateCursor(
+    std::shared_ptr<HazkeyCandidateList> candidateList) {
     candidateList->nextCandidate();
     updateCandidateCursor(candidateList);
 }
 
-void HazukeyState::backCandidateCursor(
-    std::shared_ptr<HazukeyCandidateList> candidateList) {
+void HazkeyState::backCandidateCursor(
+    std::shared_ptr<HazkeyCandidateList> candidateList) {
     candidateList->prevCandidate();
     updateCandidateCursor(candidateList);
 }
 
-void HazukeyState::setCandidateCursorAUX(
-    std::shared_ptr<HazukeyCandidateList> candidateList) {
+void HazkeyState::setCandidateCursorAUX(
+    std::shared_ptr<HazkeyCandidateList> candidateList) {
     auto label = "[" + std::to_string(candidateList->globalCursorIndex() + 1) +
                  "/" + std::to_string(candidateList->totalSize()) + "]";
     ic_->inputPanel().setAuxUp(Text(label));
 }
 
-void HazukeyState::loadConfig(std::shared_ptr<HazukeyConfig> &config) {
+void HazkeyState::loadConfig(std::shared_ptr<HazkeyConfig> &config) {
     if (config_ == nullptr) {
         config_ = config;
     }
 }
 
-void HazukeyState::reset() {
-    FCITX_DEBUG() << "HazukeyState reset";
+void HazkeyState::reset() {
+    FCITX_DEBUG() << "HazkeyState reset";
     if (composingText_ != nullptr) {
         kkc_free_composing_text_instance(composingText_);
     }

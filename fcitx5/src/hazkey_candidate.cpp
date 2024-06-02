@@ -1,13 +1,13 @@
-#include "hazukey_candidate.h"
+#include "hazkey_candidate.h"
 
 namespace fcitx {
 
-std::vector<std::string> HazukeyCandidateWord::getPreedit() const {
+std::vector<std::string> HazkeyCandidateWord::getPreedit() const {
     if (hiragana_.empty()) return {candidate_};
     return {candidate_, hiragana_};
 }
 
-void HazukeyCandidateWord::select(InputContext* ic) const {
+void HazkeyCandidateWord::select(InputContext* ic) const {
     // 苦肉の策:
     // statesのリストの関数を呼び出せないので数字キーイベントを送って選択させる
     // createCandidateList系こっちに持ってきた方がいい
@@ -45,20 +45,20 @@ void HazukeyCandidateWord::select(InputContext* ic) const {
     ic->keyEvent(keyEvent);
 }
 
-CandidateLayoutHint HazukeyCandidateList::layoutHint() const {
+CandidateLayoutHint HazkeyCandidateList::layoutHint() const {
     return CandidateLayoutHint::Vertical;
 }
 
-void HazukeyCandidateList::focus(KeyList selectionKeys) {
+void HazkeyCandidateList::focus(KeyList selectionKeys) {
     setPageSize(9);
     setSelectionKey(selectionKeys);
     setCursorIndex(0);
     focused_ = true;
 }
 
-const HazukeyCandidateWord& HazukeyCandidateList::getCandidate(
+const HazkeyCandidateWord& HazkeyCandidateList::getCandidate(
     int localIndex) const {
-    return static_cast<const HazukeyCandidateWord&>(candidate(localIndex));
+    return static_cast<const HazkeyCandidateWord&>(candidate(localIndex));
 }
 
 }  // namespace fcitx

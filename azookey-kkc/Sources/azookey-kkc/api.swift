@@ -17,7 +17,7 @@ public class KkcConfig {
 func genDefaultConfig() -> KkcConfig {
   var dictDir: URL {
     FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
-      .appendingPathComponent("hazukey", isDirectory: true)
+      .appendingPathComponent("hazkey", isDirectory: true)
   }
 
   var zenaiModel: URL {
@@ -47,7 +47,7 @@ func genDefaultConfig() -> KkcConfig {
     sharedContainerURL: dictDir,
     zenzaiMode: .off,
     //zenzaiMode: .on(weight: zenaiModel),
-    metadata: .init(versionString: "fcitx5-hazukey 0.0.1")
+    metadata: .init(versionString: "fcitx5-hazkey 0.0.1")
   )
   return KkcConfig(convertOptions: options)
 }

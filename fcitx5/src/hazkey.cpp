@@ -1,16 +1,15 @@
-#include "hazukey.h"
+#include "hazkey.h"
 
 namespace fcitx {
 
-HazukeyEngine::HazukeyEngine(Instance *instance)
+HazkeyEngine::HazkeyEngine(Instance *instance)
     : instance_(instance),
-      factory_([this](InputContext &ic) { return new HazukeyState(&ic); }) {
-    instance->inputContextManager().registerProperty("hazukeyState", &factory_);
-    config_ = std::make_shared<HazukeyConfig>();
+      factory_([this](InputContext &ic) { return new HazkeyState(&ic); }) {
+    instance->inputContextManager().registerProperty("hazkeyState", &factory_);
+    config_ = std::make_shared<HazkeyConfig>();
 }
 
-void HazukeyEngine::keyEvent(const InputMethodEntry &entry,
-                             KeyEvent &keyEvent) {
+void HazkeyEngine::keyEvent(const InputMethodEntry &entry, KeyEvent &keyEvent) {
     FCITX_UNUSED(entry);
     if (keyEvent.isRelease()) {
         return;
@@ -23,10 +22,10 @@ void HazukeyEngine::keyEvent(const InputMethodEntry &entry,
     inputContext->updateUserInterface(UserInterfaceComponent::InputPanel);
 }
 
-void HazukeyEngine::activate(const InputMethodEntry &entry,
-                             InputContextEvent &event) {
+void HazkeyEngine::activate(const InputMethodEntry &entry,
+                            InputContextEvent &event) {
     FCITX_UNUSED(entry);
-    FCITX_DEBUG() << "HazukeyEngine activate";
+    FCITX_DEBUG() << "HazkeyEngine activate";
     auto inputContext = event.inputContext();
     auto state = inputContext->propertyFor(&factory_);
     state->loadConfig(config_);
@@ -35,10 +34,10 @@ void HazukeyEngine::activate(const InputMethodEntry &entry,
     inputContext->updateUserInterface(UserInterfaceComponent::InputPanel);
 }
 
-void HazukeyEngine::deactivate(const InputMethodEntry &entry,
-                               InputContextEvent &event) {
+void HazkeyEngine::deactivate(const InputMethodEntry &entry,
+                              InputContextEvent &event) {
     FCITX_UNUSED(entry);
-    FCITX_DEBUG() << "HazukeyEngine deactivate";
+    FCITX_DEBUG() << "HazkeyEngine deactivate";
     auto inputContext = event.inputContext();
     auto state = inputContext->propertyFor(&factory_);
     state->reset();
@@ -46,6 +45,6 @@ void HazukeyEngine::deactivate(const InputMethodEntry &entry,
     inputContext->updateUserInterface(UserInterfaceComponent::InputPanel);
 }
 
-FCITX_ADDON_FACTORY(HazukeyEngineFactory);
+FCITX_ADDON_FACTORY(HazkeyEngineFactory);
 
 }  // namespace fcitx

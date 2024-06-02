@@ -3,12 +3,12 @@
 
 #include <fcitx/inputcontext.h>
 #include <fcitx/inputpanel.h>
-#include <hazukey/libhazukey.h>
+#include <hazkey/libhazkey.h>
 
 namespace fcitx {
-class HazukeyPreedit {
+class HazkeyPreedit {
    public:
-    HazukeyPreedit(InputContext *ic) : ic_(ic) {}
+    HazkeyPreedit(InputContext *ic) : ic_(ic) {}
 
     std::string text() const;
     // set the preedit text; prediction mode

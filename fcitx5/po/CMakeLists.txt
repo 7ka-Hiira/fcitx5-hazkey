@@ -1,1 +1,1 @@
-fcitx5_install_translation(fcitx5-hazukey)
+fcitx5_install_translation(fcitx5-hazkey)

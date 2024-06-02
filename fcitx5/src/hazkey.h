@@ -7,18 +7,18 @@
 #include <fcitx/instance.h>
 #include <iconv.h>
 
-#include "hazukey_config.h"
-#include "hazukey_state.h"
+#include "hazkey_config.h"
+#include "hazkey_state.h"
 
 namespace fcitx {
 
-class HazukeyEngine : public InputMethodEngineV2 {
+class HazkeyEngine : public InputMethodEngineV2 {
    public:
     // constructor
-    HazukeyEngine(Instance *instance);
-    // handle key event and pass it to HazukeyState
+    HazkeyEngine(Instance *instance);
+    // handle key event and pass it to HazkeyState
     void keyEvent(const InputMethodEntry &entry, KeyEvent &keyEvent) override;
-    // called when input method changes to Hazukey
+    // called when input method changes to Hazkey
     void activate(const InputMethodEntry &, InputContextEvent &) override;
     // called when input method changes to another input method
     void deactivate(const InputMethodEntry &, InputContextEvent &) override;
@@ -28,15 +28,15 @@ class HazukeyEngine : public InputMethodEngineV2 {
 
    private:
     Instance *instance_;
-    std::shared_ptr<HazukeyConfig> config_;
-    FactoryFor<HazukeyState> factory_;
+    std::shared_ptr<HazkeyConfig> config_;
+    FactoryFor<HazkeyState> factory_;
     iconv_t conv_;
 };
 
-class HazukeyEngineFactory : public AddonFactory {
+class HazkeyEngineFactory : public AddonFactory {
     AddonInstance *create(AddonManager *manager) override {
         FCITX_UNUSED(manager);
-        return new HazukeyEngine(manager->instance());
+        return new HazkeyEngine(manager->instance());
     }
 };
 

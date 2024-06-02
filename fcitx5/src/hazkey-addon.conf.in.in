@@ -1,9 +1,9 @@
 [Addon]
-Name=Hazukey
+Name=Hazkey
 Category=InputMethod
 Version=@PROJECT_VERSION@
-Library=fcitx5-hazukey
+Library=fcitx5-hazkey
 Type=SharedLibrary
 OnDemand=True
 Configurable=True
-Icon=hazukey
+Icon=hazkey

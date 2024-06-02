@@ -7,7 +7,7 @@ if [ ! -d "azookey-kkc" ] || [ ! -d "fcitx5" ]; then
     exit 1
 fi
 
-# build hazukey library
+# build hazkey library
 cd azookey-kkc
 swift build -c release
 
@@ -18,12 +18,12 @@ if [ -z "$INSTALL_PREFIX" ]; then
     if [ "$response" = "y" ] || [ "$response" = "Y" ]; then
         export INSTALL_PREFIX="/usr"
     else
-        echo "Please set INSTALL_PREFIX to the directory where you want to install hazukey."
+        echo "Please set INSTALL_PREFIX to the directory where you want to install hazkey."
         exit 1
     fi
 fi
 
-# install hazukey libs
+# install hazkey libs
 sudo -E ./install.sh
 
 # build fcitx5 module

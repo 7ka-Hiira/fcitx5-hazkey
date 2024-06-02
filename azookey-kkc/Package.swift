@@ -4,13 +4,13 @@
 import PackageDescription
 
 let package = Package(
-  name: "hazukey",
+  name: "hazkey",
   products: [
     // Products define the executables and libraries a package produces, making them visible to other packages.
     .library(
-      name: "hazukey",
+      name: "hazkey",
       type: .dynamic,
-      targets: ["hazukey-kkc"])
+      targets: ["hazkey-kkc"])
   ],
   dependencies: [
     .package(
@@ -21,7 +21,7 @@ let package = Package(
     // Targets are the basic building blocks of a package, defining a module or a test suite.
     // Targets can depend on other targets in this package and products from dependencies.
     .target(
-      name: "hazukey-kkc",
+      name: "hazkey-kkc",
       dependencies: [
         .product(
           name: "KanaKanjiConverterModuleWithDefaultDictionary",
@@ -32,9 +32,9 @@ let package = Package(
       ]
     ),
     .testTarget(
-      name: "hazukey-kkc-Tests",
+      name: "hazkey-kkc-Tests",
       dependencies: [
-        "hazukey-kkc"
+        "hazkey-kkc"
       ]
     ),
   ]
