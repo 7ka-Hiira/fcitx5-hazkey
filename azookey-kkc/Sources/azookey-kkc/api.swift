@@ -110,7 +110,8 @@ public func inputText(
     inputUnicode = UnicodeScalar(inputUnicode.value - 96)!
   }
 
-  let inputCharacter = halfwidthToFullwidth(character: Character(inputUnicode), reverse: false)
+  let inputCharacter = symbolHalfwidthToFullwidth(
+    character: Character(inputUnicode), reverse: false)
 
   var string = String(inputCharacter)
 
@@ -304,26 +305,6 @@ public func getComposingAlphabetFullwidth(
   }
 }
 
-@_silgen_name("kkc_current_case")
-public func getNextCase(
-  stringPtr: UnsafePointer<Int8>?, composingText: UnsafeMutablePointer<ComposingText>?
-) -> Int {
-  guard let stringPtr = stringPtr else {
-    return 0
-  }
-  let text = String(cString: stringPtr)
-
-  if text == text.lowercased() {
-    return 1
-  } else if text == text.uppercased() {
-    return 2
-  } else if text == text.capitalized {
-    return 3
-  } else {
-    return 0
-  }
-}
-
 @_silgen_name("kkc_free_text")
 public func freeText(ptr: UnsafeMutablePointer<Int8>?) {
   free(ptr)
@@ -443,7 +424,8 @@ func composingTextToAlphabet(composingText: ComposingText, fullWidth: Bool) -> S
   var beforeCharacter: Character?
   // reverse to process "っ" correctly
   let romaji = composingText.input.reversed().map {
-    var character = halfwidthToFullwidth(character: $0.character, reverse: fullWidth)
+    // convert symbol first because applyingTransform doesn't work for them
+    var character = symbolHalfwidthToFullwidth(character: $0.character, reverse: fullWidth)
     switch character {
     case "ん":
       character = "n"
@@ -458,18 +440,15 @@ func composingTextToAlphabet(composingText: ComposingText, fullWidth: Bool) -> S
     return String(character)
   }.reversed().joined()  // reverse back to original order
 
-  if fullWidth {
-    return romaji.applyingTransform(.fullwidthToHalfwidth, reverse: true) ?? ""
-  } else {
-    return romaji
-  }
+  return romaji.applyingTransform(.fullwidthToHalfwidth, reverse: fullWidth) ?? ""
 }
 
-func halfwidthToFullwidth(character: Character, reverse: Bool) -> Character {
+func symbolHalfwidthToFullwidth(character: Character, reverse: Bool) -> Character {
   let h2z: [Character: Character] = [
     "!": "！",
     "\"": "”",
     "#": "＃",
+    "$": "＄",
     "%": "％",
     "&": "＆",
     "'": "’",
