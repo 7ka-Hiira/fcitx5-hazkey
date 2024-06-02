@@ -365,7 +365,7 @@ void HazkeyState::showPredictCandidateList() {
         return;
     }
     auto hiragana = kkc_get_composing_hiragana(composingText_);
-    if (hiragana == nullptr) {
+    if (hiragana == nullptr || strlen(hiragana) == 0) {
         reset();
         return;
     }

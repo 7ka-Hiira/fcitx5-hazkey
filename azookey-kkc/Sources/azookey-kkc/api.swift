@@ -6,52 +6,6 @@ import SwiftUtils
 /// Config
 ///
 
-public class KkcConfig {
-  let convertOptions: ConvertRequestOptions
-
-  init(convertOptions: ConvertRequestOptions) {
-    self.convertOptions = convertOptions
-  }
-}
-
-func genDefaultConfig() -> KkcConfig {
-  var dictDir: URL {
-    FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
-      .appendingPathComponent("hazkey", isDirectory: true)
-  }
-
-  var zenaiModel: URL {
-    dictDir.appendingPathComponent("ggml-model-Q8_0.gguf", isDirectory: false)
-  }
-
-  do {
-    try FileManager.default.createDirectory(at: dictDir, withIntermediateDirectories: true)
-    print("dictDir: \(dictDir)")
-  } catch {
-    print("Error creating directory: \(error)")
-  }
-
-  let options = ConvertRequestOptions.withDefaultDictionary(
-    N_best: 9,
-    requireJapanesePrediction: false,
-    requireEnglishPrediction: false,
-    keyboardLanguage: .ja_JP,
-    typographyLetterCandidate: true,
-    unicodeCandidate: true,
-    englishCandidateInRoman2KanaInput: true,
-    fullWidthRomanCandidate: true,
-    halfWidthKanaCandidate: true,
-    learningType: .nothing,
-    maxMemoryCount: 65536,
-    memoryDirectoryURL: dictDir,
-    sharedContainerURL: dictDir,
-    zenzaiMode: .off,
-    //zenzaiMode: .on(weight: zenaiModel),
-    metadata: .init(versionString: "fcitx5-hazkey 0.0.1")
-  )
-  return KkcConfig(convertOptions: options)
-}
-
 @_silgen_name("kkc_get_config")
 @MainActor public func getConfig() -> OpaquePointer? {
   let config = genDefaultConfig()
@@ -73,8 +27,8 @@ public func freeConfig(ptr: OpaquePointer?) {
 
 @_silgen_name("kkc_get_composing_text_instance")
 @MainActor public func getComposingTextInstance() -> UnsafeMutablePointer<ComposingText>? {
-  let composingText = ComposingText()
   let composingTextPtr = UnsafeMutablePointer<ComposingText>.allocate(capacity: 1)
+  let composingText = ComposingText()
   composingTextPtr.initialize(to: composingText)
   return composingTextPtr
 }
@@ -84,6 +38,7 @@ public func freeComposingTextInstance(ptr: UnsafeMutablePointer<ComposingText>?)
   ptr?.deinitialize(count: 1)
   ptr?.deallocate()
 }
+
 @_silgen_name("kkc_input_text")
 public func inputText(
   composingTextPtr: UnsafeMutablePointer<ComposingText>?, stringPtr: UnsafePointer<Int8>?
@@ -168,7 +123,6 @@ public func completePrefix(
   guard let composingTextPtr = composingTextPtr else {
     return
   }
-
   composingTextPtr.pointee.prefixComplete(correspondingCount: correspondingCount)
 }
 
@@ -193,12 +147,7 @@ public func getComposingHiragana(composingTextPtr: UnsafeMutablePointer<Composin
   guard let composingTextPtr = composingTextPtr else {
     return nil
   }
-  let composingText = composingTextPtr.pointee
-  let hiragana = composingText.convertTarget
-  guard !hiragana.isEmpty else {
-    return nil
-  }
-  return strdup(hiragana)
+  return strdup(composingTextPtr.pointee.toHiragana())
 }
 
 @_silgen_name("kkc_get_composing_katakana_fullwidth")
@@ -208,13 +157,7 @@ public func getComposingKatakanaFullwidth(composingTextPtr: UnsafeMutablePointer
   guard let composingTextPtr = composingTextPtr else {
     return nil
   }
-  let composingText = composingTextPtr.pointee
-  let hiragana = composingText.convertTarget
-  guard !hiragana.isEmpty else {
-    return nil
-  }
-  let katakana = hiragana.applyingTransform(.hiraganaToKatakana, reverse: false) ?? hiragana
-  return strdup(katakana)
+  return strdup(composingTextPtr.pointee.toKatakana(true))
 }
 
 @_silgen_name("kkc_get_composing_katakana_halfwidth")
@@ -224,15 +167,7 @@ public func getComposingKatakanaHalfwidth(composingTextPtr: UnsafeMutablePointer
   guard let composingTextPtr = composingTextPtr else {
     return nil
   }
-  let composingText = composingTextPtr.pointee
-  let hiragana = composingText.convertTarget
-  guard !hiragana.isEmpty else {
-    return nil
-  }
-  let katakana = hiragana.applyingTransform(.hiraganaToKatakana, reverse: false) ?? hiragana
-  let halfwidthKatakana =
-    katakana.applyingTransform(.fullwidthToHalfwidth, reverse: false) ?? katakana
-  return strdup(halfwidthKatakana)
+  return strdup(composingTextPtr.pointee.toKatakana(false))
 }
 
 @_silgen_name("kkc_get_composing_alphabet_halfwidth")
@@ -247,27 +182,9 @@ public func getComposingAlphabetHalfwidth(
   guard let currentPreeditPtr = currentPreeditPtr else {
     return nil
   }
-  let composingText = composingTextPtr.pointee
   let currentPreedit = String(cString: currentPreeditPtr)
-  guard !currentPreedit.isEmpty else {
-    return nil
-  }
-
-  let romaji = composingTextToAlphabet(composingText: composingText, fullWidth: false)
-
-  if currentPreedit == romaji.lowercased() {
-    return strdup(romaji.uppercased())
-  } else if currentPreedit == romaji.uppercased() && romaji.count > 1 {
-    return strdup(romaji.capitalized)
-  } else if romaji != romaji.uppercased()
-    && romaji != romaji.lowercased()
-    && romaji != romaji.capitalized
-    && romaji != currentPreedit
-  {
-    return strdup(romaji)
-  } else {
-    return strdup(romaji.lowercased())
-  }
+  let alphabet = composingTextPtr.pointee.toAlphabet(false)
+  return strdup(cycleAlphabetCase(alphabet, preedit: currentPreedit))
 }
 
 @_silgen_name("kkc_get_composing_alphabet_fullwidth")
@@ -282,27 +199,9 @@ public func getComposingAlphabetFullwidth(
   guard let currentPreeditPtr = currentPreeditPtr else {
     return nil
   }
-  let composingText = composingTextPtr.pointee
   let currentPreedit = String(cString: currentPreeditPtr)
-  guard !currentPreedit.isEmpty else {
-    return nil
-  }
-
-  let fullwidthRomaji = composingTextToAlphabet(composingText: composingText, fullWidth: true)
-
-  if currentPreedit == fullwidthRomaji.lowercased() {
-    return strdup(fullwidthRomaji.uppercased())
-  } else if currentPreedit == fullwidthRomaji.uppercased() && fullwidthRomaji.count > 1 {
-    return strdup(fullwidthRomaji.capitalized)
-  } else if fullwidthRomaji != fullwidthRomaji.uppercased()
-    && fullwidthRomaji != fullwidthRomaji.lowercased()
-    && fullwidthRomaji != fullwidthRomaji.capitalized
-    && fullwidthRomaji != currentPreedit
-  {
-    return strdup(fullwidthRomaji)
-  } else {
-    return strdup(fullwidthRomaji.lowercased())
-  }
+  let fullwidthAlphabet = composingTextPtr.pointee.toAlphabet(true)
+  return strdup(cycleAlphabetCase(fullwidthAlphabet, preedit: currentPreedit))
 }
 
 @_silgen_name("kkc_free_text")
@@ -327,6 +226,8 @@ public func freeText(ptr: UnsafeMutablePointer<Int8>?) {
     return nil
   }
   let composingText = composingTextPtr.pointee
+
+  // get config
   let config: KkcConfig
   if let kkcConfigPtr = kkcConfigPtr {
     config = Unmanaged<KkcConfig>.fromOpaque(UnsafeRawPointer(kkcConfigPtr))
@@ -334,6 +235,8 @@ public func freeText(ptr: UnsafeMutablePointer<Int8>?) {
   } else {
     config = genDefaultConfig()
   }
+
+  // set options
   var options = config.convertOptions
   if nBest != nil {
     options.N_best = nBest!
@@ -343,53 +246,7 @@ public func freeText(ptr: UnsafeMutablePointer<Int8>?) {
     options.requireEnglishPrediction = true
   }
 
-  let hiragana = composingText.convertTarget
-  let converter = KanaKanjiConverter()
-  let converted = converter.requestCandidates(composingText, options: options)
-
-  var result: [UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>?] = []
-
-  for candidate in converted.mainResults {
-    var candidatePtrList: [UnsafeMutablePointer<Int8>?] = []
-
-    let candidateRubyLen = candidate.data.map { $0.ruby }.map { $0.count }.reduce(0, +)
-    let unconvertedHiragana: String
-
-    var liveTextCompatible = 0
-    let InvalidLastCharactersForLive: [String.Element] = ["ゃ", "ゅ", "ょ", "ぁ", "ぃ", "ぅ", "ぇ", "ぉ"]
-    if candidateRubyLen < hiragana.count {
-      let convertedIndex = hiragana.index(
-        hiragana.startIndex, offsetBy: candidateRubyLen)
-      unconvertedHiragana = String(hiragana[convertedIndex...])
-    } else if candidateRubyLen == hiragana.count
-      && (hiragana.count >= 3
-        || (hiragana.count == 2
-          && !InvalidLastCharactersForLive.contains(hiragana.last!)))
-    {
-      unconvertedHiragana = ""
-      liveTextCompatible = 1
-    } else {
-      unconvertedHiragana = ""
-    }
-
-    // about this structure, see header file
-    candidatePtrList.append(strdup(candidate.text))  // todo: add description such as [[全]カタカナ]
-    candidatePtrList.append(strdup(""))  // todo: usage description like mozc
-    candidatePtrList.append(strdup(unconvertedHiragana))
-    candidatePtrList.append(strdup(String(candidate.correspondingCount)))
-    candidatePtrList.append(strdup(String(liveTextCompatible)))
-
-    for data in candidate.data {
-      candidatePtrList.append(strdup(data.word))
-      candidatePtrList.append(strdup(String(data.ruby.count)))
-    }
-
-    let candidatePtrListPtr = UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>.allocate(
-      capacity: candidatePtrList.count + 1)
-    candidatePtrListPtr.initialize(from: candidatePtrList, count: candidatePtrList.count)
-    candidatePtrListPtr[candidatePtrList.count] = nil
-    result.append(candidatePtrListPtr)
-  }
+  let result = createCandidateStruct(composingText: composingText, options: options)
 
   let resultPtr = UnsafeMutablePointer<UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>?>
     .allocate(
@@ -418,71 +275,4 @@ public func freeCandidates(
     i += 1
   }
   ptr.deallocate()
-}
-
-func composingTextToAlphabet(composingText: ComposingText, fullWidth: Bool) -> String {
-  var beforeCharacter: Character?
-  // reverse to process "っ" correctly
-  let romaji = composingText.input.reversed().map {
-    // convert symbol first because applyingTransform doesn't work for them
-    var character = symbolHalfwidthToFullwidth(character: $0.character, reverse: fullWidth)
-    switch character {
-    case "ん":
-      character = "n"
-    case "っ":
-      if let beforeCharacter = beforeCharacter {
-        character = beforeCharacter
-      }
-    default:
-      break
-    }
-    beforeCharacter = character
-    return String(character)
-  }.reversed().joined()  // reverse back to original order
-
-  return romaji.applyingTransform(.fullwidthToHalfwidth, reverse: fullWidth) ?? ""
-}
-
-func symbolHalfwidthToFullwidth(character: Character, reverse: Bool) -> Character {
-  let h2z: [Character: Character] = [
-    "!": "！",
-    "\"": "”",
-    "#": "＃",
-    "$": "＄",
-    "%": "％",
-    "&": "＆",
-    "'": "’",
-    "(": "（",
-    ")": "）",
-    "=": "＝",
-    "~": "〜",
-    "|": "｜",
-    "`": "｀",
-    "{": "『",
-    "+": "＋",
-    "*": "＊",
-    "}": "』",
-    "<": "＜",
-    ">": "＞",
-    "?": "？",
-    "_": "＿",
-    "-": "ー",
-    "^": "＾",
-    "\\": "＼",
-    "¥": "￥",
-    "@": "＠",
-    "[": "「",
-    ";": "；",
-    ":": "：",
-    "]": "」",
-    ",": "、",
-    ".": "。",
-    "/": "・",
-  ]
-  if reverse {
-    let z2h = Dictionary(uniqueKeysWithValues: h2z.map { ($1, $0) })
-    return z2h[character] ?? character
-  } else {
-    return h2z[character] ?? character
-  }
 }
