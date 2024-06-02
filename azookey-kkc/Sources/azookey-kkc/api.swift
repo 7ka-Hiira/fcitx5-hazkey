@@ -95,18 +95,24 @@ public func inputText(
     return
   }
 
-  var string = String(cString: stringPtr)
+  guard var inputUnicode = String(cString: stringPtr).unicodeScalars.first else {
+    return
+  }
 
   let inputStyle: InputStyle
-  if string.unicodeScalars.first?.properties.isAlphabetic ?? false {
+  if inputUnicode.properties.isAlphabetic {
     inputStyle = .roman2kana
   } else {
     inputStyle = .direct
   }
 
-  if let firstChar = string.unicodeScalars.first, (0x30A0...0x30FF).contains(firstChar.value) {
-    string = String(Character(UnicodeScalar(firstChar.value - 96)!))
+  if (0x30A0...0x30FF).contains(inputUnicode.value) {
+    inputUnicode = UnicodeScalar(inputUnicode.value - 96)!
   }
+
+  let inputCharacter = halfwidthToFullwidth(character: Character(inputUnicode), reverse: false)
+
+  var string = String(inputCharacter)
 
   switch string {
   case "゛":
@@ -131,14 +137,6 @@ public func inputText(
         string = String(handakutened)
       }
     }
-  case "-":
-    string = "ー"
-  case ",":
-    string = "、"
-  case ".":
-    string = "。"
-  case " ":
-    string = "　"
   default:
     break
   }
@@ -196,6 +194,9 @@ public func getComposingHiragana(composingTextPtr: UnsafeMutablePointer<Composin
   }
   let composingText = composingTextPtr.pointee
   let hiragana = composingText.convertTarget
+  guard !hiragana.isEmpty else {
+    return nil
+  }
   return strdup(hiragana)
 }
 
@@ -208,13 +209,11 @@ public func getComposingKatakanaFullwidth(composingTextPtr: UnsafeMutablePointer
   }
   let composingText = composingTextPtr.pointee
   let hiragana = composingText.convertTarget
+  guard !hiragana.isEmpty else {
+    return nil
+  }
   let katakana = hiragana.applyingTransform(.hiraganaToKatakana, reverse: false) ?? hiragana
   return strdup(katakana)
-}
-
-@_silgen_name("kkc_free_composing_katakana_fullwidth")
-public func freeComposingKatakanaFullwidth(ptr: UnsafeMutablePointer<Int8>?) {
-  free(ptr)
 }
 
 @_silgen_name("kkc_get_composing_katakana_halfwidth")
@@ -226,69 +225,102 @@ public func getComposingKatakanaHalfwidth(composingTextPtr: UnsafeMutablePointer
   }
   let composingText = composingTextPtr.pointee
   let hiragana = composingText.convertTarget
+  guard !hiragana.isEmpty else {
+    return nil
+  }
   let katakana = hiragana.applyingTransform(.hiraganaToKatakana, reverse: false) ?? hiragana
   let halfwidthKatakana =
     katakana.applyingTransform(.fullwidthToHalfwidth, reverse: false) ?? katakana
   return strdup(halfwidthKatakana)
 }
 
-@_silgen_name("kkc_get_composing_raw_halfwidth")
+@_silgen_name("kkc_get_composing_alphabet_halfwidth")
 public func getComposingAlphabetHalfwidth(
-  composingTextPtr: UnsafeMutablePointer<ComposingText>?, style: Int
+  composingTextPtr: UnsafeMutablePointer<ComposingText>?, currentPreeditPtr: UnsafePointer<Int8>?
 )
   -> UnsafeMutablePointer<Int8>?
 {
   guard let composingTextPtr = composingTextPtr else {
     return nil
   }
+  guard let currentPreeditPtr = currentPreeditPtr else {
+    return nil
+  }
   let composingText = composingTextPtr.pointee
-  let romaji = composingText.input.map {
-    var character = $0.character
-    if character == "ん" {
-      character = "n"
-    }
-    return String(character)
-  }.joined()
-  if style == 0 {
-    return strdup(romaji.lowercased())
-  } else if style == 1 {
+  let currentPreedit = String(cString: currentPreeditPtr)
+  guard !currentPreedit.isEmpty else {
+    return nil
+  }
+
+  let romaji = composingTextToAlphabet(composingText: composingText, fullWidth: false)
+
+  if currentPreedit == romaji.lowercased() {
     return strdup(romaji.uppercased())
-  } else {
+  } else if currentPreedit == romaji.uppercased() && romaji.count > 1 {
     return strdup(romaji.capitalized)
+  } else if romaji != romaji.uppercased()
+    && romaji != romaji.lowercased()
+    && romaji != romaji.capitalized
+    && romaji != currentPreedit
+  {
+    return strdup(romaji)
+  } else {
+    return strdup(romaji.lowercased())
   }
 }
 
-@_silgen_name("kkc_get_composing_raw_fullwidth")
+@_silgen_name("kkc_get_composing_alphabet_fullwidth")
 public func getComposingAlphabetFullwidth(
-  composingTextPtr: UnsafeMutablePointer<ComposingText>?, style: Int
+  composingTextPtr: UnsafeMutablePointer<ComposingText>?, currentPreeditPtr: UnsafePointer<Int8>?
 )
   -> UnsafeMutablePointer<Int8>?
 {
   guard let composingTextPtr = composingTextPtr else {
     return nil
   }
+  guard let currentPreeditPtr = currentPreeditPtr else {
+    return nil
+  }
   let composingText = composingTextPtr.pointee
-  let romaji = composingText.input.map {
-    var character = $0.character
-    if character == "ん" {
-      character = "n"
-    }
-    return String(character)
-  }.joined()
-  let fullwidthRomaji = romaji.map { character in
-    let unicodeScalar = character.unicodeScalars.first!
-    if let halfwidthUnicodeScalar = UnicodeScalar(unicodeScalar.value + 0xFEE0) {
-      return String(Character(halfwidthUnicodeScalar))
-    } else {
-      return String(character)
-    }
-  }.joined()
-  if style == 0 {
-    return strdup(fullwidthRomaji.lowercased())
-  } else if style == 1 {
+  let currentPreedit = String(cString: currentPreeditPtr)
+  guard !currentPreedit.isEmpty else {
+    return nil
+  }
+
+  let fullwidthRomaji = composingTextToAlphabet(composingText: composingText, fullWidth: true)
+
+  if currentPreedit == fullwidthRomaji.lowercased() {
     return strdup(fullwidthRomaji.uppercased())
-  } else {
+  } else if currentPreedit == fullwidthRomaji.uppercased() && fullwidthRomaji.count > 1 {
     return strdup(fullwidthRomaji.capitalized)
+  } else if fullwidthRomaji != fullwidthRomaji.uppercased()
+    && fullwidthRomaji != fullwidthRomaji.lowercased()
+    && fullwidthRomaji != fullwidthRomaji.capitalized
+    && fullwidthRomaji != currentPreedit
+  {
+    return strdup(fullwidthRomaji)
+  } else {
+    return strdup(fullwidthRomaji.lowercased())
+  }
+}
+
+@_silgen_name("kkc_current_case")
+public func getNextCase(
+  stringPtr: UnsafePointer<Int8>?, composingText: UnsafeMutablePointer<ComposingText>?
+) -> Int {
+  guard let stringPtr = stringPtr else {
+    return 0
+  }
+  let text = String(cString: stringPtr)
+
+  if text == text.lowercased() {
+    return 1
+  } else if text == text.uppercased() {
+    return 2
+  } else if text == text.capitalized {
+    return 3
+  } else {
+    return 0
   }
 }
 
@@ -405,4 +437,73 @@ public func freeCandidates(
     i += 1
   }
   ptr.deallocate()
+}
+
+func composingTextToAlphabet(composingText: ComposingText, fullWidth: Bool) -> String {
+  var beforeCharacter: Character?
+  // reverse to process "っ" correctly
+  let romaji = composingText.input.reversed().map {
+    var character = halfwidthToFullwidth(character: $0.character, reverse: fullWidth)
+    switch character {
+    case "ん":
+      character = "n"
+    case "っ":
+      if let beforeCharacter = beforeCharacter {
+        character = beforeCharacter
+      }
+    default:
+      break
+    }
+    beforeCharacter = character
+    return String(character)
+  }.reversed().joined()  // reverse back to original order
+
+  if fullWidth {
+    return romaji.applyingTransform(.fullwidthToHalfwidth, reverse: true) ?? ""
+  } else {
+    return romaji
+  }
+}
+
+func halfwidthToFullwidth(character: Character, reverse: Bool) -> Character {
+  let h2z: [Character: Character] = [
+    "!": "！",
+    "\"": "”",
+    "#": "＃",
+    "%": "％",
+    "&": "＆",
+    "'": "’",
+    "(": "（",
+    ")": "）",
+    "=": "＝",
+    "~": "〜",
+    "|": "｜",
+    "`": "｀",
+    "{": "『",
+    "+": "＋",
+    "*": "＊",
+    "}": "』",
+    "<": "＜",
+    ">": "＞",
+    "?": "？",
+    "_": "＿",
+    "-": "ー",
+    "^": "＾",
+    "\\": "＼",
+    "¥": "￥",
+    "@": "＠",
+    "[": "「",
+    ";": "；",
+    ":": "：",
+    "]": "」",
+    ",": "、",
+    ".": "。",
+    "/": "・",
+  ]
+  if reverse {
+    let z2h = Dictionary(uniqueKeysWithValues: h2z.map { ($1, $0) })
+    return z2h[character] ?? character
+  } else {
+    return h2z[character] ?? character
+  }
 }

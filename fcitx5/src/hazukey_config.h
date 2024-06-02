@@ -3,7 +3,7 @@
 
 #include <fcitx-utils/key.h>
 #include <fcitx-utils/log.h>
-#include <hazukey/libhazukey_kkc.h>
+#include <hazukey/libhazukey.h>
 
 namespace fcitx {
 

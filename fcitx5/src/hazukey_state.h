@@ -3,7 +3,7 @@
 
 #include <fcitx/inputcontext.h>
 #include <fcitx/inputpanel.h>
-#include <hazukey/libhazukey_kkc.h>
+#include <hazukey/libhazukey.h>
 
 #include "hazukey_candidate.h"
 #include "hazukey_config.h"
@@ -16,12 +16,11 @@ class HazukeyState : public InputContextProperty {
         composingText_ = nullptr;
     }
 
+    // complete the prefix and remove from composingText_
+    void completePrefix(int correspondingCount);
     // handle key event. call candidateKeyEvent or preeditKeyEvent
     // depends on the current mode
     void keyEvent(KeyEvent &keyEvent);
-    // update the UI: candidate list and preedit text
-    // other funcions don't update the UI so you need to call this
-    void updateUI();
     void loadConfig(std::shared_ptr<HazukeyConfig> &config);
     // reset to the initial state
     void reset();
@@ -32,12 +31,14 @@ class HazukeyState : public InputContextProperty {
         Hiragana,
         KatakanaFullwidth,
         KatakanaHalfwidth,
-        RawFullwidthUpper,
-        RawFullwidthLower,
-        RawFullwidthCapitalized,
-        RawHalfwidthUpper,
-        RawHalfwidthLower,
-        RawHalfwidthCapitalized
+        RawFullwidth,
+        RawHalfwidth,
+    };
+
+    enum class showCandidateMode {
+        PredictWithLivePreedit,
+        PredictWithPreedit,
+        NonPredictWithFirstPreedit,
     };
 
     void directCharactorConversion(ConversionMode mode);
@@ -50,38 +51,64 @@ class HazukeyState : public InputContextProperty {
         std::shared_ptr<HazukeyCandidateList> PreeditCandidateList);
 
     // base function to prepare candidate list
-    void prepareCandidateList(bool isPredictMode, bool updatePreedit,
-                              int nBest);
-    // prepare candidate list for normal conversion
-    void prepareNormalCandidateList();
-    // prepare candidate list for prediction. shorter than normal
-    void preparePredictCandidateList();
+    // make sure composingText_ is not nullptr
+    void showCandidateList(showCandidateMode mode, int nBest);
+    std::vector<std::vector<std::string>> getCandidates(bool isPredictMode,
+                                                        int nBest);
+    std::unique_ptr<HazukeyCandidateList> createCandidateList(
+        std::vector<std::vector<std::string>> candidates,
+        std::shared_ptr<std::vector<std::string>> preeditSegments);
 
-    // advance the cursor in the candidate list, update aux, set preedit text
+    // prepare candidate list for normal conversion
+    void showNonPredictCandidateList();
+    // prepare candidate
+    // list for prediction.
+    // shorter than normal
+    void showPredictCandidateList();
+
+    // update the candidate cursor
+    void updateCandidateCursor(
+        std::shared_ptr<HazukeyCandidateList> candidateList);
+    // advance the cursor in
+    // the candidate list,
+    // update aux, set
+    // preedit text
     void advanceCandidateCursor(
         std::shared_ptr<HazukeyCandidateList> candidateList);
-    // back the cursor in the candidate list, update aux, set preedit text
+    // back the cursor in
+    // the candidate list,
+    // update aux, set
+    // preedit text
     void backCandidateCursor(
         std::shared_ptr<HazukeyCandidateList> candidateList);
-    // update aux; label on the candidate list like "[1/100]"
+    // update aux; label on
+    // the candidate list
+    // like "[1/100]"
     void setCandidateCursorAUX(
         std::shared_ptr<HazukeyCandidateList> candidateList);
 
-    // prepare preedit text from the composing text
-    void updateOnPreeditMode();
-
-    // fcitx input context pointer
+    // check if the key
+    // event is inputable
+    // (simple key / kana
+    // key) or not
+    bool isInputableEvent(const KeyEvent &keyEvent);
+    // fcitx input context
+    // pointer
     InputContext *ic_;
-    // shared pointer to the configuration
+    // shared pointer to the
+    // configuration
     std::shared_ptr<HazukeyConfig> config_;
     // preedit class
     HazukeyPreedit preedit_;
-    // composing text information pointer used by libhazukey-kkc
+    // composing text
+    // information pointer
+    // used by
+    // libhazukey-kkc
     ComposingText *composingText_;
-    // true if the current mode is candidate mode
-    bool isCandidateMode_ = false;
-    // function key conversion mode
-    ConversionMode FunctionConversionMode_ = ConversionMode::None;
+    // true if the current
+    // mode is candidate
+    // mode
+    bool is_candidate_mode_ = false;
 };
 
 }  // namespace fcitx

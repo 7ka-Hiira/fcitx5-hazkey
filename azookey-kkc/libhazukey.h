@@ -23,11 +23,11 @@ char *kkc_get_composing_hiragana(ComposingText *composingTextPtr);
 char *kkc_get_composing_katakana_fullwidth(ComposingText *composingTextPtr);
 char *kkc_get_composing_katakana_halfwidth(ComposingText *composingTextPtr);
 
-// style: 0: lower, 1: upper, 2: capitalized
-char *kkc_get_composing_raw_halfwidth(ComposingText *composingTextPtr,
-                                      int style);
-char *kkc_get_composing_raw_fullwidth(ComposingText *composingTextPtr,
-                                      int style);
+char *kkc_get_composing_alphabet_halfwidth(ComposingText *composingTextPtr,
+                                           const char *currentPreeditPtr);
+char *kkc_get_composing_alphabet_fullwidth(ComposingText *composingTextPtr,
+                                           const char *currentPreeditPtr);
+int kkc_current_case(char *stringPtr);
 void *kkc_free_text(char *Ptr);
 
 int kkc_move_cursor(ComposingText *composingTextPtr, int cursorIndex);

@@ -1,6 +1,8 @@
 # fcitx5-hazukey
 Hazukey input method for fcitx5
 
+[AzooKeyKanaKanjiConverter](https://github.com/ensan-hcl/AzooKeyKanaKanjiConverter)を利用したIMEです。
+
 ## インストール方法
 ビルドには以下のパッケージが必要です
   - fcitx5

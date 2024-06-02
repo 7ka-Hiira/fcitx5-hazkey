@@ -12,33 +12,38 @@ HazukeyEngine::HazukeyEngine(Instance *instance)
 void HazukeyEngine::keyEvent(const InputMethodEntry &entry,
                              KeyEvent &keyEvent) {
     FCITX_UNUSED(entry);
-
-    if (keyEvent.isRelease() || keyEvent.key().states()) {
+    if (keyEvent.isRelease()) {
         return;
     }
-
     FCITX_DEBUG() << "keyEvent: " << keyEvent.key().toString();
 
-    keyEvent.inputContext()->propertyFor(&factory_)->keyEvent(keyEvent);
+    auto inputContext = keyEvent.inputContext();
+    inputContext->propertyFor(&factory_)->keyEvent(keyEvent);
+    inputContext->updatePreedit();
+    inputContext->updateUserInterface(UserInterfaceComponent::InputPanel);
 }
 
 void HazukeyEngine::activate(const InputMethodEntry &entry,
                              InputContextEvent &event) {
     FCITX_UNUSED(entry);
     FCITX_DEBUG() << "HazukeyEngine activate";
-    auto state = event.inputContext()->propertyFor(&factory_);
+    auto inputContext = event.inputContext();
+    auto state = inputContext->propertyFor(&factory_);
     state->loadConfig(config_);
     state->reset();
-    state->updateUI();
+    inputContext->updatePreedit();
+    inputContext->updateUserInterface(UserInterfaceComponent::InputPanel);
 }
 
 void HazukeyEngine::deactivate(const InputMethodEntry &entry,
                                InputContextEvent &event) {
     FCITX_UNUSED(entry);
     FCITX_DEBUG() << "HazukeyEngine deactivate";
-    auto state = event.inputContext()->propertyFor(&factory_);
+    auto inputContext = event.inputContext();
+    auto state = inputContext->propertyFor(&factory_);
     state->reset();
-    state->updateUI();
+    inputContext->updatePreedit();
+    inputContext->updateUserInterface(UserInterfaceComponent::InputPanel);
 }
 
 FCITX_ADDON_FACTORY(HazukeyEngineFactory);

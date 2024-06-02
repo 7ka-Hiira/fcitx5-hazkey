@@ -16,6 +16,9 @@ mkdir -p $INSTALL_PREFIX/include/hazukey
 pkgconfig_dir=$INSTALL_PREFIX/lib/pkgconfig
 mkdir -p $pkgconfig_dir
 file=$pkgconfig_dir/hazukey.pc
+
+echo ""
+echo "**********"
 echo "prefix=$INSTALL_PREFIX" | tee $file
 echo "exec_prefix=\${prefix}" | tee -a $file
 echo "libdir=\${prefix}/lib" | tee -a $file
@@ -26,6 +29,10 @@ echo "Description: Hazukey Japanese input method library" | tee -a $file
 echo "Version: 0.0.1" | tee -a $file
 echo "Libs: -L\${libdir}/hazukey -lhazukey" | tee -a $file
 echo "Cflags: -I\${includedir}/hazukey" | tee -a $file
+echo "**********"
+echo ""
+echo "pkgconfig file installed at $file"
+echo ""
 
 install -m644 .build/release/libhazukey.so $INSTALL_PREFIX/lib/hazukey
 install -m644 libhazukey.h $INSTALL_PREFIX/include/hazukey

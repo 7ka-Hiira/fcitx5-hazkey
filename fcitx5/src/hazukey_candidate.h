@@ -3,18 +3,19 @@
 
 #include <fcitx/candidatelist.h>
 #include <fcitx/inputcontext.h>
-#include <hazukey/libhazukey_kkc.h>
+#include <hazukey/libhazukey.h>
 
 namespace fcitx {
 
 class HazukeyCandidateWord : public CandidateWord {
    public:
-    // HazukeyCandidateWord constructor
-    HazukeyCandidateWord(const char* text, const char* hiragana,
+    HazukeyCandidateWord(const int index, const std::string& text,
+                         const std::string& hiragana,
                          const int correspondingCount,
                          const std::vector<std::string> parts,
                          const std::vector<int> partLens)
         : CandidateWord(Text(text)),
+          index_(index),
           candidate_(std::move(text)),
           hiragana_(std::move(hiragana)),
           corresponding_count_(correspondingCount),
@@ -23,17 +24,15 @@ class HazukeyCandidateWord : public CandidateWord {
         setText(Text(text));
     }
 
-    // candidate select event: commit and reset the input context
+    // called when the candidate is selected (by pointing device?)
     void select(InputContext* ic) const override;
-    // return the preedit string
-    std::vector<std::string> getPreedit() const {
-        if (hiragana_.empty()) return {candidate_};
-        return {candidate_, hiragana_};
-    }
-    // return the corresponding count
+
+    std::vector<std::string> getPreedit() const;
+
     int correspondingCount() const { return corresponding_count_; }
 
    private:
+    const int index_;
     const std::string candidate_;
     const std::string hiragana_;
     const int corresponding_count_;
@@ -43,11 +42,17 @@ class HazukeyCandidateWord : public CandidateWord {
 
 class HazukeyCandidateList : public CommonCandidateList {
    public:
-    const HazukeyCandidateWord& HazukeyCandidate(int localIndex) const {
-        return static_cast<const HazukeyCandidateWord&>(candidate(localIndex));
-    }
-    // set fcitx5-mozc-like default style for the candidate list
-    void setDefaultStyle(KeyList selectionKeys);
+    // always vertical
+    CandidateLayoutHint layoutHint() const override;
+
+    const HazukeyCandidateWord& getCandidate(int localIndex) const;
+
+    void focus(KeyList selectionKeys);
+
+    bool focused() const { return focused_; }
+
+   private:
+    bool focused_ = false;
 };
 
 }  // namespace fcitx
