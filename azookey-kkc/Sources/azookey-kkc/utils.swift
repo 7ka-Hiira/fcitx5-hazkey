@@ -1,6 +1,5 @@
 import Foundation
 import KanaKanjiConverterModuleWithDefaultDictionary
-import SwiftUtils
 
 extension ComposingText {
   func toHiragana() -> String {
