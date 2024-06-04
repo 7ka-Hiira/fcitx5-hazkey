@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.21)
 project(fcitx5-hazkey VERSION 0.0.1)
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 include(GNUInstallDirs)
 message("Install prefix: ${CMAKE_INSTALL_PREFIX}")

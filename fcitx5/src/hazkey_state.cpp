@@ -1,6 +1,7 @@
 #include "hazkey_state.h"
 
 #include <algorithm>
+#include <cstring>
 #include <numeric>
 
 #include "hazkey_candidate.h"

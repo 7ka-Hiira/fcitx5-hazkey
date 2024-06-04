@@ -52,7 +52,7 @@ CandidateLayoutHint HazkeyCandidateList::layoutHint() const {
 void HazkeyCandidateList::focus(KeyList selectionKeys) {
     setPageSize(9);
     setSelectionKey(selectionKeys);
-    setCursorIndex(0);
+    setGlobalCursorIndex(0);
     focused_ = true;
 }
 
