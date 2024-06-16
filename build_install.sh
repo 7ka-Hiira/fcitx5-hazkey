@@ -23,6 +23,11 @@ if [ -z "$INSTALL_PREFIX" ]; then
     fi
 fi
 
+export PATH="$INSTALL_PREFIX/bin:$PATH"
+export LD_LIBRARY_PATH="$INSTALL_PREFIX/lib:$LD_LIBRARY_PATH"
+export PKG_CONFIG_PATH="$INSTALL_PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH"
+export CPATH="$INSTALL_PREFIX/include:$CPATH"
+
 # install hazkey libs
 sudo -E ./install.sh
 
