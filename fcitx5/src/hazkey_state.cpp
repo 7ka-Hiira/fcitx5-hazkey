@@ -598,7 +598,7 @@ void HazkeyState::setCandidateCursorAUX(
 void HazkeyState::setHiraganaAUX() {
     auto hiragana = kkc_get_composing_hiragana(composingText_);
     auto newAuxText = Text(hiragana);
-    newAuxText.append(Text("|"));
+    newAuxText.append("|");
     newAuxText.setCursor(1);
     ic_->inputPanel().setAuxUp(newAuxText);
     kkc_free_text(hiragana);
