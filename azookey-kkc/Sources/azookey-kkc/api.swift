@@ -127,7 +127,7 @@ public func inputText(
     } else {
       inputCharacter = Character(inputUnicode)
     }
-  case "!", "\"", "#", "$", "%", "&", "'", "(", ")", "*", "+", "-", "/", ":", ";", "<",
+  case "!", "\"", "#", "$", "%", "&", "'", "(", ")", "*", "+", "/", ":", ";", "<",
     "=", ">", "?", "@", "[", "\\", "]", "^", "_", "`", "{", "|", "}", "~":
     inputCharacter = symbolHalfwidthToFullwidth(
       character: Character(inputUnicode), reverse: config.symbolStyle == .halfwidth)
@@ -153,6 +153,8 @@ public func inputText(
     case .halfwidthLatin:
       inputCharacter = "､"
     }
+  case "-":
+    inputCharacter = "ー"
   default:
     inputCharacter = Character(inputUnicode)
   }
