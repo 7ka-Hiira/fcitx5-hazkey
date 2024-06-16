@@ -15,7 +15,7 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/ensan-hcl/AzooKeyKanaKanjiConverter",
-      .revision("cce5a634a6e59d5440d3a7149af3ca41f6f1efb3"))
+      revision: "cce5a634a6e59d5440d3a7149af3ca41f6f1efb3")
   ],
   targets: [
     // Targets are the basic building blocks of a package, defining a module or a test suite.
