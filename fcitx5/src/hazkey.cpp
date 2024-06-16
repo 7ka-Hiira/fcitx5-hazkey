@@ -9,14 +9,15 @@ HazkeyEngine::HazkeyEngine(Instance *instance)
           return new HazkeyState(this, &ic);
       }) {
     instance->inputContextManager().registerProperty("hazkeyState", &factory_);
-    kkcConfig_ = kkc_get_config(*config().zenzaiEnabled,
-                                static_cast<int>(*config().numberStyle),
-                                static_cast<int>(*config().symbolStyle),
-                                static_cast<int>(*config().periodStyle),
-                                static_cast<int>(*config().commaStyle),
-                                static_cast<int>(*config().spaceStyle),
-                                static_cast<int>(*config().diacriticStyle),
-                                static_cast<int>(*config().autoCommitMode));
+    kkcConfig_ =
+        kkc_get_config(*config().zenzaiEnabled, *config().zenzaiInferenceLimit,
+                       static_cast<int>(*config().numberStyle),
+                       static_cast<int>(*config().symbolStyle),
+                       static_cast<int>(*config().periodStyle),
+                       static_cast<int>(*config().commaStyle),
+                       static_cast<int>(*config().spaceStyle),
+                       static_cast<int>(*config().diacriticStyle),
+                       static_cast<int>(*config().autoCommitMode));
     reloadConfig();
 }
 

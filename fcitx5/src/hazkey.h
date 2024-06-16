@@ -99,7 +99,7 @@ FCITX_CONFIGURATION(
     OptionWithAnnotation<NumberStyle, NumberStyleI18NAnnotation> numberStyle{
         this, "NumberStyle", _("Number style"), NumberStyle::Halfwidth};
     OptionWithAnnotation<SymbolStyle, SymbolStyleI18NAnnotation> symbolStyle{
-        this, "SymbolStyle", _("Symbol style"), SymbolStyle::Halfwidth};
+        this, "SymbolStyle", _("Symbol style"), SymbolStyle::Fullwidth};
     OptionWithAnnotation<PeriodStyle, PeriodStyleI18NAnnotation> periodStyle{
         this, "PeriodStyle", _("Period style"), PeriodStyle::FullwidthKuten};
     OptionWithAnnotation<CommaStyle, CommaStyleI18NAnnotation> commaStyle{
@@ -115,7 +115,14 @@ FCITX_CONFIGURATION(
         autoCommitMode{this, "AutoCommit", _("Auto commit"),
                        AutoCommitMode::None};
     Option<bool> zenzaiEnabled{this, "ZenzaiEnabled",
-                               _("Enable Zenzai (Experimental)"), false};);
+                               _("Enable Zenzai (Experimental)"), false};
+    Option<int> zenzaiInferenceLimit{this, "ZenzaiInferenceLimit",
+                                     _("Zenzai Inference limit"), 1};
+    ExternalOption zenzaiHelp{
+        this, "ZenzaiHelp", _("Click to open Zenzai Setup Guide"),
+        stringutils::concat("xdg-open "
+                            "https://github.com/7ka-Hiira/fcitx5-hazkey/tree/"
+                            "main/docs/zenzai.md")};);
 
 //
 // Engine
@@ -149,6 +156,7 @@ class HazkeyEngine : public InputMethodEngineV2 {
             kkc_free_config(kkcConfig_);
         }
         kkcConfig_ = kkc_get_config(*config().zenzaiEnabled,
+                                    *config().zenzaiInferenceLimit,
                                     static_cast<int>(*config().numberStyle),
                                     static_cast<int>(*config().symbolStyle),
                                     static_cast<int>(*config().periodStyle),

@@ -11,10 +11,11 @@ typedef struct KkcConfig KkcConfig;
 // tenCombining: 0: normal, 1: combining
 // autoCommitModeNum: 0: none, 1: commit on ".", 2: commit on ".!?",//
 // 3: commit on ".,!?"
-const KkcConfig *kkc_get_config(bool zenzaiEnabled, int numberFullwidth,
-                                int symbolFullwidth, int periodFullwidth,
-                                int commaFullwidth, int spaceFullwidth,
-                                int diacriticStyle, int autoCommitModeNum);
+const KkcConfig *kkc_get_config(bool zenzaiEnabled, int zenzaiInferLimit,
+                                int numberFullwidth, int symbolFullwidth,
+                                int periodFullwidth, int commaFullwidth,
+                                int spaceFullwidth, int diacriticStyle,
+                                int autoCommitModeNum);
 void kkc_free_config(const KkcConfig *kkcConfigPtr);
 
 struct ComposingText;

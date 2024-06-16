@@ -95,7 +95,8 @@ public class KkcConfig {
 }
 
 func genDefaultConfig(
-  zenzaiEnabled: Bool = false, numberStyle: KkcConfig.Style, symbolStyle: KkcConfig.Style,
+  zenzaiEnabled: Bool = false, zenzaiInferLimit: Int = 1, numberStyle: KkcConfig.Style,
+  symbolStyle: KkcConfig.Style,
   periodStyle: KkcConfig.TenStyle, commaStyle: KkcConfig.TenStyle, spaceStyle: KkcConfig.Style,
   diacriticStyle: KkcConfig.DiacriticStyle,
   autoCommitMode: KkcConfig.AutoCommitMode
@@ -130,7 +131,7 @@ func genDefaultConfig(
     maxMemoryCount: 65536,
     memoryDirectoryURL: dictDir,
     sharedContainerURL: dictDir,
-    zenzaiMode: zenzaiEnabled ? .on(weight: zenaiModel) : .off,
+    zenzaiMode: zenzaiEnabled ? .on(weight: zenaiModel, inferenceLimit: zenzaiInferLimit) : .off,
     metadata: .init(versionString: "fcitx5-hazkey 0.0.1")
   )
   return KkcConfig(

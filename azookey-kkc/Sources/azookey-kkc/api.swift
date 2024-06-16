@@ -8,7 +8,7 @@ import SwiftUtils
 
 @_silgen_name("kkc_get_config")
 @MainActor public func getConfig(
-  zenzaiEnabled: Bool,
+  zenzaiEnabled: Bool, zenzaiInferLimit: Int,
   numberFullwidth: Int, symbolFullwidth: Int, periodStyleIndex: Int,
   commaStyleIndex: Int, spaceFullwidth: Int, tenCombining: Int, autoCommitModeNum: Int
 ) -> OpaquePointer? {
@@ -43,7 +43,7 @@ import SwiftUtils
   }
 
   let config = genDefaultConfig(
-    zenzaiEnabled: zenzaiEnabled, numberStyle: numberStyle,
+    zenzaiEnabled: zenzaiEnabled, zenzaiInferLimit: zenzaiInferLimit, numberStyle: numberStyle,
     symbolStyle: symbolStyle, periodStyle: periodStyle,
     commaStyle: commaStyle, spaceStyle: spaceStyle, diacriticStyle: diacriticStyle,
     autoCommitMode: autoCommitMode)
