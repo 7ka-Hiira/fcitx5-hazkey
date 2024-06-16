@@ -31,9 +31,10 @@ jobs:
 
     - name: Set INSTALL_PREFIX
       run: |
-        mkdir -p /workdir/usr/lib/
-        mkdir -p /workdir/usr/include/
-        echo "INSTALL_PREFIX=/workdir/usr" >> $GITHUB_ENV
+        mkdir -p $GITHUB_WORKSPACE/workdir/usr/lib/
+        mkdir -p $GITHUB_WORKSPACE/workdir/usr/include/
+        echo "INSTALL_PREFIX=$GITHUB_WORKSPACE/workdir/usr" >> $GITHUB_ENV
+      shell: /usr/bin/bash -e {0}
 
     - name: Run build scripts
       run: |
@@ -41,7 +42,7 @@ jobs:
 
     - name: Pack Build Artifacts
       run: |
-        cd /workdir
+        cd $GITHUB_WORKSPACE/workdir
         tar -czvf fcitx5-hazkey-x86_64.tar.gz ./usr
 
     - name: Upload Build Artifacts
