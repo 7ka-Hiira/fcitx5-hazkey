@@ -558,7 +558,7 @@ void HazkeyState::showPreeditCandidateList() {
     auto newCandidateList = std::dynamic_pointer_cast<HazkeyCandidateList>(
         ic_->inputPanel().candidateList());
     newCandidateList->setPageSize(PredictCandidateListNBest);
-    ic_->inputPanel().setAuxDown(Text("[Alt+数字で選択]"));
+    ic_->inputPanel().setAuxDown(Text("[Tabキーで選択]"));
 }
 
 void HazkeyState::completePrefix(int correspondingCount) {
