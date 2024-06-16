@@ -49,4 +49,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: fcitx5-hazkey-x86_64
-        path: fcitx5-hazkey-x86_64.tar.gz
+        path: ${{ github.workspace }}/workdir/fcitx5-hazkey-x86_64.tar.gz
