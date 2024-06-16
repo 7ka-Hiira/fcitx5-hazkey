@@ -5,10 +5,11 @@ Hazkey input method for fcitx5
 
 ## インストール方法
 以下をインストールする必要があります。
-  - fcitx5
-  - swift
+  - fcitx5 >= 5.0.4
+  - swift >= 5.10
   - cmake
   - pkgconf 
+  - gettext
 
 ### 1. リポジトリのクローン
 ```sh

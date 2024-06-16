@@ -1,4 +1,4 @@
-add_library(fcitx5-hazkey SHARED hazkey.cpp hazkey_candidate.cpp hazkey_state.cpp hazkey_config.cpp hazkey_preedit.cpp)
+add_library(fcitx5-hazkey SHARED hazkey_state.cpp hazkey.cpp hazkey_candidate.cpp hazkey_preedit.cpp)
 target_link_libraries(fcitx5-hazkey PRIVATE Fcitx5::Core Fcitx5::Config PkgConfig::LIBHAZUKEY)
 
 set_target_properties(fcitx5-hazkey PROPERTIES PREFIX "")

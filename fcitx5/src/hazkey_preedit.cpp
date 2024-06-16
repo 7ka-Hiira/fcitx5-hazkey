@@ -1,7 +1,6 @@
 #include "hazkey_preedit.h"
 
 #include "hazkey_candidate.h"
-#include "hazkey_config.h"
 #include "hazkey_state.h"
 
 namespace fcitx {

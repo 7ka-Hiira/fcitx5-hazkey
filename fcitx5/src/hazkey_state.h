@@ -6,13 +6,16 @@
 #include <hazkey/libhazkey.h>
 
 #include "hazkey_candidate.h"
-#include "hazkey_config.h"
 #include "hazkey_preedit.h"
 
 namespace fcitx {
+
+class HazkeyEngine;
+
 class HazkeyState : public InputContextProperty {
    public:
-    HazkeyState(InputContext *ic) : ic_(ic), preedit_(HazkeyPreedit(ic)) {
+    HazkeyState(HazkeyEngine *engine, InputContext *ic)
+        : engine_(engine), ic_(ic), preedit_(HazkeyPreedit(ic)) {
         composingText_ = nullptr;
     }
 
@@ -21,11 +24,16 @@ class HazkeyState : public InputContextProperty {
     // handle key event. call candidateKeyEvent or preeditKeyEvent
     // depends on the current mode
     void keyEvent(KeyEvent &keyEvent);
-    void loadConfig(std::shared_ptr<HazkeyConfig> &config);
-    // reset to the initial state
+    // void loadConfig(std::shared_ptr<HazkeyConfig> &config);
+    //  reset to the initial state
     void reset();
 
    private:
+    const KeyList defaultSelectionKeys = {
+        Key{FcitxKey_1}, Key{FcitxKey_2}, Key{FcitxKey_3}, Key{FcitxKey_4},
+        Key{FcitxKey_5}, Key{FcitxKey_6}, Key{FcitxKey_7}, Key{FcitxKey_8},
+        Key{FcitxKey_9}, Key{FcitxKey_0},
+    };
     enum class ConversionMode {
         None,
         Hiragana,
@@ -45,10 +53,12 @@ class HazkeyState : public InputContextProperty {
     // handle key event in candidate mode
     void candidateKeyEvent(KeyEvent &keyEvent,
                            std::shared_ptr<HazkeyCandidateList> candidateList);
-    // handle key event in preedit mode
-    void preeditKeyEvent(
+    // handle key event in preedit mode with prediction candidate list
+    void preeditPredictingKeyEvent(
         KeyEvent &keyEvent,
         std::shared_ptr<HazkeyCandidateList> PreeditCandidateList);
+    // handle key event in preedit mode
+    void preeditKeyEvent(KeyEvent &keyEvent);
 
     // base function to prepare candidate list
     // make sure composingText_ is not nullptr
@@ -64,7 +74,7 @@ class HazkeyState : public InputContextProperty {
     // prepare candidate
     // list for prediction.
     // shorter than normal
-    void showPredictCandidateList();
+    void showPreeditCandidateList();
 
     // update the candidate cursor
     void updateCandidateCursor(
@@ -86,18 +96,18 @@ class HazkeyState : public InputContextProperty {
     // like "[1/100]"
     void setCandidateCursorAUX(
         std::shared_ptr<HazkeyCandidateList> candidateList);
-
+    // UpAUX that shows unconverted text
+    void setHiraganaAUX();
     // check if the key
     // event is inputable
     // (simple key / kana
     // key) or not
     bool isInputableEvent(const KeyEvent &keyEvent);
+    // engine
+    HazkeyEngine *engine_;
     // fcitx input context
     // pointer
     InputContext *ic_;
-    // shared pointer to the
-    // configuration
-    std::shared_ptr<HazkeyConfig> config_;
     // preedit class
     HazkeyPreedit preedit_;
     // composing text
@@ -105,10 +115,6 @@ class HazkeyState : public InputContextProperty {
     // used by
     // libhazkey-kkc
     ComposingText *composingText_;
-    // true if the current
-    // mode is candidate
-    // mode
-    bool is_candidate_mode_ = false;
 };
 
 }  // namespace fcitx

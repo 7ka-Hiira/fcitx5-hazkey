@@ -1,12 +1,23 @@
 #include "hazkey.h"
 
+#include "hazkey_state.h"
+
 namespace fcitx {
 
 HazkeyEngine::HazkeyEngine(Instance *instance)
-    : instance_(instance),
-      factory_([this](InputContext &ic) { return new HazkeyState(&ic); }) {
+    : instance_(instance), factory_([this](InputContext &ic) {
+          return new HazkeyState(this, &ic);
+      }) {
     instance->inputContextManager().registerProperty("hazkeyState", &factory_);
-    config_ = std::make_shared<HazkeyConfig>();
+    kkcConfig_ = kkc_get_config(*config().zenzaiEnabled,
+                                static_cast<int>(*config().numberStyle),
+                                static_cast<int>(*config().symbolStyle),
+                                static_cast<int>(*config().periodStyle),
+                                static_cast<int>(*config().commaStyle),
+                                static_cast<int>(*config().spaceStyle),
+                                static_cast<int>(*config().diacriticStyle),
+                                static_cast<int>(*config().autoCommitMode));
+    reloadConfig();
 }
 
 void HazkeyEngine::keyEvent(const InputMethodEntry &entry, KeyEvent &keyEvent) {
@@ -28,7 +39,6 @@ void HazkeyEngine::activate(const InputMethodEntry &entry,
     FCITX_DEBUG() << "HazkeyEngine activate";
     auto inputContext = event.inputContext();
     auto state = inputContext->propertyFor(&factory_);
-    state->loadConfig(config_);
     state->reset();
     inputContext->updatePreedit();
     inputContext->updateUserInterface(UserInterfaceComponent::InputPanel);

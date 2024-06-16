@@ -47,7 +47,7 @@ class HazkeyCandidateList : public CommonCandidateList {
 
     const HazkeyCandidateWord& getCandidate(int localIndex) const;
 
-    void focus(KeyList selectionKeys);
+    void focus();
 
     bool focused() const { return focused_; }
 

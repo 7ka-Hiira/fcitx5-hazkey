@@ -41,14 +41,65 @@ extension ComposingText {
 }
 
 public class KkcConfig {
+  enum Style {
+    case halfwidth
+    case fullwidth
+  }
+
+  enum TenStyle {
+    case fullwidthJapanese
+    case halfwidthJapanese
+    case fullwidthLatin
+    case halfwidthLatin
+  }
+
+  enum DiacriticStyle {
+    case fullwidth
+    case halfwidth
+    case combining
+  }
+
+  enum AutoCommitMode {
+    case none
+    case period
+    case periodQuestionExclamation
+    case periodCommaQuestionExclamation
+  }
+
   let convertOptions: ConvertRequestOptions
 
-  init(convertOptions: ConvertRequestOptions) {
+  let numberStyle: Style
+  let symbolStyle: Style
+  let periodStyle: TenStyle
+  let commaStyle: TenStyle
+  let spaceStyle: Style
+
+  let tenCombiningStyle: DiacriticStyle
+
+  let autoCommitMode: AutoCommitMode
+
+  init(
+    convertOptions: ConvertRequestOptions, numberStyle: Style, symbolStyle: Style,
+    periodStyle: TenStyle, commaStyle: TenStyle, spaceStyle: Style, diacriticStyle: DiacriticStyle,
+    autoCommitMode: AutoCommitMode
+  ) {
     self.convertOptions = convertOptions
+    self.numberStyle = numberStyle
+    self.symbolStyle = symbolStyle
+    self.periodStyle = periodStyle
+    self.commaStyle = commaStyle
+    self.spaceStyle = spaceStyle
+    self.tenCombiningStyle = diacriticStyle
+    self.autoCommitMode = autoCommitMode
   }
 }
 
-func genDefaultConfig() -> KkcConfig {
+func genDefaultConfig(
+  zenzaiEnabled: Bool = false, numberStyle: KkcConfig.Style, symbolStyle: KkcConfig.Style,
+  periodStyle: KkcConfig.TenStyle, commaStyle: KkcConfig.TenStyle, spaceStyle: KkcConfig.Style,
+  diacriticStyle: KkcConfig.DiacriticStyle,
+  autoCommitMode: KkcConfig.AutoCommitMode
+) -> KkcConfig {
   var dictDir: URL {
     FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
       .appendingPathComponent("hazkey", isDirectory: true)
@@ -67,8 +118,8 @@ func genDefaultConfig() -> KkcConfig {
 
   let options = ConvertRequestOptions.withDefaultDictionary(
     N_best: 9,
-    requireJapanesePrediction: false,
-    requireEnglishPrediction: false,
+    requireJapanesePrediction: false,  // may overwritten
+    requireEnglishPrediction: false,  //may overwritten
     keyboardLanguage: .ja_JP,
     typographyLetterCandidate: true,
     unicodeCandidate: true,
@@ -79,11 +130,14 @@ func genDefaultConfig() -> KkcConfig {
     maxMemoryCount: 65536,
     memoryDirectoryURL: dictDir,
     sharedContainerURL: dictDir,
-    zenzaiMode: .off,
-    //zenzaiMode: .on(weight: zenaiModel),
+    zenzaiMode: zenzaiEnabled ? .on(weight: zenaiModel) : .off,
     metadata: .init(versionString: "fcitx5-hazkey 0.0.1")
   )
-  return KkcConfig(convertOptions: options)
+  return KkcConfig(
+    convertOptions: options, numberStyle: numberStyle, symbolStyle: symbolStyle,
+    periodStyle: periodStyle, commaStyle: commaStyle, spaceStyle: spaceStyle,
+    diacriticStyle: diacriticStyle,
+    autoCommitMode: autoCommitMode)
 }
 
 func cycleAlphabetCase(_ alphabet: String, preedit: String) -> String {
@@ -197,8 +251,6 @@ func symbolHalfwidthToFullwidth(character: Character, reverse: Bool) -> Characte
     ";": "；",
     ":": "：",
     "]": "」",
-    ",": "、",
-    ".": "。",
     "/": "・",
   ]
   if reverse {

@@ -49,9 +49,8 @@ CandidateLayoutHint HazkeyCandidateList::layoutHint() const {
     return CandidateLayoutHint::Vertical;
 }
 
-void HazkeyCandidateList::focus(KeyList selectionKeys) {
+void HazkeyCandidateList::focus() {
     setPageSize(9);
-    setSelectionKey(selectionKeys);
     setGlobalCursorIndex(0);
     focused_ = true;
 }

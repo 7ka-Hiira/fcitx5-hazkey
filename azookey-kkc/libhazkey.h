@@ -6,14 +6,23 @@ extern "C" {
 #endif
 
 typedef struct KkcConfig KkcConfig;
-const KkcConfig *kkc_get_config(void);
+
+// style: 0: halfwidth, 1: fullwidth
+// tenCombining: 0: normal, 1: combining
+// autoCommitModeNum: 0: none, 1: commit on ".", 2: commit on ".!?",//
+// 3: commit on ".,!?"
+const KkcConfig *kkc_get_config(bool zenzaiEnabled, int numberFullwidth,
+                                int symbolFullwidth, int periodFullwidth,
+                                int commaFullwidth, int spaceFullwidth,
+                                int diacriticStyle, int autoCommitModeNum);
 void kkc_free_config(const KkcConfig *kkcConfigPtr);
 
 struct ComposingText;
 ComposingText *kkc_get_composing_text_instance(void);
 void kkc_free_composing_text_instance(ComposingText *composingTextPtr);
 
-void kkc_input_text(ComposingText *composingTextPtr, const char *stringPtr);
+void kkc_input_text(ComposingText *composingTextPtr,
+                    const KkcConfig *kkcConfigPtr, const char *stringPtr);
 void kkc_delete_backward(ComposingText *composingTextPtr);
 void kkc_delete_forward(ComposingText *composingTextPtr);
 void kkc_complete_prefix(ComposingText *composingTextPtr,
