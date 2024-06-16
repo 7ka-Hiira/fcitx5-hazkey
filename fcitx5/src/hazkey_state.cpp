@@ -550,7 +550,7 @@ void HazkeyState::showPreeditCandidateList() {
     }
 
     auto mode = *engine_->config().enablePrediction
-                    ? showCandidateMode::PredictWithPreedit
+                    ? showCandidateMode::PredictWithLivePreedit
                     : showCandidateMode::NonPredictWithFirstPreedit;
 
     showCandidateList(mode, PredictCandidateListNBest);
