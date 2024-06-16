@@ -106,7 +106,7 @@ func genDefaultConfig(
   }
 
   var zenaiModel: URL {
-    dictDir.appendingPathComponent("ggml-model-Q8_0.gguf", isDirectory: false)
+    dictDir.appendingPathComponent("zenzai.gguf", isDirectory: false)
   }
 
   do {
