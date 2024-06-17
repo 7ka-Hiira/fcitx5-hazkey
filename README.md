@@ -37,5 +37,8 @@ fcitx5-configtool を起動し、右のリストからhazkey を選択し、左�
 $ fcitx5 -rd
 ```
 
+## Zenzaiの設定
+[Zenzai setup](./docs/zenzai.md)
+
 ## ライセンス
 [MIT License](./LICENSE)
