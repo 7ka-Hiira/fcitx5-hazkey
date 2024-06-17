@@ -8,12 +8,8 @@ Hazkey input method for fcitx5
 ### Arch Linux系
 AURからインストールできます
 ```sh
-$ yay -S fcitx5-hazkey-bin  # yayの場合
+$ yay -S fcitx5-hazkey  # yayの場合
 ```
-
-### その他のディストリビューション
-現在は Linux x86_64 向けのバイナリがtar.gz形式で提供されています
-[リリースページ](https://github.com/7ka-Hiira/fcitx5-hazkey/releases/latest)から最新版をダウンロードして展開してください
 
 ## Build from source
 以下をインストールする必要があります
