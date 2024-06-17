@@ -41,8 +41,8 @@ jobs:
 
     - name: Pack Build Artifacts
       run: |
-        cd $GITHUB_WORKSPACE/build
-        tar -czvf fcitx5-hazkey-${{ github.ref_name }}-x86_64.tar.gz $GITHUB_WORKSPACE/workdir
+        cd $GITHUB_WORKSPACE/workdir
+        tar -czvf fcitx5-hazkey-${{ github.ref_name }}-x86_64.tar.gz ./*
 
     - name: Upload Build Artifacts
       uses: actions/upload-artifact@v4
