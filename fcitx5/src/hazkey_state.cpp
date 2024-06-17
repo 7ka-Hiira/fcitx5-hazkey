@@ -308,9 +308,11 @@ void HazkeyState::candidateKeyEvent(
     switch (keysym) {
         case FcitxKey_Right:
             candidateList->next();
+            candidateList->setCursorIndex(0);
             break;
         case FcitxKey_Left:
             candidateList->prev();
+            candidateList->setCursorIndex(0);
             break;
         case FcitxKey_Return: {
             preedit = candidateList->getCandidate(candidateList->cursorIndex())

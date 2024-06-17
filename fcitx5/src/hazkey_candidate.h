@@ -46,6 +46,14 @@ class HazkeyCandidateList : public CommonCandidateList {
 
     const HazkeyCandidateWord& getCandidate(int localIndex) const;
 
+    void setCursorIndex(int localIndex) {
+        if (localIndex < 0 || localIndex >= size()) {
+            return;
+        }
+        int globalIndex = pageSize() * currentPage() + localIndex;
+        setGlobalCursorIndex(globalIndex);
+    }
+
     void focus();
 
     bool focused() const { return focused_; }
