@@ -1,10 +1,10 @@
-#ifndef _FCITX5_HAZUKEY_HAZUKEY_STATE_H_
-#define _FCITX5_HAZUKEY_HAZUKEY_STATE_H_
+#ifndef _FCITX5_HAZKEY_HAZKEY_STATE_H_
+#define _FCITX5_HAZKEY_HAZKEY_STATE_H_
 
 #include <fcitx/inputcontext.h>
 #include <fcitx/inputpanel.h>
-#include <hazkey/libhazkey.h>
 
+#include "../../azookey-kkc/libhazkey.h"
 #include "hazkey_candidate.h"
 #include "hazkey_preedit.h"
 
@@ -119,4 +119,4 @@ class HazkeyState : public InputContextProperty {
 
 }  // namespace fcitx
 
-#endif  // _FCITX5_HAZUKEY_HAZUKEY_STATE_H_
+#endif  // _FCITX5_HAZKEY_HAZKEY_STATE_H_

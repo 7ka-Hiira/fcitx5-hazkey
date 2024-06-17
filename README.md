@@ -15,8 +15,7 @@ $ yay -S fcitx5-hazkey  # yayの場合
 以下をインストールする必要があります
   - fcitx5 >= 5.0.4 with development files
   - swift >= 5.10
-  - cmake
-  - pkgconf 
+  - cmake >= 3.0
   - gettext
 
 ### 1. リポジトリのクローン
@@ -24,10 +23,15 @@ $ yay -S fcitx5-hazkey  # yayの場合
 $ git clone https://github.com/7ka-Hiira/fcitx5-hazkey.git
 ```
 
-### 2. インストールスクリプトの実行
-```
+### 2. ビルド
+error: unrecognized command-line option のようなエラーが出た場合は、もう一度実行してください
+```sh
 $ cd fcitx5-hazkey
-$ INSTALL_PREFIX=/usr ./build_install.sh
+$ mkdir build
+$ cd build
+$ cmake -DCMAKE_INSTALL_PREFIX=/usr . # run twice if error occurs
+$ make
+$ sudo make install
 ```
 
 ### 3. fcitx5 の設定

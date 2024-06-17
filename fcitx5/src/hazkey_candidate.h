@@ -1,9 +1,8 @@
-#ifndef FCITX5_HAZUKEY_HAZUKEY_CANDIDATE_H_
-#define FCITX5_HAZUKEY_HAZUKEY_CANDIDATE_H_
+#ifndef FCITX5_HAZKEY_HAZKEY_CANDIDATE_H_
+#define FCITX5_HAZKEY_HAZKEY_CANDIDATE_H_
 
 #include <fcitx/candidatelist.h>
 #include <fcitx/inputcontext.h>
-#include <hazkey/libhazkey.h>
 
 namespace fcitx {
 
@@ -57,4 +56,4 @@ class HazkeyCandidateList : public CommonCandidateList {
 
 }  // namespace fcitx
 
-#endif  // FCITX5_HAZUKEY_HAZUKEY_CANDIDATE_H_
+#endif  // FCITX5_HAZKEY_HAZKEY_CANDIDATE_H_

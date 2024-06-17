@@ -1,12 +1,11 @@
 {
-  "originHash" : "6c51dd937f52ce4672fcc3de661fc82c7c4718ddd3cbbedd1372e6e5ed5712b7",
+  "originHash" : "95945cbebb37df1a5472b262a047fbdcf544a038320f325ff5bc1ca3bd65c92d",
   "pins" : [
     {
       "identity" : "azookeykanakanjiconverter",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ensan-hcl/AzooKeyKanaKanjiConverter",
       "state" : {
-        "branch" : "develop",
         "revision" : "cce5a634a6e59d5440d3a7149af3ca41f6f1efb3"
       }
     },

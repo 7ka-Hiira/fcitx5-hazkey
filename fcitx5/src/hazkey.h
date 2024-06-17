@@ -1,5 +1,5 @@
-#ifndef _FCITX5_HAZUKEY_HAZUKEY_H_
-#define _FCITX5_HAZUKEY_HAZUKEY_H_
+#ifndef _FCITX5_HAZKEY_HAZKEY_H_
+#define _FCITX5_HAZKEY_HAZKEY_H_
 
 #include <fcitx-config/configuration.h>
 #include <fcitx-config/iniparser.h>
@@ -11,9 +11,9 @@
 #include <fcitx/inputmethodengine.h>
 #include <fcitx/instance.h>
 #include <fcitx/menu.h>
-#include <hazkey/libhazkey.h>
 #include <iconv.h>
 
+#include "../../azookey-kkc/libhazkey.h"
 #include "hazkey_state.h"
 
 namespace fcitx {
@@ -184,4 +184,4 @@ class HazkeyEngineFactory : public AddonFactory {
 };
 
 }  // namespace fcitx
-#endif  // _FCITX5_HAZUKEY_HAZUKEY_H_
+#endif  // _FCITX5_HAZKEY_HAZKEY_H_

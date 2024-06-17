@@ -4,6 +4,7 @@
 #include <cstring>
 #include <numeric>
 
+#include "../../azookey-kkc/libhazkey.h"
 #include "hazkey.h"
 #include "hazkey_candidate.h"
 

@@ -1,4 +1,4 @@
-name: Build Workflow
+name: Build
 
 on:
   push:
@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Install Swift Environment
       run: |
@@ -29,24 +29,23 @@ jobs:
       run: |
         sudo apt-get install -y libfcitx5core-dev libfcitx5config-dev libfcitx5utils-dev
 
-    - name: Set INSTALL_PREFIX
+    - name: Build Hazkey
       run: |
-        mkdir -p $GITHUB_WORKSPACE/workdir/usr/lib/
-        mkdir -p $GITHUB_WORKSPACE/workdir/usr/include/
-        echo "INSTALL_PREFIX=$GITHUB_WORKSPACE/workdir/usr" >> $GITHUB_ENV
-      shell: /usr/bin/bash -e {0}
-
-    - name: Run build scripts
-      run: |
-        ./build_install.sh
+        mkdir -p $GITHUB_WORKSPACE/build
+        mkdir -p $GITHUB_WORKSPACE/workdir
+        cd $GITHUB_WORKSPACE/build
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr .. || true
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr ..
+        make -j$(nproc)
+        make install DESTDIR=$GITHUB_WORKSPACE/workdir
 
     - name: Pack Build Artifacts
       run: |
-        cd $GITHUB_WORKSPACE/workdir
-        tar -czvf fcitx5-hazkey-x86_64.tar.gz ./usr
+        cd $GITHUB_WORKSPACE/build
+        tar -czvf fcitx5-hazkey-${{ github.ref_name }}-x86_64.tar.gz -C $GITHUB_WORKSPACE/workdir . 
 
     - name: Upload Build Artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: fcitx5-hazkey-x86_64
-        path: ${{ github.workspace }}/workdir/fcitx5-hazkey-x86_64.tar.gz
+        path: ${{ github.workspace }}/workdir/fcitx5-hazkey-${{ github.ref_name }}-x86_64.tar.gz

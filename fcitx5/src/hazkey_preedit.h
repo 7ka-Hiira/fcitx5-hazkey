@@ -1,9 +1,8 @@
-#ifndef _FCITX5_HAZUKEY_HAZUKEY_PREEDIT_H_
-#define _FCITX5_HAZUKEY_HAZUKEY_PREEDIT_H_
+#ifndef _FCITX5_HAZKEY_HAZKEY_PREEDIT_H_
+#define _FCITX5_HAZKEY_HAZKEY_PREEDIT_H_
 
 #include <fcitx/inputcontext.h>
 #include <fcitx/inputpanel.h>
-#include <hazkey/libhazkey.h>
 
 namespace fcitx {
 class HazkeyPreedit {
@@ -27,4 +26,4 @@ class HazkeyPreedit {
 
 }  // namespace fcitx
 
-#endif  // _FCITX5_HAZUKEY_HAZUKEY_PREEDIT_H_
+#endif  // _FCITX5_HAZKEY_HAZKEY_PREEDIT_H_
