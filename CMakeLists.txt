@@ -1,14 +1,12 @@
 cmake_minimum_required(VERSION 3.21)
 project(fcitx5-hazkey VERSION 0.0.1)
+include(GNUInstallDirs)
 
 set(CMAKE_CXX_STANDARD 17)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
-
-
 # build azookey-kkc library
 execute_process(
-    COMMAND swift build -c release
+    COMMAND swift build -c release -Xswiftc -static-stdlib
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/azookey-kkc
 )
 
@@ -18,7 +16,12 @@ if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/azookey-kkc/.build/release/libhazkey.s
 endif()
 
 # install libhazkey.so
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/azookey-kkc/.build/release/libhazkey.so DESTINATION lib)
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/azookey-kkc/.build/release/libhazkey.so
+        DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
+# install dictionary
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/azookey-kkc/.build/release/AzooKeyKanakanjiConverter_KanaKanjiConverterModuleWithDefaultDictionary.resources
+        DESTINATION ${CMAKE_INSTALL_BINDIR}/AzooKeyKanakanjiConverter_KanaKanjiConverterModuleWithDefaultDictionary.resources)
 
 # build fcitx5-hazkey
 add_subdirectory(fcitx5)

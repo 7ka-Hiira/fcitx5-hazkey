@@ -7,6 +7,7 @@ if [ -z "$INSTALL_PREFIX" ]; then
     export INSTALL_PREFIX="/usr"
 fi
 
+rm -rf $INSTALL_PREFIX/bin/AzooKeyKanakanjiConverter_KanaKanjiConverterModuleWithDefaultDictionary.resources
 rm -rf $INSTALL_PREFIX/lib/libhazkey.so
 rm -rf $INSTALL_PREFIX/include/hazkey
 rm -f $INSTALL_PREFIX/lib/pkgconfig/hazkey.pc
