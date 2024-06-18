@@ -1,0 +1,6 @@
+Package: fcitx5-hazkey
+Maintainer: Nanaka Hiira <hiira plus debian at hiira dot dev>
+Architecture: amd64
+Version: 0.0.3-1
+Depends: fcitx5
+Description: Japanese input method for fcitx5, powered by azooKey engine

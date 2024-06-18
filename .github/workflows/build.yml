@@ -23,29 +23,40 @@ jobs:
     - name: Install C++/CMake Build Environment
       run: |
         sudo apt-get update -y
-        sudo apt-get install -y build-essential cmake gettext
+        sudo apt-get install -y build-essential cmake gettext fakeroot
 
     - name: Install Fcitx5 libs
       run: |
         sudo apt-get install -y libfcitx5core-dev libfcitx5config-dev libfcitx5utils-dev
 
-    - name: Build Hazkey
+    - name: Create Directories
       run: |
         mkdir -p $GITHUB_WORKSPACE/build
         mkdir -p $GITHUB_WORKSPACE/workdir
+        mkdir -p $GITHUB_WORKSPACE/packages
+
+    - name: Build Hazkey
+      run: |
         cd $GITHUB_WORKSPACE/build
         cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr .. || true
         cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr ..
         make -j$(nproc)
         make install DESTDIR=$GITHUB_WORKSPACE/workdir
 
-    - name: Pack Build Artifacts
+    - name: Create deb package
       run: |
         cd $GITHUB_WORKSPACE/workdir
-        tar -czvf fcitx5-hazkey-${{ github.ref_name }}-x86_64.tar.gz ./*
+        mkdir -p ./DEBIAN
+        cat $GITHUB_WORKSPACE/debian/control > ./DEBIAN/control
+        fakeroot dpkg-deb --build . $GITHUB_WORKSPACE/packages
+
+    - name: Create tar.gz package
+      run: |
+        cd $GITHUB_WORKSPACE/workdir
+        tar -czvf $GITHUB_WORKSPACE/packages/fcitx5-hazkey-${{ github.ref_name }}-x86_64.tar.gz ./usr
 
     - name: Upload Build Artifacts
       uses: actions/upload-artifact@v4
       with:
         name: fcitx5-hazkey-x86_64
-        path: ${{ github.workspace }}/workdir/fcitx5-hazkey-${{ github.ref_name }}-x86_64.tar.gz
+        path: ${{ github.workspace }}/packages/*

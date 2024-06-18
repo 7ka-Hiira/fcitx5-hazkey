@@ -5,8 +5,21 @@ Hazkey input method for fcitx5
 
 ## Installation
 
+### Ubuntu/Debian系
+[リリースページ](https://github.com/7ka-Hiira/fcitx5-hazkey/releases/latest)からdebファイルをダウンロードしてインストールしてください
+```sh
+$ apt install ./fcitx5-hazkey_VERSION_ARCH.deb # VERSIONとARCHはダウンロードしたファイル名に合わせてください
+```
+
 ### Arch Linux系
 AURからインストールできます
+
+- binパッケージ(推奨)
+```sh
+$ yay -S fcitx5-hazkey-bin # yayの場合
+```
+
+- 通常パッケージ
 ```sh
 $ yay -S fcitx5-hazkey  # yayの場合
 ```
