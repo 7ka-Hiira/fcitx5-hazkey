@@ -42,7 +42,7 @@ error: unrecognized command-line option のようなエラーが出た場合は�
 $ cd fcitx5-hazkey
 $ mkdir build
 $ cd build
-$ cmake -DCMAKE_INSTALL_PREFIX=/usr . # run twice if error occurs
+$ cmake -DCMAKE_INSTALL_PREFIX=/usr .. # run twice if error occurs
 $ make
 $ sudo make install
 ```
