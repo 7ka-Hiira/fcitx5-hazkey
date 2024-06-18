@@ -21,7 +21,7 @@ install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/azookey-kkc/.build/release/libhazkey.s
 
 # install dictionary
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/azookey-kkc/.build/release/AzooKeyKanakanjiConverter_KanaKanjiConverterModuleWithDefaultDictionary.resources
-        DESTINATION ${CMAKE_INSTALL_BINDIR}/AzooKeyKanakanjiConverter_KanaKanjiConverterModuleWithDefaultDictionary.resources)
+        DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 # build fcitx5-hazkey
 add_subdirectory(fcitx5)
