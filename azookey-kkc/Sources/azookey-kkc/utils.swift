@@ -78,7 +78,9 @@ public class KkcConfig {
 
   let autoCommitMode: AutoCommitMode
 
-  init(
+  let converter: KanaKanjiConverter
+
+  @MainActor init(
     convertOptions: ConvertRequestOptions, numberStyle: Style, symbolStyle: Style,
     periodStyle: TenStyle, commaStyle: TenStyle, spaceStyle: Style, diacriticStyle: DiacriticStyle,
     autoCommitMode: AutoCommitMode
@@ -91,10 +93,11 @@ public class KkcConfig {
     self.spaceStyle = spaceStyle
     self.tenCombiningStyle = diacriticStyle
     self.autoCommitMode = autoCommitMode
+    self.converter = KanaKanjiConverter()
   }
 }
 
-func genDefaultConfig(
+@MainActor func genDefaultConfig(
   zenzaiEnabled: Bool = false, zenzaiInferLimit: Int = 1, numberStyle: KkcConfig.Style,
   symbolStyle: KkcConfig.Style,
   periodStyle: KkcConfig.TenStyle, commaStyle: KkcConfig.TenStyle, spaceStyle: KkcConfig.Style,
@@ -157,7 +160,7 @@ func cycleAlphabetCase(_ alphabet: String, preedit: String) -> String {
   }
 }
 
-@MainActor func createCandidateStruct(composingText: ComposingText, options: ConvertRequestOptions)
+@MainActor func createCandidateStruct(composingText: ComposingText, options: ConvertRequestOptions, converter: KanaKanjiConverter)
   -> [UnsafeMutablePointer<
     UnsafeMutablePointer<Int8>?
   >?]
@@ -171,8 +174,7 @@ func cycleAlphabetCase(_ alphabet: String, preedit: String) -> String {
     || (hiragana.count == 2 && InvalidLastCharactersForLive.contains(hiragana.last!)))
 
   // convert
-  let converter = KanaKanjiConverter()
-  let converted = converter.requestCandidates(composingText, options: options)
+  let converted =  converter.requestCandidates(composingText, options: options)
 
   // create result
   var result: [UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>?] = []

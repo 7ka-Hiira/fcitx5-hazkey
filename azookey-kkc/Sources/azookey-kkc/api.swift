@@ -78,7 +78,7 @@ public func freeComposingTextInstance(ptr: UnsafeMutablePointer<ComposingText>?)
 }
 
 @_silgen_name("kkc_input_text")
-public func inputText(
+@MainActor public func inputText(
   composingTextPtr: UnsafeMutablePointer<ComposingText>?, kkcConfigPtr: OpaquePointer?,
   stringPtr: UnsafePointer<Int8>?
 ) {
@@ -367,7 +367,7 @@ public func freeText(ptr: UnsafeMutablePointer<Int8>?) {
     options.requireEnglishPrediction = true
   }
 
-  let result = createCandidateStruct(composingText: composingText, options: options)
+  let result = createCandidateStruct(composingText: composingText, options: options, converter: config.converter)
 
   let resultPtr = UnsafeMutablePointer<UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>?>
     .allocate(
