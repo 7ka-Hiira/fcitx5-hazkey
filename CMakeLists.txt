@@ -4,6 +4,9 @@ include(GNUInstallDirs)
 
 set(CMAKE_CXX_STANDARD 17)
 
+# check if vulkan headers are installed
+find_package(Vulkan REQUIRED)
+
 # build azookey-kkc library
 execute_process(
     COMMAND swift build -c release -Xswiftc -static-stdlib
