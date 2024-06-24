@@ -3,6 +3,7 @@ project(fcitx5-hazkey VERSION 0.0.3)
 include(GNUInstallDirs)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # check if vulkan headers are installed
 find_package(Vulkan REQUIRED)
