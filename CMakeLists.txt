@@ -4,13 +4,15 @@ include(GNUInstallDirs)
 
 set(CMAKE_CXX_STANDARD 17)
 
+# check if vulkan headers are installed
+find_package(Vulkan REQUIRED)
+
+# build azookey-kkc library
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(SWIFT_BUILD_TYPE "debug")
 else()
     set(SWIFT_BUILD_TYPE "release")
 endif()
-
-# build azookey-kkc library
 execute_process(
     COMMAND swift build -c ${SWIFT_BUILD_TYPE} -Xswiftc -static-stdlib
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/azookey-kkc
