@@ -2,9 +2,9 @@ import Foundation
 import KanaKanjiConverterModuleWithDefaultDictionary
 import SwiftUtils
 
-///
+/// C FFIs
+
 /// Config
-///
 
 @_silgen_name("kkc_get_config")
 @MainActor public func getConfig(
@@ -59,9 +59,7 @@ public func freeConfig(ptr: OpaquePointer?) {
   Unmanaged<KkcConfig>.fromOpaque(UnsafeRawPointer(ptr)).release()
 }
 
-///
 /// ComposingText
-///
 
 @_silgen_name("kkc_get_composing_text_instance")
 @MainActor public func getComposingTextInstance() -> UnsafeMutablePointer<ComposingText>? {
@@ -253,9 +251,7 @@ public func moveCursor(composingTextPtr: UnsafeMutablePointer<ComposingText>?, o
   return composingTextPtr.pointee.moveCursorFromCursorPosition(count: offset)
 }
 
-///
 /// ComposingText -> Characters
-///
 
 @_silgen_name("kkc_get_composing_hiragana")
 public func getComposingHiragana(composingTextPtr: UnsafeMutablePointer<ComposingText>?)
@@ -326,9 +322,7 @@ public func freeText(ptr: UnsafeMutablePointer<Int8>?) {
   free(ptr)
 }
 
-///
 /// Candidates
-///
 
 @_silgen_name("kkc_get_candidates")
 @MainActor public func getCandidates(
