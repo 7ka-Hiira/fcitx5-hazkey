@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.21)
-project(fcitx5-hazkey VERSION 0.0.3)
+project(fcitx5-hazkey VERSION 0.0.4)
 include(GNUInstallDirs)
 
 set(CMAKE_CXX_STANDARD 17)
