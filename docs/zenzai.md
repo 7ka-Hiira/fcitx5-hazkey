@@ -7,6 +7,10 @@ Zenzaiを利用したニューラル漢字変換を使用することができ�
 Zenzaiについての詳細はこちらを参照してください
 https://github.com/ensan-hcl/AzooKeyKanaKanjiConverter/blob/develop/Docs/zenzai.md
 
+# Vulkanのインストール
+
+Zenzaiを使用するためには、Vulkanが必要です。ご利用の環境に合わせてVulkanをインストールしてください。
+
 # 有効化
 
 Readmeの手順に従って、fcitx5-hazkeyをインストール・設定してください。

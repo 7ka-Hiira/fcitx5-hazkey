@@ -15,7 +15,7 @@ const KkcConfig *kkc_get_config(bool zenzaiEnabled, int zenzaiInferLimit,
                                 int numberFullwidth, int symbolFullwidth,
                                 int periodFullwidth, int commaFullwidth,
                                 int spaceFullwidth, int diacriticStyle,
-                                int autoCommitModeNum);
+                                int gpuLayers);
 void kkc_free_config(const KkcConfig *kkcConfigPtr);
 
 struct ComposingText;

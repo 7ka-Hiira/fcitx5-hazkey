@@ -109,10 +109,12 @@ FCITX_CONFIGURATION(
     OptionWithAnnotation<AutoCommitMode, AutoCommitModeI18NAnnotation>
         autoCommitMode{this, "AutoCommit", _("Auto commit"),
                        AutoCommitMode::None};
-    Option<bool> zenzaiEnabled{this, "ZenzaiEnabled",
-                               _("Enable Zenzai (Experimental)"), false};
+    Option<bool> zenzaiEnabled{
+        this, "ZenzaiEnabled",
+        _("Enable Zenzai (Experimental, Requires Vulkan)"), false};
     Option<int> zenzaiInferenceLimit{this, "ZenzaiInferenceLimit",
                                      _("Zenzai Inference limit"), 1};
+    Option<int> gpuLayers{this, "Zenzai GPU Layers", _("GPU Layers"), 99};
     ExternalOption zenzaiHelp{
         this, "ZenzaiHelp", _("Click to open Zenzai Setup Guide"),
         stringutils::concat("xdg-open "

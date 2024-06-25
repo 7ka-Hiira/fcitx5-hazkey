@@ -59,13 +59,6 @@ public class KkcConfig {
     case combining
   }
 
-  enum AutoCommitMode {
-    case none
-    case period
-    case periodQuestionExclamation
-    case periodCommaQuestionExclamation
-  }
-
   let convertOptions: ConvertRequestOptions
 
   let numberStyle: Style
@@ -76,14 +69,11 @@ public class KkcConfig {
 
   let tenCombiningStyle: DiacriticStyle
 
-  let autoCommitMode: AutoCommitMode
-
   let converter: KanaKanjiConverter
 
   @MainActor init(
     convertOptions: ConvertRequestOptions, numberStyle: Style, symbolStyle: Style,
-    periodStyle: TenStyle, commaStyle: TenStyle, spaceStyle: Style, diacriticStyle: DiacriticStyle,
-    autoCommitMode: AutoCommitMode
+    periodStyle: TenStyle, commaStyle: TenStyle, spaceStyle: Style, diacriticStyle: DiacriticStyle
   ) {
     self.convertOptions = convertOptions
     self.numberStyle = numberStyle
@@ -92,7 +82,6 @@ public class KkcConfig {
     self.commaStyle = commaStyle
     self.spaceStyle = spaceStyle
     self.tenCombiningStyle = diacriticStyle
-    self.autoCommitMode = autoCommitMode
     self.converter = KanaKanjiConverter()
   }
 }
@@ -101,8 +90,7 @@ public class KkcConfig {
   zenzaiEnabled: Bool = false, zenzaiInferLimit: Int = 1, numberStyle: KkcConfig.Style,
   symbolStyle: KkcConfig.Style,
   periodStyle: KkcConfig.TenStyle, commaStyle: KkcConfig.TenStyle, spaceStyle: KkcConfig.Style,
-  diacriticStyle: KkcConfig.DiacriticStyle,
-  autoCommitMode: KkcConfig.AutoCommitMode
+  diacriticStyle: KkcConfig.DiacriticStyle, gpuLayers: Int32 = 0
 ) -> KkcConfig {
   var dictDir: URL {
     FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
@@ -120,6 +108,8 @@ public class KkcConfig {
     print("Error creating directory: \(error)")
   }
 
+  let positiveGpuLayers = max(0, gpuLayers)
+
   let options = ConvertRequestOptions.withDefaultDictionary(
     N_best: 9,
     requireJapanesePrediction: false,  // may overwritten
@@ -134,14 +124,13 @@ public class KkcConfig {
     maxMemoryCount: 65536,
     memoryDirectoryURL: dictDir,
     sharedContainerURL: dictDir,
-    zenzaiMode: zenzaiEnabled ? .on(weight: zenaiModel, inferenceLimit: zenzaiInferLimit) : .off,
+    zenzaiMode: zenzaiEnabled ? .on(weight: zenaiModel, inferenceLimit: zenzaiInferLimit, gpuLayers: positiveGpuLayers) : .off,
     metadata: .init(versionString: "fcitx5-hazkey 0.0.1")
   )
   return KkcConfig(
     convertOptions: options, numberStyle: numberStyle, symbolStyle: symbolStyle,
     periodStyle: periodStyle, commaStyle: commaStyle, spaceStyle: spaceStyle,
-    diacriticStyle: diacriticStyle,
-    autoCommitMode: autoCommitMode)
+    diacriticStyle: diacriticStyle)
 }
 
 func cycleAlphabetCase(_ alphabet: String, preedit: String) -> String {

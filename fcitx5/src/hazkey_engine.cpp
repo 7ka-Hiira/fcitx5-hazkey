@@ -17,7 +17,7 @@ HazkeyEngine::HazkeyEngine(Instance *instance)
                        static_cast<int>(*config().commaStyle),
                        static_cast<int>(*config().spaceStyle),
                        static_cast<int>(*config().diacriticStyle),
-                       static_cast<int>(*config().autoCommitMode));
+                       static_cast<int>(*config().gpuLayers));
     reloadConfig();
 }
 
@@ -75,7 +75,7 @@ void HazkeyEngine::reloadConfig() {
                        static_cast<int>(*config().commaStyle),
                        static_cast<int>(*config().spaceStyle),
                        static_cast<int>(*config().diacriticStyle),
-                       static_cast<int>(*config().autoCommitMode));
+                       static_cast<int>(*config().gpuLayers));
 }
 
 FCITX_ADDON_FACTORY(HazkeyEngineFactory);

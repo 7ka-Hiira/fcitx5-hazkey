@@ -10,7 +10,7 @@ import SwiftUtils
 @MainActor public func getConfig(
   zenzaiEnabled: Bool, zenzaiInferLimit: Int,
   numberFullwidth: Int, symbolFullwidth: Int, periodStyleIndex: Int,
-  commaStyleIndex: Int, spaceFullwidth: Int, tenCombining: Int, autoCommitModeNum: Int
+  commaStyleIndex: Int, spaceFullwidth: Int, tenCombining: Int, gpuLayers: Int32
 ) -> OpaquePointer? {
   let numberStyle: KkcConfig.Style = numberFullwidth == 1 ? .fullwidth : .halfwidth
   let symbolStyle: KkcConfig.Style = symbolFullwidth == 1 ? .fullwidth : .halfwidth
@@ -30,23 +30,11 @@ import SwiftUtils
     ? .halfwidth
     : tenCombining == 2 ? .combining : .fullwidth
 
-  let autoCommitMode: KkcConfig.AutoCommitMode
-  switch autoCommitModeNum {
-  case 1:
-    autoCommitMode = .period
-  case 2:
-    autoCommitMode = .periodQuestionExclamation
-  case 3:
-    autoCommitMode = .periodCommaQuestionExclamation
-  default:
-    autoCommitMode = .none
-  }
-
   let config = genDefaultConfig(
     zenzaiEnabled: zenzaiEnabled, zenzaiInferLimit: zenzaiInferLimit, numberStyle: numberStyle,
     symbolStyle: symbolStyle, periodStyle: periodStyle,
     commaStyle: commaStyle, spaceStyle: spaceStyle, diacriticStyle: diacriticStyle,
-    autoCommitMode: autoCommitMode)
+    gpuLayers: gpuLayers)
   let configPtr = Unmanaged.passRetained(config).toOpaque()
   return OpaquePointer(configPtr)
 }
@@ -99,8 +87,7 @@ public func freeComposingTextInstance(ptr: UnsafeMutablePointer<ComposingText>?)
     config = genDefaultConfig(
       numberStyle: .fullwidth, symbolStyle: .fullwidth,
       periodStyle: .fullwidthJapanese, commaStyle: .fullwidthJapanese, spaceStyle: .fullwidth,
-      diacriticStyle: .fullwidth,
-      autoCommitMode: .none)
+      diacriticStyle: .fullwidth, gpuLayers: 0)
   }
 
   let inputStyle: InputStyle
@@ -347,8 +334,7 @@ public func freeText(ptr: UnsafeMutablePointer<Int8>?) {
     config = genDefaultConfig(
       numberStyle: .fullwidth, symbolStyle: .fullwidth,
       periodStyle: .fullwidthJapanese, commaStyle: .fullwidthJapanese, spaceStyle: .fullwidth,
-      diacriticStyle: .fullwidth,
-      autoCommitMode: .none)
+      diacriticStyle: .fullwidth, gpuLayers: 0)
   }
 
   // set options
