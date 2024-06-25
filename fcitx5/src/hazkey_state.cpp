@@ -93,6 +93,10 @@ void HazkeyState::preeditKeyEvent(
             kkc_delete_backward(composingText_);
             showPreeditCandidateList();
             break;
+        case FcitxKey_Delete:
+            kkc_delete_forward(composingText_);
+            showPreeditCandidateList();
+            break;
         case FcitxKey_F6:
         case FcitxKey_F7:
         case FcitxKey_F8:
@@ -118,6 +122,18 @@ void HazkeyState::preeditKeyEvent(
             if (PredictCandidateList != nullptr) {
                 PredictCandidateList->focus();
                 updateCandidateCursor(PredictCandidateList);
+            }
+            break;
+        case FcitxKey_Left:
+            isCursorMoving_ = true;
+            kkc_move_cursor(composingText_, -1);
+            break;
+        case FcitxKey_Right:
+            if (isCursorMoving_) {
+                bool moved = kkc_move_cursor(composingText_, 1);
+                if (!moved) {
+                    isCursorMoving_ = false;
+                }
             }
             break;
         default:
@@ -418,10 +434,9 @@ void HazkeyState::setCandidateCursorAUX(
 }
 
 void HazkeyState::setHiraganaAUX() {
-    auto hiragana = kkc_get_composing_hiragana(composingText_);
+    auto hiragana = kkc_get_composing_hiragana_with_cursor(composingText_);
     auto newAuxText = Text(hiragana);
-    newAuxText.append("|");
-    newAuxText.setCursor(1);
+    // newAuxText.setCursor(1); // not working
     ic_->inputPanel().setAuxUp(newAuxText);
     kkc_free_text(hiragana);
 }
@@ -434,6 +449,8 @@ void HazkeyState::reset() {
         kkc_free_composing_text_instance(composingText_);
     }
     isDirectConversionMode_ = false;
+    isCursorMoving_ = false;
+    cursorIndex_ = 0;
     ic_->inputPanel().reset();
     composingText_ = nullptr;
 }

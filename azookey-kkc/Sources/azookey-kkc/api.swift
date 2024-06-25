@@ -250,6 +250,19 @@ public func getComposingHiragana(composingTextPtr: UnsafeMutablePointer<Composin
   return strdup(composingTextPtr.pointee.toHiragana())
 }
 
+@_silgen_name("kkc_get_composing_hiragana_with_cursor")
+public func getComposingHiraganaWithCursor(composingTextPtr: UnsafeMutablePointer<ComposingText>?)
+  -> UnsafeMutablePointer<Int8>?
+{
+  guard let composingTextPtr = composingTextPtr else {
+    return nil
+  }
+  var hiragana = composingTextPtr.pointee.toHiragana()
+  let cursorPos = composingTextPtr.pointee.convertTargetCursorPosition
+  hiragana.insert("|", at: hiragana.index(hiragana.startIndex, offsetBy: cursorPos))
+  return strdup(hiragana)
+}
+
 @_silgen_name("kkc_get_composing_katakana_fullwidth")
 public func getComposingKatakanaFullwidth(composingTextPtr: UnsafeMutablePointer<ComposingText>?)
   -> UnsafeMutablePointer<Int8>?

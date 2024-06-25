@@ -100,6 +100,8 @@ class HazkeyState : public InputContextProperty {
 
     bool isAltDigitKeyEvent(const KeyEvent &keyEvent);
 
+    bool isCursorMoving_ = false;
+
     bool isDirectConversionMode_ = false;
     // engine
     HazkeyEngine *engine_;
@@ -113,6 +115,8 @@ class HazkeyState : public InputContextProperty {
     // used by
     // libhazkey-kkc
     ComposingText *composingText_;
+    // cursor position
+    int cursorIndex_ = 0;
 };
 
 }  // namespace fcitx

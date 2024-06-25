@@ -28,8 +28,10 @@ void kkc_delete_backward(ComposingText *composingTextPtr);
 void kkc_delete_forward(ComposingText *composingTextPtr);
 void kkc_complete_prefix(ComposingText *composingTextPtr,
                          int correspondingCount);
+int kkc_move_cursor(ComposingText *composingTextPtr, long long cursorIndex);
 
 char *kkc_get_composing_hiragana(ComposingText *composingTextPtr);
+char *kkc_get_composing_hiragana_with_cursor(ComposingText *composingTextPtr);
 char *kkc_get_composing_katakana_fullwidth(ComposingText *composingTextPtr);
 char *kkc_get_composing_katakana_halfwidth(ComposingText *composingTextPtr);
 
@@ -38,8 +40,6 @@ char *kkc_get_composing_alphabet_halfwidth(ComposingText *composingTextPtr,
 char *kkc_get_composing_alphabet_fullwidth(ComposingText *composingTextPtr,
                                            const char *currentPreeditPtr);
 void *kkc_free_text(char *Ptr);
-
-int kkc_move_cursor(ComposingText *composingTextPtr, int cursorIndex);
 
 //
 // return value:
