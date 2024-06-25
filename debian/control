@@ -3,5 +3,5 @@ Maintainer: Nanaka Hiira <hiira plus debian at hiira dot dev>
 Architecture: amd64
 Version: 0.0.4-1
 Depends: fcitx5
-Recommends: vulkan
+Recommends: mesa-vulkan-drivers
 Description: Japanese input method for fcitx5, powered by azooKey engine
