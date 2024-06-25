@@ -1,17 +1,17 @@
 #include "hazkey_state.h"
 
-#include <algorithm>
 #include <cstring>
-#include <numeric>
 
 #include "../../azookey-kkc/libhazkey.h"
-#include "hazkey.h"
 #include "hazkey_candidate.h"
+#include "hazkey_engine.h"
 
 namespace fcitx {
 
-constexpr int NormalCandidateListNBest = 9;
-constexpr int PredictCandidateListNBest = 4;
+HazkeyState::HazkeyState(HazkeyEngine *engine, InputContext *ic)
+    : engine_(engine), ic_(ic), preedit_(HazkeyPreedit(ic)) {
+    composingText_ = nullptr;
+}
 
 bool HazkeyState::isInputableEvent(const KeyEvent &event) {
     auto key = event.key();
@@ -31,32 +31,12 @@ void HazkeyState::keyEvent(KeyEvent &event) {
 
     if (candidateList != nullptr && candidateList->focused()) {
         candidateKeyEvent(event, candidateList);
-    } else if (composingText_ != nullptr && candidateList != nullptr) {
-        preeditPredictingKeyEvent(event, candidateList);
     } else if (composingText_ != nullptr) {
-        preeditKeyEvent(event);
+        preeditKeyEvent(event, candidateList);
     } else {
-        auto key = event.key();
-
-        if (key.check(FcitxKey_space)) {
-            if (*engine_->config().spaceStyle == SpaceStyle::Fullwidth) {
-                ic_->commitString("　");
-            } else {
-                ic_->commitString(" ");
-            }
-        } else if (isInputableEvent(event)) {
-            // Start composing text and enter preedit mode if key is valid
-            composingText_ = kkc_get_composing_text_instance();
-            kkc_input_text(composingText_, engine_->getKkcConfig(),
-                           Key::keySymToUTF8(key.sym()).c_str());
-            showPreeditCandidateList();
-            setHiraganaAUX();
-        } else {
-            // Pass events to the application in the input state
-            return event.filter();
-        }
-        return event.filterAndAccept();
+        noPreeditKeyEvent(event);
     }
+
     auto newCandidateList = std::dynamic_pointer_cast<HazkeyCandidateList>(
         ic_->inputPanel().candidateList());
     if (newCandidateList != nullptr && newCandidateList->focused()) {
@@ -66,16 +46,44 @@ void HazkeyState::keyEvent(KeyEvent &event) {
     }
 }
 
-void HazkeyState::preeditPredictingKeyEvent(
+void HazkeyState::noPreeditKeyEvent(KeyEvent &event) {
+    FCITX_DEBUG() << "HazkeyState noPredictKeyEvent";
+
+    auto key = event.key();
+    auto keysym = key.sym();
+
+    switch (keysym) {
+        case FcitxKey_space:
+            if (*engine_->config().spaceStyle == SpaceStyle::Fullwidth) {
+                ic_->commitString("　");
+            } else {
+                ic_->commitString(" ");
+            }
+            break;
+        default:
+            if (isInputableEvent(event)) {
+                composingText_ = kkc_get_composing_text_instance();
+                kkc_input_text(composingText_, engine_->getKkcConfig(),
+                               Key::keySymToUTF8(keysym).c_str());
+                showPreeditCandidateList();
+                setHiraganaAUX();
+            } else {
+                return event.filter();
+            }
+            break;
+    }
+
+    return event.filterAndAccept();
+}
+
+void HazkeyState::preeditKeyEvent(
     KeyEvent &event,
-    std::shared_ptr<HazkeyCandidateList> PreeditCandidateList) {
+    std::shared_ptr<HazkeyCandidateList> PredictCandidateList) {
     FCITX_DEBUG() << "HazkeyState preeditKeyEvent";
 
     auto key = event.key();
     auto keysym = key.sym();
 
-    // TODO: keys should be configurable
-    // TODO: use left and right key to move cursor
     switch (keysym) {
         case FcitxKey_Return:
             preedit_.commitPreedit();
@@ -85,216 +93,64 @@ void HazkeyState::preeditPredictingKeyEvent(
             kkc_delete_backward(composingText_);
             showPreeditCandidateList();
             break;
-        case FcitxKey_Up:
-        case FcitxKey_Down:
-        case FcitxKey_Tab:
-            PreeditCandidateList->focus();
-            updateCandidateCursor(PreeditCandidateList);
-            break;
-        case FcitxKey_space:
-            showNonPredictCandidateList();
-            advanceCandidateCursor(
-                std::dynamic_pointer_cast<HazkeyCandidateList>(
-                    ic_->inputPanel().candidateList()));
-            break;
         case FcitxKey_F6:
-            directCharactorConversion(ConversionMode::Hiragana);
-            break;
         case FcitxKey_F7:
-            directCharactorConversion(ConversionMode::KatakanaFullwidth);
-            break;
         case FcitxKey_F8:
-            directCharactorConversion(ConversionMode::KatakanaHalfwidth);
-            break;
         case FcitxKey_F9:
-            directCharactorConversion(ConversionMode::RawFullwidth);
-            break;
         case FcitxKey_F10:
-            directCharactorConversion(ConversionMode::RawHalfwidth);
+            functionKeyHandler(event);
             break;
         case FcitxKey_Escape:
             reset();
             break;
-        case FcitxKey_kana_fullstop:  // kana "。" key
-        case FcitxKey_period:
-            if (*engine_->config().autoCommitMode != AutoCommitMode::None) {
-                preedit_.commitPreedit();
-                switch (*engine_->config().periodStyle) {
-                    case PeriodStyle::FullwidthKuten:
-                        ic_->commitString("。");
-                        break;
-                    case PeriodStyle::HalfwidthKuten:
-                        ic_->commitString("｡");
-                        break;
-                    case PeriodStyle::FullwidthPeriod:
-                        ic_->commitString("．");
-                        break;
-                    case PeriodStyle::HalfwidthPeriod:
-                        ic_->commitString(".");
-                        break;
-                }
-                reset();
-            } else if (isInputableEvent(event)) {
-                kkc_input_text(composingText_, engine_->getKkcConfig(),
-                               Key::keySymToUTF8(keysym).c_str());
-                showPreeditCandidateList();
+        case FcitxKey_space:
+            showNonPredictCandidateList();
+            if (PredictCandidateList != nullptr) {
+                auto newCandidateList =
+                    std::dynamic_pointer_cast<HazkeyCandidateList>(
+                        ic_->inputPanel().candidateList());
+                advanceCandidateCursor(newCandidateList);
             }
             break;
-        case FcitxKey_kana_conjunctive:  // kana "、" key
-        case FcitxKey_comma:
-            if (*engine_->config().autoCommitMode ==
-                AutoCommitMode::PeriodCommaQuestionExclamation) {
-                preedit_.commitPreedit();
-                switch (*engine_->config().commaStyle) {
-                    case CommaStyle::FullwidthToten:
-                        ic_->commitString("、");
-                        break;
-                    case CommaStyle::HalfwidthToten:
-                        ic_->commitString("､");
-                        break;
-                    case CommaStyle::FullwidthComma:
-                        ic_->commitString("，");
-                        break;
-                    case CommaStyle::HalfwidthComma:
-                        ic_->commitString(",");
-                        break;
-                }
-                reset();
-            } else if (isInputableEvent(event)) {
-                kkc_input_text(composingText_, engine_->getKkcConfig(),
-                               Key::keySymToUTF8(keysym).c_str());
-                showPreeditCandidateList();
-            }
-            break;
-        case FcitxKey_exclam:
-            if (*engine_->config().autoCommitMode ==
-                    AutoCommitMode::PeriodQuestionExclamation ||
-                *engine_->config().autoCommitMode ==
-                    AutoCommitMode::PeriodCommaQuestionExclamation) {
-                preedit_.commitPreedit();
-                if (*engine_->config().symbolStyle == SymbolStyle::Fullwidth) {
-                    ic_->commitString("！");
-                } else {
-                    ic_->commitString("!");
-                }
-                reset();
-            } else if (isInputableEvent(event)) {
-                kkc_input_text(composingText_, engine_->getKkcConfig(),
-                               Key::keySymToUTF8(keysym).c_str());
-                showPreeditCandidateList();
-            }
-            break;
-        case FcitxKey_question:
-            if (*engine_->config().autoCommitMode ==
-                    AutoCommitMode::PeriodQuestionExclamation ||
-                *engine_->config().autoCommitMode ==
-                    AutoCommitMode::PeriodCommaQuestionExclamation) {
-                preedit_.commitPreedit();
-                if (*engine_->config().symbolStyle == SymbolStyle::Fullwidth) {
-                    ic_->commitString("？");
-                } else {
-                    ic_->commitString("?");
-                }
-                reset();
-            } else if (isInputableEvent(event)) {
-                kkc_input_text(composingText_, engine_->getKkcConfig(),
-                               Key::keySymToUTF8(keysym).c_str());
-                showPreeditCandidateList();
+        case FcitxKey_Up:
+        case FcitxKey_Down:
+        case FcitxKey_Tab:
+            if (PredictCandidateList != nullptr) {
+                PredictCandidateList->focus();
+                updateCandidateCursor(PredictCandidateList);
             }
             break;
         default:
-            if (key.checkKeyList(defaultSelectionKeys) &&
-                key.states() == KeyStates(KeyState::Alt)) {
-                auto localIndex = key.keyListIndex(defaultSelectionKeys);
-                auto text =
-                    PreeditCandidateList->getCandidate(localIndex).getPreedit();
-                ic_->commitString(text[0]);
-                if (text.size() > 1) {
-                    auto correspondingCount =
-                        PreeditCandidateList->getCandidate(localIndex)
-                            .correspondingCount();
-                    kkc_complete_prefix(composingText_, correspondingCount);
-                    showNonPredictCandidateList();
-                } else {
-                    reset();
+            if (isAltDigitKeyEvent(event)) {
+                if (PredictCandidateList != nullptr) {
+                    auto localIndex = keysym - FcitxKey_1;
+                    if (localIndex < PredictCandidateListSize) {
+                        PredictCandidateList->setCursorIndex(localIndex);
+                        candidateCompleteHandler(PredictCandidateList);
+                    }
                 }
             } else if (isInputableEvent(event)) {
-                kkc_input_text(composingText_, engine_->getKkcConfig(),
-                               Key::keySymToUTF8(keysym).c_str());
-                showPreeditCandidateList();
+                if (isDirectConversionMode_) {
+                    preedit_.commitPreedit();
+                    reset();
+                } else {
+                    kkc_input_text(composingText_, engine_->getKkcConfig(),
+                                   Key::keySymToUTF8(keysym).c_str());
+                    showPreeditCandidateList();
+                }
             }
             break;
     }
     return event.filterAndAccept();
 }
 
-void HazkeyState::preeditKeyEvent(KeyEvent &event) {
-    FCITX_DEBUG() << "HazkeyState preeditKeyEvent";
-
+bool HazkeyState::isAltDigitKeyEvent(const KeyEvent &event) {
     auto key = event.key();
-    auto keysym = key.sym();
-
-    switch (keysym) {
-        case FcitxKey_Return:
-            preedit_.commitPreedit();
-            reset();
-            break;
-        case FcitxKey_BackSpace:
-            kkc_delete_backward(composingText_);
-            showPreeditCandidateList();
-            break;
-        case FcitxKey_space:
-            showNonPredictCandidateList();
-            break;
-        case FcitxKey_F6:
-            directCharactorConversion(ConversionMode::Hiragana);
-            break;
-        case FcitxKey_F7:
-            directCharactorConversion(ConversionMode::KatakanaFullwidth);
-            break;
-        case FcitxKey_F8:
-            directCharactorConversion(ConversionMode::KatakanaHalfwidth);
-            break;
-        case FcitxKey_F9:
-            directCharactorConversion(ConversionMode::RawFullwidth);
-            break;
-        case FcitxKey_F10:
-            directCharactorConversion(ConversionMode::RawHalfwidth);
-            break;
-        case FcitxKey_Escape:
-            reset();
-            break;
-        case FcitxKey_kana_fullstop:  // kana "。" key
-        case FcitxKey_period:
-            preedit_.commitPreedit();
-            ic_->commitString("。");
-            reset();
-            break;
-        case FcitxKey_kana_conjunctive:  // kana "、" key
-        case FcitxKey_comma:
-            preedit_.commitPreedit();
-            ic_->commitString("、");
-            reset();
-            break;
-        case FcitxKey_exclam:
-            preedit_.commitPreedit();
-            ic_->commitString("！");
-            reset();
-            break;
-        case FcitxKey_question:
-            preedit_.commitPreedit();
-            ic_->commitString("？");
-            reset();
-            break;
-        default:
-            if (isInputableEvent(event)) {
-                kkc_input_text(composingText_, engine_->getKkcConfig(),
-                               Key::keySymToUTF8(keysym).c_str());
-                showPreeditCandidateList();
-            }
-            break;
+    if (key.states() == KeyState::Alt && key.sym() >= FcitxKey_1 &&
+        key.sym() <= FcitxKey_9) {
+        return true;
     }
-    return event.filterAndAccept();
+    return false;
 }
 
 void HazkeyState::candidateKeyEvent(
@@ -307,27 +163,14 @@ void HazkeyState::candidateKeyEvent(
     std::vector<std::string> preedit;
     switch (keysym) {
         case FcitxKey_Right:
-            candidateList->next();
-            candidateList->setCursorIndex(0);
+            candidateList->nextPage();
             break;
         case FcitxKey_Left:
-            candidateList->prev();
-            candidateList->setCursorIndex(0);
+            candidateList->prevPage();
             break;
-        case FcitxKey_Return: {
-            preedit = candidateList->getCandidate(candidateList->cursorIndex())
-                          .getPreedit();
-            ic_->commitString(preedit[0]);
-            if (preedit.size() > 1) {
-                auto correspondingCount =
-                    candidateList->getCandidate(candidateList->cursorIndex())
-                        .correspondingCount();
-                kkc_complete_prefix(composingText_, correspondingCount);
-                showNonPredictCandidateList();
-            } else {
-                reset();
-            }
-        } break;
+        case FcitxKey_Return:
+            candidateCompleteHandler(candidateList);
+            break;
         case FcitxKey_BackSpace:
             showPreeditCandidateList();
             break;
@@ -348,48 +191,24 @@ void HazkeyState::candidateKeyEvent(
             backCandidateCursor(candidateList);
             break;
         case FcitxKey_F6:
-            directCharactorConversion(ConversionMode::Hiragana);
-            break;
         case FcitxKey_F7:
-            directCharactorConversion(ConversionMode::KatakanaFullwidth);
-            break;
         case FcitxKey_F8:
-            directCharactorConversion(ConversionMode::KatakanaHalfwidth);
-            break;
         case FcitxKey_F9:
-            directCharactorConversion(ConversionMode::RawFullwidth);
-            break;
         case FcitxKey_F10:
-            directCharactorConversion(ConversionMode::RawHalfwidth);
-            break;
-        case FcitxKey_kana_fullstop:  // kana "。" key
-        case FcitxKey_period:
-            preedit_.commitPreedit();
-            ic_->commitString("。");
-            reset();
-            break;
-        case FcitxKey_kana_conjunctive:  // kana "、" key
-        case FcitxKey_comma:
-            preedit_.commitPreedit();
-            ic_->commitString("、");
-            reset();
+            functionKeyHandler(event);
             break;
         case FcitxKey_Escape:
             reset();
             break;
         default:
-            if (key.checkKeyList(defaultSelectionKeys)) {
-                auto localIndex = key.keyListIndex(defaultSelectionKeys);
-                preedit = candidateList->getCandidate(localIndex).getPreedit();
-                ic_->commitString(preedit[0]);
-                if (preedit.size() > 1) {
-                    auto correspondingCount =
-                        candidateList->getCandidate(localIndex)
-                            .correspondingCount();
-                    kkc_complete_prefix(composingText_, correspondingCount);
-                    showNonPredictCandidateList();
-                } else {
-                    reset();
+            if (isAltDigitKeyEvent(event) ||
+                key.checkKeyList(defaultSelectionKeys)) {
+                auto localIndex = isAltDigitKeyEvent(event)
+                                      ? keysym - FcitxKey_1
+                                      : key.keyListIndex(defaultSelectionKeys);
+                if (localIndex < candidateList->size()) {
+                    candidateList->setCursorIndex(localIndex);
+                    candidateCompleteHandler(candidateList);
                 }
             } else if (isInputableEvent(event)) {
                 preedit_.commitPreedit();
@@ -404,6 +223,46 @@ void HazkeyState::candidateKeyEvent(
             break;
     }
     return event.filterAndAccept();
+}
+
+void HazkeyState::candidateCompleteHandler(
+    std::shared_ptr<HazkeyCandidateList> candidateList) {
+    auto preedit =
+        candidateList->getCandidate(candidateList->cursorIndex()).getPreedit();
+    ic_->commitString(preedit[0]);
+    if (preedit.size() > 1) {
+        auto correspondingCount =
+            candidateList->getCandidate(candidateList->cursorIndex())
+                .correspondingCount();
+        kkc_complete_prefix(composingText_, correspondingCount);
+        showNonPredictCandidateList();
+    } else {
+        reset();
+    }
+}
+
+void HazkeyState::functionKeyHandler(KeyEvent &event) {
+    auto keysym = event.key().sym();
+    switch (keysym) {
+        case FcitxKey_F6:
+            directCharactorConversion(ConversionMode::Hiragana);
+            break;
+        case FcitxKey_F7:
+            directCharactorConversion(ConversionMode::KatakanaFullwidth);
+            break;
+        case FcitxKey_F8:
+            directCharactorConversion(ConversionMode::KatakanaHalfwidth);
+            break;
+        case FcitxKey_F9:
+            directCharactorConversion(ConversionMode::RawFullwidth);
+            break;
+        case FcitxKey_F10:
+            directCharactorConversion(ConversionMode::RawHalfwidth);
+            break;
+        default:
+            break;
+    }
+    isDirectConversionMode_ = true;
 }
 
 void HazkeyState::directCharactorConversion(ConversionMode mode) {
@@ -438,34 +297,25 @@ void HazkeyState::directCharactorConversion(ConversionMode mode) {
     }
 }
 
-// updatePreedit: whether to update preedit text. currently always true
-// nBest: number of candidates to show.
-// TODO: make avobe configurable
+/// Show Candidate List
+
 void HazkeyState::showCandidateList(showCandidateMode mode, int nBest) {
     FCITX_DEBUG() << "HazkeyState showCandidateList";
 
-    bool enabledPreeditConversion =
-        mode == showCandidateMode::PredictWithLivePreedit ||
-        mode == showCandidateMode::NonPredictWithFirstPreedit;
+    bool enabledPredictMode = mode == showCandidateMode::PredictWithLivePreedit;
 
-    bool enabledPredictMode =
-        mode == showCandidateMode::PredictWithLivePreedit ||
-        mode == showCandidateMode::PredictWithPreedit;
-
-    auto preeditSegmentsPtr = enabledPreeditConversion
-                                  ? std::make_shared<std::vector<std::string>>()
-                                  : nullptr;
+    auto preeditSegmentsPtr = std::make_shared<std::vector<std::string>>();
 
     auto candidates = getCandidates(enabledPredictMode, nBest);
 
-    auto candidateList =
-        createCandidateList(std::move(candidates), preeditSegmentsPtr);
+    auto candidateList = std::make_unique<HazkeyCandidateList>(
+        std::move(candidates), preeditSegmentsPtr);
 
     candidateList->setSelectionKey(defaultSelectionKeys);
 
     ic_->inputPanel().reset();
 
-    if (enabledPreeditConversion && !preeditSegmentsPtr->empty()) {
+    if (!preeditSegmentsPtr->empty()) {
         // preedit conversion is enabled and conversion result is found
         // show preedit conversion result
         preedit_.setMultiSegmentPreedit(*preeditSegmentsPtr, 0);
@@ -497,42 +347,13 @@ std::vector<std::vector<std::string>> HazkeyState::getCandidates(
     return candidateList;
 }
 
-std::unique_ptr<HazkeyCandidateList> HazkeyState::createCandidateList(
-    std::vector<std::vector<std::string>> candidates,
-    std::shared_ptr<std::vector<std::string>> preeditSegments = nullptr) {
-    auto candidateList = std::make_unique<HazkeyCandidateList>();
-    // for (const auto &candidate : candidates) {
-    for (size_t i = 0; i < candidates.size(); i++) {
-        auto candidate = candidates[i];
-        std::vector<std::string> parts;
-        std::vector<int> partLens;
-
-        // collect parts and part lengths
-        // more about candidate format, see azookey-kkc/libhazkey.h
-        for (size_t j = 5; j < candidate.size() - 1; j += 2) {
-            parts.push_back(candidate[j]);
-            partLens.push_back(stoi(candidate[j + 1]));
-        }
-        candidateList->append(std::make_unique<HazkeyCandidateWord>(
-            i, candidate[0], candidate[2], stoi(candidate[3]), parts,
-            partLens));
-
-        // save preedit which found first
-        if (preeditSegments != nullptr && preeditSegments->empty() &&
-            stoi(candidate[4]) == 1) {
-            *preeditSegments = parts;
-        }
-    }
-    return candidateList;
-}
-
 void HazkeyState::showNonPredictCandidateList() {
     if (composingText_ == nullptr) {
         return;
     }
 
     showCandidateList(showCandidateMode::NonPredictWithFirstPreedit,
-                      NormalCandidateListNBest);
+                      NormalCandidateListSize);
 
     auto newCandidateList = std::dynamic_pointer_cast<HazkeyCandidateList>(
         ic_->inputPanel().candidateList());
@@ -556,19 +377,15 @@ void HazkeyState::showPreeditCandidateList() {
                     ? showCandidateMode::PredictWithLivePreedit
                     : showCandidateMode::NonPredictWithFirstPreedit;
 
-    showCandidateList(mode, PredictCandidateListNBest);
+    showCandidateList(mode, PredictCandidateListSize);
 
     auto newCandidateList = std::dynamic_pointer_cast<HazkeyCandidateList>(
         ic_->inputPanel().candidateList());
-    newCandidateList->setPageSize(PredictCandidateListNBest);
-    ic_->inputPanel().setAuxDown(Text("[Tabキーで選択]"));
+    newCandidateList->setPageSize(PredictCandidateListSize);
+    ic_->inputPanel().setAuxDown(Text("[Alt+数字で選択]"));
 }
 
-void HazkeyState::completePrefix(int correspondingCount) {
-    kkc_complete_prefix(composingText_, correspondingCount);
-    // no need for predictions since the conversion is in progress
-    showNonPredictCandidateList();
-}
+/// Candidate Cursor
 
 void HazkeyState::updateCandidateCursor(
     std::shared_ptr<HazkeyCandidateList> candidateList) {
@@ -590,6 +407,8 @@ void HazkeyState::backCandidateCursor(
     updateCandidateCursor(candidateList);
 }
 
+/// AUX
+
 void HazkeyState::setCandidateCursorAUX(
     std::shared_ptr<HazkeyCandidateList> candidateList) {
     auto label = "[" + std::to_string(candidateList->globalCursorIndex() + 1) +
@@ -607,11 +426,14 @@ void HazkeyState::setHiraganaAUX() {
     kkc_free_text(hiragana);
 }
 
+/// Reset
+
 void HazkeyState::reset() {
     FCITX_DEBUG() << "HazkeyState reset";
     if (composingText_ != nullptr) {
         kkc_free_composing_text_instance(composingText_);
     }
+    isDirectConversionMode_ = false;
     ic_->inputPanel().reset();
     composingText_ = nullptr;
 }

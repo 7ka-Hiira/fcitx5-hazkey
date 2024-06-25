@@ -1,4 +1,4 @@
-#include "hazkey.h"
+#include "hazkey_engine.h"
 
 #include "hazkey_state.h"
 
@@ -54,6 +54,28 @@ void HazkeyEngine::deactivate(const InputMethodEntry &entry,
     state->reset();
     inputContext->updatePreedit();
     inputContext->updateUserInterface(UserInterfaceComponent::InputPanel);
+}
+
+void HazkeyEngine::setConfig(const RawConfig &config) {
+    config_.load(config, true);
+    safeSaveAsIni(config_, "conf/hazkey.conf");
+    reloadConfig();
+}
+
+void HazkeyEngine::reloadConfig() {
+    readAsIni(config_, "conf/hazkey.conf");
+    if (kkcConfig_ != nullptr) {
+        kkc_free_config(kkcConfig_);
+    }
+    kkcConfig_ =
+        kkc_get_config(*config().zenzaiEnabled, *config().zenzaiInferenceLimit,
+                       static_cast<int>(*config().numberStyle),
+                       static_cast<int>(*config().symbolStyle),
+                       static_cast<int>(*config().periodStyle),
+                       static_cast<int>(*config().commaStyle),
+                       static_cast<int>(*config().spaceStyle),
+                       static_cast<int>(*config().diacriticStyle),
+                       static_cast<int>(*config().autoCommitMode));
 }
 
 FCITX_ADDON_FACTORY(HazkeyEngineFactory);

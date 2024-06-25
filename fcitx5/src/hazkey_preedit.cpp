@@ -5,9 +5,6 @@
 
 namespace fcitx {
 
-constexpr int NormalCandidateListNBest = 18;
-constexpr int PredictCandidateListNBest = 4;
-
 std::string HazkeyPreedit::text() const {
     if (ic_->capabilityFlags().test(CapabilityFlag::Preedit)) {
         return ic_->inputPanel().clientPreedit().toString();

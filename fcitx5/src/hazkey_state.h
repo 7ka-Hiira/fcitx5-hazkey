@@ -14,14 +14,12 @@ class HazkeyEngine;
 
 class HazkeyState : public InputContextProperty {
    public:
-    HazkeyState(HazkeyEngine *engine, InputContext *ic)
-        : engine_(engine), ic_(ic), preedit_(HazkeyPreedit(ic)) {
-        composingText_ = nullptr;
-    }
+    HazkeyState(HazkeyEngine *engine, InputContext *ic);
 
     // complete the prefix and remove from composingText_
-    void completePrefix(int correspondingCount);
-    // handle key event. call candidateKeyEvent or preeditKeyEvent
+    void candidateCompleteHandler(
+        std::shared_ptr<HazkeyCandidateList> candidateList);
+    // handle key event. call candidateKeyEvent or preeditNoPredictKeyEvent
     // depends on the current mode
     void keyEvent(KeyEvent &keyEvent);
     // void loadConfig(std::shared_ptr<HazkeyConfig> &config);
@@ -29,11 +27,6 @@ class HazkeyState : public InputContextProperty {
     void reset();
 
    private:
-    const KeyList defaultSelectionKeys = {
-        Key{FcitxKey_1}, Key{FcitxKey_2}, Key{FcitxKey_3}, Key{FcitxKey_4},
-        Key{FcitxKey_5}, Key{FcitxKey_6}, Key{FcitxKey_7}, Key{FcitxKey_8},
-        Key{FcitxKey_9}, Key{FcitxKey_0},
-    };
     enum class ConversionMode {
         None,
         Hiragana,
@@ -45,21 +38,22 @@ class HazkeyState : public InputContextProperty {
 
     enum class showCandidateMode {
         PredictWithLivePreedit,
-        PredictWithPreedit,
         NonPredictWithFirstPreedit,
     };
 
+    // f6-f10 key handler
+    void functionKeyHandler(KeyEvent &keyEvent);
+    // convert to hiragana/katakana/alphanumeric directly
     void directCharactorConversion(ConversionMode mode);
+    // handle key event in normal mode (no preedit)
+    void noPreeditKeyEvent(KeyEvent &keyEvent);
     // handle key event in candidate mode
     void candidateKeyEvent(KeyEvent &keyEvent,
                            std::shared_ptr<HazkeyCandidateList> candidateList);
-    // handle key event in preedit mode with prediction candidate list
-    void preeditPredictingKeyEvent(
+    // handle key event in preedit mode
+    void preeditKeyEvent(
         KeyEvent &keyEvent,
         std::shared_ptr<HazkeyCandidateList> PreeditCandidateList);
-    // handle key event in preedit mode
-    void preeditKeyEvent(KeyEvent &keyEvent);
-
     // base function to prepare candidate list
     // make sure composingText_ is not nullptr
     void showCandidateList(showCandidateMode mode, int nBest);
@@ -103,6 +97,10 @@ class HazkeyState : public InputContextProperty {
     // (simple key / kana
     // key) or not
     bool isInputableEvent(const KeyEvent &keyEvent);
+
+    bool isAltDigitKeyEvent(const KeyEvent &keyEvent);
+
+    bool isDirectConversionMode_ = false;
     // engine
     HazkeyEngine *engine_;
     // fcitx input context

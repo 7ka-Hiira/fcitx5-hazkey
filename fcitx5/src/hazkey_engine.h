@@ -18,9 +18,7 @@
 
 namespace fcitx {
 
-//
-// Configuration
-//
+/// Config
 
 enum class NumberStyle {
     Halfwidth,
@@ -84,13 +82,10 @@ FCITX_CONFIG_ENUM_NAME_WITH_I18N(LearnMode, N_("None"));
 
 enum class AutoCommitMode {
     None,
-    Period,
-    PeriodQuestionExclamation,
-    PeriodCommaQuestionExclamation,
+    TenWords,
 };
 
-FCITX_CONFIG_ENUM_NAME_WITH_I18N(AutoCommitMode, N_("None"), N_("."),
-                                 N_(". ! ?"), N_(". , ! ?"));
+FCITX_CONFIG_ENUM_NAME_WITH_I18N(AutoCommitMode, N_("None"), N_("Ten words"));
 
 FCITX_CONFIGURATION(
     HazkeyEngineConfig,
@@ -124,18 +119,19 @@ FCITX_CONFIGURATION(
                             "https://github.com/7ka-Hiira/fcitx5-hazkey/tree/"
                             "main/docs/zenzai.md")};);
 
-//
-// Engine
-//
+/// Engine
 
 class HazkeyEngine : public InputMethodEngineV2 {
    public:
     // constructor
     HazkeyEngine(Instance *instance);
+
     // handle key event and pass it to HazkeyState
     void keyEvent(const InputMethodEntry &entry, KeyEvent &keyEvent) override;
+
     // called when input method changes to Hazkey
     void activate(const InputMethodEntry &, InputContextEvent &) override;
+
     // called when input method changes to another input method
     void deactivate(const InputMethodEntry &, InputContextEvent &) override;
 
@@ -145,26 +141,8 @@ class HazkeyEngine : public InputMethodEngineV2 {
     auto instance() const { return instance_; }
 
     const Configuration *getConfig() const override { return &config_; }
-    void setConfig(const RawConfig &config) override {
-        config_.load(config, true);
-        safeSaveAsIni(config_, "conf/hazkey.conf");
-        reloadConfig();
-    }
-    void reloadConfig() override {
-        readAsIni(config_, "conf/hazkey.conf");
-        if (kkcConfig_ != nullptr) {
-            kkc_free_config(kkcConfig_);
-        }
-        kkcConfig_ = kkc_get_config(*config().zenzaiEnabled,
-                                    *config().zenzaiInferenceLimit,
-                                    static_cast<int>(*config().numberStyle),
-                                    static_cast<int>(*config().symbolStyle),
-                                    static_cast<int>(*config().periodStyle),
-                                    static_cast<int>(*config().commaStyle),
-                                    static_cast<int>(*config().spaceStyle),
-                                    static_cast<int>(*config().diacriticStyle),
-                                    static_cast<int>(*config().autoCommitMode));
-    }
+    void setConfig(const RawConfig &config) override;
+    void reloadConfig() override;
 
     const HazkeyEngineConfig &config() const { return config_; }
 

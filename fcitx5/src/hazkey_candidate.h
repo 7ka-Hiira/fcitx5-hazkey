@@ -6,6 +6,17 @@
 
 namespace fcitx {
 
+class HazkeyState;
+
+constexpr int NormalCandidateListSize = 9;
+constexpr int PredictCandidateListSize = 4;
+
+const KeyList defaultSelectionKeys = {
+    Key{FcitxKey_1}, Key{FcitxKey_2}, Key{FcitxKey_3}, Key{FcitxKey_4},
+    Key{FcitxKey_5}, Key{FcitxKey_6}, Key{FcitxKey_7}, Key{FcitxKey_8},
+    Key{FcitxKey_9}, Key{FcitxKey_0},
+};
+
 class HazkeyCandidateWord : public CandidateWord {
    public:
     HazkeyCandidateWord(const int index, const std::string& text,
@@ -24,6 +35,8 @@ class HazkeyCandidateWord : public CandidateWord {
     }
 
     // called when the candidate is selected (by pointing device?)
+    // calculate the index of the candidate on current page
+    // and send key to select the candidate
     void select(InputContext* ic) const override;
 
     std::vector<std::string> getPreedit() const;
@@ -41,25 +54,29 @@ class HazkeyCandidateWord : public CandidateWord {
 
 class HazkeyCandidateList : public CommonCandidateList {
    public:
-    // always vertical
+    HazkeyCandidateList(
+        std::vector<std::vector<std::string>> candidates,
+        std::shared_ptr<std::vector<std::string>> preeditSegments);
+
+    // return the direction of the candidate list
+    // currently always vertical
     CandidateLayoutHint layoutHint() const override;
 
     const HazkeyCandidateWord& getCandidate(int localIndex) const;
 
-    void setCursorIndex(int localIndex) {
-        if (localIndex < 0 || localIndex >= size()) {
-            return;
-        }
-        int globalIndex = pageSize() * currentPage() + localIndex;
-        setGlobalCursorIndex(globalIndex);
-    }
+    // defined to support fcitx < 5.1.9
+    // recent versions of fcitx provide this function as a default
+    void setCursorIndex(int localIndex);
 
+    // set the cursor top of the next/prev page
+    void nextPage();
+    void prevPage();
+
+    // show cursor on the candidate list
     void focus();
 
-    bool focused() const { return focused_; }
-
-   private:
-    bool focused_ = false;
+    // whether the candidate list is focused
+    bool focused() const;
 };
 
 }  // namespace fcitx
