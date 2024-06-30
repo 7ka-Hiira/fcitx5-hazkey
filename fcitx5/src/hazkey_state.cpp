@@ -113,24 +113,22 @@ void HazkeyState::preeditKeyEvent(
         case FcitxKey_F8:
         case FcitxKey_F9:
         case FcitxKey_F10:
+        case FcitxKey_Muhenkan:
             functionKeyHandler(event);
             break;
         case FcitxKey_Escape:
             reset();
             break;
         case FcitxKey_space:
+        case FcitxKey_Henkan:
             showNonPredictCandidateList();
-            if (PredictCandidateList != nullptr) {
-                auto newCandidateList =
-                    std::dynamic_pointer_cast<HazkeyCandidateList>(
-                        ic_->inputPanel().candidateList());
-                advanceCandidateCursor(newCandidateList);
-            }
             break;
         case FcitxKey_Up:
         case FcitxKey_Down:
         case FcitxKey_Tab:
-            if (PredictCandidateList != nullptr) {
+            if (PredictCandidateList == nullptr) {
+                showNonPredictCandidateList();
+            } else {
                 PredictCandidateList->focus();
                 updateCandidateCursor(PredictCandidateList);
             }
@@ -199,6 +197,7 @@ void HazkeyState::candidateKeyEvent(
         case FcitxKey_Return:
             candidateCompleteHandler(candidateList);
             break;
+        case FcitxKey_Escape:
         case FcitxKey_BackSpace:
             showPreeditCandidateList();
             break;
@@ -224,9 +223,6 @@ void HazkeyState::candidateKeyEvent(
         case FcitxKey_F9:
         case FcitxKey_F10:
             functionKeyHandler(event);
-            break;
-        case FcitxKey_Escape:
-            reset();
             break;
         default:
             if (isAltDigitKeyEvent(event) ||
@@ -286,6 +282,7 @@ void HazkeyState::functionKeyHandler(KeyEvent &event) {
             directCharactorConversion(ConversionMode::RawFullwidth);
             break;
         case FcitxKey_F10:
+        case FcitxKey_Muhenkan:
             directCharactorConversion(ConversionMode::RawHalfwidth);
             break;
         default:
