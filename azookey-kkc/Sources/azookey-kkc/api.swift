@@ -113,7 +113,7 @@ public func freeComposingTextInstance(ptr: UnsafeMutablePointer<ComposingText>?)
       inputCharacter = Character(inputUnicode)
     }
   case "!", "\"", "#", "$", "%", "&", "'", "(", ")", "*", "+", "/", ":", ";", "<",
-    "=", ">", "?", "@", "[", "\\", "]", "^", "_", "`", "{", "|", "}", "~":
+    "=", ">", "?", "@", "[", "\\", "]", "^", "_", "`", "{", "|", "}", "~", "¥":
     inputCharacter = symbolHalfwidthToFullwidth(
       character: Character(inputUnicode), reverse: config.symbolStyle == .halfwidth)
   case ".":

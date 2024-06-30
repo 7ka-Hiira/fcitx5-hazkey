@@ -22,7 +22,7 @@ extension ComposingText {
     // reverse back to original order
     let romaji = self.input.reversed().map {
       // convert symbol first because applyingTransform doesn't work for them
-      var character = symbolHalfwidthToFullwidth(character: $0.character, reverse: fullwidth)
+      var character = symbolJaToEn(character: symbolHalfwidthToFullwidth(character: symbolJaToEn(character: $0.character, reverse: false), reverse: fullwidth), reverse: false)
       switch character {
       case "ん":
         character = "n"
@@ -117,7 +117,7 @@ public class KkcConfig {
     keyboardLanguage: .ja_JP,
     typographyLetterCandidate: true,
     unicodeCandidate: true,
-    englishCandidateInRoman2KanaInput: true,
+    englishCandidateInRoman2KanaInput: false,
     fullWidthRomanCandidate: true,
     halfWidthKanaCandidate: true,
     learningType: .nothing,
@@ -211,6 +211,29 @@ func cycleAlphabetCase(_ alphabet: String, preedit: String) -> String {
   return result
 }
 
+func symbolJaToEn(character: Character, reverse: Bool) -> Character {
+  let h2z: [Character: Character] = [
+    "。": "．",
+    "、": "，",
+    "・": "／",
+    "「": "［",
+    "」": "］",
+    "￥": "＼",
+    "｡": ".",
+    "､": ",",
+    "･": "/",
+    "｢": "[",
+    "｣": "]",
+    "¥": "\\",
+  ]
+  if reverse {
+    let z2h = Dictionary(uniqueKeysWithValues: h2z.map { ($1, $0) })
+    return z2h[character] ?? character
+  } else {
+    return h2z[character] ?? character
+  }
+}
+
 func symbolHalfwidthToFullwidth(character: Character, reverse: Bool) -> Character {
   let h2z: [Character: Character] = [
     "!": "！",
@@ -244,6 +267,8 @@ func symbolHalfwidthToFullwidth(character: Character, reverse: Bool) -> Characte
     ":": "：",
     "]": "」",
     "/": "・",
+    ",": "、",
+    ".": "。",
   ]
   if reverse {
     let z2h = Dictionary(uniqueKeysWithValues: h2z.map { ($1, $0) })
