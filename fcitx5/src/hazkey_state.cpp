@@ -16,9 +16,9 @@ HazkeyState::HazkeyState(HazkeyEngine *engine, InputContext *ic)
 bool HazkeyState::isInputableEvent(const KeyEvent &event) {
     auto key = event.key();
     if (key.check(FcitxKey_space) || key.isSimple() ||
+        Key::keySymToUTF8(key.sym()).size() > 1 ||
         (key.sym() >= 0x04a1 && key.sym() <= 0x04df)) {
         // 0x04a1 - 0x04dd is the range of kana keys
-        FCITX_INFO() << "isInputableEvent: true";
         return true;
     }
     return false;
