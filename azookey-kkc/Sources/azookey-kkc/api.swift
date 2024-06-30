@@ -66,7 +66,7 @@ public func freeComposingTextInstance(ptr: UnsafeMutablePointer<ComposingText>?)
 @_silgen_name("kkc_input_text")
 @MainActor public func inputText(
   composingTextPtr: UnsafeMutablePointer<ComposingText>?, kkcConfigPtr: OpaquePointer?,
-  stringPtr: UnsafePointer<Int8>?
+  stringPtr: UnsafePointer<Int8>?, isDirect: Bool
 ) {
   guard let composingTextPtr = composingTextPtr else {
     return
@@ -91,7 +91,7 @@ public func freeComposingTextInstance(ptr: UnsafeMutablePointer<ComposingText>?)
   }
 
   let inputStyle: InputStyle
-  if inputUnicode.properties.isAlphabetic {
+  if inputUnicode.properties.isAlphabetic && !isDirect {
     inputStyle = .roman2kana
   } else {
     inputStyle = .direct

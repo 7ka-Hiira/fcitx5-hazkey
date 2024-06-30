@@ -18,6 +18,7 @@ bool HazkeyState::isInputableEvent(const KeyEvent &event) {
     if (key.check(FcitxKey_space) || key.isSimple() ||
         (key.sym() >= 0x04a1 && key.sym() <= 0x04df)) {
         // 0x04a1 - 0x04dd is the range of kana keys
+        FCITX_INFO() << "isInputableEvent: true";
         return true;
     }
     return false;
@@ -25,6 +26,15 @@ bool HazkeyState::isInputableEvent(const KeyEvent &event) {
 
 void HazkeyState::keyEvent(KeyEvent &event) {
     FCITX_DEBUG() << "HazkeyState keyEvent";
+
+    // Alphabet + Shift to enter direct input mode
+    // Pressing only Shift key to toggle direct input mode
+    if (event.key().sym() >= FcitxKey_A && event.key().sym() <= FcitxKey_Z) {
+        isDirectInputMode_ = true;
+    } else if (event.key().sym() == FcitxKey_Shift_L ||
+               event.key().sym() == FcitxKey_Shift_R) {
+        isDirectInputMode_ = !isDirectInputMode_;
+    }
 
     auto candidateList = std::dynamic_pointer_cast<HazkeyCandidateList>(
         event.inputContext()->inputPanel().candidateList());
@@ -64,7 +74,8 @@ void HazkeyState::noPreeditKeyEvent(KeyEvent &event) {
             if (isInputableEvent(event)) {
                 composingText_ = kkc_get_composing_text_instance();
                 kkc_input_text(composingText_, engine_->getKkcConfig(),
-                               Key::keySymToUTF8(keysym).c_str());
+                               Key::keySymToUTF8(keysym).c_str(),
+                               isDirectInputMode_);
                 showPreeditCandidateList();
                 setHiraganaAUX();
             } else {
@@ -151,7 +162,8 @@ void HazkeyState::preeditKeyEvent(
                     reset();
                 } else {
                     kkc_input_text(composingText_, engine_->getKkcConfig(),
-                                   Key::keySymToUTF8(keysym).c_str());
+                                   Key::keySymToUTF8(keysym).c_str(),
+                                   isDirectInputMode_);
                     showPreeditCandidateList();
                 }
             }
@@ -231,7 +243,8 @@ void HazkeyState::candidateKeyEvent(
                 reset();
                 composingText_ = kkc_get_composing_text_instance();
                 kkc_input_text(composingText_, engine_->getKkcConfig(),
-                               Key::keySymToUTF8(keysym).c_str());
+                               Key::keySymToUTF8(keysym).c_str(),
+                               isDirectInputMode_);
                 showPreeditCandidateList();
             } else {
                 return event.filter();
@@ -449,6 +462,7 @@ void HazkeyState::reset() {
         kkc_free_composing_text_instance(composingText_);
     }
     isDirectConversionMode_ = false;
+    isDirectInputMode_ = false;
     isCursorMoving_ = false;
     cursorIndex_ = 0;
     ic_->inputPanel().reset();

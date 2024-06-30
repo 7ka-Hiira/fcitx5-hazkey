@@ -23,7 +23,8 @@ ComposingText *kkc_get_composing_text_instance(void);
 void kkc_free_composing_text_instance(ComposingText *composingTextPtr);
 
 void kkc_input_text(ComposingText *composingTextPtr,
-                    const KkcConfig *kkcConfigPtr, const char *stringPtr);
+                    const KkcConfig *kkcConfigPtr, const char *stringPtr,
+                    bool isDirectInput);
 void kkc_delete_backward(ComposingText *composingTextPtr);
 void kkc_delete_forward(ComposingText *composingTextPtr);
 void kkc_complete_prefix(ComposingText *composingTextPtr,
