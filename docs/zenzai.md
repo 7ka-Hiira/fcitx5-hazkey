@@ -9,11 +9,11 @@ https://github.com/ensan-hcl/AzooKeyKanaKanjiConverter/blob/develop/Docs/zenzai.
 
 # Vulkanのインストール
 
-Zenzaiを使用するためには、Vulkanが必要です。ご利用の環境に合わせてVulkanをインストールしてください。
+Zenzaiを使用するためには、Vulkanドライバが必要です。ご利用の環境に合わせてインストールしてください。
 
 # 有効化
 
-Readmeの手順に従って、fcitx5-hazkeyをインストール・設定してください。
+Readmeの手順に従って、fcitx5-hazkeyをインストール・設定します。
 
 ## モデルのダウンロード
 

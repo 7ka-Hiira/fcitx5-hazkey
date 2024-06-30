@@ -3,6 +3,10 @@ Hazkey input method for fcitx5
 
 [AzooKeyKanaKanjiConverter](https://github.com/ensan-hcl/AzooKeyKanaKanjiConverter)を利用したIMEです
 
+## Zenzaiの設定
+ニューラル漢字変換システムZenzaiを使用する場合は、以下の手順に従って設定してください
+[Zenzai setup](./docs/zenzai.md)
+
 ## Installation
 
 ### Ubuntu/Debian系
@@ -38,25 +42,24 @@ $ git clone https://github.com/7ka-Hiira/fcitx5-hazkey.git
 ```
 
 ### 2. ビルド
-error: unrecognized command-line option のようなエラーが出た場合は、もう一度実行してください
+
 ```sh
 $ cd fcitx5-hazkey
 $ mkdir build
 $ cd build
-$ cmake -DCMAKE_INSTALL_PREFIX=/usr .. # run twice if error occurs
+$ cmake -DCMAKE_INSTALL_PREFIX=/usr .. # エラーが発生しますが、無視してもう一度実行します
+$ cmake -DCMAKE_INSTALL_PREFIX=/usr ..
 $ make
 $ sudo make install
 ```
 
 ### 3. fcitx5 の設定
 fcitx5-configtool を起動し、右のリストからhazkey を選択し、左矢印ボタンで追加します
+
 表示されない場合は、以下のコマンドでfcitx5 を再起動してください
 ```sh
 $ fcitx5 -rd
 ```
-
-## Zenzaiの設定
-[Zenzai setup](./docs/zenzai.md)
 
 ## ライセンス
 [MIT License](./LICENSE)
