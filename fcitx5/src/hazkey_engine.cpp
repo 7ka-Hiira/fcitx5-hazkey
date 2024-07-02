@@ -21,7 +21,8 @@ HazkeyEngine::HazkeyEngine(Instance *instance)
     reloadConfig();
 }
 
-void HazkeyEngine::keyEvent(const InputMethodEntry &entry, KeyEvent &keyEvent) {
+void HazkeyEngine::keyEvent([[maybe_unused]] const InputMethodEntry &entry,
+                            KeyEvent &keyEvent) {
     FCITX_DEBUG() << "keyEvent: " << keyEvent.key().toString();
 
     auto inputContext = keyEvent.inputContext();
