@@ -90,116 +90,116 @@ public func freeComposingTextInstance(ptr: UnsafeMutablePointer<ComposingText>?)
       diacriticStyle: .fullwidth, gpuLayers: 0)
   }
 
-  let inputStyle: InputStyle
-  if inputUnicode.properties.isAlphabetic && !isDirect {
-    inputStyle = .roman2kana
+  if !isDirect {
+    // convert katakana to hiragana
+    if (0x30A0...0x30FF).contains(inputUnicode.value) {
+      inputUnicode = UnicodeScalar(inputUnicode.value - 96)!
+    }
+
+    let inputCharacter: Character
+
+    switch Character(inputUnicode) {
+    case "1", "2", "3", "4", "5", "6", "7", "8", "9", "0":
+      if config.numberStyle == .fullwidth {
+        inputUnicode = UnicodeScalar(inputUnicode.value + 0xFEE0)!
+        inputCharacter = Character(inputUnicode)
+      } else {
+        inputCharacter = Character(inputUnicode)
+      }
+    case "!", "\"", "#", "$", "%", "&", "'", "(", ")", "*", "+", "/", ":", ";", "<",
+      "=", ">", "?", "@", "[", "\\", "]", "^", "_", "`", "{", "|", "}", "~", "¥":
+      if isDirect {
+        inputCharacter = Character(inputUnicode)
+      } else {
+        inputCharacter = symbolHalfwidthToFullwidth(
+          character: Character(inputUnicode), reverse: config.symbolStyle == .halfwidth)
+      }
+    case ".":
+      switch config.periodStyle {
+      case .fullwidthJapanese:
+        inputCharacter = "。"
+      case .halfwidthJapanese:
+        inputCharacter = "｡"
+      case .fullwidthLatin:
+        inputCharacter = "．"
+      case .halfwidthLatin:
+        inputCharacter = "､"
+      }
+    case ",":
+      switch config.commaStyle {
+      case .fullwidthJapanese:
+        inputCharacter = "、"
+      case .halfwidthJapanese:
+        inputCharacter = "､"
+      case .fullwidthLatin:
+        inputCharacter = "，"
+      case .halfwidthLatin:
+        inputCharacter = "､"
+      }
+    case "-":
+      inputCharacter = "ー"
+    default:
+      inputCharacter = Character(inputUnicode)
+    }
+
+    var string = String(inputCharacter)
+
+    switch string {
+    case "゛":
+      if let lastElem = composingTextPtr.pointee.input.last {
+        let dakutened = CharacterUtils.dakuten(lastElem.character)
+        if dakutened == lastElem.character {
+          if lastElem.character != "゛" && lastElem.character != "゜" && lastElem.character != "゙"
+            && lastElem.character != "゚" && lastElem.character != "ﾞ" && lastElem.character != "ﾟ"
+          {
+            composingTextPtr.pointee.deleteBackwardFromCursorPosition(count: 1)
+            composingTextPtr.pointee.insertAtCursorPosition(
+              String(lastElem.character), inputStyle: lastElem.inputStyle)
+          }
+          switch config.tenCombiningStyle {
+          case .fullwidth:
+            string = "゛"
+          case .halfwidth:
+            string = "ﾞ"
+          case .combining:
+            string = "゙"
+          }
+        } else {
+          composingTextPtr.pointee.deleteBackwardFromCursorPosition(count: 1)
+          string = String(dakutened)
+        }
+      }
+    case "゜":
+      if let lastElem = composingTextPtr.pointee.input.last {
+        let handakutened = CharacterUtils.handakuten(lastElem.character)
+        if handakutened == lastElem.character {
+          if lastElem.character != "゛" && lastElem.character != "゜" && lastElem.character != "゙"
+            && lastElem.character != "゚" && lastElem.character != "ﾞ" && lastElem.character != "ﾟ"
+          {
+            composingTextPtr.pointee.deleteBackwardFromCursorPosition(count: 1)
+            composingTextPtr.pointee.insertAtCursorPosition(
+              String(lastElem.character), inputStyle: lastElem.inputStyle)
+          }
+          switch config.tenCombiningStyle {
+          case .fullwidth:
+            string = "゜"
+          case .halfwidth:
+            string = "ﾟ"
+          case .combining:
+            string = "゚"
+          }
+        } else {
+          composingTextPtr.pointee.deleteBackwardFromCursorPosition(count: 1)
+          string = String(handakutened)
+        }
+      }
+    default:
+      break
+    }
+    composingTextPtr.pointee.insertAtCursorPosition(string, inputStyle: .roman2kana)
   } else {
-    inputStyle = .direct
+    composingTextPtr.pointee.insertAtCursorPosition(String(inputUnicode), inputStyle: .direct)
   }
-
-  // convert katakana to hiragana
-  if (0x30A0...0x30FF).contains(inputUnicode.value) {
-    inputUnicode = UnicodeScalar(inputUnicode.value - 96)!
-  }
-
-  let inputCharacter: Character
-
-  switch Character(inputUnicode) {
-  case "1", "2", "3", "4", "5", "6", "7", "8", "9", "0":
-    if config.numberStyle == .fullwidth {
-      inputUnicode = UnicodeScalar(inputUnicode.value + 0xFEE0)!
-      inputCharacter = Character(inputUnicode)
-    } else {
-      inputCharacter = Character(inputUnicode)
-    }
-  case "!", "\"", "#", "$", "%", "&", "'", "(", ")", "*", "+", "/", ":", ";", "<",
-    "=", ">", "?", "@", "[", "\\", "]", "^", "_", "`", "{", "|", "}", "~", "¥":
-    inputCharacter = symbolHalfwidthToFullwidth(
-      character: Character(inputUnicode), reverse: config.symbolStyle == .halfwidth)
-  case ".":
-    switch config.periodStyle {
-    case .fullwidthJapanese:
-      inputCharacter = "。"
-    case .halfwidthJapanese:
-      inputCharacter = "｡"
-    case .fullwidthLatin:
-      inputCharacter = "．"
-    case .halfwidthLatin:
-      inputCharacter = "､"
-    }
-  case ",":
-    switch config.commaStyle {
-    case .fullwidthJapanese:
-      inputCharacter = "、"
-    case .halfwidthJapanese:
-      inputCharacter = "､"
-    case .fullwidthLatin:
-      inputCharacter = "，"
-    case .halfwidthLatin:
-      inputCharacter = "､"
-    }
-  case "-":
-    inputCharacter = "ー"
-  default:
-    inputCharacter = Character(inputUnicode)
-  }
-
-  var string = String(inputCharacter)
-
-  switch string {
-  case "゛":
-    if let lastElem = composingTextPtr.pointee.input.last {
-      let dakutened = CharacterUtils.dakuten(lastElem.character)
-      if dakutened == lastElem.character {
-        if lastElem.character != "゛" && lastElem.character != "゜" && lastElem.character != "゙"
-          && lastElem.character != "゚" && lastElem.character != "ﾞ" && lastElem.character != "ﾟ"
-        {
-          composingTextPtr.pointee.deleteBackwardFromCursorPosition(count: 1)
-          composingTextPtr.pointee.insertAtCursorPosition(
-            String(lastElem.character), inputStyle: lastElem.inputStyle)
-        }
-        switch config.tenCombiningStyle {
-        case .fullwidth:
-          string = "゛"
-        case .halfwidth:
-          string = "ﾞ"
-        case .combining:
-          string = "゙"
-        }
-      } else {
-        composingTextPtr.pointee.deleteBackwardFromCursorPosition(count: 1)
-        string = String(dakutened)
-      }
-    }
-  case "゜":
-    if let lastElem = composingTextPtr.pointee.input.last {
-      let handakutened = CharacterUtils.handakuten(lastElem.character)
-      if handakutened == lastElem.character {
-        if lastElem.character != "゛" && lastElem.character != "゜" && lastElem.character != "゙"
-          && lastElem.character != "゚" && lastElem.character != "ﾞ" && lastElem.character != "ﾟ"
-        {
-          composingTextPtr.pointee.deleteBackwardFromCursorPosition(count: 1)
-          composingTextPtr.pointee.insertAtCursorPosition(
-            String(lastElem.character), inputStyle: lastElem.inputStyle)
-        }
-        switch config.tenCombiningStyle {
-        case .fullwidth:
-          string = "゜"
-        case .halfwidth:
-          string = "ﾟ"
-        case .combining:
-          string = "゚"
-        }
-      } else {
-        composingTextPtr.pointee.deleteBackwardFromCursorPosition(count: 1)
-        string = String(handakutened)
-      }
-    }
-  default:
-    break
-  }
-
-  composingTextPtr.pointee.insertAtCursorPosition(string, inputStyle: inputStyle)
 }
 
 @_silgen_name("kkc_delete_backward")

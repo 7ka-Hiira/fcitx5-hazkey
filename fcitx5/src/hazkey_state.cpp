@@ -29,22 +29,43 @@ void HazkeyState::keyEvent(KeyEvent &event) {
 
     // Alphabet + Shift to enter direct input mode
     // Pressing only Shift key to toggle direct input mode
-    if (event.key().sym() >= FcitxKey_A && event.key().sym() <= FcitxKey_Z) {
+    if (!event.isRelease() &&
+        // FcitxKey_A-Z means shifted LAZ keys, enter direct mode even if shift
+        // is not pressed alone
+        (event.key().sym() >= FcitxKey_A && event.key().sym() <= FcitxKey_Z)) {
         isDirectInputMode_ = true;
-    } else if (event.key().sym() == FcitxKey_Shift_L ||
-               event.key().sym() == FcitxKey_Shift_R) {
+        isShiftPressedAlone_ = false;
+    } else if (event.isRelease() &&
+               (event.key().sym() == FcitxKey_Shift_L ||
+                event.key().sym() == FcitxKey_Shift_R) &&
+               isShiftPressedAlone_) {
         isDirectInputMode_ = !isDirectInputMode_;
+        isShiftPressedAlone_ = false;
+    } else if (!event.isRelease() && isShiftPressedAlone_) {
+        isShiftPressedAlone_ = false;
+    } else if (!event.isRelease() && (event.key().sym() == FcitxKey_Shift_L ||
+                                      event.key().sym() == FcitxKey_Shift_R)) {
+        isShiftPressedAlone_ = true;
     }
 
     auto candidateList = std::dynamic_pointer_cast<HazkeyCandidateList>(
         event.inputContext()->inputPanel().candidateList());
 
-    if (candidateList != nullptr && candidateList->focused()) {
+    if (candidateList != nullptr && candidateList->focused() &&
+        !event.isRelease()) {
         candidateKeyEvent(event, candidateList);
-    } else if (composingText_ != nullptr) {
+    } else if (composingText_ != nullptr && !event.isRelease()) {
         preeditKeyEvent(event, candidateList);
-    } else {
+    } else if (!event.isRelease()) {
         noPreeditKeyEvent(event);
+    } else if (composingText_ != nullptr && !candidateList->focused()) {
+        setAuxDownText(Text("[Alt+数字で選択]"));
+    } else {
+        setAuxDownText(std::nullopt);
+    }
+
+    if (event.isRelease()) {
+        return;
     }
 
     auto newCandidateList = std::dynamic_pointer_cast<HazkeyCandidateList>(
@@ -319,7 +340,7 @@ void HazkeyState::directCharactorConversion(ConversionMode mode) {
     auto candidateList = ic_->inputPanel().candidateList();
     if (candidateList) {
         ic_->inputPanel().setCandidateList(nullptr);
-        ic_->inputPanel().setAuxDown(Text());
+        setAuxDownText(std::nullopt);
     }
 }
 
@@ -408,7 +429,7 @@ void HazkeyState::showPreeditCandidateList() {
     auto newCandidateList = std::dynamic_pointer_cast<HazkeyCandidateList>(
         ic_->inputPanel().candidateList());
     newCandidateList->setPageSize(PredictCandidateListSize);
-    ic_->inputPanel().setAuxDown(Text("[Alt+数字で選択]"));
+    setAuxDownText(Text("[Alt+数字で選択]"));
 }
 
 /// Candidate Cursor
@@ -440,7 +461,17 @@ void HazkeyState::setCandidateCursorAUX(
     auto label = "[" + std::to_string(candidateList->globalCursorIndex() + 1) +
                  "/" + std::to_string(candidateList->totalSize()) + "]";
     ic_->inputPanel().setAuxUp(Text(label));
-    ic_->inputPanel().setAuxDown(Text());
+    setAuxDownText(std::nullopt);
+}
+
+void HazkeyState::setAuxDownText(std::optional<Text> optText) {
+    auto aux = Text();
+    if (isDirectInputMode_) {
+        aux.append(Text("[直接入力]"));
+    } else if (optText != std::nullopt) {
+        aux.append(optText.value());
+    }
+    ic_->inputPanel().setAuxDown(aux);
 }
 
 void HazkeyState::setHiraganaAUX() {
@@ -459,6 +490,7 @@ void HazkeyState::reset() {
         kkc_free_composing_text_instance(composingText_);
     }
     isDirectConversionMode_ = false;
+    // do not reset isShiftPressedAlone_ because shift may still be pressed
     isDirectInputMode_ = false;
     isCursorMoving_ = false;
     cursorIndex_ = 0;

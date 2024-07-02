@@ -22,10 +22,6 @@ HazkeyEngine::HazkeyEngine(Instance *instance)
 }
 
 void HazkeyEngine::keyEvent(const InputMethodEntry &entry, KeyEvent &keyEvent) {
-    FCITX_UNUSED(entry);
-    if (keyEvent.isRelease()) {
-        return;
-    }
     FCITX_DEBUG() << "keyEvent: " << keyEvent.key().toString();
 
     auto inputContext = keyEvent.inputContext();

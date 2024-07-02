@@ -92,18 +92,18 @@ public class KkcConfig {
   periodStyle: KkcConfig.TenStyle, commaStyle: KkcConfig.TenStyle, spaceStyle: KkcConfig.Style,
   diacriticStyle: KkcConfig.DiacriticStyle, gpuLayers: Int32 = 0
 ) -> KkcConfig {
-  var dictDir: URL {
+  var dataDir: URL {
     FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
       .appendingPathComponent("hazkey", isDirectory: true)
   }
 
   var zenaiModel: URL {
-    dictDir.appendingPathComponent("zenzai.gguf", isDirectory: false)
+    dataDir.appendingPathComponent("zenzai.gguf", isDirectory: false)
   }
 
   do {
-    try FileManager.default.createDirectory(at: dictDir, withIntermediateDirectories: true)
-    print("dictDir: \(dictDir)")
+    try FileManager.default.createDirectory(at: dataDir, withIntermediateDirectories: true)
+    print("userDict: \(dataDir)")
   } catch {
     print("Error creating directory: \(error)")
   }
@@ -112,8 +112,8 @@ public class KkcConfig {
 
   let options = ConvertRequestOptions.withDefaultDictionary(
     N_best: 9,
-    requireJapanesePrediction: false,  // may overwritten
-    requireEnglishPrediction: false,  //may overwritten
+    requireJapanesePrediction: false,
+    requireEnglishPrediction: false,
     keyboardLanguage: .ja_JP,
     typographyLetterCandidate: true,
     unicodeCandidate: true,
@@ -122,8 +122,8 @@ public class KkcConfig {
     halfWidthKanaCandidate: true,
     learningType: .nothing,
     maxMemoryCount: 65536,
-    memoryDirectoryURL: dictDir,
-    sharedContainerURL: dictDir,
+    memoryDirectoryURL: dataDir,
+    sharedContainerURL: dataDir,
     zenzaiMode: zenzaiEnabled ? .on(weight: zenaiModel, inferenceLimit: zenzaiInferLimit, gpuLayers: positiveGpuLayers) : .off,
     metadata: .init(versionString: "fcitx5-hazkey 0.0.1")
   )

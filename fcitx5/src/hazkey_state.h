@@ -90,6 +90,9 @@ class HazkeyState : public InputContextProperty {
     // like "[1/100]"
     void setCandidateCursorAUX(
         std::shared_ptr<HazkeyCandidateList> candidateList);
+    // set AuxDown
+    // like "[Tabキーで選択]" or "[直接入力モード]"
+    void setAuxDownText(std::optional<Text>);
     // UpAUX that shows unconverted text
     void setHiraganaAUX();
     // check if the key
@@ -104,6 +107,7 @@ class HazkeyState : public InputContextProperty {
 
     bool isDirectConversionMode_ = false;
     bool isDirectInputMode_ = false;
+    bool isShiftPressedAlone_ = false;
     // engine
     HazkeyEngine *engine_;
     // fcitx input context
