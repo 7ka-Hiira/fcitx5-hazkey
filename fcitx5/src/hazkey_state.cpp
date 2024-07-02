@@ -58,7 +58,8 @@ void HazkeyState::keyEvent(KeyEvent &event) {
         preeditKeyEvent(event, candidateList);
     } else if (!event.isRelease()) {
         noPreeditKeyEvent(event);
-    } else if (composingText_ != nullptr && !candidateList->focused()) {
+    } else if (composingText_ != nullptr && candidateList != nullptr &&
+               !candidateList->focused()) {
         setAuxDownText(Text("[Alt+数字で選択]"));
     } else {
         setAuxDownText(std::nullopt);
