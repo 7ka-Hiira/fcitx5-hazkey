@@ -1,16 +1,11 @@
 #ifndef _FCITX5_HAZKEY_HAZKEY_ENGINE_H_
 #define _FCITX5_HAZKEY_HAZKEY_ENGINE_H_
 
-#include <fcitx-config/configuration.h>
 #include <fcitx-config/iniparser.h>
-#include <fcitx-utils/handlertable_details.h>
-#include <fcitx-utils/i18n.h>
-#include <fcitx-utils/library.h>
 #include <fcitx/addonfactory.h>
 #include <fcitx/addonmanager.h>
 #include <fcitx/inputmethodengine.h>
 #include <fcitx/instance.h>
-#include <fcitx/menu.h>
 #include <iconv.h>
 
 #include "../../azookey-kkc/libhazkey.h"
