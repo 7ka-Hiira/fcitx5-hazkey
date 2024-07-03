@@ -60,7 +60,7 @@ void HazkeyState::keyEvent(KeyEvent &event) {
         noPreeditKeyEvent(event);
     } else if (composingText_ != nullptr && candidateList != nullptr &&
                !candidateList->focused()) {
-        setAuxDownText(Text("[Alt+数字で選択]"));
+        setAuxDownText(std::string("[Alt+数字で選択]"));
     } else {
         setAuxDownText(std::nullopt);
     }
@@ -430,7 +430,7 @@ void HazkeyState::showPreeditCandidateList() {
     auto newCandidateList = std::dynamic_pointer_cast<HazkeyCandidateList>(
         ic_->inputPanel().candidateList());
     newCandidateList->setPageSize(PredictCandidateListSize);
-    setAuxDownText(Text("[Alt+数字で選択]"));
+    setAuxDownText(std::string("[Alt+数字で選択]"));
 }
 
 /// Candidate Cursor
@@ -465,10 +465,11 @@ void HazkeyState::setCandidateCursorAUX(
     setAuxDownText(std::nullopt);
 }
 
-void HazkeyState::setAuxDownText(std::optional<Text> optText) {
+void HazkeyState::setAuxDownText(std::optional<std::string> optText) {
     auto aux = Text();
     if (isDirectInputMode_) {
-        aux.append(Text("[直接入力]"));
+        // appending fcitx::Text is supported only >= 5.1.9
+        aux.append(std::string("[直接入力]"));
     } else if (optText != std::nullopt) {
         aux.append(optText.value());
     }
