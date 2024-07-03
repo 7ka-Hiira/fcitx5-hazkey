@@ -18,8 +18,6 @@
 
 namespace fcitx {
 
-/// Config
-
 enum class NumberStyle {
     Halfwidth,
     Fullwidth,

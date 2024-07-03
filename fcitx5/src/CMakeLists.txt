@@ -1,7 +1,5 @@
 add_library(fcitx5-hazkey SHARED hazkey_state.cpp hazkey_engine.cpp hazkey_candidate.cpp hazkey_preedit.cpp)
 
-#link_directories(${CMAKE_BINARY_DIR}/azookey-kkc/.build/release)
-
 target_link_libraries(fcitx5-hazkey PRIVATE Fcitx5::Core Fcitx5::Config "${CMAKE_SOURCE_DIR}/azookey-kkc/.build/release/libhazkey.so")
 
 

@@ -13,3 +13,6 @@ msgstr ""
 
 msgid "Hazkey"
 msgstr "Hazkey"
+
+msgid "Halfwidth"
+msgstr "半角"

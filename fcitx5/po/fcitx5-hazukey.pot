@@ -13,3 +13,6 @@ msgstr ""
 
 msgid "Hazkey"
 msgstr ""
+
+msgid "Halfwidth"
+msgstr ""
