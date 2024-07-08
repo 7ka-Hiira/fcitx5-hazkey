@@ -5,7 +5,7 @@ include(GNUInstallDirs)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-option(SKIP_SWIFT_PATH_UPDATE "Skip updating path.swift" OFF)
+option(SKIP_KKC_PATH_UPDATE "Skip updating path.swift" OFF)
 
 # check if vulkan headers are installed
 find_package(Vulkan REQUIRED)
@@ -17,7 +17,8 @@ else()
     set(SWIFT_BUILD_TYPE "release")
 endif()
 
-if(NOT SKIP_PATH_UPDATE)
+if(NOT SKIP_KKC_PATH_UPDATE)
+    message(STATUS "Updating path.swift")
     # write path.swift
     file(WRITE ${CMAKE_CURRENT_SOURCE_DIR}/azookey-kkc/Sources/azookey-kkc/path.swift "let systemResourecePath: String = \"${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATADIR}/hazkey\"")
 endif()
