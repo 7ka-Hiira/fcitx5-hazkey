@@ -38,7 +38,7 @@ $ yay -S fcitx5-hazkey  # yayの場合
 
 ### 1. リポジトリのクローン
 ```sh
-$ git clone https://github.com/7ka-Hiira/fcitx5-hazkey.git
+$ git clone https://github.com/7ka-Hiira/fcitx5-hazkey.git --recursive
 ```
 
 ### 2. ビルド
