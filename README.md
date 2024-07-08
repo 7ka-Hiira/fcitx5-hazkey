@@ -3,11 +3,13 @@ Hazkey input method for fcitx5
 
 [AzooKeyKanaKanjiConverter](https://github.com/ensan-hcl/AzooKeyKanaKanjiConverter)を利用したIMEです
 
-## Zenzaiの設定
-ニューラル漢字変換システムZenzaiを使用する場合は、以下の手順に従って設定してください
-[Zenzai setup](./docs/zenzai.md)
+## 基本操作
+[Hazkey basic (作成中)](./docs/basic.md)
 
-## Installation
+## Zenzaiの設定
+ニューラル漢字変換システムZenzaiを使用する場合は、[Zenzai setup](./docs/zenzai.md) の手順に従って設定してください
+
+## インストール
 
 ### Ubuntu/Debian系
 [リリースページ](https://github.com/7ka-Hiira/fcitx5-hazkey/releases/latest)からdebファイルをダウンロードしてインストールしてください
@@ -28,7 +30,7 @@ $ yay -S fcitx5-hazkey-bin # yayの場合
 $ yay -S fcitx5-hazkey  # yayの場合
 ```
 
-## Build from source
+## ソースからインストール
 以下をインストールする必要があります
   - fcitx5 development headers >= 5.0.4
   - swift >= 5.10
