@@ -14,6 +14,10 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
 else()
     set(SWIFT_BUILD_TYPE "release")
 endif()
+
+# write path.swift
+file(WRITE ${CMAKE_CURRENT_SOURCE_DIR}/azookey-kkc/Sources/azookey-kkc/path.swift "let systemResourecePath: String = \"${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATADIR}/hazkey\"")
+
 execute_process(
     COMMAND swift build -c ${SWIFT_BUILD_TYPE} -Xswiftc -static-stdlib 
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/azookey-kkc

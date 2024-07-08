@@ -2,3 +2,5 @@
 /.cache
 /build
 /azookey-kkc/.build
+
+/azookey-kkc/Sources/azookey-kkc/path.swift

@@ -97,15 +97,12 @@ public class KkcConfig {
       .appendingPathComponent("hazkey", isDirectory: true)
   }
 
-  let systemResourecePath = "/usr/share/hazkey"
-
   var systemResourceDir: URL {
     URL(fileURLWithPath: systemResourecePath, isDirectory: true)
   }
 
   do {
     try FileManager.default.createDirectory(at: userDataDir, withIntermediateDirectories: true)
-    print("userDataDir: \(userDataDir)")
   } catch {
     print("Error creating directory: \(error)")
   }
