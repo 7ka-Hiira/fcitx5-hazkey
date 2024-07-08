@@ -1,5 +1,5 @@
 import Foundation
-import KanaKanjiConverterModuleWithDefaultDictionary
+import KanaKanjiConverterModule
 
 extension ComposingText {
   func toHiragana() -> String {
@@ -92,25 +92,27 @@ public class KkcConfig {
   periodStyle: KkcConfig.TenStyle, commaStyle: KkcConfig.TenStyle, spaceStyle: KkcConfig.Style,
   diacriticStyle: KkcConfig.DiacriticStyle, gpuLayers: Int32 = 0
 ) -> KkcConfig {
-  var dataDir: URL {
+  var userDataDir: URL {
     FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
       .appendingPathComponent("hazkey", isDirectory: true)
   }
 
-  var zenaiModel: URL {
-    dataDir.appendingPathComponent("zenzai.gguf", isDirectory: false)
+  let systemResourecePath = "/usr/share/hazkey"
+
+  var systemResourceDir: URL {
+    URL(fileURLWithPath: systemResourecePath, isDirectory: true)
   }
 
   do {
-    try FileManager.default.createDirectory(at: dataDir, withIntermediateDirectories: true)
-    print("userDict: \(dataDir)")
+    try FileManager.default.createDirectory(at: userDataDir, withIntermediateDirectories: true)
+    print("userDataDir: \(userDataDir)")
   } catch {
     print("Error creating directory: \(error)")
   }
 
   let positiveGpuLayers = max(0, gpuLayers)
 
-  let options = ConvertRequestOptions.withDefaultDictionary(
+  let options = ConvertRequestOptions                                (
     N_best: 9,
     requireJapanesePrediction: false,
     requireEnglishPrediction: false,
@@ -122,9 +124,10 @@ public class KkcConfig {
     halfWidthKanaCandidate: true,
     learningType: .nothing,
     maxMemoryCount: 65536,
-    memoryDirectoryURL: dataDir,
-    sharedContainerURL: dataDir,
-    zenzaiMode: zenzaiEnabled ? .on(weight: zenaiModel, inferenceLimit: zenzaiInferLimit, gpuLayers: positiveGpuLayers) : .off,
+    dictionaryResourceURL: systemResourceDir.appendingPathComponent("Dictionary", isDirectory: true),
+    memoryDirectoryURL: userDataDir,
+    sharedContainerURL: userDataDir,
+    zenzaiMode: zenzaiEnabled ? .on(weight: systemResourceDir.appendingPathComponent("zenzai.gguf", isDirectory: false), inferenceLimit: zenzaiInferLimit, gpuLayers: positiveGpuLayers) : .off,
     metadata: .init(versionString: "fcitx5-hazkey 0.0.1")
   )
   return KkcConfig(

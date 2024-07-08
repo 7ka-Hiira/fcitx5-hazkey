@@ -24,7 +24,7 @@ let package = Package(
       name: "hazkey-kkc",
       dependencies: [
         .product(
-          name: "KanaKanjiConverterModuleWithDefaultDictionary",
+          name: "KanaKanjiConverterModule",
           package: "AzooKeyKanaKanjiConverter"),
         .product(
           name: "SwiftUtils",

@@ -15,7 +15,7 @@ else()
     set(SWIFT_BUILD_TYPE "release")
 endif()
 execute_process(
-    COMMAND swift build -c ${SWIFT_BUILD_TYPE} -Xswiftc -static-stdlib
+    COMMAND swift build -c ${SWIFT_BUILD_TYPE} -Xswiftc -static-stdlib 
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/azookey-kkc
 )
 
@@ -29,8 +29,8 @@ install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/azookey-kkc/.build/release/libhazkey.s
         DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
 # install dictionary
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/azookey-kkc/.build/release/AzooKeyKanakanjiConverter_KanaKanjiConverterModuleWithDefaultDictionary.resources
-        DESTINATION ${CMAKE_INSTALL_BINDIR})
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/azooKey_dictionary_storage/Dictionary
+        DESTINATION ${CMAKE_INSTALL_DATADIR}/hazkey)
 
 # build fcitx5-hazkey
 add_subdirectory(fcitx5)

@@ -1,5 +1,5 @@
 import Foundation
-import KanaKanjiConverterModuleWithDefaultDictionary
+import KanaKanjiConverterModule
 import SwiftUtils
 
 /// C FFIs
