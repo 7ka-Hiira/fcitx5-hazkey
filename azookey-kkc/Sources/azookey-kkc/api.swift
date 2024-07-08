@@ -35,6 +35,15 @@ import SwiftUtils
     symbolStyle: symbolStyle, periodStyle: periodStyle,
     commaStyle: commaStyle, spaceStyle: spaceStyle, diacriticStyle: diacriticStyle,
     gpuLayers: gpuLayers)
+
+  // preload model to avoid delay on first input
+  if zenzaiEnabled {
+    var dummyComposingText = ComposingText()
+    dummyComposingText.insertAtCursorPosition("a", inputStyle: .direct)
+    let _ = config.converter.requestCandidates(
+      dummyComposingText, options: config.convertOptions)
+  }
+
   let configPtr = Unmanaged.passRetained(config).toOpaque()
   return OpaquePointer(configPtr)
 }
