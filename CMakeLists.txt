@@ -5,7 +5,7 @@ include(GNUInstallDirs)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-option(SKIP_ZENZAI_DOWNLOAD "Skip downloading zenzai.gguf" OFF)
+option(SKIP_ZENZAI_INSTALL "Skip downloading zenzai.gguf" OFF)
 option(SKIP_KKC_PATH_UPDATE "Skip updating path.swift" OFF)
 
 # check if vulkan headers are installed
@@ -15,7 +15,7 @@ find_package(Vulkan REQUIRED)
 
 set(FILE_URL "https://huggingface.co/Miwa-Keita/zenz-v1/resolve/main/ggml-model-Q8_0.gguf")
 
-if(NOT SKIP_ZENZAI_DOWNLOAD)
+if(NOT SKIP_ZENZAI_INSTALL)
     file(DOWNLOAD ${FILE_URL}
         ${CMAKE_CURRENT_SOURCE_DIR}/zenzai.gguf
         EXPECTED_HASH SHA256=e11c68203e20bd28e155b9d8751def7e3a52bcee079e52df1145f5ce5265fd14
@@ -55,9 +55,11 @@ endif()
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/azookey-kkc/.build/release/libhazkey.so
         DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
-# install zenzai.gguf
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/zenzai.gguf
-        DESTINATION ${CMAKE_INSTALL_DATADIR}/hazkey)
+if(NOT SKIP_ZENZAI_INSTALL)
+    # install zenzai.gguf
+    install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/zenzai.gguf
+            DESTINATION ${CMAKE_INSTALL_DATADIR}/hazkey)
+endif()
 
 # install dictionary
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/azooKey_dictionary_storage/Dictionary
