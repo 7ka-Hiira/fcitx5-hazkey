@@ -3,4 +3,5 @@
 /build
 /azookey-kkc/.build
 
+/zenzai.gguf
 /azookey-kkc/Sources/azookey-kkc/path.swift

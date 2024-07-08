@@ -11,18 +11,14 @@ https://github.com/ensan-hcl/AzooKeyKanaKanjiConverter/blob/develop/Docs/zenzai.
 
 Zenzaiを使用するためには、Vulkanドライバが必要です。ご利用の環境に合わせてインストールしてください。
 
+例えば、Arch Linuxでは、GPUに応じたvulkan-driverを提供するパッケージが必要です。
+
+Ubuntu Desktopには通常プリインストールされています。
+
+
 # 有効化
 
 Readmeの手順に従って、fcitx5-hazkeyをインストール・設定します。
-
-## モデルのダウンロード
-
-[HuggingFace](https://huggingface.co/Miwa-Keita/zenz-v1)からモデルをダウンロードします。
-
-## モデルの配置
-
-ダウンロードしたモデルを `$XDG_DATA_HOME/hazkey/zenzai.gguf` に配置します。
-通常は `~/.local/share/hazkey/zenzai.gguf` になります。
 
 ## 設定
 
