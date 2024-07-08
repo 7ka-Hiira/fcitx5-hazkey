@@ -27,12 +27,18 @@ bool HazkeyState::isInputableEvent(const KeyEvent &event) {
 void HazkeyState::keyEvent(KeyEvent &event) {
     FCITX_DEBUG() << "HazkeyState keyEvent";
 
+    FCITX_INFO() << "keyEvent: " << event.key().toString();
+    FCITX_INFO() << "state: " << event.key().states();
+
     // Alphabet + Shift to enter direct input mode
     // Pressing only Shift key to toggle direct input mode
     if (!event.isRelease() &&
         // FcitxKey_A-Z means shifted LAZ keys, enter direct mode even if shift
         // is not pressed alone
-        (event.key().sym() >= FcitxKey_A && event.key().sym() <= FcitxKey_Z)) {
+        // Ctrl & Alt also make alphabets Upper case so we need to check
+        // Shift state can't be detected
+        (event.key().sym() >= FcitxKey_A && event.key().sym() <= FcitxKey_Z &&
+         event.key().states() == KeyState::NoState)) {
         isDirectInputMode_ = true;
         isShiftPressedAlone_ = false;
     } else if (event.isRelease() &&
@@ -102,6 +108,7 @@ void HazkeyState::noPreeditKeyEvent(KeyEvent &event) {
                 showPreeditCandidateList();
                 setHiraganaAUX();
             } else {
+                isDirectInputMode_ = false;
                 return event.filter();
             }
             break;
