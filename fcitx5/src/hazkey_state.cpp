@@ -86,7 +86,8 @@ void HazkeyState::noPreeditKeyEvent(KeyEvent &event) {
 
     switch (keysym) {
         case FcitxKey_space:
-            if (*engine_->config().spaceStyle == SpaceStyle::Fullwidth) {
+            if (*engine_->config().spaceStyle == SpaceStyle::Fullwidth &&
+                !isDirectInputMode_ && key.states() != KeyState::Shift) {
                 ic_->commitString("　");
             } else {
                 ic_->commitString(" ");
