@@ -27,9 +27,6 @@ bool HazkeyState::isInputableEvent(const KeyEvent &event) {
 void HazkeyState::keyEvent(KeyEvent &event) {
     FCITX_DEBUG() << "HazkeyState keyEvent";
 
-    FCITX_INFO() << "keyEvent: " << event.key().toString();
-    FCITX_INFO() << "state: " << event.key().states();
-
     // Alphabet + Shift to enter direct input mode
     // Pressing only Shift key to toggle direct input mode
     if (!event.isRelease() &&
