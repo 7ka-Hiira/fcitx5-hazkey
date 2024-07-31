@@ -59,7 +59,7 @@ public class KkcConfig {
     case combining
   }
 
-  let convertOptions: ConvertRequestOptions
+  var convertOptions: ConvertRequestOptions
 
   let numberStyle: Style
   let symbolStyle: Style
@@ -69,11 +69,16 @@ public class KkcConfig {
 
   let tenCombiningStyle: DiacriticStyle
 
+  let zenzaiWeight: URL
+  let gpuLayers: Int32
+  let profileText: String?
+
   let converter: KanaKanjiConverter
 
   @MainActor init(
     convertOptions: ConvertRequestOptions, numberStyle: Style, symbolStyle: Style,
-    periodStyle: TenStyle, commaStyle: TenStyle, spaceStyle: Style, diacriticStyle: DiacriticStyle
+    periodStyle: TenStyle, commaStyle: TenStyle, spaceStyle: Style, diacriticStyle: DiacriticStyle,
+    zenzaiWeight: URL, gpuLayers: Int32, profileText: String?
   ) {
     self.convertOptions = convertOptions
     self.numberStyle = numberStyle
@@ -82,6 +87,9 @@ public class KkcConfig {
     self.commaStyle = commaStyle
     self.spaceStyle = spaceStyle
     self.tenCombiningStyle = diacriticStyle
+    self.zenzaiWeight = zenzaiWeight
+    self.gpuLayers = gpuLayers
+    self.profileText = profileText
     self.converter = KanaKanjiConverter()
   }
 }
@@ -90,7 +98,7 @@ public class KkcConfig {
   zenzaiEnabled: Bool = false, zenzaiInferLimit: Int = 1, numberStyle: KkcConfig.Style,
   symbolStyle: KkcConfig.Style,
   periodStyle: KkcConfig.TenStyle, commaStyle: KkcConfig.TenStyle, spaceStyle: KkcConfig.Style,
-  diacriticStyle: KkcConfig.DiacriticStyle, gpuLayers: Int32 = 0
+  diacriticStyle: KkcConfig.DiacriticStyle, gpuLayers: Int32 = 0, profileText: String?
 ) -> KkcConfig {
   var userDataDir: URL {
     FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
@@ -124,13 +132,17 @@ public class KkcConfig {
     dictionaryResourceURL: systemResourceDir.appendingPathComponent("Dictionary", isDirectory: true),
     memoryDirectoryURL: userDataDir,
     sharedContainerURL: userDataDir,
-    zenzaiMode: zenzaiEnabled ? .on(weight: systemResourceDir.appendingPathComponent("zenzai.gguf", isDirectory: false), inferenceLimit: zenzaiInferLimit, gpuLayers: positiveGpuLayers) : .off,
+    zenzaiMode: zenzaiEnabled ? .on(weight: systemResourceDir.appendingPathComponent("zenzai.gguf", isDirectory: false), inferenceLimit: zenzaiInferLimit, gpuLayers: positiveGpuLayers, versionDependentMode: .v2(.init(profile: profileText))) : .off,
     metadata: .init(versionString: "fcitx5-hazkey 6")
   )
   return KkcConfig(
     convertOptions: options, numberStyle: numberStyle, symbolStyle: symbolStyle,
     periodStyle: periodStyle, commaStyle: commaStyle, spaceStyle: spaceStyle,
-    diacriticStyle: diacriticStyle)
+    diacriticStyle: diacriticStyle,
+    zenzaiWeight: systemResourceDir.appendingPathComponent("zenzai.gguf", isDirectory: false),
+    gpuLayers: positiveGpuLayers,
+    profileText: profileText
+    )
 }
 
 func cycleAlphabetCase(_ alphabet: String, preedit: String) -> String {

@@ -12,13 +12,12 @@ option(SKIP_KKC_PATH_UPDATE "Skip updating path.swift" OFF)
 find_package(Vulkan REQUIRED)
 
 # ---- zenzai.gguf ---- #
-
-set(FILE_URL "https://huggingface.co/Miwa-Keita/zenz-v1/resolve/main/ggml-model-Q8_0.gguf")
+set(FILE_URL "https://huggingface.co/Miwa-Keita/zenz-v2-gguf/resolve/main/zenz-v2-Q5_K_M.gguf")
 
 if(NOT SKIP_ZENZAI_INSTALL)
     file(DOWNLOAD ${FILE_URL}
         ${CMAKE_CURRENT_SOURCE_DIR}/zenzai.gguf
-        EXPECTED_HASH SHA256=e11c68203e20bd28e155b9d8751def7e3a52bcee079e52df1145f5ce5265fd14
+        EXPECTED_HASH SHA256=22b8d8190bba8c9fec075ffb5b323b0f0d65c7c5f5ff82011799a0c3049d9662
         SHOW_PROGRESS)
 endif()
 

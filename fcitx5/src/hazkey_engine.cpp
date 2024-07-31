@@ -17,7 +17,8 @@ HazkeyEngine::HazkeyEngine(Instance *instance)
                        static_cast<int>(*config().commaStyle),
                        static_cast<int>(*config().spaceStyle),
                        static_cast<int>(*config().diacriticStyle),
-                       static_cast<int>(*config().gpuLayers));
+                       static_cast<int>(*config().gpuLayers),
+                       const_cast<char *>(config().zenzaiProfile->c_str()));
     reloadConfig();
 }
 
@@ -72,7 +73,8 @@ void HazkeyEngine::reloadConfig() {
                        static_cast<int>(*config().commaStyle),
                        static_cast<int>(*config().spaceStyle),
                        static_cast<int>(*config().diacriticStyle),
-                       static_cast<int>(*config().gpuLayers));
+                       static_cast<int>(*config().gpuLayers),
+                       const_cast<char *>(config().zenzaiProfile->c_str()));
 }
 
 FCITX_ADDON_FACTORY(HazkeyEngineFactory);

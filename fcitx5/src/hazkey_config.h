@@ -6,6 +6,8 @@
 #include <fcitx-utils/library.h>
 #include <fcitx/menu.h>
 
+#include <string>
+
 #include "../../azookey-kkc/libhazkey.h"
 #include "hazkey_state.h"
 
@@ -95,6 +97,8 @@ FCITX_CONFIGURATION(
     Option<bool> zenzaiEnabled{
         this, "ZenzaiEnabled",
         _("Enable Zenzai (Experimental, Requires Vulkan)"), false};
+    Option<std::string> zenzaiProfile{this, "ZenzaiProfile",
+                                      _("Zenzai Profile"), ""};
     Option<int> zenzaiInferenceLimit{this, "ZenzaiInferenceLimit",
                                      _("Zenzai Inference limit"), 1};
     Option<int> gpuLayers{this, "Zenzai GPU Layers", _("GPU Layers"), 99};

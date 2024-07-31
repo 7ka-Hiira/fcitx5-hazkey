@@ -15,8 +15,11 @@ const KkcConfig *kkc_get_config(bool zenzaiEnabled, int zenzaiInferLimit,
                                 int numberFullwidth, int symbolFullwidth,
                                 int periodFullwidth, int commaFullwidth,
                                 int spaceFullwidth, int diacriticStyle,
-                                int gpuLayers);
+                                int gpuLayers, const char *profileTextPtr);
 void kkc_free_config(const KkcConfig *kkcConfigPtr);
+
+void kkc_set_left_context(const KkcConfig *kkcConfigPtr,
+                          const char *leftContextPtr);
 
 struct ComposingText;
 ComposingText *kkc_get_composing_text_instance(void);

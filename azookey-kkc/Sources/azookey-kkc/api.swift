@@ -10,7 +10,7 @@ import SwiftUtils
 @MainActor public func getConfig(
   zenzaiEnabled: Bool, zenzaiInferLimit: Int,
   numberFullwidth: Int, symbolFullwidth: Int, periodStyleIndex: Int,
-  commaStyleIndex: Int, spaceFullwidth: Int, tenCombining: Int, gpuLayers: Int32
+  commaStyleIndex: Int, spaceFullwidth: Int, tenCombining: Int, gpuLayers: Int32, profileTextPtr: UnsafePointer<Int8>?
 ) -> OpaquePointer? {
   let numberStyle: KkcConfig.Style = numberFullwidth == 1 ? .fullwidth : .halfwidth
   let symbolStyle: KkcConfig.Style = symbolFullwidth == 1 ? .fullwidth : .halfwidth
@@ -29,12 +29,13 @@ import SwiftUtils
     tenCombining == 1
     ? .halfwidth
     : tenCombining == 2 ? .combining : .fullwidth
+  let profileText = profileTextPtr != nil ? String(cString: profileTextPtr!) : nil
 
   let config = genDefaultConfig(
     zenzaiEnabled: zenzaiEnabled, zenzaiInferLimit: zenzaiInferLimit, numberStyle: numberStyle,
     symbolStyle: symbolStyle, periodStyle: periodStyle,
     commaStyle: commaStyle, spaceStyle: spaceStyle, diacriticStyle: diacriticStyle,
-    gpuLayers: gpuLayers)
+    gpuLayers: gpuLayers, profileText: profileText)
 
   // preload model to avoid delay on first input
   if zenzaiEnabled {
@@ -54,6 +55,18 @@ public func freeConfig(ptr: OpaquePointer?) {
     return
   }
   Unmanaged<KkcConfig>.fromOpaque(UnsafeRawPointer(ptr)).release()
+}
+
+@_silgen_name("kkc_set_left_context")
+public func setLeftContext(
+  kkcConfigPtr: OpaquePointer?, leftContextPtr: UnsafePointer<Int8>?
+) {
+  guard let kkcConfigPtr = kkcConfigPtr else {
+    return
+  }
+  let KkcConfig = Unmanaged<KkcConfig>.fromOpaque(UnsafeRawPointer(kkcConfigPtr)).takeUnretainedValue()
+  let leftContext: String? = leftContextPtr != nil ? String(cString: leftContextPtr!) : nil
+  KkcConfig.convertOptions.zenzaiMode = .on(weight: KkcConfig.zenzaiWeight, gpuLayers: KkcConfig.gpuLayers, versionDependentMode: .v2(.init(profile: KkcConfig.profileText, leftSideContext: leftContext)))
 }
 
 /// ComposingText
@@ -96,7 +109,7 @@ public func freeComposingTextInstance(ptr: UnsafeMutablePointer<ComposingText>?)
     config = genDefaultConfig(
       numberStyle: .fullwidth, symbolStyle: .fullwidth,
       periodStyle: .fullwidthJapanese, commaStyle: .fullwidthJapanese, spaceStyle: .fullwidth,
-      diacriticStyle: .fullwidth, gpuLayers: 0)
+      diacriticStyle: .fullwidth, gpuLayers: 0, profileText: nil)
   }
 
   if !isDirect {
@@ -356,8 +369,9 @@ public func freeText(ptr: UnsafeMutablePointer<Int8>?) {
     config = genDefaultConfig(
       numberStyle: .fullwidth, symbolStyle: .fullwidth,
       periodStyle: .fullwidthJapanese, commaStyle: .fullwidthJapanese, spaceStyle: .fullwidth,
-      diacriticStyle: .fullwidth, gpuLayers: 0)
+      diacriticStyle: .fullwidth, gpuLayers: 0, profileText: nil)
   }
+
 
   // set options
   var options = config.convertOptions
