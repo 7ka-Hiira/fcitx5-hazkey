@@ -3,6 +3,7 @@
 
 #include <fcitx/inputcontext.h>
 #include <fcitx/inputpanel.h>
+#include <fcitx/surroundingtext.h>
 
 #include "../../azookey-kkc/libhazkey.h"
 #include "hazkey_candidate.h"
