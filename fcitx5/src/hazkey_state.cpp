@@ -98,7 +98,7 @@ void HazkeyState::noPreeditKeyEvent(KeyEvent &event) {
             break;
         default:
             if (isInputableEvent(event)) {
-                composingText_ = kkc_get_composing_text_instance();
+                newComposingText();
                 kkc_input_text(composingText_, engine_->getKkcConfig(),
                                Key::keySymToUTF8(keysym).c_str(),
                                isDirectInputMode_);
@@ -185,7 +185,7 @@ void HazkeyState::preeditKeyEvent(
                 if (isDirectConversionMode_) {
                     preedit_.commitPreedit();
                     reset();
-                    composingText_ = kkc_get_composing_text_instance();
+                    newComposingText();
                 }
                 kkc_input_text(composingText_, engine_->getKkcConfig(),
                                Key::keySymToUTF8(keysym).c_str(),
@@ -264,7 +264,7 @@ void HazkeyState::candidateKeyEvent(
             } else if (isInputableEvent(event)) {
                 preedit_.commitPreedit();
                 reset();
-                composingText_ = kkc_get_composing_text_instance();
+                newComposingText();
                 kkc_input_text(composingText_, engine_->getKkcConfig(),
                                Key::keySymToUTF8(keysym).c_str(),
                                isDirectInputMode_);
@@ -290,6 +290,24 @@ void HazkeyState::candidateCompleteHandler(
         showNonPredictCandidateList();
     } else {
         reset();
+    }
+}
+
+void HazkeyState::newComposingText() {
+    if (composingText_ != nullptr) {
+        kkc_free_composing_text_instance(composingText_);
+    }
+    composingText_ = kkc_get_composing_text_instance();
+    updateSurroundingText();
+}
+
+void HazkeyState::updateSurroundingText() {
+    if (ic_->capabilityFlags().test(CapabilityFlag::SurroundingText) &&
+        ic_->surroundingText().isValid()) {
+        auto surroundingText = ic_->surroundingText();
+        kkc_set_left_context(engine_->getKkcConfig(),
+                             surroundingText.text().c_str(),
+                             surroundingText.anchor());
     }
 }
 

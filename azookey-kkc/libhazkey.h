@@ -19,7 +19,7 @@ const KkcConfig *kkc_get_config(bool zenzaiEnabled, int zenzaiInferLimit,
 void kkc_free_config(const KkcConfig *kkcConfigPtr);
 
 void kkc_set_left_context(const KkcConfig *kkcConfigPtr,
-                          const char *leftContextPtr);
+                          const char *surrowndingTextPtr, int anchorIndex);
 
 struct ComposingText;
 ComposingText *kkc_get_composing_text_instance(void);

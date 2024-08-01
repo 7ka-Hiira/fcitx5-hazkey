@@ -59,13 +59,16 @@ public func freeConfig(ptr: OpaquePointer?) {
 
 @_silgen_name("kkc_set_left_context")
 public func setLeftContext(
-  kkcConfigPtr: OpaquePointer?, leftContextPtr: UnsafePointer<Int8>?
+  kkcConfigPtr: OpaquePointer?, surroundingTextPtr: UnsafePointer<Int8>?, anchorIndex: Int
 ) {
   guard let kkcConfigPtr = kkcConfigPtr else {
     return
   }
   let KkcConfig = Unmanaged<KkcConfig>.fromOpaque(UnsafeRawPointer(kkcConfigPtr)).takeUnretainedValue()
-  let leftContext: String? = leftContextPtr != nil ? String(cString: leftContextPtr!) : nil
+  
+  let context = surroundingTextPtr == nil ? nil : String(cString: surroundingTextPtr!)
+  let leftContext = context == nil ? nil : String(context!.prefix(anchorIndex))
+
   KkcConfig.convertOptions.zenzaiMode = .on(weight: KkcConfig.zenzaiWeight, gpuLayers: KkcConfig.gpuLayers, versionDependentMode: .v2(.init(profile: KkcConfig.profileText, leftSideContext: leftContext)))
 }
 

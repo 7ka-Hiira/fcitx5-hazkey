@@ -41,6 +41,11 @@ class HazkeyState : public InputContextProperty {
         NonPredictWithFirstPreedit,
     };
 
+    // get new composing text
+    void newComposingText();
+    // update surrounding text
+    void updateSurroundingText();
+
     // f6-f10 key handler
     void functionKeyHandler(KeyEvent &keyEvent);
     // convert to hiragana/katakana/alphanumeric directly
