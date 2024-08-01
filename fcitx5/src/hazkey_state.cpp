@@ -185,12 +185,12 @@ void HazkeyState::preeditKeyEvent(
                 if (isDirectConversionMode_) {
                     preedit_.commitPreedit();
                     reset();
-                } else {
-                    kkc_input_text(composingText_, engine_->getKkcConfig(),
-                                   Key::keySymToUTF8(keysym).c_str(),
-                                   isDirectInputMode_);
-                    showPreeditCandidateList();
+                    composingText_ = kkc_get_composing_text_instance();
                 }
+                kkc_input_text(composingText_, engine_->getKkcConfig(),
+                               Key::keySymToUTF8(keysym).c_str(),
+                               isDirectInputMode_);
+                showPreeditCandidateList();
             }
             break;
     }
