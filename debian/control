@@ -1,7 +1,7 @@
 Package: fcitx5-hazkey
 Maintainer: Nanaka Hiira <hiira plus debian at hiira dot dev>
 Architecture: amd64
-Version: 0.0.6-1
+Version: 0.0.7-1
 Depends: fcitx5
 Recommends: mesa-vulkan-drivers
 Description: Japanese input method for fcitx5, powered by azooKey engine
