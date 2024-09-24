@@ -15,7 +15,7 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/7ka-Hiira/AzooKeyKanaKanjiConverter",
-      branch: "d975294")
+      branch: "f8497e7")
   ],
   targets: [
     // Targets are the basic building blocks of a package, defining a module or a test suite.

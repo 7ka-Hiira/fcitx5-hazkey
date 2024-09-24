@@ -1,22 +1,22 @@
 {
-  "originHash" : "dbe7b12448fc1e2022f859db97f2de68596cfcd675b77c2f99819d91bebc0e34",
+  "originHash" : "34ae78ef21c0a8caf5cd08ebcbea6433250e734daedb7af566b8ab4a04c941d2",
   "pins" : [
     {
       "identity" : "azookeykanakanjiconverter",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/7ka-Hiira/AzooKeyKanaKanjiConverter",
       "state" : {
-        "branch" : "d975294",
-        "revision" : "d9752943274435fd8cafffc5ee0b05808815b04f"
+        "branch" : "f8497e7",
+        "revision" : "f8497e73a1094253d7fdd55ca3e9d4a8e052d185"
       }
     },
     {
       "identity" : "llama.cpp",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/7ka-Hiira/llama.cpp",
+      "location" : "https://github.com/ensan-hcl/llama.cpp",
       "state" : {
-        "branch" : "b01fb0b",
-        "revision" : "b01fb0b5d7dfa5851c6136a324eecd9117f948ff"
+        "branch" : "6b862f4",
+        "revision" : "6b862f4a00e20ac14341a5709977ebcd5adc5d7e"
       }
     },
     {
@@ -26,6 +26,15 @@
       "state" : {
         "revision" : "f6919dfc309e7f1b56224378b11e28bab5bccc42",
         "version" : "1.2.0"
+      }
+    },
+    {
+      "identity" : "swift-collections",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-collections",
+      "state" : {
+        "revision" : "9bf03ff58ce34478e66aaee630e491823326fd06",
+        "version" : "1.1.3"
       }
     },
     {
