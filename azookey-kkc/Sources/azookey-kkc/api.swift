@@ -65,7 +65,7 @@ public func setLeftContext(
     return
   }
   let KkcConfig = Unmanaged<KkcConfig>.fromOpaque(UnsafeRawPointer(kkcConfigPtr)).takeUnretainedValue()
-  
+
   let context = surroundingTextPtr == nil ? nil : String(cString: surroundingTextPtr!)
   let leftContext = context == nil ? nil : String(context!.prefix(anchorIndex))
 
@@ -117,7 +117,7 @@ public func freeComposingTextInstance(ptr: UnsafeMutablePointer<ComposingText>?)
 
   if !isDirect {
     // convert katakana to hiragana
-    if (0x30A0...0x30FF).contains(inputUnicode.value) {
+    if (0x30A0...0x30F3).contains(inputUnicode.value) {
       inputUnicode = UnicodeScalar(inputUnicode.value - 96)!
     }
 
