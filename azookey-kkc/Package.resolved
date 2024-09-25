@@ -1,22 +1,22 @@
 {
-  "originHash" : "34ae78ef21c0a8caf5cd08ebcbea6433250e734daedb7af566b8ab4a04c941d2",
+  "originHash" : "308e37473a50783e9013982db7537c16e9a45fae5ced35dd7bcec81495f4dbec",
   "pins" : [
     {
       "identity" : "azookeykanakanjiconverter",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/7ka-Hiira/AzooKeyKanaKanjiConverter",
       "state" : {
-        "branch" : "f8497e7",
-        "revision" : "f8497e73a1094253d7fdd55ca3e9d4a8e052d185"
+        "branch" : "013811c",
+        "revision" : "013811cdcf3c37d3e7466e2f63385819cd2769ff"
       }
     },
     {
       "identity" : "llama.cpp",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ensan-hcl/llama.cpp",
+      "location" : "https://github.com/7ka-Hiira/llama.cpp",
       "state" : {
-        "branch" : "6b862f4",
-        "revision" : "6b862f4a00e20ac14341a5709977ebcd5adc5d7e"
+        "branch" : "65c801d",
+        "revision" : "65c801d205bee8a3149b75faafb3b1e1214e4a34"
       }
     },
     {
