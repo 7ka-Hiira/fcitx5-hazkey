@@ -2,6 +2,7 @@
 /.cache
 /build
 /azookey-kkc/.build
+/azookey-kkc/*.so
 
 /zenzai.gguf
 /azookey-kkc/Sources/azookey-kkc/path.swift
