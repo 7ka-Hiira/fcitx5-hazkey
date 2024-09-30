@@ -302,12 +302,16 @@ void HazkeyState::newComposingText() {
 }
 
 void HazkeyState::updateSurroundingText() {
-    if (ic_->capabilityFlags().test(CapabilityFlag::SurroundingText) &&
-        ic_->surroundingText().isValid()) {
-        auto &surroundingText = ic_->surroundingText();
-        kkc_set_left_context(engine_->getKkcConfig(),
-                             surroundingText.text().c_str(),
-                             surroundingText.anchor());
+    if (engine_->config().zenzaiSurroundingTextEnabled.value()) {
+        if (ic_->capabilityFlags().test(CapabilityFlag::SurroundingText) &&
+            ic_->surroundingText().isValid()) {
+            auto &surroundingText = ic_->surroundingText();
+            kkc_set_left_context(engine_->getKkcConfig(),
+                                 surroundingText.text().c_str(),
+                                 surroundingText.anchor());
+        }
+    } else {
+        kkc_set_left_context(engine_->getKkcConfig(), "", 0);
     }
 }
 

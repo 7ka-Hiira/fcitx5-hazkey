@@ -97,6 +97,9 @@ FCITX_CONFIGURATION(
     Option<bool> zenzaiEnabled{
         this, "ZenzaiEnabled",
         _("Enable Zenzai (Experimental, Requires Vulkan)"), false};
+    Option<bool> zenzaiSurroundingTextEnabled{
+        this, "ZenzaiSurroundingTextEnabled",
+        _("Enable Zenzai contextual converision"), false};
     Option<std::string> zenzaiProfile{this, "ZenzaiProfile",
                                       _("Zenzai Profile"), ""};
     Option<int> zenzaiInferenceLimit{this, "ZenzaiInferenceLimit",
