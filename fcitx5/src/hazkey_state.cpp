@@ -359,7 +359,7 @@ void HazkeyState::directCharactorConversion(ConversionMode mode) {
         default:
             return;
     }
-    preedit_.setSimplePreedit(converted);
+    preedit_.setSimplePreeditHighlighted(converted);
     kkc_free_text(converted);
     auto candidateList = ic_->inputPanel().candidateList();
     if (candidateList) {
@@ -389,7 +389,7 @@ void HazkeyState::showCandidateList(showCandidateMode mode, int nBest) {
     if (!preeditSegmentsPtr->empty()) {
         // preedit conversion is enabled and conversion result is found
         // show preedit conversion result
-        preedit_.setMultiSegmentPreedit(*preeditSegmentsPtr, 0);
+        preedit_.setMultiSegmentPreedit(*preeditSegmentsPtr, -1);
     } else {
         // preedit conversion is disabled or conversion result is not
         // available show hiragana preedit
@@ -425,6 +425,11 @@ void HazkeyState::showNonPredictCandidateList() {
 
     showCandidateList(showCandidateMode::NonPredictWithFirstPreedit,
                       NormalCandidateListSize);
+
+    // highlight all preedit text
+    // because the first candidate is the result of all preedit text.
+    auto currentPreedit = preedit_.text();
+    preedit_.setSimplePreeditHighlighted(currentPreedit);
 
     auto newCandidateList = std::dynamic_pointer_cast<HazkeyCandidateList>(
         ic_->inputPanel().candidateList());

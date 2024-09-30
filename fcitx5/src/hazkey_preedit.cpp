@@ -21,9 +21,14 @@ void HazkeyPreedit::setPreedit(Text text) {
     }
 }
 
-void HazkeyPreedit::setSimplePreedit(const std::string &text) {
+void HazkeyPreedit::setSimplePreeditHighlighted(const std::string &text) {
     std::vector<std::string> texts = {text};
     setMultiSegmentPreedit(texts, 0);
+}
+
+void HazkeyPreedit::setSimplePreedit(const std::string &text) {
+    std::vector<std::string> texts = {text};
+    setMultiSegmentPreedit(texts, -1);
 }
 
 void HazkeyPreedit::setMultiSegmentPreedit(std::vector<std::string> &texts,
