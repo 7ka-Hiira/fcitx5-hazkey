@@ -49,8 +49,8 @@ $ git clone https://github.com/7ka-Hiira/fcitx5-hazkey.git --recursive
 $ cd fcitx5-hazkey
 $ mkdir build
 $ cd build
-$ cmake -DCMAKE_INSTALL_PREFIX=/usr .. # エラーが発生しますが、無視してもう一度実行します
-$ cmake -DCMAKE_INSTALL_PREFIX=/usr ..
+$ cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr .. # エラーが発生しますが、無視してもう一度実行します
+$ cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr ..
 $ make
 $ sudo make install
 ```
