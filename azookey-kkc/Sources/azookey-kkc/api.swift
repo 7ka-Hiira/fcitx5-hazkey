@@ -66,6 +66,10 @@ public func setLeftContext(
   }
   let KkcConfig = Unmanaged<KkcConfig>.fromOpaque(UnsafeRawPointer(kkcConfigPtr)).takeUnretainedValue()
 
+  if KkcConfig.convertOptions.zenzaiMode == .off {
+    return
+  }
+
   let context = surroundingTextPtr == nil ? nil : String(cString: surroundingTextPtr!)
   let leftContext = context == nil ? nil : String(context!.prefix(anchorIndex))
 
