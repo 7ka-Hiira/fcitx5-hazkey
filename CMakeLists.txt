@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.21)
-project(fcitx5-hazkey VERSION 0.0.7)
+project(fcitx5-hazkey VERSION 0.0.8)
 include(GNUInstallDirs)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -37,7 +37,7 @@ if(NOT SKIP_KKC_PATH_UPDATE)
 endif()
 
 execute_process(
-    COMMAND swift build -c ${SWIFT_BUILD_TYPE} -Xswiftc -static-stdlib 
+    COMMAND swift build -c ${SWIFT_BUILD_TYPE} -Xswiftc -static-stdlib
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/azookey-kkc
 )
 

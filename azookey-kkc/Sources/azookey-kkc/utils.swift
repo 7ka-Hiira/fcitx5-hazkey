@@ -117,7 +117,7 @@ public class KkcConfig {
 
   let positiveGpuLayers = max(0, gpuLayers)
 
-  let options = ConvertRequestOptions                                (
+  let options = ConvertRequestOptions (
     N_best: 9,
     requireJapanesePrediction: false,
     requireEnglishPrediction: false,
@@ -133,7 +133,7 @@ public class KkcConfig {
     memoryDirectoryURL: userDataDir,
     sharedContainerURL: userDataDir,
     zenzaiMode: zenzaiEnabled ? .on(weight: systemResourceDir.appendingPathComponent("zenzai.gguf", isDirectory: false), inferenceLimit: zenzaiInferLimit, gpuLayers: positiveGpuLayers, versionDependentMode: .v2(.init(profile: profileText))) : .off,
-    metadata: .init(versionString: "fcitx5-hazkey 0.0.7")
+    metadata: .init(versionString: "fcitx5-hazkey 0.0.8")
   )
   return KkcConfig(
     convertOptions: options, numberStyle: numberStyle, symbolStyle: symbolStyle,
