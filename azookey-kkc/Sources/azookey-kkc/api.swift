@@ -73,7 +73,7 @@ public func setLeftContext(
   let context = surroundingTextPtr == nil ? nil : String(cString: surroundingTextPtr!)
   let leftContext = context == nil ? nil : String(context!.prefix(anchorIndex))
 
-  KkcConfig.convertOptions.zenzaiMode = .on(weight: KkcConfig.zenzaiWeight, gpuLayers: KkcConfig.gpuLayers, versionDependentMode: .v2(.init(profile: KkcConfig.profileText, leftSideContext: leftContext)))
+  KkcConfig.convertOptions.zenzaiMode = .on(weight: KkcConfig.zenzaiWeight, gpuLayers: KkcConfig.gpuLayers, personalizationMode: nil, versionDependentMode: .v3(.init(profile: KkcConfig.profileText, leftSideContext: leftContext)))
 }
 
 /// ComposingText

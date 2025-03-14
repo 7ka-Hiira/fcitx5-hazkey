@@ -12,12 +12,12 @@ option(SKIP_KKC_PATH_UPDATE "Skip updating path.swift" OFF)
 find_package(Vulkan REQUIRED)
 
 # ---- zenzai.gguf ---- #
-set(FILE_URL "https://huggingface.co/Miwa-Keita/zenz-v2-gguf/resolve/main/zenz-v2-Q5_K_M.gguf")
+set(FILE_URL "https://huggingface.co/Miwa-Keita/zenz-v3-small-gguf/resolve/main/ggml-model-Q5_K_M.gguf")
 
 if(NOT SKIP_ZENZAI_INSTALL)
     file(DOWNLOAD ${FILE_URL}
         ${CMAKE_CURRENT_SOURCE_DIR}/zenzai.gguf
-        EXPECTED_HASH SHA256=22b8d8190bba8c9fec075ffb5b323b0f0d65c7c5f5ff82011799a0c3049d9662
+        EXPECTED_HASH SHA256=501f605d088f5b988791a00ae19ed46985ed7c48144f364b2f3f1f951c9b2083
         SHOW_PROGRESS)
 endif()
 
@@ -37,7 +37,7 @@ if(NOT SKIP_KKC_PATH_UPDATE)
 endif()
 
 execute_process(
-    COMMAND swift build -c ${SWIFT_BUILD_TYPE} -Xswiftc -static-stdlib
+    COMMAND swift build -c ${SWIFT_BUILD_TYPE} -Xswiftc -static-stdlib -Xswiftc -cxx-interoperability-mode=default
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/azookey-kkc
 )
 
@@ -45,7 +45,7 @@ execute_process(
 
 # check if built library exists
 if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/azookey-kkc/.build/release/libhazkey.so)
-    message(FATAL_ERROR "Failed to build libhazkey")
+    message(FATAL_ERROR "Failed to build libhazkey\n\nIf the build log shows error messages like \"cannot find -lswiftCxx\" or \"cannot find -lswiftCxxStdlib\", you need to create symbolic links from swift_static/libswiftCxx.a to swift_static/libswiftCxx.a and from swift/libswiftCxxStdlib.a to swift_static/libswiftCxxStdlib.a [https://github.com/swiftlang/swift/issues/78003]")
 endif()
 
 # ---- install ---- #

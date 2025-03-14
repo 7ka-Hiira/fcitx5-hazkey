@@ -1,13 +1,22 @@
 {
-  "originHash" : "308e37473a50783e9013982db7537c16e9a45fae5ced35dd7bcec81495f4dbec",
+  "originHash" : "40d3774e3d36b8b44a3fe978b7be935d1390ad68549f8ef7a390448edf0b36ed",
   "pins" : [
     {
       "identity" : "azookeykanakanjiconverter",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/7ka-Hiira/AzooKeyKanaKanjiConverter",
       "state" : {
-        "branch" : "013811c",
-        "revision" : "013811cdcf3c37d3e7466e2f63385819cd2769ff"
+        "branch" : "20dcb75",
+        "revision" : "20dcb7502dccff48c2dac1a674b339dabc4aa5cb"
+      }
+    },
+    {
+      "identity" : "jinja",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/johnmai-dev/Jinja",
+      "state" : {
+        "revision" : "bbddb92fc51ae420b87300298370fd1dfc308f73",
+        "version" : "1.1.1"
       }
     },
     {
@@ -33,8 +42,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-collections",
       "state" : {
-        "revision" : "9bf03ff58ce34478e66aaee630e491823326fd06",
-        "version" : "1.1.3"
+        "revision" : "671108c96644956dddcd89dd59c203dcdb36cec7",
+        "version" : "1.1.4"
       }
     },
     {
@@ -44,6 +53,23 @@
       "state" : {
         "revision" : "0a5bc04095a675662cf24757cc0640aa2204253b",
         "version" : "1.0.2"
+      }
+    },
+    {
+      "identity" : "swift-tokenizers",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ensan-hcl/swift-tokenizers",
+      "state" : {
+        "branch" : "feat/minimum",
+        "revision" : "407e51806c0c3354a9045f23859ed1704114e514"
+      }
+    },
+    {
+      "identity" : "swiftymarisa",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ensan-hcl/SwiftyMarisa",
+      "state" : {
+        "revision" : "6e145aef5583aac96dd7ff8f9fbb9944d893128e"
       }
     }
   ],

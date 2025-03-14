@@ -115,7 +115,7 @@ public class KkcConfig {
     print("Error creating directory: \(error)")
   }
 
-  let positiveGpuLayers = max(0, gpuLayers)
+  let nonNegativeGpuLayers = max(0, gpuLayers)
 
   let options = ConvertRequestOptions (
     N_best: 9,
@@ -128,11 +128,11 @@ public class KkcConfig {
     fullWidthRomanCandidate: true,
     halfWidthKanaCandidate: true,
     learningType: .nothing,
-    maxMemoryCount: 65536,
+    maxMemoryCount: 0,
     dictionaryResourceURL: systemResourceDir.appendingPathComponent("Dictionary", isDirectory: true),
     memoryDirectoryURL: userDataDir,
     sharedContainerURL: userDataDir,
-    zenzaiMode: zenzaiEnabled ? .on(weight: systemResourceDir.appendingPathComponent("zenzai.gguf", isDirectory: false), inferenceLimit: zenzaiInferLimit, gpuLayers: positiveGpuLayers, versionDependentMode: .v2(.init(profile: profileText))) : .off,
+    zenzaiMode: zenzaiEnabled ? .on(weight: systemResourceDir.appendingPathComponent("zenzai.gguf", isDirectory: false), inferenceLimit: zenzaiInferLimit, gpuLayers: nonNegativeGpuLayers, personalizationMode: nil, versionDependentMode: .v3(.init(profile: profileText))) : .off,
     metadata: .init(versionString: "fcitx5-hazkey 0.0.8")
   )
   return KkcConfig(
@@ -140,7 +140,7 @@ public class KkcConfig {
     periodStyle: periodStyle, commaStyle: commaStyle, spaceStyle: spaceStyle,
     diacriticStyle: diacriticStyle,
     zenzaiWeight: systemResourceDir.appendingPathComponent("zenzai.gguf", isDirectory: false),
-    gpuLayers: positiveGpuLayers,
+    gpuLayers: nonNegativeGpuLayers,
     profileText: profileText
     )
 }
