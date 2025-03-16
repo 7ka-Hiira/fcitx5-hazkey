@@ -45,7 +45,7 @@ execute_process(
 
 # check if built library exists
 if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/azookey-kkc/.build/release/libhazkey.so)
-    message(FATAL_ERROR "Failed to build libhazkey\n\nIf the build log shows error messages like \"cannot find -lswiftCxx\" or \"cannot find -lswiftCxxStdlib\", you need to create symbolic links from swift_static/libswiftCxx.a to swift_static/libswiftCxx.a and from swift/libswiftCxxStdlib.a to swift_static/libswiftCxxStdlib.a [https://github.com/swiftlang/swift/issues/78003]")
+    message(FATAL_ERROR "Failed to build libhazkey\n\nIf the build log shows error messages like \"cannot find -lswiftCxx\" or \"cannot find -lswiftCxxStdlib\", you need to create symbolic links from swift/libswiftCxx.a to swift_static/libswiftCxx.a and from swift/libswiftCxxStdlib.a to swift_static/libswiftCxxStdlib.a [https://github.com/swiftlang/swift/issues/78003]")
 endif()
 
 # ---- install ---- #
