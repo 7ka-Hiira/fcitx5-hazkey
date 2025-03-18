@@ -28,6 +28,11 @@ jobs:
         sudo apt-get update -y
         sudo apt-get install -y build-essential cmake gettext fakeroot libvulkan-dev libfcitx5core-dev libfcitx5config-dev libfcitx5utils-dev
 
+    - name: Workaround step for swift issue 78003
+      run: |
+        sudo cp /usr/share/swift/usr/lib/swift/linux/libswiftCxx.a /usr/share/swift/usr/lib/swift_static/linux/libswiftCxx.a
+        sudo cp /usr/share/swift/usr/lib/swift/linux/libswiftCxxStdlib.a /usr/share/swift/usr/lib/swift_static/linux/libswiftCxxStdlib.a
+
     - name: Create Directories
       run: |
         mkdir -p $GITHUB_WORKSPACE/build
