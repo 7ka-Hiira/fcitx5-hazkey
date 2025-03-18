@@ -33,7 +33,7 @@ $ yay -S fcitx5-hazkey # yayの場合
 ## ソースからインストール
 以下をインストールする必要があります
   - fcitx5 development headers >= 5.0.4
-  - swift >= 5.10
+  - swift >= 6.0
   - cmake >= 3.21
   - vulkan development headers
   - gettext

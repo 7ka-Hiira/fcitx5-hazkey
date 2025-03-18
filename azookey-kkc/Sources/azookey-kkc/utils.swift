@@ -133,7 +133,7 @@ public class KkcConfig {
     memoryDirectoryURL: userDataDir,
     sharedContainerURL: userDataDir,
     zenzaiMode: zenzaiEnabled ? .on(weight: systemResourceDir.appendingPathComponent("zenzai.gguf", isDirectory: false), inferenceLimit: zenzaiInferLimit, gpuLayers: nonNegativeGpuLayers, personalizationMode: nil, versionDependentMode: .v3(.init(profile: profileText))) : .off,
-    metadata: .init(versionString: "fcitx5-hazkey 0.0.8")
+    metadata: .init(versionString: "fcitx5-hazkey 0.0.9")
   )
   return KkcConfig(
     convertOptions: options, numberStyle: numberStyle, symbolStyle: symbolStyle,
