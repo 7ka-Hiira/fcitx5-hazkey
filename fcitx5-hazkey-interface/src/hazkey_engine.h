@@ -2,13 +2,6 @@
 #define _FCITX5_HAZKEY_HAZKEY_ENGINE_H_
 
 #include <fcitx-config/iniparser.h>
-#include <fcitx/addonfactory.h>
-#include <fcitx/addonmanager.h>
-#include <fcitx/inputmethodengine.h>
-#include <fcitx/instance.h>
-#include <iconv.h>
-
-
 #include <fcitx-utils/inputbuffer.h>
 #include <fcitx/addonfactory.h>
 #include <fcitx/addonmanager.h>
@@ -18,48 +11,55 @@
 #include <fcitx/inputpanel.h>
 #include <fcitx/instance.h>
 
-
+#include <iconv.h>
 
 #include "../../fcitx5-hazkey/libfcitx5Hazkey.h"
 
+class HazkeyEngine;
 
-    class HazkeyEngine;
+class HazkeyState : public fcitx::InputContextProperty {
+   public:
+    HazkeyState(HazkeyEngine *engine, fcitx::InputContext *ic)
+        : engine_(engine), ic_(ic) {}
 
-    class HazkeyState : public fcitx::InputContextProperty {
-    public:
-        HazkeyState(HazkeyEngine *engine, fcitx::InputContext *ic)
-            : engine_(engine), ic_(ic) {}
-    
-        void keyEvent(fcitx::KeyEvent &keyEvent);
-        void setCode(int code);
-        void updateUI();
-        void reset() {
-            buffer_.clear();
-            updateUI();
-        }
-    
-    private:
-        HazkeyEngine *engine_;
-        fcitx::InputContext *ic_;
-        fcitx::InputBuffer buffer_{{fcitx::InputBufferOption::AsciiOnly,
-                                    fcitx::InputBufferOption::FixedCursor}};
-    };
+    void keyEvent(fcitx::KeyEvent &keyEvent);
+    void setCode(int code);
+    void updateUI();
+    void reset() {
+        buffer_.clear();
+        updateUI();
+    }
+
+   private:
+    HazkeyEngine *engine_;
+    fcitx::InputContext *ic_;
+    fcitx::InputBuffer buffer_{{fcitx::InputBufferOption::AsciiOnly,
+                                fcitx::InputBufferOption::FixedCursor}};
+};
 
 class HazkeyEngine : public fcitx::InputMethodEngineV2 {
-    public:
+   public:
     HazkeyEngine(fcitx::Instance *instance);
 
     void keyEvent(const fcitx::InputMethodEntry &entry,
                   fcitx::KeyEvent &keyEvent) override;
 
+    // called when input method changes to Hazkey
+    // void activate(const fcitx::InputMethodEntry &, fcitx::InputContextEvent
+    // &) override;
+
+    // called when input method changes to another input method
+    // void deactivate(const fcitx::InputMethodEntry &, fcitx::InputContextEvent
+    // &) override;
+
     void reset(const fcitx::InputMethodEntry &,
                fcitx::InputContextEvent &event) override;
 
     auto factory() const { return &factory_; }
-    auto conv() const { return conv_; }
+    // auto conv() const { return conv_; }
     auto instance() const { return instance_; }
 
-private:
+   private:
     fcitx::Instance *instance_;
     fcitx::FactoryFor<HazkeyState> factory_;
     iconv_t conv_;

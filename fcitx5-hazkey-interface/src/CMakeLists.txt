@@ -1,9 +1,9 @@
-add_library(fcitx5-hazkey SHARED hazkey_engine.cpp)
+add_library(fcitx5-hazkey SHARED hazkey_state.cpp hazkey_engine.cpp)
 
 #link_directories(${CMAKE_BINARY_DIR}/fcitx5-hazkey/.build/${SWIFT_BUILD_TYPE})
 
 # TODO: fix swift library path
-target_link_libraries(fcitx5-hazkey PRIVATE Fcitx5::Core Fcitx5::Config "${CMAKE_SOURCE_DIR}/fcitx5-hazkey/.build/${SWIFT_BUILD_TYPE}/libhazkey.a" "/usr/lib/swift/lib/swift_static/linux/libswiftCore.a")
+target_link_libraries(fcitx5-hazkey PRIVATE Fcitx5::Core Fcitx5::Config "${CMAKE_SOURCE_DIR}/fcitx5-hazkey/.build/${SWIFT_BUILD_TYPE}/libfcitx5Hazkey.a" "/usr/lib/swift/lib/swift_static/linux/libswiftCore.a" "/usr/lib/swift/lib/swift_static/linux/libswiftSwiftOnoneSupport.a")
 
 
 set_target_properties(fcitx5-hazkey PROPERTIES PREFIX "")

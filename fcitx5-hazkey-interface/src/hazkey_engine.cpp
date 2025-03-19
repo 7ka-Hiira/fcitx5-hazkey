@@ -123,7 +123,7 @@ private:
 
             char out[10 + 1];
             char *outbuf = out;
-            iconv(engine_->conv(), &inbuf, &insize, &outbuf, &avail);
+            // iconv(engine_->conv(), &inbuf, &insize, &outbuf, &avail);
             *outbuf = '\0';
             candidates_[i] = std::make_unique<HazkeyCandidateWord>(engine_, out);
         }

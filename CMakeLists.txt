@@ -38,14 +38,15 @@ if(NOT SKIP_KKC_PATH_UPDATE)
 endif()
 
 execute_process(
-    COMMAND swift build -c ${SWIFT_BUILD_TYPE} -Xswiftc -cxx-interoperability-mode=default -Xswiftc -emit-clang-header-path -Xswiftc libfcitx5Hazkey.h -Xswiftc -lswiftCore -Xswiftc -lswiftSwiftOnoneSupport
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/azookey-kkc
+    # TODO: do not use absolute path
+    COMMAND swift build -c ${SWIFT_BUILD_TYPE} -Xswiftc -emit-clang-header-path -Xswiftc libfcitx5Hazkey.h -Xcc -I/usr/include/Fcitx5/Core -Xcc -I/usr/include/Fcitx5/Config -Xcc -I/usr/include/Fcitx5/Utils
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/fcitx5-hazkey
 )
 
 # ---- fcitx5-hazkey ---- #
 
 # check if built library exists
-if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/fcitx5-hazkey/.build/${SWIFT_BUILD_TYPE}/libhazkey.a)
+if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/fcitx5-hazkey/.build/${SWIFT_BUILD_TYPE}/libfcitx5Hazkey.a)
     message(FATAL_ERROR "Failed to build fcitx5-hazkey swift library.\n\nIf the build log shows error messages like \"cannot find -lswiftCxx\" or \"cannot find -lswiftCxxStdlib\", you need to create symbolic links from swift/libswiftCxx.a to swift_static/libswiftCxx.a and from swift/libswiftCxxStdlib.a to swift_static/libswiftCxxStdlib.a [https://github.com/swiftlang/swift/issues/78003]")
 endif()
 

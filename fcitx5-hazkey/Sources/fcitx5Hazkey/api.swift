@@ -2,6 +2,9 @@ import Foundation
 import KanaKanjiConverterModule
 import SwiftUtils
 
+import CxxStdlib
+import Fcitx
+
 /// C FFIs
 
 /// Config
@@ -9,6 +12,10 @@ import SwiftUtils
 public func hellohazkey() -> Int {
   print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeoooooooooooooo")
   return 4
+}
+
+public func keyEvent() {
+  return
 }
 
 // @_silgen_name("kkc_get_config")

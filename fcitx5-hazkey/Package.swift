@@ -4,11 +4,15 @@
 import PackageDescription
 
 let package = Package(
-  name: "hazkey",
+  name: "fcitx5Hazkey",
   products: [
     // Products define the executables and libraries a package produces, making them visible to other packages.
     .library(
-      name: "hazkey",
+      name: "Fcitx",
+      targets: ["Fcitx"]
+    ),
+    .library(
+      name: "fcitx5Hazkey",
       type: .static,
       targets: ["fcitx5Hazkey"])
   ],
@@ -21,15 +25,20 @@ let package = Package(
     // Targets are the basic building blocks of a package, defining a module or a test suite.
     // Targets can depend on other targets in this package and products from dependencies.
     .target(
+      name: "Fcitx"
+    ),
+    .target(
       name: "fcitx5Hazkey",
       dependencies: [
+        "Fcitx",
         .product(
           name: "KanaKanjiConverterModule",
           package: "AzooKeyKanaKanjiConverter"),
         .product(
           name: "SwiftUtils",
           package: "AzooKeyKanaKanjiConverter"),
-      ]
+      ],
+      swiftSettings: [.interoperabilityMode(.Cxx)]
     ),
     .testTarget(
       name: "fcitx5Hazkey-Tests",
