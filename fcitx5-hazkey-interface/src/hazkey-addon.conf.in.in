@@ -1,0 +1,9 @@
+[Addon]
+Name=Hazkey
+Category=InputMethod
+Version=@PROJECT_VERSION@
+Library=fcitx5-hazkey
+Type=SharedLibrary
+OnDemand=True
+Configurable=True
+Icon=hazkey

@@ -9,8 +9,8 @@ let package = Package(
     // Products define the executables and libraries a package produces, making them visible to other packages.
     .library(
       name: "hazkey",
-      type: .dynamic,
-      targets: ["hazkey-kkc"])
+      type: .static,
+      targets: ["fcitx5Hazkey"])
   ],
   dependencies: [
     .package(
@@ -21,7 +21,7 @@ let package = Package(
     // Targets are the basic building blocks of a package, defining a module or a test suite.
     // Targets can depend on other targets in this package and products from dependencies.
     .target(
-      name: "hazkey-kkc",
+      name: "fcitx5Hazkey",
       dependencies: [
         .product(
           name: "KanaKanjiConverterModule",
@@ -32,9 +32,9 @@ let package = Package(
       ]
     ),
     .testTarget(
-      name: "hazkey-kkc-Tests",
+      name: "fcitx5Hazkey-Tests",
       dependencies: [
-        "hazkey-kkc"
+        "fcitx5Hazkey"
       ]
     ),
   ]

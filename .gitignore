@@ -1,8 +1,8 @@
 /.vscode
 /.cache
 /build
-/azookey-kkc/.build
-/azookey-kkc/*.so
+/fcitx5-hazkey/.build
 
 /zenzai.gguf
-/azookey-kkc/Sources/azookey-kkc/path.swift
+/fcitx5-hazkey/Sources/fcitx5Hazkey/path.swift
+/fcitx5-hazkey/Sources/fcitx5Hazkey/libfcitx5Hazkey.h
