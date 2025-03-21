@@ -1,5 +1,5 @@
 import Foundation
-// import KanaKanjiConverterModule
+import KanaKanjiConverterModule
 
 // extension ComposingText {
 //   func toHiragana() -> String {
@@ -94,56 +94,56 @@ import Foundation
 //   }
 // }
 
-// @MainActor func genDefaultConfig(
-//   zenzaiEnabled: Bool = false, zenzaiInferLimit: Int = 1, numberStyle: KkcConfig.Style,
-//   symbolStyle: KkcConfig.Style,
-//   periodStyle: KkcConfig.TenStyle, commaStyle: KkcConfig.TenStyle, spaceStyle: KkcConfig.Style,
-//   diacriticStyle: KkcConfig.DiacriticStyle, gpuLayers: Int32 = 0, profileText: String?
-// ) -> KkcConfig {
-//   var userDataDir: URL {
-//     FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
-//       .appendingPathComponent("hazkey", isDirectory: true)
-//   }
+func genDefaultConfig(
+  zenzaiEnabled: Bool = false, zenzaiInferLimit: Int = 1, numberStyle: KkcConfig.Style,
+  symbolStyle: KkcConfig.Style,
+  periodStyle: KkcConfig.TenStyle, commaStyle: KkcConfig.TenStyle, spaceStyle: KkcConfig.Style,
+  diacriticStyle: KkcConfig.DiacriticStyle, gpuLayers: Int32 = 0, profileText: String?
+) -> KkcConfig {
+  var userDataDir: URL {
+    FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
+      .appendingPathComponent("hazkey", isDirectory: true)
+  }
 
-//   var systemResourceDir: URL {
-//     URL(fileURLWithPath: systemResourecePath, isDirectory: true)
-//   }
+  var systemResourceDir: URL {
+    URL(fileURLWithPath: systemResourecePath, isDirectory: true)
+  }
 
-//   do {
-//     try FileManager.default.createDirectory(at: userDataDir, withIntermediateDirectories: true)
-//   } catch {
-//     print("Error creating directory: \(error)")
-//   }
+  do {
+    try FileManager.default.createDirectory(at: userDataDir, withIntermediateDirectories: true)
+  } catch {
+    print("Error creating directory: \(error)")
+  }
 
-//   let nonNegativeGpuLayers = max(0, gpuLayers)
+  let nonNegativeGpuLayers = max(0, gpuLayers)
 
-//   let options = ConvertRequestOptions (
-//     N_best: 9,
-//     requireJapanesePrediction: false,
-//     requireEnglishPrediction: false,
-//     keyboardLanguage: .ja_JP,
-//     typographyLetterCandidate: true,
-//     unicodeCandidate: true,
-//     englishCandidateInRoman2KanaInput: false,
-//     fullWidthRomanCandidate: true,
-//     halfWidthKanaCandidate: true,
-//     learningType: .nothing,
-//     maxMemoryCount: 0,
-//     dictionaryResourceURL: systemResourceDir.appendingPathComponent("Dictionary", isDirectory: true),
-//     memoryDirectoryURL: userDataDir,
-//     sharedContainerURL: userDataDir,
-//     zenzaiMode: zenzaiEnabled ? .on(weight: systemResourceDir.appendingPathComponent("zenzai.gguf", isDirectory: false), inferenceLimit: zenzaiInferLimit, gpuLayers: nonNegativeGpuLayers, personalizationMode: nil, versionDependentMode: .v3(.init(profile: profileText))) : .off,
-//     metadata: .init(versionString: "fcitx5-hazkey 0.0.9")
-//   )
-//   return KkcConfig(
-//     convertOptions: options, numberStyle: numberStyle, symbolStyle: symbolStyle,
-//     periodStyle: periodStyle, commaStyle: commaStyle, spaceStyle: spaceStyle,
-//     diacriticStyle: diacriticStyle,
-//     zenzaiWeight: systemResourceDir.appendingPathComponent("zenzai.gguf", isDirectory: false),
-//     gpuLayers: nonNegativeGpuLayers,
-//     profileText: profileText
-//     )
-// }
+  let options = ConvertRequestOptions (
+    N_best: 9,
+    requireJapanesePrediction: false,
+    requireEnglishPrediction: false,
+    keyboardLanguage: .ja_JP,
+    typographyLetterCandidate: true,
+    unicodeCandidate: true,
+    englishCandidateInRoman2KanaInput: false,
+    fullWidthRomanCandidate: true,
+    halfWidthKanaCandidate: true,
+    learningType: .nothing,
+    maxMemoryCount: 0,
+    dictionaryResourceURL: systemResourceDir.appendingPathComponent("Dictionary", isDirectory: true),
+    memoryDirectoryURL: userDataDir,
+    sharedContainerURL: userDataDir,
+    zenzaiMode: zenzaiEnabled ? .on(weight: systemResourceDir.appendingPathComponent("zenzai.gguf", isDirectory: false), inferenceLimit: zenzaiInferLimit, gpuLayers: nonNegativeGpuLayers, personalizationMode: nil, versionDependentMode: .v3(.init(profile: profileText))) : .off,
+    metadata: .init(versionString: "fcitx5-hazkey 0.0.9")
+  )
+  return KkcConfig(
+    convertOptions: options, numberStyle: numberStyle, symbolStyle: symbolStyle,
+    periodStyle: periodStyle, commaStyle: commaStyle, spaceStyle: spaceStyle,
+    diacriticStyle: diacriticStyle,
+    zenzaiWeight: systemResourceDir.appendingPathComponent("zenzai.gguf", isDirectory: false),
+    gpuLayers: nonNegativeGpuLayers,
+    profileText: profileText
+    )
+}
 
 // func cycleAlphabetCase(_ alphabet: String, preedit: String) -> String {
 //   if preedit == alphabet.lowercased() {
@@ -246,46 +246,46 @@ import Foundation
 //   }
 // }
 
-// func symbolHalfwidthToFullwidth(character: Character, reverse: Bool) -> Character {
-//   let h2z: [Character: Character] = [
-//     "!": "！",
-//     "\"": "”",
-//     "#": "＃",
-//     "$": "＄",
-//     "%": "％",
-//     "&": "＆",
-//     "'": "’",
-//     "(": "（",
-//     ")": "）",
-//     "=": "＝",
-//     "~": "〜",
-//     "|": "｜",
-//     "`": "｀",
-//     "{": "『",
-//     "+": "＋",
-//     "*": "＊",
-//     "}": "』",
-//     "<": "＜",
-//     ">": "＞",
-//     "?": "？",
-//     "_": "＿",
-//     "-": "ー",
-//     "^": "＾",
-//     "\\": "＼",
-//     "¥": "￥",
-//     "@": "＠",
-//     "[": "「",
-//     ";": "；",
-//     ":": "：",
-//     "]": "」",
-//     "/": "・",
-//     ",": "、",
-//     ".": "。",
-//   ]
-//   if reverse {
-//     let z2h = Dictionary(uniqueKeysWithValues: h2z.map { ($1, $0) })
-//     return z2h[character] ?? character
-//   } else {
-//     return h2z[character] ?? character
-//   }
-// }
+func symbolHalfwidthToFullwidth(character: Character, reverse: Bool) -> Character {
+  let h2z: [Character: Character] = [
+    "!": "！",
+    "\"": "”",
+    "#": "＃",
+    "$": "＄",
+    "%": "％",
+    "&": "＆",
+    "'": "’",
+    "(": "（",
+    ")": "）",
+    "=": "＝",
+    "~": "〜",
+    "|": "｜",
+    "`": "｀",
+    "{": "『",
+    "+": "＋",
+    "*": "＊",
+    "}": "』",
+    "<": "＜",
+    ">": "＞",
+    "?": "？",
+    "_": "＿",
+    "-": "ー",
+    "^": "＾",
+    "\\": "＼",
+    "¥": "￥",
+    "@": "＠",
+    "[": "「",
+    ";": "；",
+    ":": "：",
+    "]": "」",
+    "/": "・",
+    ",": "、",
+    ".": "。",
+  ]
+  if reverse {
+    let z2h = Dictionary(uniqueKeysWithValues: h2z.map { ($1, $0) })
+    return z2h[character] ?? character
+  } else {
+    return h2z[character] ?? character
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "": {
+    "swift-dependencies": "/home/hiira/projects/fcitx5-azookey/.build/x86_64-unknown-linux-gnu/debug/fcitx5Hazkey.build/master.swiftdeps"
+  },
+  "/home/hiira/projects/fcitx5-azookey/fcitx5-hazkey-core/Sources/fcitx5Hazkey/api_old.swift": {
+    "dependencies": "/home/hiira/projects/fcitx5-azookey/.build/x86_64-unknown-linux-gnu/debug/fcitx5Hazkey.build/api_old.d",
+    "object": "/home/hiira/projects/fcitx5-azookey/.build/x86_64-unknown-linux-gnu/debug/fcitx5Hazkey.build/api_old.swift.o",
+    "swiftmodule": "/home/hiira/projects/fcitx5-azookey/.build/x86_64-unknown-linux-gnu/debug/fcitx5Hazkey.build/api_old~partial.swiftmodule",
+    "swift-dependencies": "/home/hiira/projects/fcitx5-azookey/.build/x86_64-unknown-linux-gnu/debug/fcitx5Hazkey.build/api_old.swiftdeps"
+  },
+  "/home/hiira/projects/fcitx5-azookey/fcitx5-hazkey-core/Sources/fcitx5Hazkey/engine.swift": {
+    "dependencies": "/home/hiira/projects/fcitx5-azookey/.build/x86_64-unknown-linux-gnu/debug/fcitx5Hazkey.build/engine.d",
+    "object": "/home/hiira/projects/fcitx5-azookey/.build/x86_64-unknown-linux-gnu/debug/fcitx5Hazkey.build/engine.swift.o",
+    "swiftmodule": "/home/hiira/projects/fcitx5-azookey/.build/x86_64-unknown-linux-gnu/debug/fcitx5Hazkey.build/engine~partial.swiftmodule",
+    "swift-dependencies": "/home/hiira/projects/fcitx5-azookey/.build/x86_64-unknown-linux-gnu/debug/fcitx5Hazkey.build/engine.swiftdeps"
+  },
+  "/home/hiira/projects/fcitx5-azookey/fcitx5-hazkey-core/Sources/fcitx5Hazkey/path.swift": {
+    "dependencies": "/home/hiira/projects/fcitx5-azookey/.build/x86_64-unknown-linux-gnu/debug/fcitx5Hazkey.build/path.d",
+    "object": "/home/hiira/projects/fcitx5-azookey/.build/x86_64-unknown-linux-gnu/debug/fcitx5Hazkey.build/path.swift.o",
+    "swiftmodule": "/home/hiira/projects/fcitx5-azookey/.build/x86_64-unknown-linux-gnu/debug/fcitx5Hazkey.build/path~partial.swiftmodule",
+    "swift-dependencies": "/home/hiira/projects/fcitx5-azookey/.build/x86_64-unknown-linux-gnu/debug/fcitx5Hazkey.build/path.swiftdeps"
+  },
+  "/home/hiira/projects/fcitx5-azookey/fcitx5-hazkey-core/Sources/fcitx5Hazkey/utils.swift": {
+    "dependencies": "/home/hiira/projects/fcitx5-azookey/.build/x86_64-unknown-linux-gnu/debug/fcitx5Hazkey.build/utils.d",
+    "object": "/home/hiira/projects/fcitx5-azookey/.build/x86_64-unknown-linux-gnu/debug/fcitx5Hazkey.build/utils.swift.o",
+    "swiftmodule": "/home/hiira/projects/fcitx5-azookey/.build/x86_64-unknown-linux-gnu/debug/fcitx5Hazkey.build/utils~partial.swiftmodule",
+    "swift-dependencies": "/home/hiira/projects/fcitx5-azookey/.build/x86_64-unknown-linux-gnu/debug/fcitx5Hazkey.build/utils.swiftdeps"
+  }
+}

@@ -5,6 +5,7 @@ include(GNUInstallDirs)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_COMPILER clang++)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -isystem /usr/lib/swift/lib/swift/")
 
 option(SKIP_ZENZAI_INSTALL "Skip downloading zenzai.gguf" OFF)
 option(SKIP_KKC_PATH_UPDATE "Skip updating path.swift" OFF)
@@ -24,7 +25,7 @@ endif()
 
 # ---- libhazkey ---- #
 
-# build fcitx5-hazkey swift library
+# build fcitx5Hazkey swift library
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(SWIFT_BUILD_TYPE "debug")
 else()
@@ -34,20 +35,20 @@ endif()
 if(NOT SKIP_KKC_PATH_UPDATE)
     message(STATUS "Updating path.swift")
     # write path.swift
-    file(WRITE ${CMAKE_CURRENT_SOURCE_DIR}/fcitx5-hazkey/Sources/fcitx5Hazkey/path.swift "let systemResourecePath: String = \"${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATADIR}/hazkey\"")
+    file(WRITE ${CMAKE_CURRENT_SOURCE_DIR}/fcitx5-hazkey-core/Sources/fcitx5Hazkey/path.swift "let systemResourecePath: String = \"${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATADIR}/hazkey\"")
 endif()
 
 execute_process(
     # TODO: do not use absolute path
     COMMAND swift build -c ${SWIFT_BUILD_TYPE} -Xswiftc -emit-clang-header-path -Xswiftc libfcitx5Hazkey.h -Xcc -I/usr/include/Fcitx5/Core -Xcc -I/usr/include/Fcitx5/Config -Xcc -I/usr/include/Fcitx5/Utils
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/fcitx5-hazkey
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/fcitx5-hazkey-core
 )
 
 # ---- fcitx5-hazkey ---- #
 
 # check if built library exists
-if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/fcitx5-hazkey/.build/${SWIFT_BUILD_TYPE}/libfcitx5Hazkey.a)
-    message(FATAL_ERROR "Failed to build fcitx5-hazkey swift library.\n\nIf the build log shows error messages like \"cannot find -lswiftCxx\" or \"cannot find -lswiftCxxStdlib\", you need to create symbolic links from swift/libswiftCxx.a to swift_static/libswiftCxx.a and from swift/libswiftCxxStdlib.a to swift_static/libswiftCxxStdlib.a [https://github.com/swiftlang/swift/issues/78003]")
+if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/fcitx5-hazkey-core/.build/${SWIFT_BUILD_TYPE}/libfcitx5Hazkey.a)
+    message(FATAL_ERROR "Failed to build fcitx5Hazkey swift library.\n\nIf the build log shows error messages like \"cannot find -lswiftCxx\" or \"cannot find -lswiftCxxStdlib\", you need to create symbolic links from swift/libswiftCxx.a to swift_static/libswiftCxx.a and from swift/libswiftCxxStdlib.a to swift_static/libswiftCxxStdlib.a [https://github.com/swiftlang/swift/issues/78003]")
 endif()
 
 # ---- install ---- #

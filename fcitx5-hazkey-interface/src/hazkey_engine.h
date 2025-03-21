@@ -2,74 +2,57 @@
 #define _FCITX5_HAZKEY_HAZKEY_ENGINE_H_
 
 #include <fcitx-config/iniparser.h>
-#include <fcitx-utils/inputbuffer.h>
 #include <fcitx/addonfactory.h>
 #include <fcitx/addonmanager.h>
-#include <fcitx/inputcontext.h>
-#include <fcitx/inputcontextproperty.h>
 #include <fcitx/inputmethodengine.h>
-#include <fcitx/inputpanel.h>
 #include <fcitx/instance.h>
-
 #include <iconv.h>
 
-#include "../../fcitx5-hazkey/libfcitx5Hazkey.h"
+#include "../../fcitx5-hazkey-core/libfcitx5Hazkey.h"
+#include "hazkey_config.h"
+#include "hazkey_state.h"
 
-class HazkeyEngine;
+namespace fcitx {
 
-class HazkeyState : public fcitx::InputContextProperty {
+class HazkeyEngine : public InputMethodEngineV2 {
    public:
-    HazkeyState(HazkeyEngine *engine, fcitx::InputContext *ic)
-        : engine_(engine), ic_(ic) {}
+    // constructor
+    HazkeyEngine(Instance *instance);
 
-    void keyEvent(fcitx::KeyEvent &keyEvent);
-    void setCode(int code);
-    void updateUI();
-    void reset() {
-        buffer_.clear();
-        updateUI();
-    }
-
-   private:
-    HazkeyEngine *engine_;
-    fcitx::InputContext *ic_;
-    fcitx::InputBuffer buffer_{{fcitx::InputBufferOption::AsciiOnly,
-                                fcitx::InputBufferOption::FixedCursor}};
-};
-
-class HazkeyEngine : public fcitx::InputMethodEngineV2 {
-   public:
-    HazkeyEngine(fcitx::Instance *instance);
-
-    void keyEvent(const fcitx::InputMethodEntry &entry,
-                  fcitx::KeyEvent &keyEvent) override;
+    // handle key event and pass it to HazkeyState
+    void keyEvent(const InputMethodEntry &entry, KeyEvent &keyEvent) override;
 
     // called when input method changes to Hazkey
-    // void activate(const fcitx::InputMethodEntry &, fcitx::InputContextEvent
-    // &) override;
+    void activate(const InputMethodEntry &, InputContextEvent &) override;
 
     // called when input method changes to another input method
-    // void deactivate(const fcitx::InputMethodEntry &, fcitx::InputContextEvent
-    // &) override;
+    void deactivate(const InputMethodEntry &, InputContextEvent &) override;
 
-    void reset(const fcitx::InputMethodEntry &,
-               fcitx::InputContextEvent &event) override;
+    const void *getKkcConfig() const { return kkcConfig_; }
 
     auto factory() const { return &factory_; }
-    // auto conv() const { return conv_; }
     auto instance() const { return instance_; }
 
+    const Configuration *getConfig() const override { return &config_; }
+    void setConfig(const RawConfig &config) override;
+    void reloadConfig() override;
+
+    const HazkeyEngineConfig &config() const { return config_; }
+
    private:
-    fcitx::Instance *instance_;
-    fcitx::FactoryFor<HazkeyState> factory_;
+    HazkeyEngineConfig config_;
+    const void *kkcConfig_;
+    Instance *instance_;
+    FactoryFor<HazkeyState> factory_;
     iconv_t conv_;
 };
 
-class HazkeyEngineFactory : public fcitx::AddonFactory {
-    fcitx::AddonInstance *create(fcitx::AddonManager *manager) override {
+class HazkeyEngineFactory : public AddonFactory {
+    AddonInstance *create(AddonManager *manager) override {
         FCITX_UNUSED(manager);
         return new HazkeyEngine(manager->instance());
     }
 };
 
+}  // namespace fcitx
 #endif  // _FCITX5_HAZKEY_HAZKEY_ENGINE_H_
