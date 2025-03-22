@@ -37,21 +37,21 @@ if(NOT SKIP_KKC_PATH_UPDATE)
 endif()
 
 execute_process(
-    COMMAND swift build -c ${SWIFT_BUILD_TYPE} -Xswiftc -static-stdlib -Xswiftc -cxx-interoperability-mode=default
+    COMMAND swift build -c ${SWIFT_BUILD_TYPE} -Xswiftc -static-stdlib
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/azookey-kkc
 )
 
 # ---- fcitx5-hazkey ---- #
 
 # check if built library exists
-if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/azookey-kkc/.build/release/libhazkey.so)
-    message(FATAL_ERROR "Failed to build libhazkey\n\nIf the build log shows error messages like \"cannot find -lswiftCxx\" or \"cannot find -lswiftCxxStdlib\", you need to create symbolic links from swift/libswiftCxx.a to swift_static/libswiftCxx.a and from swift/libswiftCxxStdlib.a to swift_static/libswiftCxxStdlib.a [https://github.com/swiftlang/swift/issues/78003]")
+if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/azookey-kkc/.build/${SWIFT_BUILD_TYPE}/libhazkey.so)
+    message(FATAL_ERROR "Failed to build libhazkey")
 endif()
 
 # ---- install ---- #
 
 # install libhazkey.so
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/azookey-kkc/.build/release/libhazkey.so
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/azookey-kkc/.build/${SWIFT_BUILD_TYPE}/libhazkey.so
         DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
 if(NOT SKIP_ZENZAI_INSTALL)

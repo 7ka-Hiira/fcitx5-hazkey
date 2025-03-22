@@ -1,13 +1,13 @@
 {
-  "originHash" : "40d3774e3d36b8b44a3fe978b7be935d1390ad68549f8ef7a390448edf0b36ed",
+  "originHash" : "b31aa28b3fc3ab1689b79e7e332d498882d3a757cdbea22edd09dea14578d239",
   "pins" : [
     {
       "identity" : "azookeykanakanjiconverter",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/7ka-Hiira/AzooKeyKanaKanjiConverter",
       "state" : {
-        "branch" : "20dcb75",
-        "revision" : "20dcb7502dccff48c2dac1a674b339dabc4aa5cb"
+        "branch" : "fb50425",
+        "revision" : "fb504256872222415b8466204f06e95903ffc6d6"
       }
     },
     {
@@ -62,14 +62,6 @@
       "state" : {
         "branch" : "feat/minimum",
         "revision" : "407e51806c0c3354a9045f23859ed1704114e514"
-      }
-    },
-    {
-      "identity" : "swiftymarisa",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ensan-hcl/SwiftyMarisa",
-      "state" : {
-        "revision" : "6e145aef5583aac96dd7ff8f9fbb9944d893128e"
       }
     }
   ],
