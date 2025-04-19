@@ -132,6 +132,7 @@ public class KkcConfig {
     dictionaryResourceURL: systemResourceDir.appendingPathComponent("Dictionary", isDirectory: true),
     memoryDirectoryURL: userDataDir,
     sharedContainerURL: userDataDir,
+    textReplacer: .empty,
     zenzaiMode: zenzaiEnabled ? .on(weight: systemResourceDir.appendingPathComponent("zenzai.gguf", isDirectory: false), inferenceLimit: zenzaiInferLimit, gpuLayers: nonNegativeGpuLayers, personalizationMode: nil, versionDependentMode: .v3(.init(profile: profileText))) : .off,
     metadata: .init(versionString: "fcitx5-hazkey 0.0.9")
   )
