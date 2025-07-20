@@ -10,7 +10,8 @@ import SwiftUtils
 @MainActor public func getConfig(
   zenzaiEnabled: Bool, zenzaiInferLimit: Int,
   numberFullwidth: Int, symbolFullwidth: Int, periodStyleIndex: Int,
-  commaStyleIndex: Int, spaceFullwidth: Int, tenCombining: Int, gpuLayers: Int32, profileTextPtr: UnsafePointer<Int8>?
+  commaStyleIndex: Int, spaceFullwidth: Int, tenCombining: Int, gpuLayers: Int32,
+  profileTextPtr: UnsafePointer<Int8>?
 ) -> OpaquePointer? {
   let numberStyle: KkcConfig.Style = numberFullwidth == 1 ? .fullwidth : .halfwidth
   let symbolStyle: KkcConfig.Style = symbolFullwidth == 1 ? .fullwidth : .halfwidth
@@ -64,7 +65,8 @@ public func setLeftContext(
   guard let kkcConfigPtr = kkcConfigPtr else {
     return
   }
-  let KkcConfig = Unmanaged<KkcConfig>.fromOpaque(UnsafeRawPointer(kkcConfigPtr)).takeUnretainedValue()
+  let KkcConfig = Unmanaged<KkcConfig>.fromOpaque(UnsafeRawPointer(kkcConfigPtr))
+    .takeUnretainedValue()
 
   if KkcConfig.convertOptions.zenzaiMode == .off {
     return
@@ -73,7 +75,9 @@ public func setLeftContext(
   let context = surroundingTextPtr == nil ? nil : String(cString: surroundingTextPtr!)
   let leftContext = context == nil ? nil : String(context!.prefix(anchorIndex))
 
-  KkcConfig.convertOptions.zenzaiMode = .on(weight: KkcConfig.zenzaiWeight, gpuLayers: KkcConfig.gpuLayers, personalizationMode: nil, versionDependentMode: .v3(.init(profile: KkcConfig.profileText, leftSideContext: leftContext)))
+  KkcConfig.convertOptions.zenzaiMode = .on(
+    weight: KkcConfig.zenzaiWeight, gpuLayers: KkcConfig.gpuLayers, personalizationMode: nil,
+    versionDependentMode: .v3(.init(profile: KkcConfig.profileText, leftSideContext: leftContext)))
 }
 
 /// ComposingText
@@ -379,7 +383,6 @@ public func freeText(ptr: UnsafeMutablePointer<Int8>?) {
       diacriticStyle: .fullwidth, gpuLayers: 0, profileText: nil)
   }
 
-
   // set options
   var options = config.convertOptions
   if nBest != nil {
@@ -390,7 +393,8 @@ public func freeText(ptr: UnsafeMutablePointer<Int8>?) {
     options.requireEnglishPrediction = true
   }
 
-  let result = createCandidateStruct(composingText: composingText, options: options, converter: config.converter)
+  let result = createCandidateStruct(
+    composingText: composingText, options: options, converter: config.converter)
 
   let resultPtr = UnsafeMutablePointer<UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>?>
     .allocate(

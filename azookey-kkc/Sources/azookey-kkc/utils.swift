@@ -22,7 +22,10 @@ extension ComposingText {
     // reverse back to original order
     let romaji = self.input.reversed().map {
       // convert symbol first because applyingTransform doesn't work for them
-      var character = symbolJaToEn(character: symbolHalfwidthToFullwidth(character: symbolJaToEn(character: $0.character, reverse: false), reverse: fullwidth), reverse: false)
+      var character = symbolJaToEn(
+        character: symbolHalfwidthToFullwidth(
+          character: symbolJaToEn(character: $0.character, reverse: false), reverse: fullwidth),
+        reverse: false)
       switch character {
       case "ん":
         character = "n"
@@ -117,7 +120,7 @@ public class KkcConfig {
 
   let nonNegativeGpuLayers = max(0, gpuLayers)
 
-  let options = ConvertRequestOptions (
+  let options = ConvertRequestOptions(
     N_best: 9,
     requireJapanesePrediction: false,
     requireEnglishPrediction: false,
@@ -129,11 +132,16 @@ public class KkcConfig {
     halfWidthKanaCandidate: true,
     learningType: .nothing,
     maxMemoryCount: 0,
-    dictionaryResourceURL: systemResourceDir.appendingPathComponent("Dictionary", isDirectory: true),
+    dictionaryResourceURL: systemResourceDir.appendingPathComponent(
+      "Dictionary", isDirectory: true),
     memoryDirectoryURL: userDataDir,
     sharedContainerURL: userDataDir,
     textReplacer: .empty,
-    zenzaiMode: zenzaiEnabled ? .on(weight: systemResourceDir.appendingPathComponent("zenzai.gguf", isDirectory: false), inferenceLimit: zenzaiInferLimit, gpuLayers: nonNegativeGpuLayers, personalizationMode: nil, versionDependentMode: .v3(.init(profile: profileText))) : .off,
+    zenzaiMode: zenzaiEnabled
+      ? .on(
+        weight: systemResourceDir.appendingPathComponent("zenzai.gguf", isDirectory: false),
+        inferenceLimit: zenzaiInferLimit, gpuLayers: nonNegativeGpuLayers, personalizationMode: nil,
+        versionDependentMode: .v3(.init(profile: profileText))) : .off,
     metadata: .init(versionString: "fcitx5-hazkey 0.0.9")
   )
   return KkcConfig(
@@ -143,7 +151,7 @@ public class KkcConfig {
     zenzaiWeight: systemResourceDir.appendingPathComponent("zenzai.gguf", isDirectory: false),
     gpuLayers: nonNegativeGpuLayers,
     profileText: profileText
-    )
+  )
 }
 
 func cycleAlphabetCase(_ alphabet: String, preedit: String) -> String {
@@ -162,7 +170,9 @@ func cycleAlphabetCase(_ alphabet: String, preedit: String) -> String {
   }
 }
 
-@MainActor func createCandidateStruct(composingText: ComposingText, options: ConvertRequestOptions, converter: KanaKanjiConverter)
+@MainActor func createCandidateStruct(
+  composingText: ComposingText, options: ConvertRequestOptions, converter: KanaKanjiConverter
+)
   -> [UnsafeMutablePointer<
     UnsafeMutablePointer<Int8>?
   >?]
@@ -176,7 +186,7 @@ func cycleAlphabetCase(_ alphabet: String, preedit: String) -> String {
     || (hiragana.count == 2 && InvalidLastCharactersForLive.contains(hiragana.last!)))
 
   // convert
-  let converted =  converter.requestCandidates(composingText, options: options)
+  let converted = converter.requestCandidates(composingText, options: options)
 
   // create result
   var result: [UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>?] = []
