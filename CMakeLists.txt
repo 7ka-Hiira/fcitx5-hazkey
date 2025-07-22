@@ -21,6 +21,18 @@ if(NOT SKIP_ZENZAI_INSTALL)
         SHOW_PROGRESS)
 endif()
 
+# ---- llama.cpp ---- #
+
+execute_process(
+    COMMAND cmake -B build -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DBUILD_SHARED_LIBS=off -DCMAKE_POSITION_INDEPENDENT_CODE=on -DGGML_VULKAN=on
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/llama.cpp
+)
+
+execute_process(
+    COMMAND cmake --build build --config ${CMAKE_BUILD_TYPE}
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/llama.cpp
+)
+
 # ---- libhazkey ---- #
 
 # build azookey-kkc library
@@ -37,7 +49,8 @@ if(NOT SKIP_KKC_PATH_UPDATE)
 endif()
 
 execute_process(
-    COMMAND swift build -c ${SWIFT_BUILD_TYPE} -Xswiftc -static-stdlib
+    # The third and subsequent -L options are temporary workarounds. You may need to rewrite them depending on the location of your Swift libraries.
+    COMMAND swift build -c ${SWIFT_BUILD_TYPE} -Xswiftc -static-stdlib -Xlinker -L/usr/lib/swift/linux -Xlinker -L/usr/lib/swift/lib/swift/linux -Xlinker -L/usr/local/lib/swift/linux
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/azookey-kkc
 )
 

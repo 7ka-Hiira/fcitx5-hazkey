@@ -122,27 +122,30 @@ public class KkcConfig {
 
   let options = ConvertRequestOptions(
     N_best: 9,
+    needTypoCorrection: nil,
     requireJapanesePrediction: false,
     requireEnglishPrediction: false,
     keyboardLanguage: .ja_JP,
-    typographyLetterCandidate: true,
-    unicodeCandidate: true,
     englishCandidateInRoman2KanaInput: false,
     fullWidthRomanCandidate: true,
     halfWidthKanaCandidate: true,
     learningType: .nothing,
-    maxMemoryCount: 0,
+    maxMemoryCount: 65536,
+    shouldResetMemory: true,
     dictionaryResourceURL: systemResourceDir.appendingPathComponent(
       "Dictionary", isDirectory: true),
     memoryDirectoryURL: userDataDir,
     sharedContainerURL: userDataDir,
     textReplacer: .empty,
+    specialCandidateProviders: nil,
     zenzaiMode: zenzaiEnabled
       ? .on(
         weight: systemResourceDir.appendingPathComponent("zenzai.gguf", isDirectory: false),
-        inferenceLimit: zenzaiInferLimit, gpuLayers: nonNegativeGpuLayers, personalizationMode: nil,
+        inferenceLimit: zenzaiInferLimit, personalizationMode: nil,
         versionDependentMode: .v3(.init(profile: profileText))) : .off,
-    metadata: .init(versionString: "fcitx5-hazkey 0.0.9")
+    metadata: ConvertRequestOptions.Metadata(
+      versionString: "fcitx5-hazkey 0.1.0"
+    ),
   )
   return KkcConfig(
     convertOptions: options, numberStyle: numberStyle, symbolStyle: symbolStyle,
@@ -217,7 +220,8 @@ func cycleAlphabetCase(_ alphabet: String, preedit: String) -> String {
     candidatePtrList.append(strdup(candidate.text))  // todo: add description such as [[全]カタカナ]
     candidatePtrList.append(strdup(""))  // todo: usage description like mozc
     candidatePtrList.append(strdup(unconvertedHiragana))
-    candidatePtrList.append(strdup(String(candidate.correspondingCount)))
+    // candidatePtrList.append(strdup(String(candidate.composingCount)))
+    candidatePtrList.append(strdup("")) //DEBUG!!!!!!!
     candidatePtrList.append(strdup(String(liveTextCompatible)))
     for data in candidate.data {
       candidatePtrList.append(strdup(data.word))

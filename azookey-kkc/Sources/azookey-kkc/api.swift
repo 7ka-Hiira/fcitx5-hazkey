@@ -40,10 +40,10 @@ import SwiftUtils
 
   // preload model to avoid delay on first input
   if zenzaiEnabled {
-    var dummyComposingText = ComposingText()
-    dummyComposingText.insertAtCursorPosition("a", inputStyle: .direct)
-    let _ = config.converter.requestCandidates(
-      dummyComposingText, options: config.convertOptions)
+    // var dummyComposingText = ComposingText()
+    // dummyComposingText.insertAtCursorPosition("a", inputStyle: .direct)
+    // let _ = config.converter.requestCandidates(
+    //   dummyComposingText, options: config.convertOptions)
   }
 
   let configPtr = Unmanaged.passRetained(config).toOpaque()
@@ -76,7 +76,7 @@ public func setLeftContext(
   let leftContext = context == nil ? nil : String(context!.prefix(anchorIndex))
 
   KkcConfig.convertOptions.zenzaiMode = .on(
-    weight: KkcConfig.zenzaiWeight, gpuLayers: KkcConfig.gpuLayers, personalizationMode: nil,
+    weight: KkcConfig.zenzaiWeight, personalizationMode: nil,
     versionDependentMode: .v3(.init(profile: KkcConfig.profileText, leftSideContext: leftContext)))
 }
 
@@ -253,12 +253,12 @@ public func deleteForward(composingTextPtr: UnsafeMutablePointer<ComposingText>?
 
 @_silgen_name("kkc_complete_prefix")
 public func completePrefix(
-  composingTextPtr: UnsafeMutablePointer<ComposingText>?, correspondingCount: Int
+  composingTextPtr: UnsafeMutablePointer<ComposingText>?, composingCount: ComposingCount
 ) {
   guard let composingTextPtr = composingTextPtr else {
     return
   }
-  composingTextPtr.pointee.prefixComplete(correspondingCount: correspondingCount)
+  composingTextPtr.pointee.prefixComplete(composingCount: composingCount)
 }
 
 @_silgen_name("kkc_move_cursor")

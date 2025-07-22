@@ -1,4 +1,4 @@
-// swift-tools-version: 6.0
+// swift-tools-version: 6.1
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -14,8 +14,9 @@ let package = Package(
   ],
   dependencies: [
     .package(
-      url: "https://github.com/7ka-Hiira/AzooKeyKanaKanjiConverter",
-      branch: "fb50425")
+      url: "https://github.com/azooKey/AzooKeyKanaKanjiConverter",
+      branch: "3f93209",
+      traits: [.trait(name: "Zenzai")])
   ],
   targets: [
     // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -29,7 +30,22 @@ let package = Package(
         .product(
           name: "SwiftUtils",
           package: "AzooKeyKanaKanjiConverter"),
-      ]
+      ],
+      swiftSettings: [.interoperabilityMode(.Cxx)],
+      linkerSettings: [
+          .unsafeFlags([
+              "-L../llama.cpp/build/src",
+              "-L../llama.cpp/build/ggml/src",
+              "-L../llama.cpp/build/ggml/src/ggml-vulkan"
+          ]),
+          .linkedLibrary("llama"),
+          .linkedLibrary("ggml"),
+          .linkedLibrary("ggml-base"),
+          .linkedLibrary("ggml-cpu"),
+          .linkedLibrary("ggml-vulkan"),
+          .linkedLibrary("vulkan"),
+          .linkedLibrary("gomp")
+      ],
     ),
     .testTarget(
       name: "hazkey-kkc-Tests",
