@@ -109,7 +109,7 @@ public class KkcConfig {
   }
 
   var systemResourceDir: URL {
-    URL(fileURLWithPath: systemResourecePath, isDirectory: true)
+    URL(fileURLWithPath: systemResourcePath, isDirectory: true)
   }
 
   do {
