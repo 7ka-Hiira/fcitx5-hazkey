@@ -53,9 +53,8 @@ while true {
         let message = String(bytes: buf[0..<readBytes], encoding: .utf8) ?? ""
         print("Received: \(message)")
 
-        processJson(jsonString: message)
+        let response = processJson(jsonString: message)
 
-        let response = "Echo: \(message)"
         _ = response.withCString { write(clientFd, $0, strlen($0)) }
     }
     close(clientFd)

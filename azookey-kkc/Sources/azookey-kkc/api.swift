@@ -201,45 +201,37 @@ import SwiftUtils
   }
 }
 
-@MainActor public func deleteBackward() {
+@MainActor public func deleteLeft() {
   guard var composingText = composingText else {
     return
   }
   composingText.deleteBackwardFromCursorPosition(count: 1)
 }
 
-@MainActor public func deleteForward() {
+@MainActor public func deleteRight() {
   guard var composingText = composingText else {
     return
   }
   composingText.deleteForwardFromCursorPosition(count: 1)
 }
 
-@MainActor public func completePrefix(composingCount: ComposingCount) {
+@MainActor public func completePrefix(candidateIndex: Int) {
+  // guard var composingText = composingText else {
+  //   return
+  // }
+  // composingText.prefixComplete(composingCount: composingCount)
+}
+
+@MainActor public func moveCursor(offset: Int) {
   guard var composingText = composingText else {
     return
   }
-  composingText.prefixComplete(composingCount: composingCount)
-}
-
-@MainActor public func moveCursor(offset: Int) -> Int {
-  guard var composingText = composingText else {
-    return 0
-  }
-  return composingText.moveCursorFromCursorPosition(count: offset)
+  let _ = composingText.moveCursorFromCursorPosition(count: offset)
 }
 
 /// ComposingText -> Characters
 
-// TODO: ひとつにまとめてswitch charTypeにする
-@MainActor public func getComposingHiragana() -> String {
-  guard let composingText = composingText else {
-    return ""
-  }
-  return composingText.toHiragana()
-}
-
-@MainActor public func getComposingHiraganaWithCursor() -> String {
+@MainActor public func getHiraganaWithCursor() -> String {
   guard let composingText = composingText else {
     return ""
   }
@@ -249,34 +241,30 @@ import SwiftUtils
   return hiragana
 }
 
-@MainActor public func getComposingKatakanaFullwidth() -> String {
+public enum CharType: Decodable {
+  case hiragana
+  case katakana_fullwidth
+  case katakana_halfwidth
+  case alphabet_fullwidth
+  case alphabet_halfwidth
+}
+
+@MainActor public func getComposingString(charType: CharType) -> String {
   guard let composingText = composingText else {
     return ""
   }
-  return composingText.toKatakana(true)
-}
-
-@MainActor public func getComposingKatakanaHalfwidth() -> String {
-  guard let composingText = composingText else {
-    return ""
+  switch charType {
+    case .hiragana:
+      return composingText.toHiragana()
+    case .katakana_fullwidth:
+      return composingText.toKatakana(true)
+    case .katakana_halfwidth:
+      return composingText.toKatakana(false)
+    case .alphabet_fullwidth:
+      return cycleAlphabetCase(composingText.toAlphabet(true), preedit: currentPreedit)
+    case .alphabet_halfwidth:
+      return cycleAlphabetCase(composingText.toAlphabet(false), preedit: currentPreedit)
   }
-  return composingText.toKatakana(false)
-}
-
-@MainActor public func getComposingAlphabetHalfwidth() -> String {
-  guard let composingText = composingText else {
-    return ""
-  }
-  let alphabet = composingText.toAlphabet(false)
-  return cycleAlphabetCase(alphabet, preedit: currentPreedit)
-}
-
-@MainActor public func getComposingAlphabetFullwidth() -> String {
-  guard let composingText = composingText else {
-    return nil
-  }
-  let fullwidthAlphabet = composingText.toAlphabet(true)
-  return cycleAlphabetCase(fullwidthAlphabet, preedit: currentPreedit)
 }
 
 /// Candidates
@@ -286,16 +274,16 @@ import SwiftUtils
 public func getCandidates(  // isPredictMode: Bool?, nBest: Int?
   ) -> Data?
 {  // JSON response
-  guard var composingText = composingText else {
+  guard let composingText = composingText else {
     return nil
   }
 
-  guard var config = kkcConfig else {
+  guard let config = kkcConfig else {
     return nil
   }
 
   // set options
-  var options = config.convertOptions
+  let options = config.convertOptions
   // options.N_best = nBest!
   // options.requireJapanesePrediction = true
   // options.requireEnglishPrediction = true
@@ -304,24 +292,4 @@ public func getCandidates(  // isPredictMode: Bool?, nBest: Int?
     composingText: composingText, options: options, converter: config.converter)
 
   return try? JSONEncoder().encode(result)
-}
-
-@_silgen_name("kkc_free_candidates")
-public func freeCandidates(
-  ptr: UnsafeMutablePointer<UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>?>?
-) {
-  guard let ptr = ptr else {
-    return
-  }
-  var i = 0
-  while ptr[i] != nil {
-    var j = 0
-    while ptr[i]![j] != nil {
-      free(ptr[i]![j])
-      j += 1
-    }
-    ptr[i]?.deallocate()
-    i += 1
-  }
-  ptr.deallocate()
 }
