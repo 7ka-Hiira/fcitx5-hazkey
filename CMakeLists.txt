@@ -35,7 +35,7 @@ execute_process(
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/llama.cpp
 )
 
-# ---- libhazkey ---- #
+# -- hazkey_server -- #
 
 # build azookey-kkc library
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -56,18 +56,16 @@ execute_process(
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/azookey-kkc
 )
 
-# ---- fcitx5-hazkey ---- #
-
-# check if built library exists
-if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/azookey-kkc/.build/${SWIFT_BUILD_TYPE}/libhazkey.so)
-    message(FATAL_ERROR "Failed to build libhazkey")
+# check if server binary exists
+if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/azookey-kkc/.build/${SWIFT_BUILD_TYPE}/hazkey_server)
+    message(FATAL_ERROR "Failed to build hazkey_server")
 endif()
 
 # ---- install ---- #
 
-# install libhazkey.so
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/azookey-kkc/.build/${SWIFT_BUILD_TYPE}/libhazkey.so
-        DESTINATION ${CMAKE_INSTALL_LIBDIR})
+# install hazkey_server
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/azookey-kkc/.build/${SWIFT_BUILD_TYPE}/hazkey_server
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/hazkey)
 
 if(NOT SKIP_ZENZAI_INSTALL)
     # install zenzai.gguf

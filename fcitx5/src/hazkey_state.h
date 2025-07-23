@@ -5,9 +5,9 @@
 #include <fcitx/inputpanel.h>
 #include <fcitx/surroundingtext.h>
 
-#include "../../azookey-kkc/libhazkey.h"
 #include "hazkey_candidate.h"
 #include "hazkey_preedit.h"
+#include "hazkey_server_connector.h"
 
 namespace fcitx {
 
@@ -121,13 +121,6 @@ class HazkeyState : public InputContextProperty {
     InputContext *ic_;
     // preedit class
     HazkeyPreedit preedit_;
-    // composing text
-    // information pointer
-    // used by
-    // libhazkey-kkc
-    ComposingText *composingText_;
-    // cursor position
-    int cursorIndex_ = 0;
 };
 
 }  // namespace fcitx

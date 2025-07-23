@@ -8,9 +8,9 @@
 #include <fcitx/instance.h>
 #include <iconv.h>
 
-#include "../../azookey-kkc/libhazkey.h"
 #include "hazkey_config.h"
 #include "hazkey_state.h"
+#include "hazkey_server_connector.h"
 
 namespace fcitx {
 
@@ -28,10 +28,10 @@ class HazkeyEngine : public InputMethodEngineV2 {
     // called when input method changes to another input method
     void deactivate(const InputMethodEntry &, InputContextEvent &) override;
 
-    const KkcConfig *getKkcConfig() const { return kkcConfig_; }
-
     auto factory() const { return &factory_; }
     auto instance() const { return instance_; }
+
+    auto socket() const { return socket_; }
 
     const Configuration *getConfig() const override { return &config_; }
     void setConfig(const RawConfig &config) override;
@@ -41,9 +41,9 @@ class HazkeyEngine : public InputMethodEngineV2 {
 
    private:
     HazkeyEngineConfig config_;
-    const KkcConfig *kkcConfig_;
     Instance *instance_;
     FactoryFor<HazkeyState> factory_;
+    int socket_;
     iconv_t conv_;
 };
 

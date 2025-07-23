@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "../../azookey-kkc/libhazkey.h"
 #include "hazkey_state.h"
 
 namespace fcitx {

@@ -2,16 +2,13 @@
 
 #include <cstring>
 
-#include "../../azookey-kkc/libhazkey.h"
 #include "hazkey_candidate.h"
 #include "hazkey_engine.h"
 
 namespace fcitx {
 
 HazkeyState::HazkeyState(HazkeyEngine *engine, InputContext *ic)
-    : engine_(engine), ic_(ic), preedit_(HazkeyPreedit(ic)) {
-    composingText_ = nullptr;
-}
+    : engine_(engine), ic_(ic), preedit_(HazkeyPreedit(ic)) {}
 
 bool HazkeyState::isInputableEvent(const KeyEvent &event) {
     auto key = event.key();
@@ -54,14 +51,16 @@ void HazkeyState::keyEvent(KeyEvent &event) {
     auto candidateList = std::dynamic_pointer_cast<HazkeyCandidateList>(
         event.inputContext()->inputPanel().candidateList());
 
+    std::string composingText = getComposingText(engine_->socket());
+
     if (candidateList != nullptr && candidateList->focused() &&
         !event.isRelease()) {
         candidateKeyEvent(event, candidateList);
-    } else if (composingText_ != nullptr && !event.isRelease()) {
+    } else if (composingText != "" && !event.isRelease()) {
         preeditKeyEvent(event, candidateList);
     } else if (!event.isRelease()) {
         noPreeditKeyEvent(event);
-    } else if (composingText_ != nullptr && candidateList != nullptr &&
+    } else if (composingText != "" && candidateList != nullptr &&
                !candidateList->focused()) {
         setAuxDownText(std::string("[Alt+数字で選択]"));
     } else {
@@ -76,7 +75,7 @@ void HazkeyState::keyEvent(KeyEvent &event) {
         ic_->inputPanel().candidateList());
     if (newCandidateList != nullptr && newCandidateList->focused()) {
         setCandidateCursorAUX(newCandidateList);
-    } else if (composingText_ != nullptr) {
+    } else if (composingText != "") {
         setHiraganaAUX();
     }
 }
@@ -99,9 +98,11 @@ void HazkeyState::noPreeditKeyEvent(KeyEvent &event) {
         default:
             if (isInputableEvent(event)) {
                 newComposingText();
-                kkc_input_text(composingText_, engine_->getKkcConfig(),
-                               Key::keySymToUTF8(keysym).c_str(),
-                               isDirectInputMode_);
+                // kkc_input_text(,
+                //                Key::keySymToUTF8(keysym),
+                //                isDirectInputMode_);
+                addToComposingText(engine_->socket(), Key::keySymToUTF8(keysym),
+                                   isDirectInputMode_);
                 showPreeditCandidateList();
                 setHiraganaAUX();
             } else {
@@ -128,11 +129,11 @@ void HazkeyState::preeditKeyEvent(
             reset();
             break;
         case FcitxKey_BackSpace:
-            kkc_delete_backward(composingText_);
+            deleteLeft(engine_->socket());
             showPreeditCandidateList();
             break;
         case FcitxKey_Delete:
-            kkc_delete_forward(composingText_);
+            deleteRight(engine_->socket());
             showPreeditCandidateList();
             break;
         case FcitxKey_F6:
@@ -162,14 +163,15 @@ void HazkeyState::preeditKeyEvent(
             break;
         case FcitxKey_Left:
             isCursorMoving_ = true;
-            kkc_move_cursor(composingText_, -1);
+            moveCursor(engine_->socket(), -1);
             break;
         case FcitxKey_Right:
             if (isCursorMoving_) {
-                bool moved = kkc_move_cursor(composingText_, 1);
-                if (!moved) {
-                    isCursorMoving_ = false;
-                }
+                //let moved =
+                moveCursor(engine_->socket(), 1);
+                // if (!moved) {
+                //     isCursorMoving_ = false;
+                // }
             }
             break;
         default:
@@ -294,11 +296,12 @@ void HazkeyState::candidateCompleteHandler(
 }
 
 void HazkeyState::newComposingText() {
-    if (composingText_ != nullptr) {
-        kkc_free_composing_text_instance(composingText_);
-    }
-    composingText_ = kkc_get_composing_text_instance();
-    updateSurroundingText();
+  FCITX_DEBUG() << "DISABLED: newComposingText()";
+    // if (composingText != "") {
+    //     kkc_free_composing_text_instance(composingText_);
+    // }
+    // composingText_ = kkc_get_composing_text_instance();
+    // updateSurroundingText();
 }
 
 void HazkeyState::updateSurroundingText() {
@@ -306,12 +309,10 @@ void HazkeyState::updateSurroundingText() {
         if (ic_->capabilityFlags().test(CapabilityFlag::SurroundingText) &&
             ic_->surroundingText().isValid()) {
             auto &surroundingText = ic_->surroundingText();
-            kkc_set_left_context(engine_->getKkcConfig(),
-                                 surroundingText.text().c_str(),
-                                 surroundingText.anchor());
+            setLeftContext(engine_->socket(), surroundingText.text(), surroundingText.anchor());
         }
     } else {
-        kkc_set_left_context(engine_->getKkcConfig(), "", 0);
+        setLeftContext(engine_->socket(), "", 0);
     }
 }
 
@@ -344,27 +345,24 @@ void HazkeyState::directCharactorConversion(ConversionMode mode) {
     char *converted = nullptr;
     switch (mode) {
         case ConversionMode::Hiragana:
-            converted = kkc_get_composing_hiragana(composingText_);
+            converted = kkc_get_composing_hiragana();
             break;
         case ConversionMode::KatakanaFullwidth:
-            converted = kkc_get_composing_katakana_fullwidth(composingText_);
+            converted = kkc_get_composing_katakana_fullwidth();
             break;
         case ConversionMode::KatakanaHalfwidth:
-            converted = kkc_get_composing_katakana_halfwidth(composingText_);
+            converted = kkc_get_composing_katakana_halfwidth();
             break;
         case ConversionMode::RawFullwidth:
-            converted = kkc_get_composing_alphabet_fullwidth(
-                composingText_, preedit_.text().c_str());
+            converted = kkc_get_composing_alphabet_fullwidth(preedit_.text().c_str());
             break;
         case ConversionMode::RawHalfwidth:
-            converted = kkc_get_composing_alphabet_halfwidth(
-                composingText_, preedit_.text().c_str());
+            converted = kkc_get_composing_alphabet_halfwidth(preedit_.text().c_str());
             break;
         default:
             return;
     }
     preedit_.setSimplePreeditHighlighted(converted);
-    kkc_free_text(converted);
     auto candidateList = ic_->inputPanel().candidateList();
     if (candidateList) {
         ic_->inputPanel().setCandidateList(nullptr);
@@ -397,9 +395,8 @@ void HazkeyState::showCandidateList(showCandidateMode mode, int nBest) {
     } else {
         // preedit conversion is disabled or conversion result is not
         // available show hiragana preedit
-        auto hiragana = kkc_get_composing_hiragana(composingText_);
+        auto hiragana = getComposingText(engine_->socket());
         preedit_.setSimplePreedit(hiragana);
-        kkc_free_text(hiragana);
     }
 
     ic_->inputPanel().setCandidateList(std::move(candidateList));
@@ -423,10 +420,6 @@ std::vector<std::vector<std::string>> HazkeyState::getCandidates(
 }
 
 void HazkeyState::showNonPredictCandidateList() {
-    if (composingText_ == nullptr) {
-        return;
-    }
-
     showCandidateList(showCandidateMode::NonPredictWithFirstPreedit,
                       NormalCandidateListSize);
 
@@ -444,9 +437,6 @@ void HazkeyState::showNonPredictCandidateList() {
 }
 
 void HazkeyState::showPreeditCandidateList() {
-    if (composingText_ == nullptr) {
-        return;
-    }
     auto hiragana = kkc_get_composing_hiragana(composingText_);
     if (hiragana == nullptr || strlen(hiragana) == 0) {
         reset();
