@@ -64,7 +64,7 @@ endif()
 # ---- install ---- #
 
 # install hazkey_server
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/azookey-kkc/.build/${SWIFT_BUILD_TYPE}/hazkey_server
+install(PROGRAMS ${CMAKE_CURRENT_SOURCE_DIR}/azookey-kkc/.build/${SWIFT_BUILD_TYPE}/hazkey_server
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/hazkey)
 
 if(NOT SKIP_ZENZAI_INSTALL)

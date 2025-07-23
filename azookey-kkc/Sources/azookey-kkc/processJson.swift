@@ -44,12 +44,23 @@ struct GetComposingStringProps: Decodable {
   let char_type: CharType
 }
 
+enum FunctionProps: Decodable {
+  case SetConfigProps
+  case SetLeftContextProps
+  case InputTextProps
+  case MoveCursorProps
+  case GetComposingStringProps
+}
+
 struct QueryData: Decodable {
   let function: KkcApi
+  // let props: FunctionProps
   let props: String
 }
 
+
 @MainActor func processJson(jsonString: String) -> String {
+  print(jsonString)
   guard let jsonData = jsonString.data(using: .utf8) else {
     NSLog("Invalid UTF-8 data for input: \(jsonString)")
     return ""

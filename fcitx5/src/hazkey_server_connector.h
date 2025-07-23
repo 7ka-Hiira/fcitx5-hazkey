@@ -17,7 +17,9 @@ int connect_server();
 
 json transact(int sock, const json& send_data);
 
-std::string getComposingText(int sock);
+std::string getComposingText(int sock, std::string type);
+
+std::string getComposingHiraganaWithCursor(int sock);
 
 void addToComposingText(int sock, std::string text, bool isDirect);
 
@@ -28,3 +30,11 @@ void deleteRight(int sock);
 void moveCursor(int sock, int offset);
 
 void setLeftContext(int sock, std::string context, int anchor);
+
+void setConfig(int sock);
+
+void createComposingTextInstance(int sock);
+
+void completePrefix(int sock);
+
+json getServerCandidates(int sock);

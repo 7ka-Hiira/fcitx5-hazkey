@@ -8,13 +8,14 @@
 #include <string>
 
 #include "env_config.h"
+#include "hazkey_engine.h"
 
 using json = nlohmann::json;
 
 std::string get_socket_path() {
     const char* xdg_runtime_dir = std::getenv("XDG_RUNTIME_DIR");
     uid_t uid = getuid();
-    std::string sockname = "sample_server." + std::to_string(uid) + ".sock";
+    std::string sockname = "hazkey_server." + std::to_string(uid) + ".sock";
     if (xdg_runtime_dir && xdg_runtime_dir[0] != '\0') {
         return std::string(xdg_runtime_dir) + "/" + sockname;
     } else {
@@ -23,27 +24,29 @@ std::string get_socket_path() {
 }
 
 int connect_server() {
+    FCITX_DEBUG() << "Hello1";
     std::string socket_path = get_socket_path();
+
+    FCITX_DEBUG() << "Hello2";
 
     int sock = socket(AF_UNIX, SOCK_STREAM, 0);
     if (sock < 0) {
         FCITX_DEBUG() << "Failed to connect hazkey_server";
         return -1;
     }
+    FCITX_DEBUG() << "Hello3";
 
     sockaddr_un addr{};
     addr.sun_family = AF_UNIX;
     strncpy(addr.sun_path, socket_path.c_str(), sizeof(addr.sun_path) - 1);
-
+    FCITX_DEBUG() << "Hello4";
     if (connect(sock, (sockaddr*)&addr, sizeof(addr)) < 0) {
-        if (connect(sock, (sockaddr*)&addr, sizeof(addr)) < 0) {
-            FCITX_INFO() << "Failed to connect hazkey_server";
-            close(sock);
-            return -1;
-        }
-
-        return sock;
+        FCITX_INFO() << "Failed to connect hazkey_server";
+        close(sock);
+        return -1;
     }
+
+    return sock;
 }
 
 json transact(int sock, const json& send_data) {
@@ -70,10 +73,18 @@ json transact(int sock, const json& send_data) {
     return resp;
 }
 
-std::string getComposingText(int sock) {
-    std::string rawJson = R"({"function": "get_composing_string"})";
+std::string getComposingText(int sock, std::string type) {
+    nlohmann::json req = {{"function", "get_composing_string"},
+                          {"props", {{"char_type", type}}}};
+    nlohmann::json resp = transact(sock, req);
+    if (!resp.is_object() || !resp.contains("composing_string")) {
+        return "";
+    }
+    return resp["composing_string"].get<std::string>();
+}
 
-    nlohmann::json req = nlohmann::json::parse(rawJson, nullptr, false);
+std::string getComposingHiraganaWithCursor(int sock) {
+    nlohmann::json req = {{"function", "get_hiragana_with_cursor"}};
     nlohmann::json resp = transact(sock, req);
     if (!resp.is_object() || !resp.contains("composing_string")) {
         return "";
@@ -82,39 +93,58 @@ std::string getComposingText(int sock) {
 }
 
 void addToComposingText(int sock, std::string text, bool isDirect) {
-  std::string rawFuncProps = "{\"text\": \"" + text + "\",\"isDirect\": \"" + std::string(isDirect ? "true" : "false") + "\"}";
-  std::string rawJson = "{\"function\": \"input_text\",\"props\": \""+ rawFuncProps +"\"}";
-  nlohmann::json req = nlohmann::json::parse(rawJson, nullptr, false);
-  nlohmann::json resp = transact(sock, req);
-  return;
+    nlohmann::json req = {{"function", "input_text"},
+                          {"props", {{"text", text}, {"isDirect", isDirect}}}};
+    transact(sock, req);
 }
 
 void deleteLeft(int sock) {
-  std::string rawJson = "{\"function\": \"delete_left\"}";
-  nlohmann::json req = nlohmann::json::parse(rawJson, nullptr, false);
-  nlohmann::json resp = transact(sock, req);
-  return;
+    nlohmann::json req = {{"function", "delete_left"}};
+    transact(sock, req);
 }
 
 void deleteRight(int sock) {
-  std::string rawJson = "{\"function\": \"delete_right\"}";
-  nlohmann::json req = nlohmann::json::parse(rawJson, nullptr, false);
-  nlohmann::json resp = transact(sock, req);
-  return;
+    nlohmann::json req = {{"function", "delete_right"}};
+    transact(sock, req);
 }
 
 void moveCursor(int sock, int offset) {
-  std::string rawFuncProps = "{\"offset\": \"" + to_string(offset) + "\"}";
-  std::string rawJson = "{\"function\": \"move_cursor\",\"props\": \""+ rawFuncProps +"\"}";
-  nlohmann::json req = nlohmann::json::parse(rawJson, nullptr, false);
-  nlohmann::json resp = transact(sock, req);
-  return;
+    nlohmann::json req = {{"function", "move_cursor"},
+                          {"props", {{"offset", offset}}}};
+    transact(sock, req);
 }
 
 void setLeftContext(int sock, std::string context, int anchor) {
-  std::string rawFuncProps = "{\"context\": \"" + context + ",\"anchor\":\"" + to_string(anchor) + "\"}";
-  std::string rawJson = "{\"function\": \"input_text\",\"props\": \""+ rawFuncProps +"\"}";
-  nlohmann::json req = nlohmann::json::parse(rawJson, nullptr, false);
-  nlohmann::json resp = transact(sock, req);
-  return;
+    nlohmann::json req = {
+        {"function", "input_text"},
+        {"props", {{"context", context}, {"anchor", anchor}}}};
+    transact(sock, req);
+}
+
+void setConfig(int sock) {
+    nlohmann::json req = {
+        {"function", "set_config"},
+    };
+    transact(sock, req);
+}
+
+void createComposingTextInstance(int sock) {
+    nlohmann::json req = {
+        {"function", "create_composing_text_instance"},
+    };
+    transact(sock, req);
+}
+
+void completePrefix(int sock) {
+    nlohmann::json req = {
+        {"function", "complete_prefix"},
+    };
+    transact(sock, req);
+}
+
+json getServerCandidates(int sock) {
+    nlohmann::json req = {
+        {"function", "get_candidates"},
+    };
+    return transact(sock, req);
 }
