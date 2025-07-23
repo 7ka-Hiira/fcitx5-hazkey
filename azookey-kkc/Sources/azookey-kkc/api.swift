@@ -241,7 +241,7 @@ import SwiftUtils
   return hiragana
 }
 
-public enum CharType: Decodable {
+public enum CharType: String, Decodable {
   case hiragana
   case katakana_fullwidth
   case katakana_halfwidth

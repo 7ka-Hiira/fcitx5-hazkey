@@ -51,7 +51,7 @@ void HazkeyState::keyEvent(KeyEvent &event) {
     auto candidateList = std::dynamic_pointer_cast<HazkeyCandidateList>(
         event.inputContext()->inputPanel().candidateList());
 
-    std::string composingText = getComposingText(engine_->socket(), "Hiragana");
+    std::string composingText = getComposingText(engine_->socket(), "hiragana");
 
     if (candidateList != nullptr && candidateList->focused() &&
         !event.isRelease()) {

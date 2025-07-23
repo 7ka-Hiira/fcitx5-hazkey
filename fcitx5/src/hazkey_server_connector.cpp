@@ -77,24 +77,24 @@ std::string getComposingText(int sock, std::string type) {
     nlohmann::json req = {{"function", "get_composing_string"},
                           {"props", {{"char_type", type}}}};
     nlohmann::json resp = transact(sock, req);
-    if (!resp.is_object() || !resp.contains("composing_string")) {
+    if (!resp.is_object() || !resp.contains("result")) {
         return "";
     }
-    return resp["composing_string"].get<std::string>();
+    return resp["result"].get<std::string>();
 }
 
 std::string getComposingHiraganaWithCursor(int sock) {
     nlohmann::json req = {{"function", "get_hiragana_with_cursor"}};
     nlohmann::json resp = transact(sock, req);
-    if (!resp.is_object() || !resp.contains("composing_string")) {
+    if (!resp.is_object() || !resp.contains("result")) {
         return "";
     }
-    return resp["composing_string"].get<std::string>();
+    return resp["result"].get<std::string>();
 }
 
 void addToComposingText(int sock, std::string text, bool isDirect) {
     nlohmann::json req = {{"function", "input_text"},
-                          {"props", {{"text", text}, {"isDirect", isDirect}}}};
+                          {"props", {{"text", text}, {"is_direct", isDirect}}}};
     transact(sock, req);
 }
 
@@ -122,29 +122,21 @@ void setLeftContext(int sock, std::string context, int anchor) {
 }
 
 void setConfig(int sock) {
-    nlohmann::json req = {
-        {"function", "set_config"},
-    };
+    nlohmann::json req = {{"function", "set_config"}};
     transact(sock, req);
 }
 
 void createComposingTextInstance(int sock) {
-    nlohmann::json req = {
-        {"function", "create_composing_text_instance"},
-    };
+    nlohmann::json req = {{"function", "create_composing_text_instance"}};
     transact(sock, req);
 }
 
 void completePrefix(int sock) {
-    nlohmann::json req = {
-        {"function", "complete_prefix"},
-    };
+    nlohmann::json req = {{"function", "complete_prefix"}};
     transact(sock, req);
 }
 
 json getServerCandidates(int sock) {
-    nlohmann::json req = {
-        {"function", "get_candidates"},
-    };
+    nlohmann::json req = {{"function", "get_candidates"}};
     return transact(sock, req);
 }
