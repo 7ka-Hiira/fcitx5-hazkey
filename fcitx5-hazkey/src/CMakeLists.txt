@@ -1,6 +1,12 @@
-add_library(fcitx5-hazkey SHARED hazkey_state.cpp hazkey_engine.cpp hazkey_candidate.cpp hazkey_preedit.cpp)
+configure_file(
+  ${CMAKE_CURRENT_SOURCE_DIR}/env_config.h.in
+  ${CMAKE_CURRENT_BINARY_DIR}/env_config.h
+)
 
-target_link_libraries(fcitx5-hazkey PRIVATE Fcitx5::Core Fcitx5::Config "${CMAKE_SOURCE_DIR}/azookey-kkc/.build/${SWIFT_BUILD_TYPE}/libhazkey.so")
+add_library(fcitx5-hazkey SHARED hazkey_state.cpp hazkey_engine.cpp hazkey_candidate.cpp hazkey_preedit.cpp hazkey_server_connector.cpp protocol/hazkey_server.pb.cc)
+
+target_include_directories(fcitx5-hazkey PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+target_link_libraries(fcitx5-hazkey PRIVATE Fcitx5::Core Fcitx5::Config protobuf ${Protobuf_LIBRARIES} absl::log_internal_message absl::log_internal_check_op)
 
 
 set_target_properties(fcitx5-hazkey PROPERTIES PREFIX "")

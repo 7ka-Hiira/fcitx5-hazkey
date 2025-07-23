@@ -1,8 +1,8 @@
-/.vscode
 /.cache
 /build
-/azookey-kkc/.build
-/azookey-kkc/*.so
+
+/.vscode
+/.zed
+/.idea
 
 /zenzai.gguf
-/azookey-kkc/Sources/azookey-kkc/path.swift

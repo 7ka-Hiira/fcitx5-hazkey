@@ -73,7 +73,6 @@ public class KkcConfig {
   let tenCombiningStyle: DiacriticStyle
 
   let zenzaiWeight: URL
-  let gpuLayers: Int32
   let profileText: String?
 
   let converter: KanaKanjiConverter
@@ -81,7 +80,7 @@ public class KkcConfig {
   @MainActor init(
     convertOptions: ConvertRequestOptions, numberStyle: Style, symbolStyle: Style,
     periodStyle: TenStyle, commaStyle: TenStyle, spaceStyle: Style, diacriticStyle: DiacriticStyle,
-    zenzaiWeight: URL, gpuLayers: Int32, profileText: String?
+    zenzaiWeight: URL, profileText: String?
   ) {
     self.convertOptions = convertOptions
     self.numberStyle = numberStyle
@@ -91,7 +90,6 @@ public class KkcConfig {
     self.spaceStyle = spaceStyle
     self.tenCombiningStyle = diacriticStyle
     self.zenzaiWeight = zenzaiWeight
-    self.gpuLayers = gpuLayers
     self.profileText = profileText
     self.converter = KanaKanjiConverter()
   }
@@ -101,7 +99,7 @@ public class KkcConfig {
   zenzaiEnabled: Bool = false, zenzaiInferLimit: Int = 1, numberStyle: KkcConfig.Style,
   symbolStyle: KkcConfig.Style,
   periodStyle: KkcConfig.TenStyle, commaStyle: KkcConfig.TenStyle, spaceStyle: KkcConfig.Style,
-  diacriticStyle: KkcConfig.DiacriticStyle, gpuLayers: Int32 = 0, profileText: String?
+  diacriticStyle: KkcConfig.DiacriticStyle, profileText: String?
 ) -> KkcConfig {
   var userDataDir: URL {
     FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
@@ -117,8 +115,6 @@ public class KkcConfig {
   } catch {
     print("Error creating directory: \(error)")
   }
-
-  let nonNegativeGpuLayers = max(0, gpuLayers)
 
   let options = ConvertRequestOptions(
     N_best: 9,
@@ -152,7 +148,6 @@ public class KkcConfig {
     periodStyle: periodStyle, commaStyle: commaStyle, spaceStyle: spaceStyle,
     diacriticStyle: diacriticStyle,
     zenzaiWeight: systemResourceDir.appendingPathComponent("zenzai.gguf", isDirectory: false),
-    gpuLayers: nonNegativeGpuLayers,
     profileText: profileText
   )
 }
@@ -171,71 +166,6 @@ func cycleAlphabetCase(_ alphabet: String, preedit: String) -> String {
   } else {
     return alphabet.lowercased()
   }
-}
-
-@MainActor func createCandidateStruct(
-  composingText: ComposingText, options: ConvertRequestOptions, converter: KanaKanjiConverter
-)
-  -> [UnsafeMutablePointer<
-    UnsafeMutablePointer<Int8>?
-  >?]
-{
-  let hiragana = composingText.toHiragana()
-  let InvalidLastCharactersForLive: [String.Element] = ["ゃ", "ゅ", "ょ", "ぁ", "ぃ", "ぅ", "ぇ", "ぉ"]
-
-  // one hiragana or two ending with small kana won't convert automatically
-  let enableLiveText =
-    !((hiragana.count <= 1)
-    || (hiragana.count == 2 && InvalidLastCharactersForLive.contains(hiragana.last!)))
-
-  // convert
-  let converted = converter.requestCandidates(composingText, options: options)
-
-  // create result
-  var result: [UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>?] = []
-  for candidate in converted.mainResults {
-
-    let candidateRubyLen = candidate.data.reduce(0) { $0 + $1.ruby.count }
-    let unconvertedHiragana: String
-
-    var liveTextCompatible: Int
-    if candidateRubyLen < hiragana.count {
-      // converted is shorter than source
-      // get unconverted part of hiragana
-      let convertedIndex = hiragana.index(
-        hiragana.startIndex, offsetBy: candidateRubyLen)
-      unconvertedHiragana = String(hiragana[convertedIndex...])
-      liveTextCompatible = 0
-    } else if candidateRubyLen == hiragana.count {
-      unconvertedHiragana = ""
-      liveTextCompatible = enableLiveText ? 1 : 0
-    } else {
-      unconvertedHiragana = ""
-      liveTextCompatible = 0
-    }
-
-    // create info list
-    var candidatePtrList: [UnsafeMutablePointer<Int8>?] = []
-    // about this structure, see header file
-    candidatePtrList.append(strdup(candidate.text))  // todo: add description such as [[全]カタカナ]
-    candidatePtrList.append(strdup(""))  // todo: usage description like mozc
-    candidatePtrList.append(strdup(unconvertedHiragana))
-    // candidatePtrList.append(strdup(String(candidate.composingCount)))
-    candidatePtrList.append(strdup("")) //DEBUG!!!!!!!
-    candidatePtrList.append(strdup(String(liveTextCompatible)))
-    for data in candidate.data {
-      candidatePtrList.append(strdup(data.word))
-      candidatePtrList.append(strdup(String(data.ruby.count)))
-    }
-
-    // append to result
-    let candidatePtrListPtr = UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>.allocate(
-      capacity: candidatePtrList.count + 1)
-    candidatePtrListPtr.initialize(from: candidatePtrList, count: candidatePtrList.count)
-    candidatePtrListPtr[candidatePtrList.count] = nil
-    result.append(candidatePtrListPtr)
-  }
-  return result
 }
 
 func symbolJaToEn(character: Character, reverse: Bool) -> Character {

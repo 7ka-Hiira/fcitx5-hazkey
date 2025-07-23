@@ -3,6 +3,11 @@
 
 #include <fcitx/candidatelist.h>
 #include <fcitx/inputcontext.h>
+#include <fcitx/text.h>
+
+#include <string>
+// #include "hazkey_state.h"
+#include "hazkey_server_connector.h"
 
 namespace fcitx {
 
@@ -19,19 +24,13 @@ const KeyList defaultSelectionKeys = {
 
 class HazkeyCandidateWord : public CandidateWord {
    public:
-    HazkeyCandidateWord(const int index, const std::string& text,
-                        const std::string& hiragana,
-                        const int correspondingCount,
-                        const std::vector<std::string> parts,
-                        const std::vector<int> partLens)
-        : CandidateWord(Text(text)),
+    HazkeyCandidateWord(const int index,
+                        const HazkeyServerConnector::CandidateData data)
+        : CandidateWord(Text(data.candidateText)),
           index_(index),
-          candidate_(std::move(text)),
-          hiragana_(std::move(hiragana)),
-          corresponding_count_(correspondingCount),
-          parts_(std::move(parts)),
-          part_lens_(std::move(partLens)) {
-        setText(Text(text));
+          candidate_(std::move(data.candidateText)),
+          hiragana_(std::move(data.subHiragana)) {
+        setText(Text(data.candidateText));
     }
 
     // called when the candidate is selected (by pointing device?)
@@ -41,22 +40,21 @@ class HazkeyCandidateWord : public CandidateWord {
 
     std::vector<std::string> getPreedit() const;
 
-    int correspondingCount() const { return corresponding_count_; }
+    // int correspondingCount() const { return corresponding_count_; }
 
    private:
     const int index_;
     const std::string candidate_;
     const std::string hiragana_;
-    const int corresponding_count_;
-    const std::vector<std::string> parts_;
-    const std::vector<int> part_lens_;
+    // const int corresponding_count_;
+    // const std::vector<std::string> parts_;
+    // const std::vector<int> part_lens_;
 };
 
 class HazkeyCandidateList : public CommonCandidateList {
    public:
     HazkeyCandidateList(
-        std::vector<std::vector<std::string>> candidates,
-        std::shared_ptr<std::vector<std::string>> preeditSegments);
+        std::vector<HazkeyServerConnector::CandidateData> candidates);
 
     // return the direction of the candidate list
     // currently always vertical

@@ -5,7 +5,6 @@
 #include <fcitx/inputpanel.h>
 #include <fcitx/surroundingtext.h>
 
-#include "../../azookey-kkc/libhazkey.h"
 #include "hazkey_candidate.h"
 #include "hazkey_preedit.h"
 
@@ -63,8 +62,6 @@ class HazkeyState : public InputContextProperty {
     // base function to prepare candidate list
     // make sure composingText_ is not nullptr
     void showCandidateList(showCandidateMode mode, int nBest);
-    std::vector<std::vector<std::string>> getCandidates(bool isPredictMode,
-                                                        int nBest);
     std::unique_ptr<HazkeyCandidateList> createCandidateList(
         std::vector<std::vector<std::string>> candidates,
         std::shared_ptr<std::vector<std::string>> preeditSegments);
@@ -121,13 +118,6 @@ class HazkeyState : public InputContextProperty {
     InputContext *ic_;
     // preedit class
     HazkeyPreedit preedit_;
-    // composing text
-    // information pointer
-    // used by
-    // libhazkey-kkc
-    ComposingText *composingText_;
-    // cursor position
-    int cursorIndex_ = 0;
 };
 
 }  // namespace fcitx

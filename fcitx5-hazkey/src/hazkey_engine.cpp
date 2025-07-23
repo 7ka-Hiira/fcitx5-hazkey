@@ -1,5 +1,6 @@
 #include "hazkey_engine.h"
 
+#include "hazkey_server_connector.h"
 #include "hazkey_state.h"
 
 namespace fcitx {
@@ -8,17 +9,9 @@ HazkeyEngine::HazkeyEngine(Instance *instance)
     : instance_(instance), factory_([this](InputContext &ic) {
           return new HazkeyState(this, &ic);
       }) {
+    server_ = HazkeyServerConnector();
+
     instance->inputContextManager().registerProperty("hazkeyState", &factory_);
-    kkcConfig_ =
-        kkc_get_config(*config().zenzaiEnabled, *config().zenzaiInferenceLimit,
-                       static_cast<int>(*config().numberStyle),
-                       static_cast<int>(*config().symbolStyle),
-                       static_cast<int>(*config().periodStyle),
-                       static_cast<int>(*config().commaStyle),
-                       static_cast<int>(*config().spaceStyle),
-                       static_cast<int>(*config().diacriticStyle),
-                       static_cast<int>(*config().gpuLayers),
-                       const_cast<char *>(config().zenzaiProfile->c_str()));
     reloadConfig();
 }
 
@@ -62,19 +55,14 @@ void HazkeyEngine::setConfig(const RawConfig &config) {
 
 void HazkeyEngine::reloadConfig() {
     readAsIni(config_, "conf/hazkey.conf");
-    if (kkcConfig_ != nullptr) {
-        kkc_free_config(kkcConfig_);
-    }
-    kkcConfig_ =
-        kkc_get_config(*config().zenzaiEnabled, *config().zenzaiInferenceLimit,
-                       static_cast<int>(*config().numberStyle),
-                       static_cast<int>(*config().symbolStyle),
-                       static_cast<int>(*config().periodStyle),
-                       static_cast<int>(*config().commaStyle),
-                       static_cast<int>(*config().spaceStyle),
-                       static_cast<int>(*config().diacriticStyle),
-                       static_cast<int>(*config().gpuLayers),
-                       const_cast<char *>(config().zenzaiProfile->c_str()));
+    server_.setServerConfig(
+        *config().zenzaiEnabled, *config().zenzaiInferenceLimit,
+        static_cast<int>(*config().numberStyle),
+        static_cast<int>(*config().symbolStyle),
+        static_cast<int>(*config().periodStyle),
+        static_cast<int>(*config().commaStyle),
+        static_cast<int>(*config().spaceStyle),
+        static_cast<int>(*config().diacriticStyle), *config().zenzaiProfile);
 }
 
 FCITX_ADDON_FACTORY(HazkeyEngineFactory);
