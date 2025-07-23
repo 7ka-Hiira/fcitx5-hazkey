@@ -2,17 +2,15 @@ import Foundation
 import KanaKanjiConverterModule
 import SwiftUtils
 
-/// C FFIs
-
 /// Config
 
-@_silgen_name("kkc_get_config")
-@MainActor public func getConfig(
+// TODO: 数字に変換せず直接スタイルをわたす
+@MainActor public func setConfig(
   zenzaiEnabled: Bool, zenzaiInferLimit: Int,
   numberFullwidth: Int, symbolFullwidth: Int, periodStyleIndex: Int,
-  commaStyleIndex: Int, spaceFullwidth: Int, tenCombining: Int, gpuLayers: Int32,
-  profileTextPtr: UnsafePointer<Int8>?
-) -> OpaquePointer? {
+  commaStyleIndex: Int, spaceFullwidth: Int, tenCombining: Int,
+  profileText: String
+) {
   let numberStyle: KkcConfig.Style = numberFullwidth == 1 ? .fullwidth : .halfwidth
   let symbolStyle: KkcConfig.Style = symbolFullwidth == 1 ? .fullwidth : .halfwidth
   let periodStyle: KkcConfig.TenStyle =
@@ -30,13 +28,14 @@ import SwiftUtils
     tenCombining == 1
     ? .halfwidth
     : tenCombining == 2 ? .combining : .fullwidth
-  let profileText = profileTextPtr != nil ? String(cString: profileTextPtr!) : nil
 
   let config = genDefaultConfig(
     zenzaiEnabled: zenzaiEnabled, zenzaiInferLimit: zenzaiInferLimit, numberStyle: numberStyle,
     symbolStyle: symbolStyle, periodStyle: periodStyle,
     commaStyle: commaStyle, spaceStyle: spaceStyle, diacriticStyle: diacriticStyle,
-    gpuLayers: gpuLayers, profileText: profileText)
+    profileText: profileText)
+
+  kkcConfig = config
 
   // preload model to avoid delay on first input
   if zenzaiEnabled {
@@ -46,81 +45,44 @@ import SwiftUtils
     //   dummyComposingText, options: config.convertOptions)
   }
 
-  let configPtr = Unmanaged.passRetained(config).toOpaque()
-  return OpaquePointer(configPtr)
+  return
 }
 
-@_silgen_name("kkc_free_config")
-public func freeConfig(ptr: OpaquePointer?) {
-  guard let ptr = ptr else {
-    return
-  }
-  Unmanaged<KkcConfig>.fromOpaque(UnsafeRawPointer(ptr)).release()
-}
-
-@_silgen_name("kkc_set_left_context")
-public func setLeftContext(
-  kkcConfigPtr: OpaquePointer?, surroundingTextPtr: UnsafePointer<Int8>?, anchorIndex: Int
+@MainActor public func setLeftContext(
+  surroundingText: String, anchorIndex: Int
 ) {
-  guard let kkcConfigPtr = kkcConfigPtr else {
-    return
-  }
-  let KkcConfig = Unmanaged<KkcConfig>.fromOpaque(UnsafeRawPointer(kkcConfigPtr))
-    .takeUnretainedValue()
-
-  if KkcConfig.convertOptions.zenzaiMode == .off {
+  guard let config = kkcConfig, config.convertOptions.zenzaiMode != .off else {
     return
   }
 
-  let context = surroundingTextPtr == nil ? nil : String(cString: surroundingTextPtr!)
-  let leftContext = context == nil ? nil : String(context!.prefix(anchorIndex))
+  let leftContext = String(surroundingText.prefix(anchorIndex))
 
-  KkcConfig.convertOptions.zenzaiMode = .on(
-    weight: KkcConfig.zenzaiWeight, personalizationMode: nil,
-    versionDependentMode: .v3(.init(profile: KkcConfig.profileText, leftSideContext: leftContext)))
+  config.convertOptions.zenzaiMode = .on(
+    weight: config.zenzaiWeight,
+    personalizationMode: nil,  // TODO: handle this correctly
+    versionDependentMode: .v3(.init(profile: config.profileText, leftSideContext: leftContext))
+  )
 }
 
 /// ComposingText
 
-@_silgen_name("kkc_get_composing_text_instance")
-@MainActor public func getComposingTextInstance() -> UnsafeMutablePointer<ComposingText>? {
-  let composingTextPtr = UnsafeMutablePointer<ComposingText>.allocate(capacity: 1)
-  let composingText = ComposingText()
-  composingTextPtr.initialize(to: composingText)
-  return composingTextPtr
+@MainActor public func createComposingTextInstanse() {
+  composingText = ComposingText()
 }
 
-@_silgen_name("kkc_free_composing_text_instance")
-public func freeComposingTextInstance(ptr: UnsafeMutablePointer<ComposingText>?) {
-  ptr?.deinitialize(count: 1)
-  ptr?.deallocate()
-}
-
-@_silgen_name("kkc_input_text")
 @MainActor public func inputText(
-  composingTextPtr: UnsafeMutablePointer<ComposingText>?, kkcConfigPtr: OpaquePointer?,
-  stringPtr: UnsafePointer<Int8>?, isDirect: Bool
+  inputString: String, isDirect: Bool
 ) {
-  guard let composingTextPtr = composingTextPtr else {
-    return
-  }
-  guard let stringPtr = stringPtr else {
+  guard var inputUnicode = inputString.unicodeScalars.first else {
     return
   }
 
-  guard var inputUnicode = String(cString: stringPtr).unicodeScalars.first else {
+  guard let config = kkcConfig else {
     return
   }
 
-  let config: KkcConfig
-  if let kkcConfigPtr = kkcConfigPtr {
-    config = Unmanaged<KkcConfig>.fromOpaque(UnsafeRawPointer(kkcConfigPtr))
-      .takeUnretainedValue()
-  } else {
-    config = genDefaultConfig(
-      numberStyle: .fullwidth, symbolStyle: .fullwidth,
-      periodStyle: .fullwidthJapanese, commaStyle: .fullwidthJapanese, spaceStyle: .fullwidth,
-      diacriticStyle: .fullwidth, gpuLayers: 0, profileText: nil)
+  guard var composingText = composingText else {
+    return
   }
 
   if !isDirect {
@@ -129,7 +91,7 @@ public func freeComposingTextInstance(ptr: UnsafeMutablePointer<ComposingText>?)
       inputUnicode = UnicodeScalar(inputUnicode.value - 96)!
     }
 
-    let inputCharacter: Character
+    var inputCharacter: Character
 
     switch Character(inputUnicode) {
     case "1", "2", "3", "4", "5", "6", "7", "8", "9", "0":
@@ -179,14 +141,16 @@ public func freeComposingTextInstance(ptr: UnsafeMutablePointer<ComposingText>?)
 
     switch string {
     case "゛":
-      if let lastElem = composingTextPtr.pointee.input.last {
+      if let lastElem = composingText.input.last {
         let dakutened = CharacterUtils.dakuten(lastElem.character)
         if dakutened == lastElem.character {
-          if lastElem.character != "゛" && lastElem.character != "゜" && lastElem.character != "゙"
-            && lastElem.character != "゚" && lastElem.character != "ﾞ" && lastElem.character != "ﾟ"
+          if lastElem.character != "゛" && lastElem.character != "゜"
+            && lastElem.character != "゙"
+            && lastElem.character != "゚" && lastElem.character != "ﾞ"
+            && lastElem.character != "ﾟ"
           {
-            composingTextPtr.pointee.deleteBackwardFromCursorPosition(count: 1)
-            composingTextPtr.pointee.insertAtCursorPosition(
+            composingText.deleteBackwardFromCursorPosition(count: 1)
+            composingText.insertAtCursorPosition(
               String(lastElem.character), inputStyle: lastElem.inputStyle)
           }
           switch config.tenCombiningStyle {
@@ -198,19 +162,21 @@ public func freeComposingTextInstance(ptr: UnsafeMutablePointer<ComposingText>?)
             string = "゙"
           }
         } else {
-          composingTextPtr.pointee.deleteBackwardFromCursorPosition(count: 1)
+          composingText.deleteBackwardFromCursorPosition(count: 1)
           string = String(dakutened)
         }
       }
     case "゜":
-      if let lastElem = composingTextPtr.pointee.input.last {
+      if let lastElem = composingText.input.last {
         let handakutened = CharacterUtils.handakuten(lastElem.character)
         if handakutened == lastElem.character {
-          if lastElem.character != "゛" && lastElem.character != "゜" && lastElem.character != "゙"
-            && lastElem.character != "゚" && lastElem.character != "ﾞ" && lastElem.character != "ﾟ"
+          if lastElem.character != "゛" && lastElem.character != "゜"
+            && lastElem.character != "゙"
+            && lastElem.character != "゚" && lastElem.character != "ﾞ"
+            && lastElem.character != "ﾟ"
           {
-            composingTextPtr.pointee.deleteBackwardFromCursorPosition(count: 1)
-            composingTextPtr.pointee.insertAtCursorPosition(
+            composingText.deleteBackwardFromCursorPosition(count: 1)
+            composingText.insertAtCursorPosition(
               String(lastElem.character), inputStyle: lastElem.inputStyle)
           }
           switch config.tenCombiningStyle {
@@ -222,187 +188,122 @@ public func freeComposingTextInstance(ptr: UnsafeMutablePointer<ComposingText>?)
             string = "゚"
           }
         } else {
-          composingTextPtr.pointee.deleteBackwardFromCursorPosition(count: 1)
+          composingText.deleteBackwardFromCursorPosition(count: 1)
           string = String(handakutened)
         }
       }
     default:
       break
     }
-    composingTextPtr.pointee.insertAtCursorPosition(string, inputStyle: .roman2kana)
+    composingText.insertAtCursorPosition(string, inputStyle: .roman2kana)
   } else {
-    composingTextPtr.pointee.insertAtCursorPosition(String(inputUnicode), inputStyle: .direct)
+    composingText.insertAtCursorPosition(String(inputUnicode), inputStyle: .direct)
   }
 }
 
-@_silgen_name("kkc_delete_backward")
-public func deleteBackward(composingTextPtr: UnsafeMutablePointer<ComposingText>?) {
-  guard let composingTextPtr = composingTextPtr else {
+@MainActor public func deleteBackward() {
+  guard var composingText = composingText else {
     return
   }
-  composingTextPtr.pointee.deleteBackwardFromCursorPosition(count: 1)
+  composingText.deleteBackwardFromCursorPosition(count: 1)
 }
 
-@_silgen_name("kkc_delete_forward")
-public func deleteForward(composingTextPtr: UnsafeMutablePointer<ComposingText>?) {
-  guard let composingTextPtr = composingTextPtr else {
+@MainActor public func deleteForward() {
+  guard var composingText = composingText else {
     return
   }
-  composingTextPtr.pointee.deleteForwardFromCursorPosition(count: 1)
+  composingText.deleteForwardFromCursorPosition(count: 1)
 }
 
-@_silgen_name("kkc_complete_prefix")
-public func completePrefix(
-  composingTextPtr: UnsafeMutablePointer<ComposingText>?, composingCount: ComposingCount
-) {
-  guard let composingTextPtr = composingTextPtr else {
+@MainActor public func completePrefix(composingCount: ComposingCount) {
+  guard var composingText = composingText else {
     return
   }
-  composingTextPtr.pointee.prefixComplete(composingCount: composingCount)
+  composingText.prefixComplete(composingCount: composingCount)
 }
 
-@_silgen_name("kkc_move_cursor")
-public func moveCursor(composingTextPtr: UnsafeMutablePointer<ComposingText>?, offset: Int)
-  -> Int
-{
-  guard let composingTextPtr = composingTextPtr else {
+@MainActor public func moveCursor(offset: Int) -> Int {
+  guard var composingText = composingText else {
     return 0
   }
-  return composingTextPtr.pointee.moveCursorFromCursorPosition(count: offset)
+  return composingText.moveCursorFromCursorPosition(count: offset)
 }
 
 /// ComposingText -> Characters
 
-@_silgen_name("kkc_get_composing_hiragana")
-public func getComposingHiragana(composingTextPtr: UnsafeMutablePointer<ComposingText>?)
-  -> UnsafeMutablePointer<Int8>?
-{
-  guard let composingTextPtr = composingTextPtr else {
-    return nil
+// TODO: ひとつにまとめてswitch charTypeにする
+@MainActor public func getComposingHiragana() -> String {
+  guard let composingText = composingText else {
+    return ""
   }
-  return strdup(composingTextPtr.pointee.toHiragana())
+  return composingText.toHiragana()
 }
 
-@_silgen_name("kkc_get_composing_hiragana_with_cursor")
-public func getComposingHiraganaWithCursor(composingTextPtr: UnsafeMutablePointer<ComposingText>?)
-  -> UnsafeMutablePointer<Int8>?
-{
-  guard let composingTextPtr = composingTextPtr else {
-    return nil
+@MainActor public func getComposingHiraganaWithCursor() -> String {
+  guard let composingText = composingText else {
+    return ""
   }
-  var hiragana = composingTextPtr.pointee.toHiragana()
-  let cursorPos = composingTextPtr.pointee.convertTargetCursorPosition
+  var hiragana = composingText.toHiragana()
+  let cursorPos = composingText.convertTargetCursorPosition
   hiragana.insert("|", at: hiragana.index(hiragana.startIndex, offsetBy: cursorPos))
-  return strdup(hiragana)
+  return hiragana
 }
 
-@_silgen_name("kkc_get_composing_katakana_fullwidth")
-public func getComposingKatakanaFullwidth(composingTextPtr: UnsafeMutablePointer<ComposingText>?)
-  -> UnsafeMutablePointer<Int8>?
-{
-  guard let composingTextPtr = composingTextPtr else {
-    return nil
+@MainActor public func getComposingKatakanaFullwidth() -> String {
+  guard let composingText = composingText else {
+    return ""
   }
-  return strdup(composingTextPtr.pointee.toKatakana(true))
+  return composingText.toKatakana(true)
 }
 
-@_silgen_name("kkc_get_composing_katakana_halfwidth")
-public func getComposingKatakanaHalfwidth(composingTextPtr: UnsafeMutablePointer<ComposingText>?)
-  -> UnsafeMutablePointer<Int8>?
-{
-  guard let composingTextPtr = composingTextPtr else {
-    return nil
+@MainActor public func getComposingKatakanaHalfwidth() -> String {
+  guard let composingText = composingText else {
+    return ""
   }
-  return strdup(composingTextPtr.pointee.toKatakana(false))
+  return composingText.toKatakana(false)
 }
 
-@_silgen_name("kkc_get_composing_alphabet_halfwidth")
-public func getComposingAlphabetHalfwidth(
-  composingTextPtr: UnsafeMutablePointer<ComposingText>?, currentPreeditPtr: UnsafePointer<Int8>?
-)
-  -> UnsafeMutablePointer<Int8>?
-{
-  guard let composingTextPtr = composingTextPtr else {
-    return nil
+@MainActor public func getComposingAlphabetHalfwidth() -> String {
+  guard let composingText = composingText else {
+    return ""
   }
-  guard let currentPreeditPtr = currentPreeditPtr else {
-    return nil
-  }
-  let currentPreedit = String(cString: currentPreeditPtr)
-  let alphabet = composingTextPtr.pointee.toAlphabet(false)
-  return strdup(cycleAlphabetCase(alphabet, preedit: currentPreedit))
+  let alphabet = composingText.toAlphabet(false)
+  return cycleAlphabetCase(alphabet, preedit: currentPreedit)
 }
 
-@_silgen_name("kkc_get_composing_alphabet_fullwidth")
-public func getComposingAlphabetFullwidth(
-  composingTextPtr: UnsafeMutablePointer<ComposingText>?, currentPreeditPtr: UnsafePointer<Int8>?
-)
-  -> UnsafeMutablePointer<Int8>?
-{
-  guard let composingTextPtr = composingTextPtr else {
+@MainActor public func getComposingAlphabetFullwidth() -> String {
+  guard let composingText = composingText else {
     return nil
   }
-  guard let currentPreeditPtr = currentPreeditPtr else {
-    return nil
-  }
-  let currentPreedit = String(cString: currentPreeditPtr)
-  let fullwidthAlphabet = composingTextPtr.pointee.toAlphabet(true)
-  return strdup(cycleAlphabetCase(fullwidthAlphabet, preedit: currentPreedit))
-}
-
-@_silgen_name("kkc_free_text")
-public func freeText(ptr: UnsafeMutablePointer<Int8>?) {
-  free(ptr)
+  let fullwidthAlphabet = composingText.toAlphabet(true)
+  return cycleAlphabetCase(fullwidthAlphabet, preedit: currentPreedit)
 }
 
 /// Candidates
 
-@_silgen_name("kkc_get_candidates")
-@MainActor public func getCandidates(
-  composingTextPtr: UnsafeMutablePointer<ComposingText>?,
-  kkcConfigPtr: OpaquePointer?,
-  isPredictMode: Bool?, nBest: Int?
-) -> UnsafeMutablePointer<UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>?>? {
-  guard let composingTextPtr = composingTextPtr else {
+// TODO: return error message
+@MainActor
+public func getCandidates(  // isPredictMode: Bool?, nBest: Int?
+  ) -> Data?
+{  // JSON response
+  guard var composingText = composingText else {
     return nil
   }
-  if composingTextPtr.pointee.isEmpty {
-    return nil
-  }
-  let composingText = composingTextPtr.pointee
 
-  // get config
-  let config: KkcConfig
-  if let kkcConfigPtr = kkcConfigPtr {
-    config = Unmanaged<KkcConfig>.fromOpaque(UnsafeRawPointer(kkcConfigPtr))
-      .takeUnretainedValue()
-  } else {
-    config = genDefaultConfig(
-      numberStyle: .fullwidth, symbolStyle: .fullwidth,
-      periodStyle: .fullwidthJapanese, commaStyle: .fullwidthJapanese, spaceStyle: .fullwidth,
-      diacriticStyle: .fullwidth, gpuLayers: 0, profileText: nil)
+  guard var config = kkcConfig else {
+    return nil
   }
 
   // set options
   var options = config.convertOptions
-  if nBest != nil {
-    options.N_best = nBest!
-  }
-  if isPredictMode != nil && isPredictMode! {
-    options.requireJapanesePrediction = true
-    options.requireEnglishPrediction = true
-  }
+  // options.N_best = nBest!
+  // options.requireJapanesePrediction = true
+  // options.requireEnglishPrediction = true
 
   let result = createCandidateStruct(
     composingText: composingText, options: options, converter: config.converter)
 
-  let resultPtr = UnsafeMutablePointer<UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>?>
-    .allocate(
-      capacity: result.count + 1)
-  resultPtr.initialize(from: result, count: result.count)
-  resultPtr[result.count] = nil
-
-  return resultPtr
+  return try? JSONEncoder().encode(result)
 }
 
 @_silgen_name("kkc_free_candidates")

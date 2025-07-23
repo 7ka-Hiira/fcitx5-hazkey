@@ -11,6 +11,8 @@ option(SKIP_KKC_PATH_UPDATE "Skip updating path.swift" OFF)
 # check if vulkan headers are installed
 find_package(Vulkan REQUIRED)
 
+find_package(nlohmann_json CONFIG REQUIRED)
+
 # ---- zenzai.gguf ---- #
 set(FILE_URL "https://huggingface.co/Miwa-Keita/zenz-v3-small-gguf/resolve/main/ggml-model-Q5_K_M.gguf")
 

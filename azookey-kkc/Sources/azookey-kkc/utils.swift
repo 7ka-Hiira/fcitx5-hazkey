@@ -173,67 +173,30 @@ func cycleAlphabetCase(_ alphabet: String, preedit: String) -> String {
   }
 }
 
+// TODO: determine liveText in server
+struct FcitxCandidate: Codable {
+  let candidateText: String
+  // let subHiragana: String
+  // let Parts: [String]
+}
+
 @MainActor func createCandidateStruct(
   composingText: ComposingText, options: ConvertRequestOptions, converter: KanaKanjiConverter
 )
-  -> [UnsafeMutablePointer<
-    UnsafeMutablePointer<Int8>?
-  >?]
+  -> [FcitxCandidate]
 {
-  let hiragana = composingText.toHiragana()
-  let InvalidLastCharactersForLive: [String.Element] = ["ゃ", "ゅ", "ょ", "ぁ", "ぃ", "ぅ", "ぇ", "ぉ"]
-
-  // one hiragana or two ending with small kana won't convert automatically
-  let enableLiveText =
-    !((hiragana.count <= 1)
-    || (hiragana.count == 2 && InvalidLastCharactersForLive.contains(hiragana.last!)))
-
-  // convert
   let converted = converter.requestCandidates(composingText, options: options)
 
-  // create result
-  var result: [UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>?] = []
+  var result: [FcitxCandidate] = []
   for candidate in converted.mainResults {
+    // var parts: [String] = [];
+    // for part in candidate.data {
+    //   parts.append(part.word)
+    // }
 
-    let candidateRubyLen = candidate.data.reduce(0) { $0 + $1.ruby.count }
-    let unconvertedHiragana: String
+    let fcitxCandidate = FcitxCandidate(candidateText: candidate.text)
 
-    var liveTextCompatible: Int
-    if candidateRubyLen < hiragana.count {
-      // converted is shorter than source
-      // get unconverted part of hiragana
-      let convertedIndex = hiragana.index(
-        hiragana.startIndex, offsetBy: candidateRubyLen)
-      unconvertedHiragana = String(hiragana[convertedIndex...])
-      liveTextCompatible = 0
-    } else if candidateRubyLen == hiragana.count {
-      unconvertedHiragana = ""
-      liveTextCompatible = enableLiveText ? 1 : 0
-    } else {
-      unconvertedHiragana = ""
-      liveTextCompatible = 0
-    }
-
-    // create info list
-    var candidatePtrList: [UnsafeMutablePointer<Int8>?] = []
-    // about this structure, see header file
-    candidatePtrList.append(strdup(candidate.text))  // todo: add description such as [[全]カタカナ]
-    candidatePtrList.append(strdup(""))  // todo: usage description like mozc
-    candidatePtrList.append(strdup(unconvertedHiragana))
-    // candidatePtrList.append(strdup(String(candidate.composingCount)))
-    candidatePtrList.append(strdup("")) //DEBUG!!!!!!!
-    candidatePtrList.append(strdup(String(liveTextCompatible)))
-    for data in candidate.data {
-      candidatePtrList.append(strdup(data.word))
-      candidatePtrList.append(strdup(String(data.ruby.count)))
-    }
-
-    // append to result
-    let candidatePtrListPtr = UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>.allocate(
-      capacity: candidatePtrList.count + 1)
-    candidatePtrListPtr.initialize(from: candidatePtrList, count: candidatePtrList.count)
-    candidatePtrListPtr[candidatePtrList.count] = nil
-    result.append(candidatePtrListPtr)
+    result.append(fcitxCandidate)
   }
   return result
 }
