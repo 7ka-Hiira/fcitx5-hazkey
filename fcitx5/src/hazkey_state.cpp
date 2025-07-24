@@ -11,7 +11,7 @@ namespace fcitx {
 
 HazkeyState::HazkeyState(HazkeyEngine *engine, InputContext *ic)
     : engine_(engine), ic_(ic), preedit_(HazkeyPreedit(ic)) {
-    createComposingTextInstance(engine_->socket());
+    engine_->server().createComposingTextInstance();
 }
 
 bool HazkeyState::isInputableEvent(const KeyEvent &event) {
@@ -55,7 +55,7 @@ void HazkeyState::keyEvent(KeyEvent &event) {
     auto candidateList = std::dynamic_pointer_cast<HazkeyCandidateList>(
         event.inputContext()->inputPanel().candidateList());
 
-    std::string composingText = getComposingText(engine_->socket(), "hiragana");
+    std::string composingText = engine_->server().getComposingText("hiragana");
 
     if (candidateList != nullptr && candidateList->focused() &&
         !event.isRelease()) {
@@ -102,8 +102,8 @@ void HazkeyState::noPreeditKeyEvent(KeyEvent &event) {
         default:
             if (isInputableEvent(event)) {
                 newComposingText();
-                addToComposingText(engine_->socket(), Key::keySymToUTF8(keysym),
-                                   isDirectInputMode_);
+                engine_->server().addToComposingText(Key::keySymToUTF8(keysym),
+                                                     isDirectInputMode_);
                 showPreeditCandidateList();
                 setHiraganaAUX();
             } else {
@@ -130,11 +130,11 @@ void HazkeyState::preeditKeyEvent(
             reset();
             break;
         case FcitxKey_BackSpace:
-            deleteLeft(engine_->socket());
+            engine_->server().deleteLeft();
             showPreeditCandidateList();
             break;
         case FcitxKey_Delete:
-            deleteRight(engine_->socket());
+            engine_->server().deleteRight();
             showPreeditCandidateList();
             break;
         case FcitxKey_F6:
@@ -164,15 +164,11 @@ void HazkeyState::preeditKeyEvent(
             break;
         case FcitxKey_Left:
             isCursorMoving_ = true;
-            moveCursor(engine_->socket(), -1);
+            engine_->server().moveCursor(-1);
             break;
         case FcitxKey_Right:
             if (isCursorMoving_) {
-                // let moved =
-                moveCursor(engine_->socket(), 1);
-                // if (!moved) {
-                //     isCursorMoving_ = false;
-                // }
+                engine_->server().moveCursor(1);
             }
             break;
         default:
@@ -190,8 +186,8 @@ void HazkeyState::preeditKeyEvent(
                     reset();
                     newComposingText();
                 }
-                addToComposingText(engine_->socket(), Key::keySymToUTF8(keysym),
-                                   isDirectInputMode_);
+                engine_->server().addToComposingText(Key::keySymToUTF8(keysym),
+                                                     isDirectInputMode_);
                 showPreeditCandidateList();
             }
             break;
@@ -267,8 +263,8 @@ void HazkeyState::candidateKeyEvent(
                 preedit_.commitPreedit();
                 reset();
                 newComposingText();
-                addToComposingText(engine_->socket(), Key::keySymToUTF8(keysym),
-                                   isDirectInputMode_);
+                engine_->server().addToComposingText(Key::keySymToUTF8(keysym),
+                                                     isDirectInputMode_);
                 showPreeditCandidateList();
             } else {
                 return event.filter();
@@ -287,7 +283,7 @@ void HazkeyState::candidateCompleteHandler(
         // auto correspondingCount =
         //     candidateList->getCandidate(candidateList->cursorIndex())
         //         .correspondingCount();
-        completePrefix(engine_->socket());
+        engine_->server().completePrefix();
         showNonPredictCandidateList();
     } else {
         reset();
@@ -296,7 +292,7 @@ void HazkeyState::candidateCompleteHandler(
 
 void HazkeyState::newComposingText() {
     FCITX_DEBUG() << "DISABLED: newComposingText()";
-    createComposingTextInstance(engine_->socket());
+    engine_->server().createComposingTextInstance();
     updateSurroundingText();
 }
 
@@ -305,11 +301,11 @@ void HazkeyState::updateSurroundingText() {
         if (ic_->capabilityFlags().test(CapabilityFlag::SurroundingText) &&
             ic_->surroundingText().isValid()) {
             auto &surroundingText = ic_->surroundingText();
-            setLeftContext(engine_->socket(), surroundingText.text(),
-                           surroundingText.anchor());
+            engine_->server().setLeftContext(surroundingText.text(),
+                                             surroundingText.anchor());
         }
     } else {
-        setLeftContext(engine_->socket(), "", 0);
+        engine_->server().setLeftContext("", 0);
     }
 }
 
@@ -340,23 +336,26 @@ void HazkeyState::functionKeyHandler(KeyEvent &event) {
 
 void HazkeyState::directCharactorConversion(ConversionMode mode) {
     std::string converted = nullptr;
-    int sock = engine_->socket();
     // TODO: cleanup
     switch (mode) {
         case ConversionMode::Hiragana:
-            converted = getComposingText(sock, "hiragana");
+            converted = engine_->server().getComposingText("hiragana");
             break;
         case ConversionMode::KatakanaFullwidth:
-            converted = getComposingText(sock, "katakana_fullwidth");
+            converted =
+                engine_->server().getComposingText("katakana_fullwidth");
             break;
         case ConversionMode::KatakanaHalfwidth:
-            converted = getComposingText(sock, "katakana_halfwidth");
+            converted =
+                engine_->server().getComposingText("katakana_halfwidth");
             break;
         case ConversionMode::RawFullwidth:
-            converted = getComposingText(sock, "alphabet_fullwidth");
+            converted =
+                engine_->server().getComposingText("alphabet_fullwidth");
             break;
         case ConversionMode::RawHalfwidth:
-            converted = getComposingText(sock, "alphabet_halfwidth");
+            converted =
+                engine_->server().getComposingText("alphabet_halfwidth");
             break;
         default:
             return;
@@ -379,7 +378,7 @@ void HazkeyState::showCandidateList(showCandidateMode mode, int nBest) {
     // auto preeditSegmentsPtr = std::make_shared<std::vector<std::string>>();
 
     auto candidates =
-        getServerCandidates(engine_->socket(), enabledPredictMode, nBest);
+        engine_->server().getCandidates(enabledPredictMode, nBest);
 
     auto candidateList =
         std::make_unique<HazkeyCandidateList>(std::move(candidates));
@@ -395,7 +394,7 @@ void HazkeyState::showCandidateList(showCandidateMode mode, int nBest) {
     // } else {
     // preedit conversion is disabled or conversion result is not
     // available show hiragana preedit
-    auto hiragana = getComposingText(engine_->socket(), "hiragana");
+    auto hiragana = engine_->server().getComposingText("hiragana");
     preedit_.setSimplePreedit(hiragana);
     // }
 
@@ -420,7 +419,7 @@ void HazkeyState::showNonPredictCandidateList() {
 }
 
 void HazkeyState::showPreeditCandidateList() {
-    auto hiragana = getComposingText(engine_->socket(), "hiragana");
+    auto hiragana = engine_->server().getComposingText("hiragana");
     if (hiragana == "" || hiragana.length() == 0) {
         reset();
         return;
@@ -482,7 +481,7 @@ void HazkeyState::setAuxDownText(std::optional<std::string> optText) {
 }
 
 void HazkeyState::setHiraganaAUX() {
-    auto hiragana = getComposingHiraganaWithCursor(engine_->socket());
+    auto hiragana = engine_->server().getComposingHiraganaWithCursor();
     auto newAuxText = Text(hiragana);
     // newAuxText.setCursor(1); // not working
     ic_->inputPanel().setAuxUp(newAuxText);

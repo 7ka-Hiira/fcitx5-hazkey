@@ -13,42 +13,54 @@
 
 using json = nlohmann::json;
 
-std::string get_socket_path();
+class HazkeyServerConnector {
+   public:
+    // HazkeyServerConnector();
+    // ~HazkeyServerConnector();
 
-int connect_server();
+    HazkeyServerConnector() { connect_server(); }
 
-json transact(int sock, const json& send_data);
+    std::string get_socket_path();
 
-std::string getComposingText(int sock, std::string type);
+    void connect_server();
 
-std::string getComposingHiraganaWithCursor(int sock);
+    json transact(const json& send_data);
 
-void addToComposingText(int sock, std::string text, bool isDirect);
+    std::string getComposingText(std::string type);
 
-void deleteLeft(int sock);
+    std::string getComposingHiraganaWithCursor();
 
-void deleteRight(int sock);
+    void addToComposingText(std::string text, bool isDirect);
 
-void moveCursor(int sock, int offset);
+    void deleteLeft();
 
-void setLeftContext(int sock, std::string context, int anchor);
+    void deleteRight();
 
-void setServerConfig(int sock, int zenzaiEnabled, int zenzaiInferLimit,
-                     int numberFullwidth, int symbolFullwidth,
-                     int periodStyleIndex, int commaStyleIndex,
-                     int spaceFullwidth, int tenCombining,
-                     std::string profileText);
+    void moveCursor(int offset);
 
-void createComposingTextInstance(int sock);
+    void setLeftContext(std::string context, int anchor);
 
-void completePrefix(int sock);
+    void setServerConfig(int zenzaiEnabled, int zenzaiInferLimit,
+                         int numberFullwidth, int symbolFullwidth,
+                         int periodStyleIndex, int commaStyleIndex,
+                         int spaceFullwidth, int tenCombining,
+                         std::string profileText);
 
-struct CandidateData {
-    std::string candidateText;
-    std::string subHiragana;
+    void createComposingTextInstance();
+
+    void completePrefix();
+
+    struct CandidateData {
+        std::string candidateText;
+        std::string subHiragana;
+    };
+
+    std::vector<CandidateData> getCandidates(bool isPredictMode, int n_best);
+
+   private:
+    void start_hazkey_server();
+    int sock_;
+    std::string socket_path_;
 };
 
-std::vector<CandidateData> getServerCandidates(int sock, bool isPredictMode,
-                                               int n_best);
-
-#endif // HAZKEY_SERVER_CONNECTOR_H
+#endif  // HAZKEY_SERVER_CONNECTOR_H

@@ -24,12 +24,12 @@ const KeyList defaultSelectionKeys = {
 
 class HazkeyCandidateWord : public CandidateWord {
    public:
-    HazkeyCandidateWord(const int index, const CandidateData data)
+    HazkeyCandidateWord(const int index,
+                        const HazkeyServerConnector::CandidateData data)
         : CandidateWord(Text(data.candidateText)),
           index_(index),
           candidate_(std::move(data.candidateText)),
-          hiragana_(std::move(data.subHiragana))
-    {
+          hiragana_(std::move(data.subHiragana)) {
         setText(Text(data.candidateText));
     }
 
@@ -54,8 +54,7 @@ class HazkeyCandidateWord : public CandidateWord {
 class HazkeyCandidateList : public CommonCandidateList {
    public:
     HazkeyCandidateList(
-        std::vector<CandidateData> candidates
-    );
+        std::vector<HazkeyServerConnector::CandidateData> candidates);
 
     // return the direction of the candidate list
     // currently always vertical

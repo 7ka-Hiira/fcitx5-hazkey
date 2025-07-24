@@ -1,5 +1,6 @@
 #include "hazkey_engine.h"
 
+#include "hazkey_server_connector.h"
 #include "hazkey_state.h"
 
 namespace fcitx {
@@ -8,7 +9,7 @@ HazkeyEngine::HazkeyEngine(Instance *instance)
     : instance_(instance), factory_([this](InputContext &ic) {
           return new HazkeyState(this, &ic);
       }) {
-    socket_ = connect_server();
+    server_ = HazkeyServerConnector();
 
     instance->inputContextManager().registerProperty("hazkeyState", &factory_);
     reloadConfig();
@@ -54,8 +55,8 @@ void HazkeyEngine::setConfig(const RawConfig &config) {
 
 void HazkeyEngine::reloadConfig() {
     readAsIni(config_, "conf/hazkey.conf");
-    setServerConfig(
-        socket_, *config().zenzaiEnabled, *config().zenzaiInferenceLimit,
+    server_.setServerConfig(
+        *config().zenzaiEnabled, *config().zenzaiInferenceLimit,
         static_cast<int>(*config().numberStyle),
         static_cast<int>(*config().symbolStyle),
         static_cast<int>(*config().periodStyle),

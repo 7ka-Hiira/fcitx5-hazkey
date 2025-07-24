@@ -1,3 +1,5 @@
+#include "hazkey_server_connector.h"
+
 #include <fcitx-utils/log.h>
 #include <sys/socket.h>
 #include <sys/un.h>
@@ -17,7 +19,7 @@ static std::mutex transact_mutex;
 
 using json = nlohmann::json;
 
-std::string get_socket_path() {
+std::string HazkeyServerConnector::get_socket_path() {
     const char* xdg_runtime_dir = std::getenv("XDG_RUNTIME_DIR");
     uid_t uid = getuid();
     std::string sockname = "hazkey_server." + std::to_string(uid) + ".sock";
@@ -28,7 +30,7 @@ std::string get_socket_path() {
     }
 }
 
-void start_hazkey_server() {
+void HazkeyServerConnector::start_hazkey_server() {
     pid_t pid = fork();
     FCITX_DEBUG() << "PID: " << pid;
     if (pid == 0) {
@@ -42,15 +44,15 @@ void start_hazkey_server() {
     }
 }
 
-int connect_server() {
+void HazkeyServerConnector::connect_server() {
     std::string socket_path = get_socket_path();
 
     start_hazkey_server();
 
-    int sock = socket(AF_UNIX, SOCK_STREAM, 0);
-    if (sock < 0) {
+    sock_ = socket(AF_UNIX, SOCK_STREAM, 0);
+    if (sock_ < 0) {
         FCITX_DEBUG() << "Failed to connect hazkey_server";
-        return -1;
+        return;
     }
 
     sockaddr_un addr{};
@@ -63,31 +65,32 @@ int connect_server() {
     for (attempt = 0; attempt < MAX_RETRIES; ++attempt) {
         std::this_thread::sleep_for(
             std::chrono::milliseconds(RETRY_INTERVAL_MS));
-        if (connect(sock, (sockaddr*)&addr, sizeof(addr)) == 0) {
-            return sock;
+        if (connect(sock_, (sockaddr*)&addr, sizeof(addr)) == 0) {
+            return;
         }
         FCITX_INFO() << "Failed to connect hazkey_server, retry "
                      << (attempt + 1);
     }
-    close(sock);
+    close(sock_);
     FCITX_INFO() << "Failed to connect hazkey_server after " << MAX_RETRIES
                  << " attempts";
-    return -1;
+    return;
 }
 
-json transact(int sock, const json& send_data) {
+json HazkeyServerConnector::transact(const json& send_data) {
     std::lock_guard<std::mutex> lock(transact_mutex);
     std::string msg = send_data.dump();
 
-    if (write(sock, msg.c_str(), msg.size()) < 0) {
-        FCITX_INFO() << "Failed to communicate with server while writing data. restarting hazkey_server...";
-
+    if (write(sock_, msg.c_str(), msg.size()) < 0) {
+        FCITX_INFO() << "Failed to communicate with server while writing data. "
+                        "restarting hazkey_server...";
+        connect_server();
         return nullptr;
     }
 
     // TODO: Iterating when data is longer than buffer
     char buf[65536];
-    int len = read(sock, buf, sizeof(buf));
+    int len = read(sock_, buf, sizeof(buf));
     if (len < 0) {
         FCITX_INFO() << "Failed to communicate with server while reading data";
         return nullptr;
@@ -102,59 +105,59 @@ json transact(int sock, const json& send_data) {
     return resp;
 }
 
-std::string getComposingText(int sock, std::string type) {
+std::string HazkeyServerConnector::getComposingText(std::string type) {
     nlohmann::json req = {{"function", "get_composing_string"},
                           {"props", {{"char_type", type}}}};
-    nlohmann::json resp = transact(sock, req);
+    nlohmann::json resp = transact(req);
     if (!resp.is_object() || !resp.contains("result")) {
         return "";
     }
     return resp["result"].get<std::string>();
 }
 
-std::string getComposingHiraganaWithCursor(int sock) {
+std::string HazkeyServerConnector::getComposingHiraganaWithCursor() {
     nlohmann::json req = {{"function", "get_hiragana_with_cursor"}};
-    nlohmann::json resp = transact(sock, req);
+    nlohmann::json resp = transact(req);
     if (!resp.is_object() || !resp.contains("result")) {
         return "";
     }
     return resp["result"].get<std::string>();
 }
 
-void addToComposingText(int sock, std::string text, bool isDirect) {
+void HazkeyServerConnector::addToComposingText(std::string text,
+                                               bool isDirect) {
     nlohmann::json req = {{"function", "input_text"},
                           {"props", {{"text", text}, {"is_direct", isDirect}}}};
-    transact(sock, req);
+    transact(req);
 }
 
-void deleteLeft(int sock) {
+void HazkeyServerConnector::deleteLeft() {
     nlohmann::json req = {{"function", "delete_left"}};
-    transact(sock, req);
+    transact(req);
 }
 
-void deleteRight(int sock) {
+void HazkeyServerConnector::deleteRight() {
     nlohmann::json req = {{"function", "delete_right"}};
-    transact(sock, req);
+    transact(req);
 }
 
-void moveCursor(int sock, int offset) {
+void HazkeyServerConnector::moveCursor(int offset) {
     nlohmann::json req = {{"function", "move_cursor"},
                           {"props", {{"offset", offset}}}};
-    transact(sock, req);
+    transact(req);
 }
 
-void setLeftContext(int sock, std::string context, int anchor) {
+void HazkeyServerConnector::setLeftContext(std::string context, int anchor) {
     nlohmann::json req = {
         {"function", "input_text"},
         {"props", {{"context", context}, {"anchor", anchor}}}};
-    transact(sock, req);
+    transact(req);
 }
 
-void setServerConfig(int sock, int zenzaiEnabled, int zenzaiInferLimit,
-                     int numberFullwidth, int symbolFullwidth,
-                     int periodStyleIndex, int commaStyleIndex,
-                     int spaceFullwidth, int tenCombining,
-                     std::string profileText) {
+void HazkeyServerConnector::setServerConfig(
+    int zenzaiEnabled, int zenzaiInferLimit, int numberFullwidth,
+    int symbolFullwidth, int periodStyleIndex, int commaStyleIndex,
+    int spaceFullwidth, int tenCombining, std::string profileText) {
     nlohmann::json req = {{"function", "set_config"},
                           {"props",
                            {{"zenzai_enabled", zenzaiEnabled != 0},
@@ -166,25 +169,25 @@ void setServerConfig(int sock, int zenzaiEnabled, int zenzaiInferLimit,
                             {"space_fullwidth", spaceFullwidth},
                             {"ten_combining", tenCombining},
                             {"profile_text", profileText}}}};
-    transact(sock, req);
+    transact(req);
 }
 
-void createComposingTextInstance(int sock) {
+void HazkeyServerConnector::createComposingTextInstance() {
     nlohmann::json req = {{"function", "create_composing_text_instance"}};
-    transact(sock, req);
+    transact(req);
 }
 
-void completePrefix(int sock) {
+void HazkeyServerConnector::completePrefix() {
     nlohmann::json req = {{"function", "complete_prefix"}};
-    transact(sock, req);
+    transact(req);
 }
 
-std::vector<CandidateData> getServerCandidates(int sock, bool isPredictMode,
-                                               int n_best) {
+std::vector<HazkeyServerConnector::CandidateData>
+HazkeyServerConnector::getCandidates(bool isPredictMode, int n_best) {
     nlohmann::json req = {
         {"function", "get_candidates"},
         {"props", {{"is_predict_mode", isPredictMode}, {"n_best", n_best}}}};
-    nlohmann::json res = transact(sock, req);
+    nlohmann::json res = transact(req);
 
     std::vector<CandidateData> candidates;
     for (const auto& item : res) {

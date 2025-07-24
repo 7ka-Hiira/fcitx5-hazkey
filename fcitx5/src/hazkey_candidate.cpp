@@ -1,5 +1,7 @@
 #include "hazkey_candidate.h"
 
+#include "hazkey_server_connector.h"
+
 namespace fcitx {
 
 /// CandidateWord
@@ -19,10 +21,11 @@ void HazkeyCandidateWord::select(InputContext* ic) const {
 
 /// CandidateList
 
-HazkeyCandidateList::HazkeyCandidateList(std::vector<CandidateData> candidates)
+HazkeyCandidateList::HazkeyCandidateList(
+    std::vector<HazkeyServerConnector::CandidateData> candidates)
     : CommonCandidateList() {
     for (size_t i = 0; i < candidates.size(); i++) {
-        CandidateData candidate  = candidates[i];
+        HazkeyServerConnector::CandidateData candidate = candidates[i];
         append(std::make_unique<HazkeyCandidateWord>(i, candidate));
     }
 }
