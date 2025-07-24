@@ -1,3 +1,6 @@
+#ifndef HAZKEY_SERVER_CONNECTOR_H
+#define HAZKEY_SERVER_CONNECTOR_H
+
 #include <fcitx-utils/log.h>
 #include <sys/socket.h>
 #include <sys/un.h>
@@ -40,5 +43,12 @@ void createComposingTextInstance(int sock);
 
 void completePrefix(int sock);
 
-std::vector<std::string> getServerCandidates(int sock, bool isPredictMode,
-                                             int n_best);
+struct CandidateData {
+    std::string candidateText;
+    std::string subHiragana;
+};
+
+std::vector<CandidateData> getServerCandidates(int sock, bool isPredictMode,
+                                               int n_best);
+
+#endif // HAZKEY_SERVER_CONNECTOR_H

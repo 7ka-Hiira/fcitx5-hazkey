@@ -63,7 +63,6 @@ class HazkeyState : public InputContextProperty {
     // base function to prepare candidate list
     // make sure composingText_ is not nullptr
     void showCandidateList(showCandidateMode mode, int nBest);
-    std::vector<std::string> getCandidates(bool isPredictMode, int nBest);
     std::unique_ptr<HazkeyCandidateList> createCandidateList(
         std::vector<std::vector<std::string>> candidates,
         std::shared_ptr<std::vector<std::string>> preeditSegments);

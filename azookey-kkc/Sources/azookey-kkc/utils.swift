@@ -169,10 +169,10 @@ func cycleAlphabetCase(_ alphabet: String, preedit: String) -> String {
 }
 
 // TODO: determine liveText in server
+// short key to make candidate json as short as possible
 struct FcitxCandidate: Codable {
-  let candidateText: String
-  // let subHiragana: String
-  // let Parts: [String]
+  let t: String // candidateText
+  let h: String // subHiragana
 }
 
 

@@ -19,11 +19,11 @@ void HazkeyCandidateWord::select(InputContext* ic) const {
 
 /// CandidateList
 
-HazkeyCandidateList::HazkeyCandidateList(std::vector<std::string> candidates)
+HazkeyCandidateList::HazkeyCandidateList(std::vector<CandidateData> candidates)
     : CommonCandidateList() {
     for (size_t i = 0; i < candidates.size(); i++) {
-        auto candidate = candidates[i];
-        append(std::make_unique<HazkeyCandidateWord>(i, candidate, "あ"));
+        CandidateData candidate  = candidates[i];
+        append(std::make_unique<HazkeyCandidateWord>(i, candidate));
     }
 }
 

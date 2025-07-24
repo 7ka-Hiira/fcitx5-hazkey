@@ -5,12 +5,15 @@
 #include <chrono>
 #include <cstdlib>
 #include <iostream>
+#include <mutex>
 #include <nlohmann/json.hpp>
 #include <string>
 #include <thread>
 
 #include "env_config.h"
 #include "hazkey_engine.h"
+
+static std::mutex transact_mutex;
 
 using json = nlohmann::json;
 
@@ -30,11 +33,12 @@ void start_hazkey_server() {
     FCITX_DEBUG() << "PID: " << pid;
     if (pid == 0) {
         // TODO: use build time var & environment var
-        execl("/usr/lib/hazkey/hazkey_server", "hazkey_server", (char*)NULL);
+        execl(INSTALL_LIBDIR "/hazkey/hazkey_server", "hazkey_server",
+              (char*)NULL);
         FCITX_ERROR() << "Failed to start hazkey_server\n";
         exit(1);
     } else if (pid < 0) {
-        std::cerr << "Failed tto start hazkey_server\n";
+        std::cerr << "Failed to start hazkey_server\n";
     }
 }
 
@@ -72,14 +76,17 @@ int connect_server() {
 }
 
 json transact(int sock, const json& send_data) {
+    std::lock_guard<std::mutex> lock(transact_mutex);
     std::string msg = send_data.dump();
 
     if (write(sock, msg.c_str(), msg.size()) < 0) {
-        FCITX_INFO() << "Failed to communicate with server while writing data";
+        FCITX_INFO() << "Failed to communicate with server while writing data. restarting hazkey_server...";
+
         return nullptr;
     }
 
-    char buf[4096];
+    // TODO: Iterating when data is longer than buffer
+    char buf[65536];
     int len = read(sock, buf, sizeof(buf));
     if (len < 0) {
         FCITX_INFO() << "Failed to communicate with server while reading data";
@@ -172,18 +179,20 @@ void completePrefix(int sock) {
     transact(sock, req);
 }
 
-std::vector<std::string> getServerCandidates(int sock, bool isPredictMode,
-                                             int n_best) {
+std::vector<CandidateData> getServerCandidates(int sock, bool isPredictMode,
+                                               int n_best) {
     nlohmann::json req = {
         {"function", "get_candidates"},
         {"props", {{"is_predict_mode", isPredictMode}, {"n_best", n_best}}}};
     nlohmann::json res = transact(sock, req);
 
-    std::vector<std::string> candidates;
+    std::vector<CandidateData> candidates;
     for (const auto& item : res) {
-        if (item.contains("candidateText") &&
-            item["candidateText"].is_string()) {
-            candidates.push_back(item["candidateText"].get<std::string>());
+        if (item.contains("t") && item["t"].is_string() && item.contains("h") &&
+            item["h"].is_string()) {
+            CandidateData candidate = CandidateData(
+                item["t"].get<std::string>(), item["h"].get<std::string>());
+            candidates.push_back(candidate);
         }
     }
     return candidates;

@@ -91,7 +91,7 @@ while true {
   currentClientFd = clientFd
 
   while true {
-    var buf = [UInt8](repeating: 0, count: 4096)
+    var buf = [UInt8](repeating: 0, count: 65536)
     let readBytes = read(clientFd, &buf, buf.count)
     if readBytes <= 0 { break }
     let message = String(bytes: buf[0..<readBytes], encoding: .utf8) ?? ""

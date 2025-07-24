@@ -291,9 +291,21 @@ public func getCandidates(isPredictMode: Bool = false, nBest: Int = 9) -> Data? 
 
   let converted = config.converter.requestCandidates(composingText.value, options: options)
 
+  let hiraganaPreedit = composingText.value.toHiragana()
+
   var result: [FcitxCandidate] = []
   for candidate in converted.mainResults {
-    let fcitxCandidate = FcitxCandidate(candidateText: candidate.text)
+
+
+    let candidateLen = candidate.rubyCount
+    let subHiragana: String
+    if let idx = hiraganaPreedit.index(hiraganaPreedit.startIndex, offsetBy: candidateLen, limitedBy: hiraganaPreedit.endIndex) {
+        subHiragana = String(hiraganaPreedit[idx...])
+    } else {
+        subHiragana = ""
+    }
+
+    let fcitxCandidate = FcitxCandidate(t: candidate.text, h: subHiragana)
     result.append(fcitxCandidate)
   }
 

@@ -5,6 +5,7 @@
 
 #include "hazkey_candidate.h"
 #include "hazkey_engine.h"
+#include "hazkey_server_connector.h"
 
 namespace fcitx {
 
@@ -377,7 +378,8 @@ void HazkeyState::showCandidateList(showCandidateMode mode, int nBest) {
 
     // auto preeditSegmentsPtr = std::make_shared<std::vector<std::string>>();
 
-    auto candidates = getCandidates(enabledPredictMode, nBest);
+    auto candidates =
+        getServerCandidates(engine_->socket(), enabledPredictMode, nBest);
 
     auto candidateList =
         std::make_unique<HazkeyCandidateList>(std::move(candidates));
@@ -398,13 +400,6 @@ void HazkeyState::showCandidateList(showCandidateMode mode, int nBest) {
     // }
 
     ic_->inputPanel().setCandidateList(std::move(candidateList));
-}
-
-std::vector<std::string> HazkeyState::getCandidates(
-    bool enabledPreeditConversion, int nBest) {
-    std::vector<std::string> candidates =
-        getServerCandidates(engine_->socket(), enabledPreeditConversion, nBest);
-    return candidates;
 }
 
 void HazkeyState::showNonPredictCandidateList() {
@@ -487,7 +482,7 @@ void HazkeyState::setAuxDownText(std::optional<std::string> optText) {
 }
 
 void HazkeyState::setHiraganaAUX() {
-    auto hiragana = getComposingText(engine_->socket(), "hiragana");
+    auto hiragana = getComposingHiraganaWithCursor(engine_->socket());
     auto newAuxText = Text(hiragana);
     // newAuxText.setCursor(1); // not working
     ic_->inputPanel().setAuxUp(newAuxText);

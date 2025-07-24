@@ -132,7 +132,7 @@ struct QueryData: Decodable {
       return String(data: try JSONEncoder().encode(SimpleResult(result: result)), encoding: .utf8)
         ?? "{}"
     case .get_candidates:
-    let props = try JSONDecoder().decode(GetCandidatesProps.self, from: propsData)
+      let props = try JSONDecoder().decode(GetCandidatesProps.self, from: propsData)
       let result = getCandidates(isPredictMode: props.is_predict_mode, nBest: props.n_best)
       return result.flatMap { String(data: $0, encoding: .utf8) } ?? "[]"
     }
