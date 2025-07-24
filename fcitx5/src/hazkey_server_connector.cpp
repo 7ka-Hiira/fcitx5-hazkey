@@ -29,6 +29,7 @@ void start_hazkey_server() {
     pid_t pid = fork();
     FCITX_DEBUG() << "PID: " << pid;
     if (pid == 0) {
+        // TODO: use build time var & environment var
         execl("/usr/lib/hazkey/hazkey_server", "hazkey_server", (char*)NULL);
         FCITX_ERROR() << "Failed to start hazkey_server\n";
         exit(1);
@@ -171,13 +172,17 @@ void completePrefix(int sock) {
     transact(sock, req);
 }
 
-std::vector<std::string> getServerCandidates(int sock) {
-    nlohmann::json req = {{"function", "get_candidates"}};
+std::vector<std::string> getServerCandidates(int sock, bool isPredictMode,
+                                             int n_best) {
+    nlohmann::json req = {
+        {"function", "get_candidates"},
+        {"props", {{"is_predict_mode", isPredictMode}, {"n_best", n_best}}}};
     nlohmann::json res = transact(sock, req);
 
     std::vector<std::string> candidates;
     for (const auto& item : res) {
-        if (item.contains("candidateText") && item["candidateText"].is_string()) {
+        if (item.contains("candidateText") &&
+            item["candidateText"].is_string()) {
             candidates.push_back(item["candidateText"].get<std::string>());
         }
     }

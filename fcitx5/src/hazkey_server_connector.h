@@ -31,12 +31,14 @@ void moveCursor(int sock, int offset);
 void setLeftContext(int sock, std::string context, int anchor);
 
 void setServerConfig(int sock, int zenzaiEnabled, int zenzaiInferLimit,
-               int numberFullwidth, int symbolFullwidth, int periodStyleIndex,
-               int commaStyleIndex, int spaceFullwidth, int tenCombining,
-               std::string profileText);
+                     int numberFullwidth, int symbolFullwidth,
+                     int periodStyleIndex, int commaStyleIndex,
+                     int spaceFullwidth, int tenCombining,
+                     std::string profileText);
 
 void createComposingTextInstance(int sock);
 
 void completePrefix(int sock);
 
-std::vector<std::string> getServerCandidates(int sock);
+std::vector<std::string> getServerCandidates(int sock, bool isPredictMode,
+                                             int n_best);

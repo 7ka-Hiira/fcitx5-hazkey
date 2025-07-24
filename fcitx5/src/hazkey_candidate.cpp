@@ -19,24 +19,11 @@ void HazkeyCandidateWord::select(InputContext* ic) const {
 
 /// CandidateList
 
-HazkeyCandidateList::HazkeyCandidateList(
-    std::vector<std::string> candidates
-    // std::shared_ptr<std::vector<std::string>> preeditSegments
-)
+HazkeyCandidateList::HazkeyCandidateList(std::vector<std::string> candidates)
     : CommonCandidateList() {
     for (size_t i = 0; i < candidates.size(); i++) {
         auto candidate = candidates[i];
-        // std::vector<std::string> parts;
-        // std::vector<int> partLens;
-
-        append(std::make_unique<HazkeyCandidateWord>(
-            i, candidate, "あ"
-          ));
-
-        // save preedit which found first
-        // if (preeditSegments->empty() && std::stoi(candidate[4]) == 1) {
-        //     *preeditSegments = parts;
-        // }
+        append(std::make_unique<HazkeyCandidateWord>(i, candidate, "あ"));
     }
 }
 

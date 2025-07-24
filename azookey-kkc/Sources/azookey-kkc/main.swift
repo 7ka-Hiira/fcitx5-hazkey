@@ -1,9 +1,43 @@
+import Dispatch
 import Foundation
 import KanaKanjiConverterModule
 
 let runtimeDir = ProcessInfo.processInfo.environment["XDG_RUNTIME_DIR"] ?? "/tmp"
 let uid = getuid()
 let socketPath = "\(runtimeDir)/hazkey_server.\(uid).sock"
+let pidFilePath = "\(runtimeDir)/hazkey_server.\(uid).pid"
+
+func removePidFile() {
+  try? FileManager.default.removeItem(atPath: pidFilePath)
+}
+
+signal(SIGTERM) { _ in
+  removePidFile()
+  exit(0)
+}
+signal(SIGINT) { _ in
+  removePidFile()
+  exit(0)
+}
+
+if FileManager.default.fileExists(atPath: pidFilePath) {
+  if let pidString = try? String(contentsOfFile: pidFilePath, encoding: .utf8),
+    let pid = Int32(pidString.trimmingCharacters(in: .whitespacesAndNewlines))
+  {
+    if pid != getpid() {
+      print("Killing existing hazkey_server with PID \(pid)")
+      kill(pid, SIGTERM)
+      for _ in 0..<20 {
+        usleep(50_000)
+        if kill(pid, 0) != 0 {
+          break
+        }
+      }
+    }
+  }
+  try? FileManager.default.removeItem(atPath: pidFilePath)
+}
+try? "\(getpid())".write(toFile: pidFilePath, atomically: true, encoding: .utf8)
 
 unlink(socketPath)
 
@@ -37,6 +71,7 @@ guard listen(fd, 10) != -1 else {
 // TODO: unglobalize these vars
 var kkcConfig: KkcConfig? = nil
 var composingText: ComposingTextBox? = nil
+var currentCandidateList: [Candidate]? = nil
 var currentPreedit: String = ""
 
 var currentClientFd: Int32? = nil

@@ -9,8 +9,8 @@
 #include <iconv.h>
 
 #include "hazkey_config.h"
-#include "hazkey_state.h"
 #include "hazkey_server_connector.h"
+#include "hazkey_state.h"
 
 namespace fcitx {
 

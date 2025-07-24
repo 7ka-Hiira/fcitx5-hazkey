@@ -53,8 +53,6 @@ struct SimpleResult: Encodable {
   let result: String
 }
 
-struct EmptyProps: Decodable {}
-
 struct SetLeftContextProps: Decodable {
   let context: String
   let anchor: Int
@@ -69,8 +67,17 @@ struct MoveCursorProps: Decodable {
   let offset: Int
 }
 
+struct PrefixCompleteProps: Decodable {
+  let index: Int
+}
+
 struct GetComposingStringProps: Decodable {
   let char_type: CharType
+}
+
+struct GetCandidatesProps: Decodable {
+  let is_predict_mode: Bool
+  let n_best: Int
 }
 
 struct QueryData: Decodable {
@@ -110,20 +117,23 @@ struct QueryData: Decodable {
     case .delete_right:
       deleteRight()
     case .complete_prefix:
-      completePrefix(candidateIndex: 1)  //DEBUG
+      let props = try JSONDecoder().decode(PrefixCompleteProps.self, from: propsData)
+      completePrefix(candidateIndex: props.index)
     case .move_cursor:
       let props = try JSONDecoder().decode(MoveCursorProps.self, from: propsData)
       moveCursor(offset: props.offset)
     case .get_hiragana_with_cursor:
       let result = getHiraganaWithCursor()
-      return String(data: try JSONEncoder().encode(result), encoding: .utf8) ?? ""
+      return String(data: try JSONEncoder().encode(SimpleResult(result: result)), encoding: .utf8)
+        ?? "{}"
     case .get_composing_string:
       let props = try JSONDecoder().decode(GetComposingStringProps.self, from: propsData)
       let result = getComposingString(charType: props.char_type)
       return String(data: try JSONEncoder().encode(SimpleResult(result: result)), encoding: .utf8)
         ?? "{}"
     case .get_candidates:
-      let result = getCandidates()
+    let props = try JSONDecoder().decode(GetCandidatesProps.self, from: propsData)
+      let result = getCandidates(isPredictMode: props.is_predict_mode, nBest: props.n_best)
       return result.flatMap { String(data: $0, encoding: .utf8) } ?? "[]"
     }
   } catch {

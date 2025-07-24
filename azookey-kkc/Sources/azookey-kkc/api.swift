@@ -202,28 +202,32 @@ import SwiftUtils
 }
 
 @MainActor public func deleteLeft() {
-  guard var composingText = composingText else {
+  guard let composingText = composingText else {
     return
   }
   composingText.value.deleteBackwardFromCursorPosition(count: 1)
 }
 
 @MainActor public func deleteRight() {
-  guard var composingText = composingText else {
+  guard let composingText = composingText else {
     return
   }
   composingText.value.deleteForwardFromCursorPosition(count: 1)
 }
 
 @MainActor public func completePrefix(candidateIndex: Int) {
-  // guard var composingText = composingText else {
-  //   return
-  // }
-  // composingText.prefixComplete(composingCount: composingCount)
+  guard let composingText = composingText else {
+    return
+  }
+  guard let currentCandidateList = currentCandidateList else {
+    return
+  }
+  let completedCandidate = currentCandidateList[candidateIndex]
+  composingText.value.prefixComplete(composingCount: completedCandidate.composingCount)
 }
 
 @MainActor public func moveCursor(offset: Int) {
-  guard var composingText = composingText else {
+  guard let composingText = composingText else {
     return
   }
   let _ = composingText.value.moveCursorFromCursorPosition(count: offset)
@@ -254,16 +258,16 @@ public enum CharType: String, Decodable {
     return ""
   }
   switch charType {
-    case .hiragana:
-      return composingText.value.toHiragana()
-    case .katakana_fullwidth:
-      return composingText.value.toKatakana(true)
-    case .katakana_halfwidth:
-      return composingText.value.toKatakana(false)
-    case .alphabet_fullwidth:
-      return cycleAlphabetCase(composingText.value.toAlphabet(true), preedit: currentPreedit)
-    case .alphabet_halfwidth:
-      return cycleAlphabetCase(composingText.value.toAlphabet(false), preedit: currentPreedit)
+  case .hiragana:
+    return composingText.value.toHiragana()
+  case .katakana_fullwidth:
+    return composingText.value.toKatakana(true)
+  case .katakana_halfwidth:
+    return composingText.value.toKatakana(false)
+  case .alphabet_fullwidth:
+    return cycleAlphabetCase(composingText.value.toAlphabet(true), preedit: currentPreedit)
+  case .alphabet_halfwidth:
+    return cycleAlphabetCase(composingText.value.toAlphabet(false), preedit: currentPreedit)
   }
 }
 
@@ -271,9 +275,7 @@ public enum CharType: String, Decodable {
 
 // TODO: return error message
 @MainActor
-public func getCandidates(  // isPredictMode: Bool?, nBest: Int?
-  ) -> Data?
-{  // JSON response
+public func getCandidates(isPredictMode: Bool = false, nBest: Int = 9) -> Data? {  // JSON response
   guard let composingText = composingText else {
     return nil
   }
@@ -282,14 +284,18 @@ public func getCandidates(  // isPredictMode: Bool?, nBest: Int?
     return nil
   }
 
-  // set options
-  let options = config.convertOptions
-  // options.N_best = nBest!
-  // options.requireJapanesePrediction = true
-  // options.requireEnglishPrediction = true
+  var options = config.convertOptions
+  options.N_best = nBest
+  options.requireJapanesePrediction = isPredictMode
+  options.requireEnglishPrediction = isPredictMode
 
-  let result = createCandidateStruct(
-    composingText: composingText.value, options: options, converter: config.converter)
+  let converted = config.converter.requestCandidates(composingText.value, options: options)
+
+  var result: [FcitxCandidate] = []
+  for candidate in converted.mainResults {
+    let fcitxCandidate = FcitxCandidate(candidateText: candidate.text)
+    result.append(fcitxCandidate)
+  }
 
   return try? JSONEncoder().encode(result)
 }

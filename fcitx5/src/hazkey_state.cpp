@@ -10,8 +10,8 @@ namespace fcitx {
 
 HazkeyState::HazkeyState(HazkeyEngine *engine, InputContext *ic)
     : engine_(engine), ic_(ic), preedit_(HazkeyPreedit(ic)) {
-      createComposingTextInstance(engine_->socket());
-    }
+    createComposingTextInstance(engine_->socket());
+}
 
 bool HazkeyState::isInputableEvent(const KeyEvent &event) {
     auto key = event.key();
@@ -101,9 +101,6 @@ void HazkeyState::noPreeditKeyEvent(KeyEvent &event) {
         default:
             if (isInputableEvent(event)) {
                 newComposingText();
-                // kkc_input_text(,
-                //                Key::keySymToUTF8(keysym),
-                //                isDirectInputMode_);
                 addToComposingText(engine_->socket(), Key::keySymToUTF8(keysym),
                                    isDirectInputMode_);
                 showPreeditCandidateList();
@@ -298,11 +295,8 @@ void HazkeyState::candidateCompleteHandler(
 
 void HazkeyState::newComposingText() {
     FCITX_DEBUG() << "DISABLED: newComposingText()";
-    // if (composingText != "") {
-    //     kkc_free_composing_text_instance(composingText_);
-    // }
-    // composingText_ = kkc_get_composing_text_instance();
-    // updateSurroundingText();
+    createComposingTextInstance(engine_->socket());
+    updateSurroundingText();
 }
 
 void HazkeyState::updateSurroundingText() {
@@ -385,8 +379,8 @@ void HazkeyState::showCandidateList(showCandidateMode mode, int nBest) {
 
     auto candidates = getCandidates(enabledPredictMode, nBest);
 
-    auto candidateList = std::make_unique<HazkeyCandidateList>(
-        std::move(candidates));
+    auto candidateList =
+        std::make_unique<HazkeyCandidateList>(std::move(candidates));
 
     candidateList->setSelectionKey(defaultSelectionKeys);
 
@@ -397,10 +391,10 @@ void HazkeyState::showCandidateList(showCandidateMode mode, int nBest) {
     //     // show preedit conversion result
     //     preedit_.setMultiSegmentPreedit(*preeditSegmentsPtr, -1);
     // } else {
-        // preedit conversion is disabled or conversion result is not
-        // available show hiragana preedit
-        auto hiragana = getComposingText(engine_->socket(), "hiragana");
-        preedit_.setSimplePreedit(hiragana);
+    // preedit conversion is disabled or conversion result is not
+    // available show hiragana preedit
+    auto hiragana = getComposingText(engine_->socket(), "hiragana");
+    preedit_.setSimplePreedit(hiragana);
     // }
 
     ic_->inputPanel().setCandidateList(std::move(candidateList));
@@ -408,7 +402,8 @@ void HazkeyState::showCandidateList(showCandidateMode mode, int nBest) {
 
 std::vector<std::string> HazkeyState::getCandidates(
     bool enabledPreeditConversion, int nBest) {
-    std::vector<std::string> candidates = getServerCandidates(engine_->socket());
+    std::vector<std::string> candidates =
+        getServerCandidates(engine_->socket(), enabledPreeditConversion, nBest);
     return candidates;
 }
 
@@ -492,7 +487,7 @@ void HazkeyState::setAuxDownText(std::optional<std::string> optText) {
 }
 
 void HazkeyState::setHiraganaAUX() {
-    auto hiragana = getComposingHiraganaWithCursor(engine_->socket());
+    auto hiragana = getComposingText(engine_->socket(), "hiragana");
     auto newAuxText = Text(hiragana);
     // newAuxText.setCursor(1); // not working
     ic_->inputPanel().setAuxUp(newAuxText);
@@ -502,13 +497,11 @@ void HazkeyState::setHiraganaAUX() {
 
 void HazkeyState::reset() {
     FCITX_DEBUG() << "HazkeyState reset";
-    // isDirectConversionMode_ = false;
-    // // do not reset isShiftPressedAlone_ because shift may still be pressed
-    // isDirectInputMode_ = false;
-    // isCursorMoving_ = false;
-    // cursorIndex_ = 0;
-    // ic_->inputPanel().reset();
-    // composingText_ = nullptr;
+    isDirectConversionMode_ = false;
+    // do not reset isShiftPressedAlone_ because shift may still be pressed
+    isDirectInputMode_ = false;
+    isCursorMoving_ = false;
+    ic_->inputPanel().reset();
 }
 
 }  // namespace fcitx

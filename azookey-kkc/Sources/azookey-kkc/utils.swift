@@ -73,7 +73,6 @@ public class KkcConfig {
   let tenCombiningStyle: DiacriticStyle
 
   let zenzaiWeight: URL
-  let gpuLayers: Int32
   let profileText: String?
 
   let converter: KanaKanjiConverter
@@ -81,7 +80,7 @@ public class KkcConfig {
   @MainActor init(
     convertOptions: ConvertRequestOptions, numberStyle: Style, symbolStyle: Style,
     periodStyle: TenStyle, commaStyle: TenStyle, spaceStyle: Style, diacriticStyle: DiacriticStyle,
-    zenzaiWeight: URL, gpuLayers: Int32, profileText: String?
+    zenzaiWeight: URL, profileText: String?
   ) {
     self.convertOptions = convertOptions
     self.numberStyle = numberStyle
@@ -91,7 +90,6 @@ public class KkcConfig {
     self.spaceStyle = spaceStyle
     self.tenCombiningStyle = diacriticStyle
     self.zenzaiWeight = zenzaiWeight
-    self.gpuLayers = gpuLayers
     self.profileText = profileText
     self.converter = KanaKanjiConverter()
   }
@@ -101,7 +99,7 @@ public class KkcConfig {
   zenzaiEnabled: Bool = false, zenzaiInferLimit: Int = 1, numberStyle: KkcConfig.Style,
   symbolStyle: KkcConfig.Style,
   periodStyle: KkcConfig.TenStyle, commaStyle: KkcConfig.TenStyle, spaceStyle: KkcConfig.Style,
-  diacriticStyle: KkcConfig.DiacriticStyle, gpuLayers: Int32 = 0, profileText: String?
+  diacriticStyle: KkcConfig.DiacriticStyle, profileText: String?
 ) -> KkcConfig {
   var userDataDir: URL {
     FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
@@ -117,8 +115,6 @@ public class KkcConfig {
   } catch {
     print("Error creating directory: \(error)")
   }
-
-  let nonNegativeGpuLayers = max(0, gpuLayers)
 
   let options = ConvertRequestOptions(
     N_best: 9,
@@ -152,7 +148,6 @@ public class KkcConfig {
     periodStyle: periodStyle, commaStyle: commaStyle, spaceStyle: spaceStyle,
     diacriticStyle: diacriticStyle,
     zenzaiWeight: systemResourceDir.appendingPathComponent("zenzai.gguf", isDirectory: false),
-    gpuLayers: nonNegativeGpuLayers,
     profileText: profileText
   )
 }
@@ -180,26 +175,6 @@ struct FcitxCandidate: Codable {
   // let Parts: [String]
 }
 
-@MainActor func createCandidateStruct(
-  composingText: ComposingText, options: ConvertRequestOptions, converter: KanaKanjiConverter
-)
-  -> [FcitxCandidate]
-{
-  let converted = converter.requestCandidates(composingText, options: options)
-
-  var result: [FcitxCandidate] = []
-  for candidate in converted.mainResults {
-    // var parts: [String] = [];
-    // for part in candidate.data {
-    //   parts.append(part.word)
-    // }
-
-    let fcitxCandidate = FcitxCandidate(candidateText: candidate.text)
-
-    result.append(fcitxCandidate)
-  }
-  return result
-}
 
 func symbolJaToEn(character: Character, reverse: Bool) -> Character {
   let h2z: [Character: Character] = [

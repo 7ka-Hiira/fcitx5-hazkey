@@ -8,7 +8,7 @@ HazkeyEngine::HazkeyEngine(Instance *instance)
     : instance_(instance), factory_([this](InputContext &ic) {
           return new HazkeyState(this, &ic);
       }) {
-        socket_ = connect_server();
+    socket_ = connect_server();
 
     instance->inputContextManager().registerProperty("hazkeyState", &factory_);
     reloadConfig();
@@ -54,7 +54,14 @@ void HazkeyEngine::setConfig(const RawConfig &config) {
 
 void HazkeyEngine::reloadConfig() {
     readAsIni(config_, "conf/hazkey.conf");
-    setServerConfig(socket_, *config().zenzaiEnabled, *config().zenzaiInferenceLimit, static_cast<int>(*config().numberStyle),static_cast<int>(*config().symbolStyle), static_cast<int>(*config().periodStyle), static_cast<int>(*config().commaStyle), static_cast<int>(*config().spaceStyle), static_cast<int>(*config().diacriticStyle), *config().zenzaiProfile);
+    setServerConfig(
+        socket_, *config().zenzaiEnabled, *config().zenzaiInferenceLimit,
+        static_cast<int>(*config().numberStyle),
+        static_cast<int>(*config().symbolStyle),
+        static_cast<int>(*config().periodStyle),
+        static_cast<int>(*config().commaStyle),
+        static_cast<int>(*config().spaceStyle),
+        static_cast<int>(*config().diacriticStyle), *config().zenzaiProfile);
 }
 
 FCITX_ADDON_FACTORY(HazkeyEngineFactory);
