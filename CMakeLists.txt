@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.21)
 project(fcitx5-hazkey VERSION 0.0.9)
 include(GNUInstallDirs)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 option(SKIP_ZENZAI_INSTALL "Skip downloading zenzai.gguf" OFF)

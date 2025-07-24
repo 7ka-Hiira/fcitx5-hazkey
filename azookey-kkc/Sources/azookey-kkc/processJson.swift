@@ -79,7 +79,6 @@ struct QueryData: Decodable {
 }
 
 @MainActor func processJson(jsonString: String) -> String {
-  print(jsonString)
   guard let jsonData = jsonString.data(using: .utf8) else {
     NSLog("Invalid UTF-8 data for input: \(jsonString)")
     return "{}"
@@ -121,13 +120,11 @@ struct QueryData: Decodable {
     case .get_composing_string:
       let props = try JSONDecoder().decode(GetComposingStringProps.self, from: propsData)
       let result = getComposingString(charType: props.char_type)
-      let debugPrint =
-        String(data: try JSONEncoder().encode(SimpleResult(result: result)), encoding: .utf8) ?? ""
-      print(debugPrint)
-      return debugPrint
+      return String(data: try JSONEncoder().encode(SimpleResult(result: result)), encoding: .utf8)
+        ?? "{}"
     case .get_candidates:
       let result = getCandidates()
-      return String(data: try JSONEncoder().encode(result), encoding: .utf8) ?? ""
+      return result.flatMap { String(data: $0, encoding: .utf8) } ?? "[]"
     }
   } catch {
     NSLog("failed to parse JSON: \(error)")

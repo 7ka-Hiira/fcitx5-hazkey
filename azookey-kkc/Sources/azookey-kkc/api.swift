@@ -67,7 +67,7 @@ import SwiftUtils
 /// ComposingText
 
 @MainActor public func createComposingTextInstanse() {
-  composingText = ComposingText()
+  composingText = ComposingTextBox(ComposingText())
 }
 
 @MainActor public func inputText(
@@ -81,7 +81,7 @@ import SwiftUtils
     return
   }
 
-  guard var composingText = composingText else {
+  guard let composingText = composingText else {
     return
   }
 
@@ -141,7 +141,7 @@ import SwiftUtils
 
     switch string {
     case "゛":
-      if let lastElem = composingText.input.last {
+      if let lastElem = composingText.value.input.last {
         let dakutened = CharacterUtils.dakuten(lastElem.character)
         if dakutened == lastElem.character {
           if lastElem.character != "゛" && lastElem.character != "゜"
@@ -149,8 +149,8 @@ import SwiftUtils
             && lastElem.character != "゚" && lastElem.character != "ﾞ"
             && lastElem.character != "ﾟ"
           {
-            composingText.deleteBackwardFromCursorPosition(count: 1)
-            composingText.insertAtCursorPosition(
+            composingText.value.deleteBackwardFromCursorPosition(count: 1)
+            composingText.value.insertAtCursorPosition(
               String(lastElem.character), inputStyle: lastElem.inputStyle)
           }
           switch config.tenCombiningStyle {
@@ -162,12 +162,12 @@ import SwiftUtils
             string = "゙"
           }
         } else {
-          composingText.deleteBackwardFromCursorPosition(count: 1)
+          composingText.value.deleteBackwardFromCursorPosition(count: 1)
           string = String(dakutened)
         }
       }
     case "゜":
-      if let lastElem = composingText.input.last {
+      if let lastElem = composingText.value.input.last {
         let handakutened = CharacterUtils.handakuten(lastElem.character)
         if handakutened == lastElem.character {
           if lastElem.character != "゛" && lastElem.character != "゜"
@@ -175,8 +175,8 @@ import SwiftUtils
             && lastElem.character != "゚" && lastElem.character != "ﾞ"
             && lastElem.character != "ﾟ"
           {
-            composingText.deleteBackwardFromCursorPosition(count: 1)
-            composingText.insertAtCursorPosition(
+            composingText.value.deleteBackwardFromCursorPosition(count: 1)
+            composingText.value.insertAtCursorPosition(
               String(lastElem.character), inputStyle: lastElem.inputStyle)
           }
           switch config.tenCombiningStyle {
@@ -188,16 +188,16 @@ import SwiftUtils
             string = "゚"
           }
         } else {
-          composingText.deleteBackwardFromCursorPosition(count: 1)
+          composingText.value.deleteBackwardFromCursorPosition(count: 1)
           string = String(handakutened)
         }
       }
     default:
       break
     }
-    composingText.insertAtCursorPosition(string, inputStyle: .roman2kana)
+    composingText.value.insertAtCursorPosition(string, inputStyle: .roman2kana)
   } else {
-    composingText.insertAtCursorPosition(String(inputUnicode), inputStyle: .direct)
+    composingText.value.insertAtCursorPosition(String(inputUnicode), inputStyle: .direct)
   }
 }
 
@@ -205,14 +205,14 @@ import SwiftUtils
   guard var composingText = composingText else {
     return
   }
-  composingText.deleteBackwardFromCursorPosition(count: 1)
+  composingText.value.deleteBackwardFromCursorPosition(count: 1)
 }
 
 @MainActor public func deleteRight() {
   guard var composingText = composingText else {
     return
   }
-  composingText.deleteForwardFromCursorPosition(count: 1)
+  composingText.value.deleteForwardFromCursorPosition(count: 1)
 }
 
 @MainActor public func completePrefix(candidateIndex: Int) {
@@ -226,7 +226,7 @@ import SwiftUtils
   guard var composingText = composingText else {
     return
   }
-  let _ = composingText.moveCursorFromCursorPosition(count: offset)
+  let _ = composingText.value.moveCursorFromCursorPosition(count: offset)
 }
 
 /// ComposingText -> Characters
@@ -235,8 +235,8 @@ import SwiftUtils
   guard let composingText = composingText else {
     return ""
   }
-  var hiragana = composingText.toHiragana()
-  let cursorPos = composingText.convertTargetCursorPosition
+  var hiragana = composingText.value.toHiragana()
+  let cursorPos = composingText.value.convertTargetCursorPosition
   hiragana.insert("|", at: hiragana.index(hiragana.startIndex, offsetBy: cursorPos))
   return hiragana
 }
@@ -255,15 +255,15 @@ public enum CharType: String, Decodable {
   }
   switch charType {
     case .hiragana:
-      return composingText.toHiragana()
+      return composingText.value.toHiragana()
     case .katakana_fullwidth:
-      return composingText.toKatakana(true)
+      return composingText.value.toKatakana(true)
     case .katakana_halfwidth:
-      return composingText.toKatakana(false)
+      return composingText.value.toKatakana(false)
     case .alphabet_fullwidth:
-      return cycleAlphabetCase(composingText.toAlphabet(true), preedit: currentPreedit)
+      return cycleAlphabetCase(composingText.value.toAlphabet(true), preedit: currentPreedit)
     case .alphabet_halfwidth:
-      return cycleAlphabetCase(composingText.toAlphabet(false), preedit: currentPreedit)
+      return cycleAlphabetCase(composingText.value.toAlphabet(false), preedit: currentPreedit)
   }
 }
 
@@ -289,7 +289,7 @@ public func getCandidates(  // isPredictMode: Bool?, nBest: Int?
   // options.requireEnglishPrediction = true
 
   let result = createCandidateStruct(
-    composingText: composingText, options: options, converter: config.converter)
+    composingText: composingText.value, options: options, converter: config.converter)
 
   return try? JSONEncoder().encode(result)
 }

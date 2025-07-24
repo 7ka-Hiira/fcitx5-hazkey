@@ -11,16 +11,7 @@ HazkeyEngine::HazkeyEngine(Instance *instance)
         socket_ = connect_server();
 
     instance->inputContextManager().registerProperty("hazkeyState", &factory_);
-        // kkc_get_config(*config().zenzaiEnabled, *config().zenzaiInferenceLimit,
-        //                static_cast<int>(*config().numberStyle),
-        //                static_cast<int>(*config().symbolStyle),
-        //                static_cast<int>(*config().periodStyle),
-        //                static_cast<int>(*config().commaStyle),
-        //                static_cast<int>(*config().spaceStyle),
-        //                static_cast<int>(*config().diacriticStyle),
-        //                static_cast<int>(*config().gpuLayers),
-        //                const_cast<char *>(config().zenzaiProfile->c_str()));
-    // reloadConfig();
+    reloadConfig();
 }
 
 void HazkeyEngine::keyEvent([[maybe_unused]] const InputMethodEntry &entry,
@@ -62,16 +53,8 @@ void HazkeyEngine::setConfig(const RawConfig &config) {
 }
 
 void HazkeyEngine::reloadConfig() {
-    // readAsIni(config_, "conf/hazkey.conf");
-    //     kkc_get_config(*config().zenzaiEnabled, *config().zenzaiInferenceLimit,
-    //                    static_cast<int>(*config().numberStyle),
-    //                    static_cast<int>(*config().symbolStyle),
-    //                    static_cast<int>(*config().periodStyle),
-    //                    static_cast<int>(*config().commaStyle),
-    //                    static_cast<int>(*config().spaceStyle),
-    //                    static_cast<int>(*config().diacriticStyle),
-    //                    static_cast<int>(*config().gpuLayers),
-    //                    const_cast<char *>(config().zenzaiProfile->c_str()));
+    readAsIni(config_, "conf/hazkey.conf");
+    setServerConfig(socket_, *config().zenzaiEnabled, *config().zenzaiInferenceLimit, static_cast<int>(*config().numberStyle),static_cast<int>(*config().symbolStyle), static_cast<int>(*config().periodStyle), static_cast<int>(*config().commaStyle), static_cast<int>(*config().spaceStyle), static_cast<int>(*config().diacriticStyle), *config().zenzaiProfile);
 }
 
 FCITX_ADDON_FACTORY(HazkeyEngineFactory);

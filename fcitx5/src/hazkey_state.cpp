@@ -1,6 +1,7 @@
 #include "hazkey_state.h"
 
 #include <string>
+#include <vector>
 
 #include "hazkey_candidate.h"
 #include "hazkey_engine.h"
@@ -8,7 +9,9 @@
 namespace fcitx {
 
 HazkeyState::HazkeyState(HazkeyEngine *engine, InputContext *ic)
-    : engine_(engine), ic_(ic), preedit_(HazkeyPreedit(ic)) {}
+    : engine_(engine), ic_(ic), preedit_(HazkeyPreedit(ic)) {
+      createComposingTextInstance(engine_->socket());
+    }
 
 bool HazkeyState::isInputableEvent(const KeyEvent &event) {
     auto key = event.key();
@@ -378,43 +381,35 @@ void HazkeyState::showCandidateList(showCandidateMode mode, int nBest) {
 
     bool enabledPredictMode = mode == showCandidateMode::PredictWithLivePreedit;
 
-    auto preeditSegmentsPtr = std::make_shared<std::vector<std::string>>();
+    // auto preeditSegmentsPtr = std::make_shared<std::vector<std::string>>();
 
     auto candidates = getCandidates(enabledPredictMode, nBest);
 
     auto candidateList = std::make_unique<HazkeyCandidateList>(
-        std::move(candidates), preeditSegmentsPtr);
+        std::move(candidates));
 
     candidateList->setSelectionKey(defaultSelectionKeys);
 
     ic_->inputPanel().reset();
 
-    if (!preeditSegmentsPtr->empty()) {
-        // preedit conversion is enabled and conversion result is found
-        // show preedit conversion result
-        preedit_.setMultiSegmentPreedit(*preeditSegmentsPtr, -1);
-    } else {
+    // if (!preeditSegmentsPtr->empty()) {
+    //     // preedit conversion is enabled and conversion result is found
+    //     // show preedit conversion result
+    //     preedit_.setMultiSegmentPreedit(*preeditSegmentsPtr, -1);
+    // } else {
         // preedit conversion is disabled or conversion result is not
         // available show hiragana preedit
         auto hiragana = getComposingText(engine_->socket(), "hiragana");
         preedit_.setSimplePreedit(hiragana);
-    }
+    // }
 
     ic_->inputPanel().setCandidateList(std::move(candidateList));
 }
 
-std::vector<std::vector<std::string>> HazkeyState::getCandidates(
+std::vector<std::string> HazkeyState::getCandidates(
     bool enabledPreeditConversion, int nBest) {
-    json candidates = getServerCandidates(engine_->socket());
-    std::vector<std::vector<std::string>> candidateList;
-    for (int i = 0; candidates[i] != nullptr; i++) {
-        std::vector<std::string> candidate;
-        for (int j = 0; candidates[i][j] != nullptr; j++) {
-            candidate.push_back(candidates[i][j]);
-        }
-        candidateList.push_back(candidate);
-    }
-    return candidateList;
+    std::vector<std::string> candidates = getServerCandidates(engine_->socket());
+    return candidates;
 }
 
 void HazkeyState::showNonPredictCandidateList() {

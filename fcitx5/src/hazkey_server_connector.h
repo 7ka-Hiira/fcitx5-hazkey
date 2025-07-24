@@ -2,10 +2,9 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 
-#include <cstdlib>
-#include <iostream>
 #include <nlohmann/json.hpp>
 #include <string>
+#include <vector>
 
 #include "env_config.h"
 
@@ -31,10 +30,13 @@ void moveCursor(int sock, int offset);
 
 void setLeftContext(int sock, std::string context, int anchor);
 
-void setConfig(int sock);
+void setServerConfig(int sock, int zenzaiEnabled, int zenzaiInferLimit,
+               int numberFullwidth, int symbolFullwidth, int periodStyleIndex,
+               int commaStyleIndex, int spaceFullwidth, int tenCombining,
+               std::string profileText);
 
 void createComposingTextInstance(int sock);
 
 void completePrefix(int sock);
 
-json getServerCandidates(int sock);
+std::vector<std::string> getServerCandidates(int sock);

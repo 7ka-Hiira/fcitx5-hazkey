@@ -20,28 +20,23 @@ void HazkeyCandidateWord::select(InputContext* ic) const {
 /// CandidateList
 
 HazkeyCandidateList::HazkeyCandidateList(
-    std::vector<std::vector<std::string>> candidates,
-    std::shared_ptr<std::vector<std::string>> preeditSegments)
+    std::vector<std::string> candidates
+    // std::shared_ptr<std::vector<std::string>> preeditSegments
+)
     : CommonCandidateList() {
     for (size_t i = 0; i < candidates.size(); i++) {
         auto candidate = candidates[i];
-        std::vector<std::string> parts;
-        std::vector<int> partLens;
+        // std::vector<std::string> parts;
+        // std::vector<int> partLens;
 
-        // collect parts and part lengths
-        // more about candidate format, see azookey-kkc/libhazkey.h
-        for (size_t j = 5; j < candidate.size() - 1; j += 2) {
-            parts.push_back(candidate[j]);
-            partLens.push_back(std::stoi(candidate[j + 1]));
-        }
         append(std::make_unique<HazkeyCandidateWord>(
-            i, candidate[0], candidate[2], std::stoi(candidate[3]), parts,
-            partLens));
+            i, candidate, "あ"
+          ));
 
         // save preedit which found first
-        if (preeditSegments->empty() && std::stoi(candidate[4]) == 1) {
-            *preeditSegments = parts;
-        }
+        // if (preeditSegments->empty() && std::stoi(candidate[4]) == 1) {
+        //     *preeditSegments = parts;
+        // }
     }
 }
 

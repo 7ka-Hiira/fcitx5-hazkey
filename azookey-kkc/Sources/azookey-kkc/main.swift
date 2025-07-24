@@ -21,6 +21,7 @@ let bindResult = withUnsafePointer(to: &addr) {
     bind(fd, $0, socklen_t(MemoryLayout.size(ofValue: addr)))
   }
 }
+
 guard bindResult != -1 else {
   fatalError("Failed to bind socket")
 }
@@ -35,8 +36,10 @@ guard listen(fd, 10) != -1 else {
 
 // TODO: unglobalize these vars
 var kkcConfig: KkcConfig? = nil
-var composingText: ComposingText? = nil
+var composingText: ComposingTextBox? = nil
 var currentPreedit: String = ""
+
+var currentClientFd: Int32? = nil
 
 while true {
   var clientAddr = sockaddr()
@@ -47,6 +50,11 @@ while true {
     continue
   }
 
+  if let oldFd = currentClientFd {
+    close(oldFd)
+  }
+  currentClientFd = clientFd
+
   while true {
     var buf = [UInt8](repeating: 0, count: 4096)
     let readBytes = read(clientFd, &buf, buf.count)
@@ -54,7 +62,9 @@ while true {
     let message = String(bytes: buf[0..<readBytes], encoding: .utf8) ?? ""
     print("Received: \(message)")
     let response = processJson(jsonString: message)
+    print("Response: \(response)")
     _ = response.withCString { write(clientFd, $0, strlen($0)) }
   }
   close(clientFd)
+  currentClientFd = nil
 }
