@@ -1,16 +1,9 @@
 import Foundation
-import KanaKanjiConverterModuleWithDefaultDictionary
+import KanaKanjiConverterModule
 import SwiftUtils
 import XCTest
 
-@testable import hazkey_kkc
-
-final class Tests: XCTestCase {
-
-  func testTest() {
-    XCTAssertEqual(0, 0)
-  }
-}
+@testable import hazkey_server
 
 final class ComposingTextExtensionTests: XCTestCase {
   static let copmosingTextTestSources: [String] = [
