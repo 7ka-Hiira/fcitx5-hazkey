@@ -1,57 +1,99 @@
+import Dispatch
 import Foundation
+import KanaKanjiConverterModule
 
-class UnixSocketServer: @unchecked Sendable {
-  let socketPath: String
-  private var serverSocket: Int32 = -1
-  private var running = false
+let runtimeDir = ProcessInfo.processInfo.environment["XDG_RUNTIME_DIR"] ?? "/tmp"
+let uid = getuid()
+let socketPath = "\(runtimeDir)/hazkey_server.\(uid).sock"
+let pidFilePath = "\(runtimeDir)/hazkey_server.\(uid).pid"
 
-  init(socketPath: String) {
-    self.socketPath = socketPath
-  }
+func removePidFile() {
+  try? FileManager.default.removeItem(atPath: pidFilePath)
+}
 
-  func start(handler: @escaping @Sendable (Data) -> Void) {
-    DispatchQueue.global().async {
-      self.running = true
-      self.serverSocket = socket(AF_UNIX, Int32(SOCK_STREAM.rawValue), 0)
-      var addr = sockaddr_un()
-      addr.sun_family = sa_family_t(AF_UNIX)
-      withUnsafeMutablePointer(to: &addr.sun_path) {
-        $0.withMemoryRebound(to: UInt8.self, capacity: 108) { ptr in
-          let pathData = self.socketPath.data(using: .utf8)!
-          for i in 0..<min(pathData.count, 108) {
-            ptr[i] = pathData[i]
-          }
-        }
-      }
-      unlink(self.socketPath)
+signal(SIGTERM) { _ in
+  removePidFile()
+  exit(0)
+}
+signal(SIGINT) { _ in
+  removePidFile()
+  exit(0)
+}
 
-      let addrSize = MemoryLayout.size(ofValue: addr)
-      let bindResult = withUnsafePointer(to: &addr) {
-        $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {
-          bind(self.serverSocket, $0, socklen_t(addrSize))
-        }
-      }
-      guard bindResult == 0 else { return }
-      listen(self.serverSocket, 1)
-      while self.running {
-        let clientSocket = accept(self.serverSocket, nil, nil)
-        if clientSocket >= 0 {
-          var buf = [UInt8](repeating: 0, count: 1024)
-          let len = read(clientSocket, &buf, 1024)
-          if len > 0 {
-            handler(Data(buf[0..<len]))
-          }
-          close(clientSocket)
-        }
-      }
-      close(self.serverSocket)
-      unlink(self.socketPath)
+if FileManager.default.fileExists(atPath: pidFilePath) {
+  if let pidString = try? String(contentsOfFile: pidFilePath, encoding: .utf8),
+    let pid = Int32(pidString.trimmingCharacters(in: .whitespacesAndNewlines))
+  {
+    if kill(pid, 0) != 0 {
+      print("Another hazkey_server is already running.")
+      exit(0)
     }
   }
+  try? FileManager.default.removeItem(atPath: pidFilePath)
+}
+try? "\(getpid())".write(toFile: pidFilePath, atomically: true, encoding: .utf8)
 
-  func stop() {
-    running = false
-    if serverSocket >= 0 { close(serverSocket) }
-    unlink(socketPath)
+unlink(socketPath)
+
+let fd = socket(AF_UNIX, Int32(SOCK_STREAM.rawValue), 0)
+guard fd != -1 else {
+  fatalError("Failed to create socket")
+}
+
+var addr = sockaddr_un()
+addr.sun_family = sa_family_t(AF_UNIX)
+strncpy(&addr.sun_path.0, socketPath, MemoryLayout.size(ofValue: addr.sun_path))
+
+let bindResult = withUnsafePointer(to: &addr) {
+  $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {
+    bind(fd, $0, socklen_t(MemoryLayout.size(ofValue: addr)))
   }
+}
+
+guard bindResult != -1 else {
+  fatalError("Failed to bind socket")
+}
+
+guard chmod(socketPath, 0o600) != -1 else {
+  fatalError("Failed to set socket permissions")
+}
+
+guard listen(fd, 10) != -1 else {
+  fatalError("Failed to listen")
+}
+
+// TODO: unglobalize these vars
+var kkcConfig: KkcConfig? = nil
+var composingText: ComposingTextBox? = nil
+var currentCandidateList: [Candidate]? = nil
+var currentPreedit: String = ""
+
+var currentClientFd: Int32? = nil
+
+while true {
+  var clientAddr = sockaddr()
+  var clientLen: socklen_t = socklen_t(MemoryLayout<sockaddr>.size)
+  let clientFd = accept(fd, &clientAddr, &clientLen)
+  if clientFd == -1 {
+    print("{\"status\": \"error\", \"message\": \"Accept failed\"}")
+    continue
+  }
+
+  if let oldFd = currentClientFd {
+    close(oldFd)
+  }
+  currentClientFd = clientFd
+
+  while true {
+    var buf = [UInt8](repeating: 0, count: 65536)
+    let readBytes = read(clientFd, &buf, buf.count)
+    if readBytes <= 0 { break }
+    let message = String(bytes: buf[0..<readBytes], encoding: .utf8) ?? ""
+    print("Received: \(message)")
+    let response = processJson(jsonString: message)
+    print("Response: \(response)")
+    _ = response.withCString { write(clientFd, $0, strlen($0)) }
+  }
+  close(clientFd)
+  currentClientFd = nil
 }
