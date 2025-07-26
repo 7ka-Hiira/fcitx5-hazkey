@@ -64,7 +64,7 @@ guard listen(fd, 10) != -1 else {
 
 // TODO: unglobalize these vars
 var kkcConfig: KkcConfig? = nil
-var composingText: ComposingTextBox? = nil
+var composingText: ComposingTextBox = ComposingTextBox()
 var currentCandidateList: [Candidate]? = nil
 var currentPreedit: String = ""
 
@@ -88,11 +88,9 @@ while true {
     var buf = [UInt8](repeating: 0, count: 65536)
     let readBytes = read(clientFd, &buf, buf.count)
     if readBytes <= 0 { break }
-    let message = String(bytes: buf[0..<readBytes], encoding: .utf8) ?? ""
-    print("Received: \(message)")
-    let response = processJson(jsonString: message)
-    print("Response: \(response)")
-    _ = response.withCString { write(clientFd, $0, strlen($0)) }
+    let query = Data(buf[0..<readBytes])
+    let response = processProto(data: query)
+    _ = response.withUnsafeBytes { write(clientFd, $0.baseAddress, response.count) }
   }
   close(clientFd)
   currentClientFd = nil

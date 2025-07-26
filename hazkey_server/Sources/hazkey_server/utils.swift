@@ -168,14 +168,6 @@ func cycleAlphabetCase(_ alphabet: String, preedit: String) -> String {
   }
 }
 
-// TODO: determine liveText in server
-// short key to make candidate json as short as possible
-struct FcitxCandidate: Codable {
-  let t: String // candidateText
-  let h: String // subHiragana
-}
-
-
 func symbolJaToEn(character: Character, reverse: Bool) -> Character {
   let h2z: [Character: Character] = [
     "。": "．",

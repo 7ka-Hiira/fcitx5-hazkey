@@ -67,23 +67,28 @@ import SwiftUtils
 /// ComposingText
 
 @MainActor public func createComposingTextInstanse() {
-  composingText = ComposingTextBox(ComposingText())
+  // composingText = ComposingTextBox()
 }
 
-@MainActor public func inputText(
+@MainActor func inputText(
   inputString: String, isDirect: Bool
-) {
+) -> Hazkey_SimpleResult {
   guard var inputUnicode = inputString.unicodeScalars.first else {
-    return
+    return Hazkey_SimpleResult.with {
+      $0.status = .failed
+      $0.result = "failed to get first unicode character"
+    }
   }
 
   guard let config = kkcConfig else {
-    return
+    return Hazkey_SimpleResult.with {
+      $0.status = .failed
+      $0.result = "config not found"
+    }
   }
 
-  guard let composingText = composingText else {
-    return
-  }
+  print("OOOOOOOOOKKKKKKKKk")
+  print(inputUnicode)
 
   if !isDirect {
     // convert katakana to hiragana
@@ -199,75 +204,72 @@ import SwiftUtils
   } else {
     composingText.value.insertAtCursorPosition(String(inputUnicode), inputStyle: .direct)
   }
+  print("OOOOOOOOOKKKKKKKKKKkAAA")
+  print(composingText.value)
+
+  return Hazkey_SimpleResult.with { $0.status = .success }
 }
 
 @MainActor public func deleteLeft() {
-  guard let composingText = composingText else {
-    return
-  }
   composingText.value.deleteBackwardFromCursorPosition(count: 1)
 }
 
 @MainActor public func deleteRight() {
-  guard let composingText = composingText else {
-    return
-  }
   composingText.value.deleteForwardFromCursorPosition(count: 1)
 }
 
 @MainActor public func completePrefix(candidateIndex: Int) {
-  guard let composingText = composingText else {
-    return
-  }
-  guard let currentCandidateList = currentCandidateList else {
-    return
-  }
-  let completedCandidate = currentCandidateList[candidateIndex]
+  if let completedCandidate = currentCandidateList?[candidateIndex] {
   composingText.value.prefixComplete(composingCount: completedCandidate.composingCount)
+  } else {
+  return //TODO: return error
+  }
 }
 
 @MainActor public func moveCursor(offset: Int) {
-  guard let composingText = composingText else {
-    return
-  }
   let _ = composingText.value.moveCursorFromCursorPosition(count: offset)
 }
 
 /// ComposingText -> Characters
 
 @MainActor public func getHiraganaWithCursor() -> String {
-  guard let composingText = composingText else {
-    return ""
-  }
   var hiragana = composingText.value.toHiragana()
   let cursorPos = composingText.value.convertTargetCursorPosition
   hiragana.insert("|", at: hiragana.index(hiragana.startIndex, offsetBy: cursorPos))
   return hiragana
 }
 
-public enum CharType: String, Decodable {
-  case hiragana
-  case katakana_fullwidth
-  case katakana_halfwidth
-  case alphabet_fullwidth
-  case alphabet_halfwidth
-}
+@MainActor func getComposingString(charType: Hazkey_CharType) -> Hazkey_SimpleResult {
+  print("OOOOOOOOOKKKKKKKKkBCBBB")
+  print(composingText.value)
 
-@MainActor public func getComposingString(charType: CharType) -> String {
-  guard let composingText = composingText else {
-    return ""
-  }
+  let result: String
   switch charType {
   case .hiragana:
-    return composingText.value.toHiragana()
-  case .katakana_fullwidth:
-    return composingText.value.toKatakana(true)
-  case .katakana_halfwidth:
-    return composingText.value.toKatakana(false)
-  case .alphabet_fullwidth:
-    return cycleAlphabetCase(composingText.value.toAlphabet(true), preedit: currentPreedit)
-  case .alphabet_halfwidth:
-    return cycleAlphabetCase(composingText.value.toAlphabet(false), preedit: currentPreedit)
+    print("OOOOOOOOOKKKKKKKKkBBBB")
+    print(composingText.value)
+    print(composingText.value.toHiragana())
+
+    result = composingText.value.toHiragana()
+  case .katakanaFull:
+    result = composingText.value.toKatakana(true)
+  case .katakanaHalf:
+    result = composingText.value.toKatakana(false)
+  case .alphabetFull:
+    result = cycleAlphabetCase(
+      composingText.value.toAlphabet(true), preedit: currentPreedit)
+  case .alphabetHalf:
+    result = cycleAlphabetCase(
+      composingText.value.toAlphabet(false), preedit: currentPreedit)
+  case .UNRECOGNIZED(_):
+    return Hazkey_SimpleResult.with {
+      $0.status = .failed
+      $0.result = "unrecognized charType"
+    }
+  }
+  return Hazkey_SimpleResult.with {
+    $0.status = .success
+    $0.result = result
   }
 }
 
@@ -275,13 +277,10 @@ public enum CharType: String, Decodable {
 
 // TODO: return error message
 @MainActor
-public func getCandidates(isPredictMode: Bool = false, nBest: Int = 9) -> Data? {  // JSON response
-  guard let composingText = composingText else {
-    return nil
-  }
+func getCandidates(isPredictMode: Bool = false, nBest: Int = 9) -> Hazkey_CandidatesResult {
 
   guard let config = kkcConfig else {
-    return nil
+    return Hazkey_CandidatesResult.init()
   }
 
   var options = config.convertOptions
@@ -293,21 +292,20 @@ public func getCandidates(isPredictMode: Bool = false, nBest: Int = 9) -> Data? 
 
   let hiraganaPreedit = composingText.value.toHiragana()
 
-  var result: [FcitxCandidate] = []
-  for candidate in converted.mainResults {
-
-
-    let candidateLen = candidate.rubyCount
-    let subHiragana: String
-    if let idx = hiraganaPreedit.index(hiraganaPreedit.startIndex, offsetBy: candidateLen, limitedBy: hiraganaPreedit.endIndex) {
-        subHiragana = String(hiraganaPreedit[idx...])
+  var result = Hazkey_CandidatesResult()
+  result.candidates = converted.mainResults.map { c in
+    var candidate = Hazkey_Candidate()
+    candidate.text = c.text
+    if let idx = hiraganaPreedit.index(
+      hiraganaPreedit.startIndex, offsetBy: c.rubyCount, limitedBy: hiraganaPreedit.endIndex)
+    {
+      candidate.subHiragana = String(hiraganaPreedit[idx...])
     } else {
-        subHiragana = ""
+      candidate.subHiragana = ""
     }
 
-    let fcitxCandidate = FcitxCandidate(t: candidate.text, h: subHiragana)
-    result.append(fcitxCandidate)
+    return candidate
   }
 
-  return try? JSONEncoder().encode(result)
+  return result
 }
