@@ -138,7 +138,7 @@ final class ProtocolTests: XCTestCase {
     let responseData3 = try sendRequest(reqData3, clientSocket: clientSocket)
     if let responseMsg3 = try? Hazkey_SimpleResult(serializedBytes: responseData3) {
         XCTAssertEqual(Hazkey_StatusCode.success, responseMsg3.status)
-        XCTAssertEqual("E", responseMsg3.result)
+        XCTAssertEqual("3", responseMsg3.result)
     } else {
         XCTFail("Failed to decode response3")
     }

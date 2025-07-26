@@ -87,9 +87,6 @@ import SwiftUtils
     }
   }
 
-  print("OOOOOOOOOKKKKKKKKk")
-  print(inputUnicode)
-
   if !isDirect {
     // convert katakana to hiragana
     if (0x30A0...0x30F3).contains(inputUnicode.value) {
@@ -204,9 +201,6 @@ import SwiftUtils
   } else {
     composingText.value.insertAtCursorPosition(String(inputUnicode), inputStyle: .direct)
   }
-  print("OOOOOOOOOKKKKKKKKKKkAAA")
-  print(composingText.value)
-
   return Hazkey_SimpleResult.with { $0.status = .success }
 }
 
@@ -240,16 +234,9 @@ import SwiftUtils
 }
 
 @MainActor func getComposingString(charType: Hazkey_CharType) -> Hazkey_SimpleResult {
-  print("OOOOOOOOOKKKKKKKKkBCBBB")
-  print(composingText.value)
-
   let result: String
   switch charType {
   case .hiragana:
-    print("OOOOOOOOOKKKKKKKKkBBBB")
-    print(composingText.value)
-    print(composingText.value.toHiragana())
-
     result = composingText.value.toHiragana()
   case .katakanaFull:
     result = composingText.value.toKatakana(true)
