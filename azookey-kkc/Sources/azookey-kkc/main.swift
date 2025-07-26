@@ -24,15 +24,9 @@ if FileManager.default.fileExists(atPath: pidFilePath) {
   if let pidString = try? String(contentsOfFile: pidFilePath, encoding: .utf8),
     let pid = Int32(pidString.trimmingCharacters(in: .whitespacesAndNewlines))
   {
-    if pid != getpid() {
-      print("Killing existing hazkey_server with PID \(pid)")
-      kill(pid, SIGTERM)
-      for _ in 0..<20 {
-        usleep(50_000)
-        if kill(pid, 0) != 0 {
-          break
-        }
-      }
+    if kill(pid, 0) != 0 {
+      print("Another hazkey_server is already running.")
+      exit(0)
     }
   }
   try? FileManager.default.removeItem(atPath: pidFilePath)
