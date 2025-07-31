@@ -77,6 +77,7 @@ import SwiftUtils
 
 @MainActor func createComposingTextInstanse() -> Hazkey_Commands_ResultData {
   composingText = ComposingTextBox()
+  currentCandidateList = nil
   return Hazkey_Commands_ResultData.with {
     $0.status = .success
   }
@@ -309,6 +310,8 @@ func getCandidates(isPredictMode: Bool = false, nBest: Int = 9) -> Hazkey_Comman
   options.requireEnglishPrediction = isPredictMode
 
   let converted = config.converter.requestCandidates(composingText.value, options: options)
+
+  currentCandidateList = converted.mainResults
 
   let hiraganaPreedit = composingText.value.toHiragana()
 

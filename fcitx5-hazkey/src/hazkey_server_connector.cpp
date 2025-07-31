@@ -298,10 +298,12 @@ void HazkeyServerConnector::createComposingTextInstance() {
     return;
 }
 
-void HazkeyServerConnector::completePrefix() {
+void HazkeyServerConnector::completePrefix(int index) {
     hazkey::commands::QueryData query;
     query.set_function(
         hazkey::commands::QueryData_KkcApi::QueryData_KkcApi_COMPLETE_PREFIX);
+    auto props =query.mutable_complete_prefix();
+    props->set_index(index);
     auto response = transact(query);
     if (response == std::nullopt) {
         FCITX_ERROR() << "Error while transacting completePrefix().";

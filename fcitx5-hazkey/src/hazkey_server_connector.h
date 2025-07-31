@@ -46,7 +46,7 @@ class HazkeyServerConnector {
 
     void createComposingTextInstance();
 
-    void completePrefix();
+    void completePrefix(int index);
 
     struct CandidateData {
         std::string candidateText;

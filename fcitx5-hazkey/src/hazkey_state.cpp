@@ -1,10 +1,12 @@
 #include "hazkey_state.h"
+#include <fcitx-utils/log.h>
 
 #include <string>
 #include <vector>
 
 #include "hazkey_candidate.h"
 #include "hazkey_engine.h"
+#include "hazkey_server_connector.h"
 #include "protocol/hazkey_server.pb.h"
 
 namespace fcitx {
@@ -283,8 +285,10 @@ void HazkeyState::candidateCompleteHandler(
         // auto correspondingCount =
         //     candidateList->getCandidate(candidateList->cursorIndex())
         //         .correspondingCount();
-        engine_->server().completePrefix();
+        engine_->server().completePrefix(candidateList->globalCursorIndex());
+        FCITX_INFO() << "DEBUGA";
         showNonPredictCandidateList();
+        FCITX_INFO() << "DEBUGB";
     } else {
         reset();
     }
@@ -503,6 +507,7 @@ void HazkeyState::reset() {
     // do not reset isShiftPressedAlone_ because shift may still be pressed
     isDirectInputMode_ = false;
     isCursorMoving_ = false;
+    engine_->server().createComposingTextInstance();
     ic_->inputPanel().reset();
 }
 
