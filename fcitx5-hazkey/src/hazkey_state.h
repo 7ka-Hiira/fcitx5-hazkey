@@ -7,7 +7,6 @@
 
 #include "hazkey_candidate.h"
 #include "hazkey_preedit.h"
-#include "hazkey_server_connector.h"
 
 namespace fcitx {
 

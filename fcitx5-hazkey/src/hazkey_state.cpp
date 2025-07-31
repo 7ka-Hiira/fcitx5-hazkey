@@ -5,7 +5,6 @@
 
 #include "hazkey_candidate.h"
 #include "hazkey_engine.h"
-#include "hazkey_server_connector.h"
 #include "protocol/hazkey_server.pb.h"
 
 namespace fcitx {
@@ -102,7 +101,7 @@ void HazkeyState::noPreeditKeyEvent(KeyEvent &event) {
             break;
         default:
             if (isInputableEvent(event)) {
-                newComposingText();
+                // newComposingText();
                 engine_->server().addToComposingText(Key::keySymToUTF8(keysym),
                                                      isDirectInputMode_);
                 showPreeditCandidateList();
@@ -185,7 +184,7 @@ void HazkeyState::preeditKeyEvent(
                 if (isDirectConversionMode_) {
                     preedit_.commitPreedit();
                     reset();
-                    newComposingText();
+                    // newComposingText();
                 }
                 engine_->server().addToComposingText(Key::keySymToUTF8(keysym),
                                                      isDirectInputMode_);
@@ -263,7 +262,7 @@ void HazkeyState::candidateKeyEvent(
             } else if (isInputableEvent(event)) {
                 preedit_.commitPreedit();
                 reset();
-                newComposingText();
+                // newComposingText();
                 engine_->server().addToComposingText(Key::keySymToUTF8(keysym),
                                                      isDirectInputMode_);
                 showPreeditCandidateList();
@@ -293,8 +292,8 @@ void HazkeyState::candidateCompleteHandler(
 
 void HazkeyState::newComposingText() {
     FCITX_DEBUG() << "DISABLED: newComposingText()";
-    engine_->server().createComposingTextInstance();
-    updateSurroundingText();
+    // engine_->server().createComposingTextInstance();
+    // updateSurroundingText();
 }
 
 void HazkeyState::updateSurroundingText() {

@@ -152,8 +152,8 @@ std::string HazkeyServerConnector::getComposingHiraganaWithCursor() {
 void HazkeyServerConnector::addToComposingText(std::string text,
                                                bool isDirect) {
     hazkey::commands::QueryData query;
-    query.set_function(hazkey::commands::QueryData_KkcApi::
-                           QueryData_KkcApi_GET_COMPOSING_STRING);
+    query.set_function(
+        hazkey::commands::QueryData_KkcApi::QueryData_KkcApi_INPUT_TEXT);
     auto props = query.mutable_input_text();
     props->set_text(text);
     props->set_is_direct(isDirect);
