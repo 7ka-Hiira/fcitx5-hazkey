@@ -72,7 +72,7 @@ enum class LearnMode {
     None,
 };
 
-FCITX_CONFIG_ENUM_NAME_WITH_I18N(LearnMode, N_("None"));
+FCITX_CONFIG_ENUM_NAME_WITH_I18N(LearnMode, N_("Disabled"));
 
 FCITX_CONFIGURATION(
     HazkeyEngineConfig,

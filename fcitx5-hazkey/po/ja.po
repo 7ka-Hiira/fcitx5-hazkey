@@ -20,5 +20,77 @@ msgstr "半角"
 msgid "Fullwidth"
 msgstr "全角"
 
-msgid "[Alt+[Num] to Select]"
-msgstr "[Alt+[数字]で選択]"
+msgid "Combining"
+msgstr "結合文字"
+
+msgid "Disabled"
+msgstr "無効"
+
+msgid "[Alt+Number to Select]"
+msgstr "[Alt+数字で選択]"
+
+msgid "。 (Fullwidth Kuten)"
+msgstr "。 (全角句点)"
+
+msgid "｡ (Halfwidth Kuten)"
+msgstr "｡ (半角句点)"
+
+msgid "． (Fullwidth Period)"
+msgstr "． (全角ピリオド)"
+
+msgid ". (Halfwidth Period)"
+msgstr ". (半角ピリオド)"
+
+msgid "、 (Fullwidth Toten)"
+msgstr "、 (全角読点)"
+
+msgid "､ (Halfwidth Toten)"
+msgstr "､ (半角読点)"
+
+msgid "， (Fullwidth Comma)"
+msgstr "， (全角コンマ)"
+
+msgid ", (Halfwidth Comma)"
+msgstr ", (半角コンマ)"
+
+msgid "Enable prediction"
+msgstr "予測変換を有効にする"
+
+msgid "Number style"
+msgstr "数字のスタイル"
+
+msgid "Symbol style"
+msgstr "記号のスタイル"
+
+msgid "Period style"
+msgstr "句点のスタイル"
+
+msgid "Comma style"
+msgstr "読点のスタイル"
+
+msgid "Space style"
+msgstr "スペースのスタイル"
+
+msgid "Diacritic style"
+msgstr "濁点・半濁点のスタイル"
+
+msgid "Learn mode"
+msgstr "学習モード"
+
+msgid "Enable Zenzai (Experimental, Requires Vulkan)"
+msgstr "Zenzaiを有効にする (Vulkanドライバが必要)"
+
+msgid "Enable Zenzai contextual converision"
+msgstr "Zenzai文脈変換を有効にする"
+
+msgid "Zenzai Profile"
+msgstr "Zenzaiプロフィール"
+
+msgid "Zenzai Inference limit"
+msgstr "Zenzai推論制限"
+
+msgid "GPU Layers"
+msgstr "GPUレイヤー数"
+
+msgid "Click to open Zenzai Setup Guide"
+msgstr "Zenzai設定ガイドを開く"
