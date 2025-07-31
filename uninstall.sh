@@ -9,7 +9,7 @@ fi
 
 rm -rf $INSTALL_PREFIX/share/hazkey
 rm -rf $INSTALL_PREFIX/include/hazkey
-rm -f $INSTALL_PREFIX/lib/hazkey/hazkey_server
+rm -rf $INSTALL_PREFIX/lib/hazkey
 rm -f $INSTALL_PREFIX/lib/pkgconfig/hazkey.pc
 rm -f $INSTALL_PREFIX/lib/fcitx5/fcitx5-hazkey.so
 rm -f $INSTALL_PREFIX/share/fcitx5/addon/hazkey.conf

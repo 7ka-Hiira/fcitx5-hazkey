@@ -1,69 +1,69 @@
 syntax = "proto3";
 
-package hazkey;
-
-enum KkcApi {
-  SET_CONFIG = 0;
-  SET_LEFT_CONTEXT = 1;
-  CREATE_COMPOSING_TEXT_INSTANCE = 2;
-  INPUT_TEXT = 3;
-  DELETE_LEFT = 4;
-  DELETE_RIGHT = 5;
-  COMPLETE_PREFIX = 6;
-  MOVE_CURSOR = 7;
-  GET_HIRAGANA_WITH_CURSOR = 8;
-  GET_COMPOSING_STRING = 9;
-  GET_CANDIDATES = 10;
-}
-
-message SetConfigProps {
-  bool zenzai_enabled = 1;
-  int32 zenzai_infer_limit = 2;
-  int32 number_fullwidth = 3;
-  int32 symbol_fullwidth = 4;
-  int32 period_style = 5;
-  int32 comma_style = 6;
-  int32 space_fullwidth = 7;
-  int32 ten_combining = 8;
-  string profile_text = 9;
-}
-
-message SetLeftContextProps {
-  string context = 1;
-  int32 anchor = 2;
-}
-
-message InputTextProps {
-  string text = 1;
-  bool is_direct = 2;
-}
-
-message MoveCursorProps {
-  int32 offset = 1;
-}
-
-message PrefixCompleteProps {
-  int32 index = 1;
-}
-
-enum CharType {
-  HIRAGANA = 0;
-  KATAKANA_FULL = 1;
-  KATAKANA_HALF = 2;
-  ALPHABET_FULL = 3;
-  ALPHABET_HALF = 4;
-}
-
-message GetComposingStringProps {
-  CharType char_type = 1;
-}
-
-message GetCandidatesProps {
-  bool is_predict_mode = 1;
-  int32 n_best = 2;
-}
+package hazkey.commands;
 
 message QueryData {
+  enum KkcApi {
+    SET_CONFIG = 0;
+    SET_LEFT_CONTEXT = 1;
+    CREATE_COMPOSING_TEXT_INSTANCE = 2;
+    INPUT_TEXT = 3;
+    DELETE_LEFT = 4;
+    DELETE_RIGHT = 5;
+    COMPLETE_PREFIX = 6;
+    MOVE_CURSOR = 7;
+    GET_HIRAGANA_WITH_CURSOR = 8;
+    GET_COMPOSING_STRING = 9;
+    GET_CANDIDATES = 10;
+  }
+
+  message SetConfigProps {
+    bool zenzai_enabled = 1;
+    int32 zenzai_infer_limit = 2;
+    int32 number_fullwidth = 3;
+    int32 symbol_fullwidth = 4;
+    int32 period_style = 5;
+    int32 comma_style = 6;
+    int32 space_fullwidth = 7;
+    int32 ten_combining = 8;
+    string profile_text = 9;
+  }
+
+  message SetLeftContextProps {
+    string context = 1;
+    int32 anchor = 2;
+  }
+
+  message InputTextProps {
+    string text = 1;
+    bool is_direct = 2;
+  }
+
+  message MoveCursorProps {
+    int32 offset = 1;
+  }
+
+  message PrefixCompleteProps {
+    int32 index = 1;
+  }
+
+  message GetComposingStringProps {
+    enum CharType {
+      HIRAGANA = 0;
+      KATAKANA_FULL = 1;
+      KATAKANA_HALF = 2;
+      ALPHABET_FULL = 3;
+      ALPHABET_HALF = 4;
+    }
+
+    CharType char_type = 1;
+  }
+
+  message GetCandidatesProps {
+    bool is_predict_mode = 1;
+    int32 n_best = 2;
+  }
+
   KkcApi function = 1;
   oneof props {
     SetConfigProps set_config = 2;
@@ -76,27 +76,28 @@ message QueryData {
   }
 }
 
-enum StatusCode {
-  _UNUSED = 0;
-  SUCCESS = 1;
-  FAILED = 2;
-}
+message ResultData {
+  enum StatusCode {
+    // must return a non-default value so that clients can recognize the response
+    UNUSED = 0;
+    SUCCESS = 1;
+    FAILED = 2;
+  }
 
-message Status {
+  message CandidatesResult {
+    message Candidate {
+      string text = 1;
+      string sub_hiragana = 2;
+    }
+
+    StatusCode status = 1;
+    repeated Candidate candidates = 2;
+  }
+
   StatusCode status = 1;
-}
-
-message SimpleResult {
-  StatusCode status = 1;
-  string result = 2;
-}
-
-message Candidate {
-  string text = 1;
-  string sub_hiragana = 2;
-}
-
-message CandidatesResult {
-  StatusCode status = 1;
-  repeated Candidate candidates = 2;
+  string errorMessage = 2;
+  oneof props {
+    string result = 3;
+    CandidatesResult candidates = 4;
+  }
 }

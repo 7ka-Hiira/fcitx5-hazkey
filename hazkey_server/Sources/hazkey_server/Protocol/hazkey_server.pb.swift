@@ -20,327 +20,67 @@ fileprivate struct _GeneratedWithProtocGenSwiftVersion: SwiftProtobuf.ProtobufAP
   typealias Version = _2
 }
 
-enum Hazkey_KkcApi: SwiftProtobuf.Enum, Swift.CaseIterable {
-  typealias RawValue = Int
-  case setConfig // = 0
-  case setLeftContext // = 1
-  case createComposingTextInstance // = 2
-  case inputText // = 3
-  case deleteLeft // = 4
-  case deleteRight // = 5
-  case completePrefix // = 6
-  case moveCursor // = 7
-  case getHiraganaWithCursor // = 8
-  case getComposingString // = 9
-  case getCandidates // = 10
-  case UNRECOGNIZED(Int)
-
-  init() {
-    self = .setConfig
-  }
-
-  init?(rawValue: Int) {
-    switch rawValue {
-    case 0: self = .setConfig
-    case 1: self = .setLeftContext
-    case 2: self = .createComposingTextInstance
-    case 3: self = .inputText
-    case 4: self = .deleteLeft
-    case 5: self = .deleteRight
-    case 6: self = .completePrefix
-    case 7: self = .moveCursor
-    case 8: self = .getHiraganaWithCursor
-    case 9: self = .getComposingString
-    case 10: self = .getCandidates
-    default: self = .UNRECOGNIZED(rawValue)
-    }
-  }
-
-  var rawValue: Int {
-    switch self {
-    case .setConfig: return 0
-    case .setLeftContext: return 1
-    case .createComposingTextInstance: return 2
-    case .inputText: return 3
-    case .deleteLeft: return 4
-    case .deleteRight: return 5
-    case .completePrefix: return 6
-    case .moveCursor: return 7
-    case .getHiraganaWithCursor: return 8
-    case .getComposingString: return 9
-    case .getCandidates: return 10
-    case .UNRECOGNIZED(let i): return i
-    }
-  }
-
-  // The compiler won't synthesize support with the UNRECOGNIZED case.
-  static let allCases: [Hazkey_KkcApi] = [
-    .setConfig,
-    .setLeftContext,
-    .createComposingTextInstance,
-    .inputText,
-    .deleteLeft,
-    .deleteRight,
-    .completePrefix,
-    .moveCursor,
-    .getHiraganaWithCursor,
-    .getComposingString,
-    .getCandidates,
-  ]
-
-}
-
-enum Hazkey_CharType: SwiftProtobuf.Enum, Swift.CaseIterable {
-  typealias RawValue = Int
-  case hiragana // = 0
-  case katakanaFull // = 1
-  case katakanaHalf // = 2
-  case alphabetFull // = 3
-  case alphabetHalf // = 4
-  case UNRECOGNIZED(Int)
-
-  init() {
-    self = .hiragana
-  }
-
-  init?(rawValue: Int) {
-    switch rawValue {
-    case 0: self = .hiragana
-    case 1: self = .katakanaFull
-    case 2: self = .katakanaHalf
-    case 3: self = .alphabetFull
-    case 4: self = .alphabetHalf
-    default: self = .UNRECOGNIZED(rawValue)
-    }
-  }
-
-  var rawValue: Int {
-    switch self {
-    case .hiragana: return 0
-    case .katakanaFull: return 1
-    case .katakanaHalf: return 2
-    case .alphabetFull: return 3
-    case .alphabetHalf: return 4
-    case .UNRECOGNIZED(let i): return i
-    }
-  }
-
-  // The compiler won't synthesize support with the UNRECOGNIZED case.
-  static let allCases: [Hazkey_CharType] = [
-    .hiragana,
-    .katakanaFull,
-    .katakanaHalf,
-    .alphabetFull,
-    .alphabetHalf,
-  ]
-
-}
-
-enum Hazkey_StatusCode: SwiftProtobuf.Enum, Swift.CaseIterable {
-  typealias RawValue = Int
-  case unused // = 0
-  case success // = 1
-  case failed // = 2
-  case UNRECOGNIZED(Int)
-
-  init() {
-    self = .unused
-  }
-
-  init?(rawValue: Int) {
-    switch rawValue {
-    case 0: self = .unused
-    case 1: self = .success
-    case 2: self = .failed
-    default: self = .UNRECOGNIZED(rawValue)
-    }
-  }
-
-  var rawValue: Int {
-    switch self {
-    case .unused: return 0
-    case .success: return 1
-    case .failed: return 2
-    case .UNRECOGNIZED(let i): return i
-    }
-  }
-
-  // The compiler won't synthesize support with the UNRECOGNIZED case.
-  static let allCases: [Hazkey_StatusCode] = [
-    .unused,
-    .success,
-    .failed,
-  ]
-
-}
-
-struct Hazkey_SetConfigProps: Sendable {
+struct Hazkey_Commands_QueryData: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  var zenzaiEnabled: Bool = false
+  var function: Hazkey_Commands_QueryData.KkcApi = .setConfig
 
-  var zenzaiInferLimit: Int32 = 0
+  var props: Hazkey_Commands_QueryData.OneOf_Props? = nil
 
-  var numberFullwidth: Int32 = 0
-
-  var symbolFullwidth: Int32 = 0
-
-  var periodStyle: Int32 = 0
-
-  var commaStyle: Int32 = 0
-
-  var spaceFullwidth: Int32 = 0
-
-  var tenCombining: Int32 = 0
-
-  var profileText: String = String()
-
-  var unknownFields = SwiftProtobuf.UnknownStorage()
-
-  init() {}
-}
-
-struct Hazkey_SetLeftContextProps: Sendable {
-  // SwiftProtobuf.Message conformance is added in an extension below. See the
-  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-  // methods supported on all messages.
-
-  var context: String = String()
-
-  var anchor: Int32 = 0
-
-  var unknownFields = SwiftProtobuf.UnknownStorage()
-
-  init() {}
-}
-
-struct Hazkey_InputTextProps: Sendable {
-  // SwiftProtobuf.Message conformance is added in an extension below. See the
-  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-  // methods supported on all messages.
-
-  var text: String = String()
-
-  var isDirect: Bool = false
-
-  var unknownFields = SwiftProtobuf.UnknownStorage()
-
-  init() {}
-}
-
-struct Hazkey_MoveCursorProps: Sendable {
-  // SwiftProtobuf.Message conformance is added in an extension below. See the
-  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-  // methods supported on all messages.
-
-  var offset: Int32 = 0
-
-  var unknownFields = SwiftProtobuf.UnknownStorage()
-
-  init() {}
-}
-
-struct Hazkey_PrefixCompleteProps: Sendable {
-  // SwiftProtobuf.Message conformance is added in an extension below. See the
-  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-  // methods supported on all messages.
-
-  var index: Int32 = 0
-
-  var unknownFields = SwiftProtobuf.UnknownStorage()
-
-  init() {}
-}
-
-struct Hazkey_GetComposingStringProps: Sendable {
-  // SwiftProtobuf.Message conformance is added in an extension below. See the
-  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-  // methods supported on all messages.
-
-  var charType: Hazkey_CharType = .hiragana
-
-  var unknownFields = SwiftProtobuf.UnknownStorage()
-
-  init() {}
-}
-
-struct Hazkey_GetCandidatesProps: Sendable {
-  // SwiftProtobuf.Message conformance is added in an extension below. See the
-  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-  // methods supported on all messages.
-
-  var isPredictMode: Bool = false
-
-  var nBest: Int32 = 0
-
-  var unknownFields = SwiftProtobuf.UnknownStorage()
-
-  init() {}
-}
-
-struct Hazkey_QueryData: Sendable {
-  // SwiftProtobuf.Message conformance is added in an extension below. See the
-  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-  // methods supported on all messages.
-
-  var function: Hazkey_KkcApi = .setConfig
-
-  var props: Hazkey_QueryData.OneOf_Props? = nil
-
-  var setConfig: Hazkey_SetConfigProps {
+  var setConfig: Hazkey_Commands_QueryData.SetConfigProps {
     get {
       if case .setConfig(let v)? = props {return v}
-      return Hazkey_SetConfigProps()
+      return Hazkey_Commands_QueryData.SetConfigProps()
     }
     set {props = .setConfig(newValue)}
   }
 
-  var setLeftContext: Hazkey_SetLeftContextProps {
+  var setLeftContext: Hazkey_Commands_QueryData.SetLeftContextProps {
     get {
       if case .setLeftContext(let v)? = props {return v}
-      return Hazkey_SetLeftContextProps()
+      return Hazkey_Commands_QueryData.SetLeftContextProps()
     }
     set {props = .setLeftContext(newValue)}
   }
 
-  var inputText: Hazkey_InputTextProps {
+  var inputText: Hazkey_Commands_QueryData.InputTextProps {
     get {
       if case .inputText(let v)? = props {return v}
-      return Hazkey_InputTextProps()
+      return Hazkey_Commands_QueryData.InputTextProps()
     }
     set {props = .inputText(newValue)}
   }
 
-  var moveCursor: Hazkey_MoveCursorProps {
+  var moveCursor: Hazkey_Commands_QueryData.MoveCursorProps {
     get {
       if case .moveCursor(let v)? = props {return v}
-      return Hazkey_MoveCursorProps()
+      return Hazkey_Commands_QueryData.MoveCursorProps()
     }
     set {props = .moveCursor(newValue)}
   }
 
-  var completePrefix: Hazkey_PrefixCompleteProps {
+  var completePrefix: Hazkey_Commands_QueryData.PrefixCompleteProps {
     get {
       if case .completePrefix(let v)? = props {return v}
-      return Hazkey_PrefixCompleteProps()
+      return Hazkey_Commands_QueryData.PrefixCompleteProps()
     }
     set {props = .completePrefix(newValue)}
   }
 
-  var getComposingString: Hazkey_GetComposingStringProps {
+  var getComposingString: Hazkey_Commands_QueryData.GetComposingStringProps {
     get {
       if case .getComposingString(let v)? = props {return v}
-      return Hazkey_GetComposingStringProps()
+      return Hazkey_Commands_QueryData.GetComposingStringProps()
     }
     set {props = .getComposingString(newValue)}
   }
 
-  var getCandidates: Hazkey_GetCandidatesProps {
+  var getCandidates: Hazkey_Commands_QueryData.GetCandidatesProps {
     get {
       if case .getCandidates(let v)? = props {return v}
-      return Hazkey_GetCandidatesProps()
+      return Hazkey_Commands_QueryData.GetCandidatesProps()
     }
     set {props = .getCandidates(newValue)}
   }
@@ -348,76 +88,518 @@ struct Hazkey_QueryData: Sendable {
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   enum OneOf_Props: Equatable, Sendable {
-    case setConfig(Hazkey_SetConfigProps)
-    case setLeftContext(Hazkey_SetLeftContextProps)
-    case inputText(Hazkey_InputTextProps)
-    case moveCursor(Hazkey_MoveCursorProps)
-    case completePrefix(Hazkey_PrefixCompleteProps)
-    case getComposingString(Hazkey_GetComposingStringProps)
-    case getCandidates(Hazkey_GetCandidatesProps)
+    case setConfig(Hazkey_Commands_QueryData.SetConfigProps)
+    case setLeftContext(Hazkey_Commands_QueryData.SetLeftContextProps)
+    case inputText(Hazkey_Commands_QueryData.InputTextProps)
+    case moveCursor(Hazkey_Commands_QueryData.MoveCursorProps)
+    case completePrefix(Hazkey_Commands_QueryData.PrefixCompleteProps)
+    case getComposingString(Hazkey_Commands_QueryData.GetComposingStringProps)
+    case getCandidates(Hazkey_Commands_QueryData.GetCandidatesProps)
 
+  }
+
+  enum KkcApi: SwiftProtobuf.Enum, Swift.CaseIterable {
+    typealias RawValue = Int
+    case setConfig // = 0
+    case setLeftContext // = 1
+    case createComposingTextInstance // = 2
+    case inputText // = 3
+    case deleteLeft // = 4
+    case deleteRight // = 5
+    case completePrefix // = 6
+    case moveCursor // = 7
+    case getHiraganaWithCursor // = 8
+    case getComposingString // = 9
+    case getCandidates // = 10
+    case UNRECOGNIZED(Int)
+
+    init() {
+      self = .setConfig
+    }
+
+    init?(rawValue: Int) {
+      switch rawValue {
+      case 0: self = .setConfig
+      case 1: self = .setLeftContext
+      case 2: self = .createComposingTextInstance
+      case 3: self = .inputText
+      case 4: self = .deleteLeft
+      case 5: self = .deleteRight
+      case 6: self = .completePrefix
+      case 7: self = .moveCursor
+      case 8: self = .getHiraganaWithCursor
+      case 9: self = .getComposingString
+      case 10: self = .getCandidates
+      default: self = .UNRECOGNIZED(rawValue)
+      }
+    }
+
+    var rawValue: Int {
+      switch self {
+      case .setConfig: return 0
+      case .setLeftContext: return 1
+      case .createComposingTextInstance: return 2
+      case .inputText: return 3
+      case .deleteLeft: return 4
+      case .deleteRight: return 5
+      case .completePrefix: return 6
+      case .moveCursor: return 7
+      case .getHiraganaWithCursor: return 8
+      case .getComposingString: return 9
+      case .getCandidates: return 10
+      case .UNRECOGNIZED(let i): return i
+      }
+    }
+
+    // The compiler won't synthesize support with the UNRECOGNIZED case.
+    static let allCases: [Hazkey_Commands_QueryData.KkcApi] = [
+      .setConfig,
+      .setLeftContext,
+      .createComposingTextInstance,
+      .inputText,
+      .deleteLeft,
+      .deleteRight,
+      .completePrefix,
+      .moveCursor,
+      .getHiraganaWithCursor,
+      .getComposingString,
+      .getCandidates,
+    ]
+
+  }
+
+  struct SetConfigProps: Sendable {
+    // SwiftProtobuf.Message conformance is added in an extension below. See the
+    // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+    // methods supported on all messages.
+
+    var zenzaiEnabled: Bool = false
+
+    var zenzaiInferLimit: Int32 = 0
+
+    var numberFullwidth: Int32 = 0
+
+    var symbolFullwidth: Int32 = 0
+
+    var periodStyle: Int32 = 0
+
+    var commaStyle: Int32 = 0
+
+    var spaceFullwidth: Int32 = 0
+
+    var tenCombining: Int32 = 0
+
+    var profileText: String = String()
+
+    var unknownFields = SwiftProtobuf.UnknownStorage()
+
+    init() {}
+  }
+
+  struct SetLeftContextProps: Sendable {
+    // SwiftProtobuf.Message conformance is added in an extension below. See the
+    // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+    // methods supported on all messages.
+
+    var context: String = String()
+
+    var anchor: Int32 = 0
+
+    var unknownFields = SwiftProtobuf.UnknownStorage()
+
+    init() {}
+  }
+
+  struct InputTextProps: Sendable {
+    // SwiftProtobuf.Message conformance is added in an extension below. See the
+    // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+    // methods supported on all messages.
+
+    var text: String = String()
+
+    var isDirect: Bool = false
+
+    var unknownFields = SwiftProtobuf.UnknownStorage()
+
+    init() {}
+  }
+
+  struct MoveCursorProps: Sendable {
+    // SwiftProtobuf.Message conformance is added in an extension below. See the
+    // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+    // methods supported on all messages.
+
+    var offset: Int32 = 0
+
+    var unknownFields = SwiftProtobuf.UnknownStorage()
+
+    init() {}
+  }
+
+  struct PrefixCompleteProps: Sendable {
+    // SwiftProtobuf.Message conformance is added in an extension below. See the
+    // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+    // methods supported on all messages.
+
+    var index: Int32 = 0
+
+    var unknownFields = SwiftProtobuf.UnknownStorage()
+
+    init() {}
+  }
+
+  struct GetComposingStringProps: Sendable {
+    // SwiftProtobuf.Message conformance is added in an extension below. See the
+    // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+    // methods supported on all messages.
+
+    var charType: Hazkey_Commands_QueryData.GetComposingStringProps.CharType = .hiragana
+
+    var unknownFields = SwiftProtobuf.UnknownStorage()
+
+    enum CharType: SwiftProtobuf.Enum, Swift.CaseIterable {
+      typealias RawValue = Int
+      case hiragana // = 0
+      case katakanaFull // = 1
+      case katakanaHalf // = 2
+      case alphabetFull // = 3
+      case alphabetHalf // = 4
+      case UNRECOGNIZED(Int)
+
+      init() {
+        self = .hiragana
+      }
+
+      init?(rawValue: Int) {
+        switch rawValue {
+        case 0: self = .hiragana
+        case 1: self = .katakanaFull
+        case 2: self = .katakanaHalf
+        case 3: self = .alphabetFull
+        case 4: self = .alphabetHalf
+        default: self = .UNRECOGNIZED(rawValue)
+        }
+      }
+
+      var rawValue: Int {
+        switch self {
+        case .hiragana: return 0
+        case .katakanaFull: return 1
+        case .katakanaHalf: return 2
+        case .alphabetFull: return 3
+        case .alphabetHalf: return 4
+        case .UNRECOGNIZED(let i): return i
+        }
+      }
+
+      // The compiler won't synthesize support with the UNRECOGNIZED case.
+      static let allCases: [Hazkey_Commands_QueryData.GetComposingStringProps.CharType] = [
+        .hiragana,
+        .katakanaFull,
+        .katakanaHalf,
+        .alphabetFull,
+        .alphabetHalf,
+      ]
+
+    }
+
+    init() {}
+  }
+
+  struct GetCandidatesProps: Sendable {
+    // SwiftProtobuf.Message conformance is added in an extension below. See the
+    // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+    // methods supported on all messages.
+
+    var isPredictMode: Bool = false
+
+    var nBest: Int32 = 0
+
+    var unknownFields = SwiftProtobuf.UnknownStorage()
+
+    init() {}
   }
 
   init() {}
 }
 
-struct Hazkey_Status: Sendable {
+struct Hazkey_Commands_ResultData: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  var status: Hazkey_StatusCode = .unused
+  var status: Hazkey_Commands_ResultData.StatusCode = .unused
+
+  var errorMessage: String = String()
+
+  var props: Hazkey_Commands_ResultData.OneOf_Props? = nil
+
+  var result: String {
+    get {
+      if case .result(let v)? = props {return v}
+      return String()
+    }
+    set {props = .result(newValue)}
+  }
+
+  var candidates: Hazkey_Commands_ResultData.CandidatesResult {
+    get {
+      if case .candidates(let v)? = props {return v}
+      return Hazkey_Commands_ResultData.CandidatesResult()
+    }
+    set {props = .candidates(newValue)}
+  }
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
-  init() {}
-}
+  enum OneOf_Props: Equatable, Sendable {
+    case result(String)
+    case candidates(Hazkey_Commands_ResultData.CandidatesResult)
 
-struct Hazkey_SimpleResult: Sendable {
-  // SwiftProtobuf.Message conformance is added in an extension below. See the
-  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-  // methods supported on all messages.
+  }
 
-  var status: Hazkey_StatusCode = .unused
+  enum StatusCode: SwiftProtobuf.Enum, Swift.CaseIterable {
+    typealias RawValue = Int
 
-  var result: String = String()
+    /// must return a non-default value so that clients can recognize the response
+    case unused // = 0
+    case success // = 1
+    case failed // = 2
+    case UNRECOGNIZED(Int)
 
-  var unknownFields = SwiftProtobuf.UnknownStorage()
+    init() {
+      self = .unused
+    }
 
-  init() {}
-}
+    init?(rawValue: Int) {
+      switch rawValue {
+      case 0: self = .unused
+      case 1: self = .success
+      case 2: self = .failed
+      default: self = .UNRECOGNIZED(rawValue)
+      }
+    }
 
-struct Hazkey_Candidate: Sendable {
-  // SwiftProtobuf.Message conformance is added in an extension below. See the
-  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-  // methods supported on all messages.
+    var rawValue: Int {
+      switch self {
+      case .unused: return 0
+      case .success: return 1
+      case .failed: return 2
+      case .UNRECOGNIZED(let i): return i
+      }
+    }
 
-  var text: String = String()
+    // The compiler won't synthesize support with the UNRECOGNIZED case.
+    static let allCases: [Hazkey_Commands_ResultData.StatusCode] = [
+      .unused,
+      .success,
+      .failed,
+    ]
 
-  var subHiragana: String = String()
+  }
 
-  var unknownFields = SwiftProtobuf.UnknownStorage()
+  struct CandidatesResult: Sendable {
+    // SwiftProtobuf.Message conformance is added in an extension below. See the
+    // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+    // methods supported on all messages.
 
-  init() {}
-}
+    var status: Hazkey_Commands_ResultData.StatusCode = .unused
 
-struct Hazkey_CandidatesResult: Sendable {
-  // SwiftProtobuf.Message conformance is added in an extension below. See the
-  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-  // methods supported on all messages.
+    var candidates: [Hazkey_Commands_ResultData.CandidatesResult.Candidate] = []
 
-  var candidates: [Hazkey_Candidate] = []
+    var unknownFields = SwiftProtobuf.UnknownStorage()
 
-  var unknownFields = SwiftProtobuf.UnknownStorage()
+    struct Candidate: Sendable {
+      // SwiftProtobuf.Message conformance is added in an extension below. See the
+      // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+      // methods supported on all messages.
+
+      var text: String = String()
+
+      var subHiragana: String = String()
+
+      var unknownFields = SwiftProtobuf.UnknownStorage()
+
+      init() {}
+    }
+
+    init() {}
+  }
 
   init() {}
 }
 
 // MARK: - Code below here is support for the SwiftProtobuf runtime.
 
-fileprivate let _protobuf_package = "hazkey"
+fileprivate let _protobuf_package = "hazkey.commands"
 
-extension Hazkey_KkcApi: SwiftProtobuf._ProtoNameProviding {
+extension Hazkey_Commands_QueryData: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".QueryData"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "function"),
+    2: .standard(proto: "set_config"),
+    3: .standard(proto: "set_left_context"),
+    4: .standard(proto: "input_text"),
+    5: .standard(proto: "move_cursor"),
+    6: .standard(proto: "complete_prefix"),
+    7: .standard(proto: "get_composing_string"),
+    8: .standard(proto: "get_candidates"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularEnumField(value: &self.function) }()
+      case 2: try {
+        var v: Hazkey_Commands_QueryData.SetConfigProps?
+        var hadOneofValue = false
+        if let current = self.props {
+          hadOneofValue = true
+          if case .setConfig(let m) = current {v = m}
+        }
+        try decoder.decodeSingularMessageField(value: &v)
+        if let v = v {
+          if hadOneofValue {try decoder.handleConflictingOneOf()}
+          self.props = .setConfig(v)
+        }
+      }()
+      case 3: try {
+        var v: Hazkey_Commands_QueryData.SetLeftContextProps?
+        var hadOneofValue = false
+        if let current = self.props {
+          hadOneofValue = true
+          if case .setLeftContext(let m) = current {v = m}
+        }
+        try decoder.decodeSingularMessageField(value: &v)
+        if let v = v {
+          if hadOneofValue {try decoder.handleConflictingOneOf()}
+          self.props = .setLeftContext(v)
+        }
+      }()
+      case 4: try {
+        var v: Hazkey_Commands_QueryData.InputTextProps?
+        var hadOneofValue = false
+        if let current = self.props {
+          hadOneofValue = true
+          if case .inputText(let m) = current {v = m}
+        }
+        try decoder.decodeSingularMessageField(value: &v)
+        if let v = v {
+          if hadOneofValue {try decoder.handleConflictingOneOf()}
+          self.props = .inputText(v)
+        }
+      }()
+      case 5: try {
+        var v: Hazkey_Commands_QueryData.MoveCursorProps?
+        var hadOneofValue = false
+        if let current = self.props {
+          hadOneofValue = true
+          if case .moveCursor(let m) = current {v = m}
+        }
+        try decoder.decodeSingularMessageField(value: &v)
+        if let v = v {
+          if hadOneofValue {try decoder.handleConflictingOneOf()}
+          self.props = .moveCursor(v)
+        }
+      }()
+      case 6: try {
+        var v: Hazkey_Commands_QueryData.PrefixCompleteProps?
+        var hadOneofValue = false
+        if let current = self.props {
+          hadOneofValue = true
+          if case .completePrefix(let m) = current {v = m}
+        }
+        try decoder.decodeSingularMessageField(value: &v)
+        if let v = v {
+          if hadOneofValue {try decoder.handleConflictingOneOf()}
+          self.props = .completePrefix(v)
+        }
+      }()
+      case 7: try {
+        var v: Hazkey_Commands_QueryData.GetComposingStringProps?
+        var hadOneofValue = false
+        if let current = self.props {
+          hadOneofValue = true
+          if case .getComposingString(let m) = current {v = m}
+        }
+        try decoder.decodeSingularMessageField(value: &v)
+        if let v = v {
+          if hadOneofValue {try decoder.handleConflictingOneOf()}
+          self.props = .getComposingString(v)
+        }
+      }()
+      case 8: try {
+        var v: Hazkey_Commands_QueryData.GetCandidatesProps?
+        var hadOneofValue = false
+        if let current = self.props {
+          hadOneofValue = true
+          if case .getCandidates(let m) = current {v = m}
+        }
+        try decoder.decodeSingularMessageField(value: &v)
+        if let v = v {
+          if hadOneofValue {try decoder.handleConflictingOneOf()}
+          self.props = .getCandidates(v)
+        }
+      }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
+    if self.function != .setConfig {
+      try visitor.visitSingularEnumField(value: self.function, fieldNumber: 1)
+    }
+    switch self.props {
+    case .setConfig?: try {
+      guard case .setConfig(let v)? = self.props else { preconditionFailure() }
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 2)
+    }()
+    case .setLeftContext?: try {
+      guard case .setLeftContext(let v)? = self.props else { preconditionFailure() }
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 3)
+    }()
+    case .inputText?: try {
+      guard case .inputText(let v)? = self.props else { preconditionFailure() }
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 4)
+    }()
+    case .moveCursor?: try {
+      guard case .moveCursor(let v)? = self.props else { preconditionFailure() }
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 5)
+    }()
+    case .completePrefix?: try {
+      guard case .completePrefix(let v)? = self.props else { preconditionFailure() }
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 6)
+    }()
+    case .getComposingString?: try {
+      guard case .getComposingString(let v)? = self.props else { preconditionFailure() }
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 7)
+    }()
+    case .getCandidates?: try {
+      guard case .getCandidates(let v)? = self.props else { preconditionFailure() }
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 8)
+    }()
+    case nil: break
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Hazkey_Commands_QueryData, rhs: Hazkey_Commands_QueryData) -> Bool {
+    if lhs.function != rhs.function {return false}
+    if lhs.props != rhs.props {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Hazkey_Commands_QueryData.KkcApi: SwiftProtobuf._ProtoNameProviding {
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     0: .same(proto: "SET_CONFIG"),
     1: .same(proto: "SET_LEFT_CONTEXT"),
@@ -433,26 +615,8 @@ extension Hazkey_KkcApi: SwiftProtobuf._ProtoNameProviding {
   ]
 }
 
-extension Hazkey_CharType: SwiftProtobuf._ProtoNameProviding {
-  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    0: .same(proto: "HIRAGANA"),
-    1: .same(proto: "KATAKANA_FULL"),
-    2: .same(proto: "KATAKANA_HALF"),
-    3: .same(proto: "ALPHABET_FULL"),
-    4: .same(proto: "ALPHABET_HALF"),
-  ]
-}
-
-extension Hazkey_StatusCode: SwiftProtobuf._ProtoNameProviding {
-  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    0: .same(proto: "_UNUSED"),
-    1: .same(proto: "SUCCESS"),
-    2: .same(proto: "FAILED"),
-  ]
-}
-
-extension Hazkey_SetConfigProps: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = _protobuf_package + ".SetConfigProps"
+extension Hazkey_Commands_QueryData.SetConfigProps: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = Hazkey_Commands_QueryData.protoMessageName + ".SetConfigProps"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .standard(proto: "zenzai_enabled"),
     2: .standard(proto: "zenzai_infer_limit"),
@@ -516,7 +680,7 @@ extension Hazkey_SetConfigProps: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: Hazkey_SetConfigProps, rhs: Hazkey_SetConfigProps) -> Bool {
+  static func ==(lhs: Hazkey_Commands_QueryData.SetConfigProps, rhs: Hazkey_Commands_QueryData.SetConfigProps) -> Bool {
     if lhs.zenzaiEnabled != rhs.zenzaiEnabled {return false}
     if lhs.zenzaiInferLimit != rhs.zenzaiInferLimit {return false}
     if lhs.numberFullwidth != rhs.numberFullwidth {return false}
@@ -531,8 +695,8 @@ extension Hazkey_SetConfigProps: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
   }
 }
 
-extension Hazkey_SetLeftContextProps: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = _protobuf_package + ".SetLeftContextProps"
+extension Hazkey_Commands_QueryData.SetLeftContextProps: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = Hazkey_Commands_QueryData.protoMessageName + ".SetLeftContextProps"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "context"),
     2: .same(proto: "anchor"),
@@ -561,7 +725,7 @@ extension Hazkey_SetLeftContextProps: SwiftProtobuf.Message, SwiftProtobuf._Mess
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: Hazkey_SetLeftContextProps, rhs: Hazkey_SetLeftContextProps) -> Bool {
+  static func ==(lhs: Hazkey_Commands_QueryData.SetLeftContextProps, rhs: Hazkey_Commands_QueryData.SetLeftContextProps) -> Bool {
     if lhs.context != rhs.context {return false}
     if lhs.anchor != rhs.anchor {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
@@ -569,8 +733,8 @@ extension Hazkey_SetLeftContextProps: SwiftProtobuf.Message, SwiftProtobuf._Mess
   }
 }
 
-extension Hazkey_InputTextProps: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = _protobuf_package + ".InputTextProps"
+extension Hazkey_Commands_QueryData.InputTextProps: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = Hazkey_Commands_QueryData.protoMessageName + ".InputTextProps"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "text"),
     2: .standard(proto: "is_direct"),
@@ -599,7 +763,7 @@ extension Hazkey_InputTextProps: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: Hazkey_InputTextProps, rhs: Hazkey_InputTextProps) -> Bool {
+  static func ==(lhs: Hazkey_Commands_QueryData.InputTextProps, rhs: Hazkey_Commands_QueryData.InputTextProps) -> Bool {
     if lhs.text != rhs.text {return false}
     if lhs.isDirect != rhs.isDirect {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
@@ -607,8 +771,8 @@ extension Hazkey_InputTextProps: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
   }
 }
 
-extension Hazkey_MoveCursorProps: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = _protobuf_package + ".MoveCursorProps"
+extension Hazkey_Commands_QueryData.MoveCursorProps: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = Hazkey_Commands_QueryData.protoMessageName + ".MoveCursorProps"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "offset"),
   ]
@@ -632,15 +796,15 @@ extension Hazkey_MoveCursorProps: SwiftProtobuf.Message, SwiftProtobuf._MessageI
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: Hazkey_MoveCursorProps, rhs: Hazkey_MoveCursorProps) -> Bool {
+  static func ==(lhs: Hazkey_Commands_QueryData.MoveCursorProps, rhs: Hazkey_Commands_QueryData.MoveCursorProps) -> Bool {
     if lhs.offset != rhs.offset {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
 }
 
-extension Hazkey_PrefixCompleteProps: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = _protobuf_package + ".PrefixCompleteProps"
+extension Hazkey_Commands_QueryData.PrefixCompleteProps: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = Hazkey_Commands_QueryData.protoMessageName + ".PrefixCompleteProps"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "index"),
   ]
@@ -664,15 +828,15 @@ extension Hazkey_PrefixCompleteProps: SwiftProtobuf.Message, SwiftProtobuf._Mess
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: Hazkey_PrefixCompleteProps, rhs: Hazkey_PrefixCompleteProps) -> Bool {
+  static func ==(lhs: Hazkey_Commands_QueryData.PrefixCompleteProps, rhs: Hazkey_Commands_QueryData.PrefixCompleteProps) -> Bool {
     if lhs.index != rhs.index {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
 }
 
-extension Hazkey_GetComposingStringProps: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = _protobuf_package + ".GetComposingStringProps"
+extension Hazkey_Commands_QueryData.GetComposingStringProps: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = Hazkey_Commands_QueryData.protoMessageName + ".GetComposingStringProps"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .standard(proto: "char_type"),
   ]
@@ -696,15 +860,25 @@ extension Hazkey_GetComposingStringProps: SwiftProtobuf.Message, SwiftProtobuf._
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: Hazkey_GetComposingStringProps, rhs: Hazkey_GetComposingStringProps) -> Bool {
+  static func ==(lhs: Hazkey_Commands_QueryData.GetComposingStringProps, rhs: Hazkey_Commands_QueryData.GetComposingStringProps) -> Bool {
     if lhs.charType != rhs.charType {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
 }
 
-extension Hazkey_GetCandidatesProps: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = _protobuf_package + ".GetCandidatesProps"
+extension Hazkey_Commands_QueryData.GetComposingStringProps.CharType: SwiftProtobuf._ProtoNameProviding {
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    0: .same(proto: "HIRAGANA"),
+    1: .same(proto: "KATAKANA_FULL"),
+    2: .same(proto: "KATAKANA_HALF"),
+    3: .same(proto: "ALPHABET_FULL"),
+    4: .same(proto: "ALPHABET_HALF"),
+  ]
+}
+
+extension Hazkey_Commands_QueryData.GetCandidatesProps: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = Hazkey_Commands_QueryData.protoMessageName + ".GetCandidatesProps"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .standard(proto: "is_predict_mode"),
     2: .standard(proto: "n_best"),
@@ -733,7 +907,7 @@ extension Hazkey_GetCandidatesProps: SwiftProtobuf.Message, SwiftProtobuf._Messa
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: Hazkey_GetCandidatesProps, rhs: Hazkey_GetCandidatesProps) -> Bool {
+  static func ==(lhs: Hazkey_Commands_QueryData.GetCandidatesProps, rhs: Hazkey_Commands_QueryData.GetCandidatesProps) -> Bool {
     if lhs.isPredictMode != rhs.isPredictMode {return false}
     if lhs.nBest != rhs.nBest {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
@@ -741,17 +915,13 @@ extension Hazkey_GetCandidatesProps: SwiftProtobuf.Message, SwiftProtobuf._Messa
   }
 }
 
-extension Hazkey_QueryData: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = _protobuf_package + ".QueryData"
+extension Hazkey_Commands_ResultData: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".ResultData"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "function"),
-    2: .standard(proto: "set_config"),
-    3: .standard(proto: "set_left_context"),
-    4: .standard(proto: "input_text"),
-    5: .standard(proto: "move_cursor"),
-    6: .standard(proto: "complete_prefix"),
-    7: .standard(proto: "get_composing_string"),
-    8: .standard(proto: "get_candidates"),
+    1: .same(proto: "status"),
+    2: .same(proto: "errorMessage"),
+    3: .same(proto: "result"),
+    4: .same(proto: "candidates"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -760,96 +930,27 @@ extension Hazkey_QueryData: SwiftProtobuf.Message, SwiftProtobuf._MessageImpleme
       // allocates stack space for every case branch when no optimizations are
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
-      case 1: try { try decoder.decodeSingularEnumField(value: &self.function) }()
-      case 2: try {
-        var v: Hazkey_SetConfigProps?
-        var hadOneofValue = false
-        if let current = self.props {
-          hadOneofValue = true
-          if case .setConfig(let m) = current {v = m}
-        }
-        try decoder.decodeSingularMessageField(value: &v)
-        if let v = v {
-          if hadOneofValue {try decoder.handleConflictingOneOf()}
-          self.props = .setConfig(v)
-        }
-      }()
+      case 1: try { try decoder.decodeSingularEnumField(value: &self.status) }()
+      case 2: try { try decoder.decodeSingularStringField(value: &self.errorMessage) }()
       case 3: try {
-        var v: Hazkey_SetLeftContextProps?
-        var hadOneofValue = false
-        if let current = self.props {
-          hadOneofValue = true
-          if case .setLeftContext(let m) = current {v = m}
-        }
-        try decoder.decodeSingularMessageField(value: &v)
+        var v: String?
+        try decoder.decodeSingularStringField(value: &v)
         if let v = v {
-          if hadOneofValue {try decoder.handleConflictingOneOf()}
-          self.props = .setLeftContext(v)
+          if self.props != nil {try decoder.handleConflictingOneOf()}
+          self.props = .result(v)
         }
       }()
       case 4: try {
-        var v: Hazkey_InputTextProps?
+        var v: Hazkey_Commands_ResultData.CandidatesResult?
         var hadOneofValue = false
         if let current = self.props {
           hadOneofValue = true
-          if case .inputText(let m) = current {v = m}
+          if case .candidates(let m) = current {v = m}
         }
         try decoder.decodeSingularMessageField(value: &v)
         if let v = v {
           if hadOneofValue {try decoder.handleConflictingOneOf()}
-          self.props = .inputText(v)
-        }
-      }()
-      case 5: try {
-        var v: Hazkey_MoveCursorProps?
-        var hadOneofValue = false
-        if let current = self.props {
-          hadOneofValue = true
-          if case .moveCursor(let m) = current {v = m}
-        }
-        try decoder.decodeSingularMessageField(value: &v)
-        if let v = v {
-          if hadOneofValue {try decoder.handleConflictingOneOf()}
-          self.props = .moveCursor(v)
-        }
-      }()
-      case 6: try {
-        var v: Hazkey_PrefixCompleteProps?
-        var hadOneofValue = false
-        if let current = self.props {
-          hadOneofValue = true
-          if case .completePrefix(let m) = current {v = m}
-        }
-        try decoder.decodeSingularMessageField(value: &v)
-        if let v = v {
-          if hadOneofValue {try decoder.handleConflictingOneOf()}
-          self.props = .completePrefix(v)
-        }
-      }()
-      case 7: try {
-        var v: Hazkey_GetComposingStringProps?
-        var hadOneofValue = false
-        if let current = self.props {
-          hadOneofValue = true
-          if case .getComposingString(let m) = current {v = m}
-        }
-        try decoder.decodeSingularMessageField(value: &v)
-        if let v = v {
-          if hadOneofValue {try decoder.handleConflictingOneOf()}
-          self.props = .getComposingString(v)
-        }
-      }()
-      case 8: try {
-        var v: Hazkey_GetCandidatesProps?
-        var hadOneofValue = false
-        if let current = self.props {
-          hadOneofValue = true
-          if case .getCandidates(let m) = current {v = m}
-        }
-        try decoder.decodeSingularMessageField(value: &v)
-        if let v = v {
-          if hadOneofValue {try decoder.handleConflictingOneOf()}
-          self.props = .getCandidates(v)
+          self.props = .candidates(v)
         }
       }()
       default: break
@@ -862,55 +963,48 @@ extension Hazkey_QueryData: SwiftProtobuf.Message, SwiftProtobuf._MessageImpleme
     // allocates stack space for every if/case branch local when no optimizations
     // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
     // https://github.com/apple/swift-protobuf/issues/1182
-    if self.function != .setConfig {
-      try visitor.visitSingularEnumField(value: self.function, fieldNumber: 1)
+    if self.status != .unused {
+      try visitor.visitSingularEnumField(value: self.status, fieldNumber: 1)
+    }
+    if !self.errorMessage.isEmpty {
+      try visitor.visitSingularStringField(value: self.errorMessage, fieldNumber: 2)
     }
     switch self.props {
-    case .setConfig?: try {
-      guard case .setConfig(let v)? = self.props else { preconditionFailure() }
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 2)
+    case .result?: try {
+      guard case .result(let v)? = self.props else { preconditionFailure() }
+      try visitor.visitSingularStringField(value: v, fieldNumber: 3)
     }()
-    case .setLeftContext?: try {
-      guard case .setLeftContext(let v)? = self.props else { preconditionFailure() }
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 3)
-    }()
-    case .inputText?: try {
-      guard case .inputText(let v)? = self.props else { preconditionFailure() }
+    case .candidates?: try {
+      guard case .candidates(let v)? = self.props else { preconditionFailure() }
       try visitor.visitSingularMessageField(value: v, fieldNumber: 4)
-    }()
-    case .moveCursor?: try {
-      guard case .moveCursor(let v)? = self.props else { preconditionFailure() }
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 5)
-    }()
-    case .completePrefix?: try {
-      guard case .completePrefix(let v)? = self.props else { preconditionFailure() }
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 6)
-    }()
-    case .getComposingString?: try {
-      guard case .getComposingString(let v)? = self.props else { preconditionFailure() }
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 7)
-    }()
-    case .getCandidates?: try {
-      guard case .getCandidates(let v)? = self.props else { preconditionFailure() }
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 8)
     }()
     case nil: break
     }
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: Hazkey_QueryData, rhs: Hazkey_QueryData) -> Bool {
-    if lhs.function != rhs.function {return false}
+  static func ==(lhs: Hazkey_Commands_ResultData, rhs: Hazkey_Commands_ResultData) -> Bool {
+    if lhs.status != rhs.status {return false}
+    if lhs.errorMessage != rhs.errorMessage {return false}
     if lhs.props != rhs.props {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
 }
 
-extension Hazkey_Status: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = _protobuf_package + ".Status"
+extension Hazkey_Commands_ResultData.StatusCode: SwiftProtobuf._ProtoNameProviding {
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    0: .same(proto: "UNUSED"),
+    1: .same(proto: "SUCCESS"),
+    2: .same(proto: "FAILED"),
+  ]
+}
+
+extension Hazkey_Commands_ResultData.CandidatesResult: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = Hazkey_Commands_ResultData.protoMessageName + ".CandidatesResult"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "status"),
+    2: .same(proto: "candidates"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -920,6 +1014,7 @@ extension Hazkey_Status: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementa
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
       case 1: try { try decoder.decodeSingularEnumField(value: &self.status) }()
+      case 2: try { try decoder.decodeRepeatedMessageField(value: &self.candidates) }()
       default: break
       }
     }
@@ -929,56 +1024,22 @@ extension Hazkey_Status: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementa
     if self.status != .unused {
       try visitor.visitSingularEnumField(value: self.status, fieldNumber: 1)
     }
+    if !self.candidates.isEmpty {
+      try visitor.visitRepeatedMessageField(value: self.candidates, fieldNumber: 2)
+    }
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: Hazkey_Status, rhs: Hazkey_Status) -> Bool {
+  static func ==(lhs: Hazkey_Commands_ResultData.CandidatesResult, rhs: Hazkey_Commands_ResultData.CandidatesResult) -> Bool {
     if lhs.status != rhs.status {return false}
+    if lhs.candidates != rhs.candidates {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
 }
 
-extension Hazkey_SimpleResult: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = _protobuf_package + ".SimpleResult"
-  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "status"),
-    2: .same(proto: "result"),
-  ]
-
-  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let fieldNumber = try decoder.nextFieldNumber() {
-      // The use of inline closures is to circumvent an issue where the compiler
-      // allocates stack space for every case branch when no optimizations are
-      // enabled. https://github.com/apple/swift-protobuf/issues/1034
-      switch fieldNumber {
-      case 1: try { try decoder.decodeSingularEnumField(value: &self.status) }()
-      case 2: try { try decoder.decodeSingularStringField(value: &self.result) }()
-      default: break
-      }
-    }
-  }
-
-  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if self.status != .unused {
-      try visitor.visitSingularEnumField(value: self.status, fieldNumber: 1)
-    }
-    if !self.result.isEmpty {
-      try visitor.visitSingularStringField(value: self.result, fieldNumber: 2)
-    }
-    try unknownFields.traverse(visitor: &visitor)
-  }
-
-  static func ==(lhs: Hazkey_SimpleResult, rhs: Hazkey_SimpleResult) -> Bool {
-    if lhs.status != rhs.status {return false}
-    if lhs.result != rhs.result {return false}
-    if lhs.unknownFields != rhs.unknownFields {return false}
-    return true
-  }
-}
-
-extension Hazkey_Candidate: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = _protobuf_package + ".Candidate"
+extension Hazkey_Commands_ResultData.CandidatesResult.Candidate: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = Hazkey_Commands_ResultData.CandidatesResult.protoMessageName + ".Candidate"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "text"),
     2: .standard(proto: "sub_hiragana"),
@@ -1007,41 +1068,9 @@ extension Hazkey_Candidate: SwiftProtobuf.Message, SwiftProtobuf._MessageImpleme
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: Hazkey_Candidate, rhs: Hazkey_Candidate) -> Bool {
+  static func ==(lhs: Hazkey_Commands_ResultData.CandidatesResult.Candidate, rhs: Hazkey_Commands_ResultData.CandidatesResult.Candidate) -> Bool {
     if lhs.text != rhs.text {return false}
     if lhs.subHiragana != rhs.subHiragana {return false}
-    if lhs.unknownFields != rhs.unknownFields {return false}
-    return true
-  }
-}
-
-extension Hazkey_CandidatesResult: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = _protobuf_package + ".CandidatesResult"
-  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "candidates"),
-  ]
-
-  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let fieldNumber = try decoder.nextFieldNumber() {
-      // The use of inline closures is to circumvent an issue where the compiler
-      // allocates stack space for every case branch when no optimizations are
-      // enabled. https://github.com/apple/swift-protobuf/issues/1034
-      switch fieldNumber {
-      case 1: try { try decoder.decodeRepeatedMessageField(value: &self.candidates) }()
-      default: break
-      }
-    }
-  }
-
-  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if !self.candidates.isEmpty {
-      try visitor.visitRepeatedMessageField(value: self.candidates, fieldNumber: 1)
-    }
-    try unknownFields.traverse(visitor: &visitor)
-  }
-
-  static func ==(lhs: Hazkey_CandidatesResult, rhs: Hazkey_CandidatesResult) -> Bool {
-    if lhs.candidates != rhs.candidates {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
