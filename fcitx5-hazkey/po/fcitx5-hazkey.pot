@@ -1,15 +1,24 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fcitx5-hazkey\n"
-"Report-Msgid-Bugs-To: hazkey-dev@example.com\n"
+"Report-Msgid-Bugs-To: invalid-address@example.com\n"
 "POT-Creation-Date: 2024-04-13 20:00-0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: Japanese\n"
+"Language: LANG\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "Hazkey"
-msgstr "Hazkey"
+msgstr ""
+
+msgid "Halfwidth"
+msgstr ""
+
+msgid "Fullwidth"
+msgstr ""
+
+msgid "[Alt+[Num] to Select]"
+msgstr ""

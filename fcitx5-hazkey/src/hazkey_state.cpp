@@ -68,7 +68,7 @@ void HazkeyState::keyEvent(KeyEvent &event) {
         noPreeditKeyEvent(event);
     } else if (composingText != "" && candidateList != nullptr &&
                !candidateList->focused()) {
-        setAuxDownText(std::string("[Alt+数字で選択]"));
+        setAuxDownText(std::string("[Alt+[Num] to Select]"));
     } else {
         setAuxDownText(std::nullopt);
     }
@@ -446,7 +446,7 @@ void HazkeyState::showPreeditCandidateList() {
     auto newCandidateList = std::dynamic_pointer_cast<HazkeyCandidateList>(
         ic_->inputPanel().candidateList());
     newCandidateList->setPageSize(PredictCandidateListSize);
-    setAuxDownText(std::string("[Alt+数字で選択]"));
+    setAuxDownText(std::string("[Alt+[Num] to Select]"));
 }
 
 /// Candidate Cursor
