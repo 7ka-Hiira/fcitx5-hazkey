@@ -85,11 +85,18 @@ while true {
   currentClientFd = clientFd
 
   while true {
-    var buf = [UInt8](repeating: 0, count: 65536)
+    // read
+    var readLenBuf = [UInt8](repeating: 0, count: 4)
+    _ = read(clientFd, &readLenBuf, 4)
+    let readLen = UInt32(bigEndian: readLenBuf.withUnsafeBytes { $0.load(as: UInt32.self) })
+    var buf = [UInt8](repeating: 0, count: Int(readLen))
     let readBytes = read(clientFd, &buf, buf.count)
     if readBytes <= 0 { break }
     let query = Data(buf[0..<readBytes])
+    // write
     let response = processProto(data: query)
+    var writeLen = UInt32(response.count).bigEndian
+    _ = withUnsafeBytes(of: &writeLen) { write(clientFd, $0.baseAddress, 4) }
     _ = response.withUnsafeBytes { write(clientFd, $0.baseAddress, response.count) }
   }
   close(clientFd)

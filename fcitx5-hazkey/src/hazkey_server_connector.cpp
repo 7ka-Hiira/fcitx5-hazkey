@@ -1,10 +1,13 @@
 #include "hazkey_server_connector.h"
 
+#include <arpa/inet.h>
 #include <fcitx-utils/log.h>
 #include <sys/socket.h>
 #include <sys/un.h>
 
 #include <chrono>
+#include <cstddef>
+#include <cstdint>
 #include <cstdlib>
 #include <iostream>
 #include <mutex>
@@ -86,6 +89,15 @@ std::optional<hazkey::commands::ResultData> HazkeyServerConnector::transact(
         return std::nullopt;
     }
 
+    // write
+    uint32_t writeLen = htonl(msg.size());
+    if (write(sock_, &writeLen, 4) < 0) {
+        FCITX_INFO()
+            << "Failed to communicate with server while writing data length. "
+               "restarting hazkey_server...";
+        connect_server();
+        return std::nullopt;
+    }
     if (write(sock_, msg.c_str(), msg.size()) < 0) {
         FCITX_INFO() << "Failed to communicate with server while writing data. "
                         "restarting hazkey_server...";
@@ -93,16 +105,24 @@ std::optional<hazkey::commands::ResultData> HazkeyServerConnector::transact(
         return std::nullopt;
     }
 
-    // TODO: Iterating when data is longer than buffer
-    char buf[65536];
-    int len = read(sock_, buf, sizeof(buf));
-    if (len < 0) {
-        FCITX_INFO() << "Failed to communicate with server while reading data";
+    // read
+    uint32_t readLenBuf;
+    if (read(sock_, &readLenBuf, 4) != 4) {
+        FCITX_ERROR() << "Failed to read buffer length.";
         return std::nullopt;
     }
-
+    uint32_t readLen = ntohl(readLenBuf);
+    std::vector<char> buf(readLen);
+    size_t totalReadLen = 0;
+    while (totalReadLen < readLen) {
+        ssize_t n =
+            read(sock_, buf.data() + totalReadLen, readLen - totalReadLen);
+        if (n <= 0) { /* handle error */
+        }
+        totalReadLen += n;
+    }
     hazkey::commands::ResultData resp;
-    if (!resp.ParseFromArray(buf, len)) {
+    if (!resp.ParseFromArray(buf.data(), readLen)) {
         FCITX_ERROR() << "Failed to parse received JSON\n";
         return std::nullopt;
     }
@@ -302,7 +322,7 @@ void HazkeyServerConnector::completePrefix(int index) {
     hazkey::commands::QueryData query;
     query.set_function(
         hazkey::commands::QueryData_KkcApi::QueryData_KkcApi_COMPLETE_PREFIX);
-    auto props =query.mutable_complete_prefix();
+    auto props = query.mutable_complete_prefix();
     props->set_index(index);
     auto response = transact(query);
     if (response == std::nullopt) {
