@@ -213,7 +213,6 @@ import SwiftUtils
   } else {
     composingText.value.insertAtCursorPosition(String(inputUnicode), inputStyle: .direct)
   }
-  print(composingText.value) // debug
   return Hazkey_Commands_ResultData.with { $0.status = .success }
 }
 

@@ -5,13 +5,11 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 
-#include <nlohmann/json.hpp>
 #include <string>
 #include <vector>
 
 #include "env_config.h"
-
-using json = nlohmann::json;
+#include "protocol/hazkey_server.pb.h"
 
 class HazkeyServerConnector {
    public:
@@ -24,9 +22,9 @@ class HazkeyServerConnector {
 
     void connect_server();
 
-    json transact(const json& send_data);
+    std::optional<hazkey::commands::ResultData> transact(const hazkey::commands::QueryData& send_data);
 
-    std::string getComposingText(std::string type);
+    std::string getComposingText(hazkey::commands::QueryData::GetComposingStringProps::CharType type);
 
     std::string getComposingHiraganaWithCursor();
 
