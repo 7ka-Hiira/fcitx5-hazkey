@@ -132,7 +132,10 @@ public class KkcConfig {
       "Dictionary", isDirectory: true),
     memoryDirectoryURL: userDataDir,
     sharedContainerURL: userDataDir,
-    textReplacer: .empty,
+    textReplacer: .init(emojiDataProvider: {
+      systemResourceDir.appendingPathComponent(
+        "emoji_all_E16.0.txt", isDirectory: false)
+    }),
     specialCandidateProviders: nil,
     zenzaiMode: zenzaiEnabled
       ? .on(

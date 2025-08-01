@@ -4,3 +4,6 @@
 [submodule "hazkey_server/llama.cpp"]
 	path = hazkey_server/llama.cpp
 	url = https://github.com/azooKey/llama.cpp.git
+[submodule "azooKey_emoji_dictionary_storage"]
+	path = azooKey_emoji_dictionary_storage
+	url = https://github.com/azooKey/azooKey_emoji_dictionary_storage

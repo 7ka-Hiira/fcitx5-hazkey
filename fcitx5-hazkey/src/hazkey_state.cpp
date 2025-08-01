@@ -286,9 +286,7 @@ void HazkeyState::candidateCompleteHandler(
         //     candidateList->getCandidate(candidateList->cursorIndex())
         //         .correspondingCount();
         engine_->server().completePrefix(candidateList->globalCursorIndex());
-        FCITX_INFO() << "DEBUGA";
         showNonPredictCandidateList();
-        FCITX_INFO() << "DEBUGB";
     } else {
         reset();
     }

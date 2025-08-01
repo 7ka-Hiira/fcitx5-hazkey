@@ -79,5 +79,9 @@ endif()
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/azooKey_dictionary_storage/Dictionary
         DESTINATION ${CMAKE_INSTALL_DATADIR}/hazkey)
 
+# install emoji dictionary
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/azooKey_emoji_dictionary_storage/EmojiDictionary/emoji_all_E16.0.txt
+        DESTINATION ${CMAKE_INSTALL_DATADIR}/hazkey)
+
 # build fcitx5-hazkey
 add_subdirectory(fcitx5-hazkey)
