@@ -22,9 +22,9 @@ signal(SIGINT) { _ in
 
 if FileManager.default.fileExists(atPath: pidFilePath) {
   if let pidString = try? String(contentsOfFile: pidFilePath, encoding: .utf8),
-    let pid = Int32(pidString.trimmingCharacters(in: .whitespacesAndNewlines))
+    let pid = pid_t(pidString)
   {
-    if kill(pid, 0) != 0 {
+    if kill(pid, 0) == 0 {
       print("Another hazkey_server is already running.")
       exit(0)
     }
