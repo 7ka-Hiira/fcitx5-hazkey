@@ -1,5 +1,7 @@
 #include "hazkey_engine.h"
 
+#include <fcitx-utils/macros.h>
+
 #include "hazkey_server_connector.h"
 #include "hazkey_state.h"
 
@@ -12,7 +14,7 @@ HazkeyEngine::HazkeyEngine(Instance *instance)
     server_ = HazkeyServerConnector();
 
     instance->inputContextManager().registerProperty("hazkeyState", &factory_);
-    reloadConfig();
+    // reloadConfig();
 }
 
 void HazkeyEngine::keyEvent([[maybe_unused]] const InputMethodEntry &entry,
@@ -25,9 +27,9 @@ void HazkeyEngine::keyEvent([[maybe_unused]] const InputMethodEntry &entry,
     inputContext->updateUserInterface(UserInterfaceComponent::InputPanel);
 }
 
-void HazkeyEngine::activate(const InputMethodEntry &entry,
+void HazkeyEngine::activate([[maybe_unused]] const InputMethodEntry &entry,
                             InputContextEvent &event) {
-    FCITX_UNUSED(entry);
+    FCITX_DEBUG() << &entry;
     FCITX_DEBUG() << "HazkeyEngine activate";
     auto inputContext = event.inputContext();
     auto state = inputContext->propertyFor(&factory_);
@@ -36,9 +38,8 @@ void HazkeyEngine::activate(const InputMethodEntry &entry,
     inputContext->updateUserInterface(UserInterfaceComponent::InputPanel);
 }
 
-void HazkeyEngine::deactivate(const InputMethodEntry &entry,
+void HazkeyEngine::deactivate([[maybe_unused]] const InputMethodEntry &entry,
                               InputContextEvent &event) {
-    FCITX_UNUSED(entry);
     FCITX_DEBUG() << "HazkeyEngine deactivate";
     auto inputContext = event.inputContext();
     auto state = inputContext->propertyFor(&factory_);
@@ -54,15 +55,17 @@ void HazkeyEngine::setConfig(const RawConfig &config) {
 }
 
 void HazkeyEngine::reloadConfig() {
-    readAsIni(config_, "conf/hazkey.conf");
-    server_.setServerConfig(
-        *config().zenzaiEnabled, *config().zenzaiInferenceLimit,
-        static_cast<int>(*config().numberStyle),
-        static_cast<int>(*config().symbolStyle),
-        static_cast<int>(*config().periodStyle),
-        static_cast<int>(*config().commaStyle),
-        static_cast<int>(*config().spaceStyle),
-        static_cast<int>(*config().diacriticStyle), *config().zenzaiProfile);
+    // server directly read config
+    //
+    // readAsIni(config_, "conf/hazkey.conf");
+    // server_.setServerConfig(
+    //     *config().zenzaiEnabled, *config().zenzaiInferenceLimit,
+    //     static_cast<int>(*config().numberStyle),
+    //     static_cast<int>(*config().symbolStyle),
+    //     static_cast<int>(*config().periodStyle),
+    //     static_cast<int>(*config().commaStyle),
+    //     static_cast<int>(*config().spaceStyle),
+    //     static_cast<int>(*config().diacriticStyle), *config().zenzaiProfile);
 }
 
 FCITX_ADDON_FACTORY(HazkeyEngineFactory);

@@ -2,13 +2,12 @@
 #define _FCITX5_HAZKEY_HAZKEY_CONFIG_H_
 
 #include <fcitx-config/configuration.h>
+#include <fcitx-config/enum.h>
 #include <fcitx-utils/i18n.h>
 #include <fcitx-utils/library.h>
 #include <fcitx/menu.h>
 
 #include <string>
-
-#include "hazkey_state.h"
 
 namespace fcitx {
 

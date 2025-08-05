@@ -49,7 +49,6 @@ class HazkeyEngine : public InputMethodEngineV2 {
 
 class HazkeyEngineFactory : public AddonFactory {
     AddonInstance *create(AddonManager *manager) override {
-        FCITX_UNUSED(manager);
         return new HazkeyEngine(manager->instance());
     }
 };

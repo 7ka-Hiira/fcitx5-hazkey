@@ -2,14 +2,16 @@
 
 #include <arpa/inet.h>
 #include <fcitx-utils/log.h>
+#include <fcntl.h>
 #include <sys/socket.h>
 #include <sys/un.h>
+#include <sys/wait.h>
+#include <unistd.h>
 
 #include <chrono>
 #include <cstddef>
 #include <cstdint>
 #include <cstdlib>
-#include <iostream>
 #include <mutex>
 #include <nlohmann/json.hpp>
 #include <optional>
@@ -34,54 +36,156 @@ std::string HazkeyServerConnector::get_socket_path() {
 
 void HazkeyServerConnector::start_hazkey_server() {
     pid_t pid = fork();
-    FCITX_DEBUG() << "PID: " << pid;
+    FCITX_DEBUG() << "First fork PID: " << pid;
     if (pid == 0) {
-        // TODO: use build time var & environment var
-        execl(INSTALL_LIBDIR "/hazkey/hazkey_server", "hazkey_server",
-              (char*)NULL);
-        FCITX_ERROR() << "Failed to start hazkey_server\n";
-        exit(1);
+        // First child process
+        pid_t second_pid = fork();
+        FCITX_DEBUG() << "Second fork PID: " << second_pid;
+
+        if (second_pid == 0) {
+            // Grandchild process - this will run the actual server
+            execl(INSTALL_LIBDIR "/hazkey/hazkey_server", "hazkey_server",
+                  (char*)NULL);
+            FCITX_ERROR() << "Failed to start hazkey_server\n";
+            exit(1);
+        } else if (second_pid < 0) {
+            FCITX_ERROR() << "Failed to create second fork\n";
+            exit(1);
+        } else {
+            exit(0);
+        }
     } else if (pid < 0) {
-        std::cerr << "Failed to start hazkey_server\n";
+        FCITX_ERROR() << "Failed to start hazkey_server (first fork failed)\n";
+    } else {
+        int status;
+        waitpid(pid, &status, 0);
+        FCITX_DEBUG() << "First child exited with status: " << status;
     }
+}
+
+bool writeAll(int fd, const void* data, size_t len) {
+    size_t sent = 0;
+    while (sent < len) {
+        ssize_t n = write(fd, (const char*)data + sent, len - sent);
+        if (n < 0) {
+            if (errno == EAGAIN || errno == EWOULDBLOCK) {
+                fd_set wfds;
+                FD_ZERO(&wfds);
+                FD_SET(fd, &wfds);
+                timeval tv = {2, 0};  // 2sec timeout
+                int r = select(fd + 1, NULL, &wfds, NULL, &tv);
+                if (r <= 0) {
+                    FCITX_ERROR() << "write timeout";
+                    return false;
+                }
+                continue;
+            }
+            return false;
+        }
+        sent += n;
+    }
+    return true;
+}
+
+bool readAll(int fd, void* data, size_t len) {
+    size_t recved = 0;
+    while (recved < len) {
+        ssize_t n = read(fd, (char*)data + recved, len - recved);
+        if (n < 0) {
+            if (errno == EAGAIN || errno == EWOULDBLOCK) {
+                fd_set rfds;
+                FD_ZERO(&rfds);
+                FD_SET(fd, &rfds);
+                timeval tv = {10, 0};  // 2sec timeout
+                int r = select(fd + 1, &rfds, NULL, NULL, &tv);
+                if (r <= 0) {
+                    FCITX_ERROR() << "read timeout";
+                    return false;
+                }
+                continue;
+            }
+            return false;
+        }
+        if (n == 0) return false;  // closed
+        recved += n;
+    }
+    return true;
 }
 
 void HazkeyServerConnector::connect_server() {
     std::string socket_path = get_socket_path();
 
-    start_hazkey_server();
-
-    sock_ = socket(AF_UNIX, SOCK_STREAM, 0);
-    if (sock_ < 0) {
-        FCITX_DEBUG() << "Failed to connect hazkey_server";
-        return;
-    }
-
-    sockaddr_un addr{};
-    addr.sun_family = AF_UNIX;
-    strncpy(addr.sun_path, socket_path.c_str(), sizeof(addr.sun_path) - 1);
-
-    constexpr int MAX_RETRIES = 10;
+    constexpr int MAX_RETRIES = 3;
     constexpr int RETRY_INTERVAL_MS = 100;
     int attempt;
     for (attempt = 0; attempt < MAX_RETRIES; ++attempt) {
-        std::this_thread::sleep_for(
-            std::chrono::milliseconds(RETRY_INTERVAL_MS));
-        if (connect(sock_, (sockaddr*)&addr, sizeof(addr)) == 0) {
+        sock_ = socket(AF_UNIX, SOCK_STREAM, 0);
+        if (sock_ < 0) {
+            FCITX_ERROR() << "Failed to create socket";
+            std::this_thread::sleep_for(
+                std::chrono::milliseconds(RETRY_INTERVAL_MS));
+            continue;
+        }
+        int fcntlRes =
+            fcntl(sock_, F_SETFL, fcntl(sock_, F_GETFL, 0) | O_NONBLOCK);
+        if (fcntlRes != 0) {
+            FCITX_ERROR() << "fcntl() failed";
+            close(sock_);
+            sock_ = -1;
+            std::this_thread::sleep_for(
+                std::chrono::milliseconds(RETRY_INTERVAL_MS));
+            continue;
+        }
+
+        sockaddr_un addr{};
+        addr.sun_family = AF_UNIX;
+        strncpy(addr.sun_path, socket_path.c_str(), sizeof(addr.sun_path) - 1);
+
+        int ret = connect(sock_, (sockaddr*)&addr, sizeof(addr));
+        if (ret == 0) {
+            // Connected
             return;
+        }
+        if (errno == EINPROGRESS) {
+            fd_set wfds;
+            FD_ZERO(&wfds);
+            FD_SET(sock_, &wfds);
+            timeval tv = {2, 0};
+            int sel = select(sock_ + 1, NULL, &wfds, NULL, &tv);
+            if (sel > 0 && FD_ISSET(sock_, &wfds)) {
+                int so_error = 0;
+                socklen_t len = sizeof(so_error);
+                getsockopt(sock_, SOL_SOCKET, SO_ERROR, &so_error, &len);
+                if (so_error == 0) {
+                    // Connected
+                    return;
+                }
+            }
         }
         FCITX_INFO() << "Failed to connect hazkey_server, retry "
                      << (attempt + 1);
+        close(sock_);
+        sock_ = -1;
+        start_hazkey_server();
+        std::this_thread::sleep_for(
+            std::chrono::milliseconds(RETRY_INTERVAL_MS));
     }
-    close(sock_);
     FCITX_INFO() << "Failed to connect hazkey_server after " << MAX_RETRIES
                  << " attempts";
-    return;
 }
 
 std::optional<hazkey::commands::ResultData> HazkeyServerConnector::transact(
     const hazkey::commands::QueryData& send_data) {
     std::lock_guard<std::mutex> lock(transact_mutex);
+
+    if (sock_ == -1) {
+        FCITX_INFO() << "Socket not connected, attempting to connect...";
+        connect_server();
+        if (sock_ == -1) {
+            FCITX_ERROR() << "Failed to establish connection to hazkey_server";
+            return std::nullopt;
+        }
+    }
 
     std::string msg;
     if (!send_data.SerializeToString(&msg)) {
@@ -89,43 +193,66 @@ std::optional<hazkey::commands::ResultData> HazkeyServerConnector::transact(
         return std::nullopt;
     }
 
-    // write
+    FCITX_DEBUG() << "Sending message of size: " << msg.size();
+
+    // write length
     uint32_t writeLen = htonl(msg.size());
-    if (write(sock_, &writeLen, 4) < 0) {
+    if (!writeAll(sock_, &writeLen, 4)) {
         FCITX_INFO()
             << "Failed to communicate with server while writing data length. "
                "restarting hazkey_server...";
-        connect_server();
-        return std::nullopt;
-    }
-    if (write(sock_, msg.c_str(), msg.size()) < 0) {
-        FCITX_INFO() << "Failed to communicate with server while writing data. "
-                        "restarting hazkey_server...";
+        close(sock_);
+        sock_ = -1;
         connect_server();
         return std::nullopt;
     }
 
-    // read
-    uint32_t readLenBuf;
-    if (read(sock_, &readLenBuf, 4) != 4) {
-        FCITX_ERROR() << "Failed to read buffer length.";
+    // write data
+    if (!writeAll(sock_, msg.c_str(), msg.size())) {
+        FCITX_INFO() << "Failed to communicate with server while writing data. "
+                        "restarting hazkey_server...";
+        close(sock_);
+        sock_ = -1;
+        connect_server();
         return std::nullopt;
     }
-    uint32_t readLen = ntohl(readLenBuf);
-    std::vector<char> buf(readLen);
-    size_t totalReadLen = 0;
-    while (totalReadLen < readLen) {
-        ssize_t n =
-            read(sock_, buf.data() + totalReadLen, readLen - totalReadLen);
-        if (n <= 0) { /* handle error */
-        }
-        totalReadLen += n;
+
+    FCITX_DEBUG() << "Successfully wrote data to server";
+
+    // read response length
+    uint32_t readLenBuf;
+    if (!readAll(sock_, &readLenBuf, 4)) {
+        FCITX_ERROR() << "Failed to read buffer length.";
+        close(sock_);
+        sock_ = -1;
+        return std::nullopt;
     }
+
+    uint32_t readLen = ntohl(readLenBuf);
+    FCITX_DEBUG() << "Server response size: " << readLen;
+
+    if (readLen > 2 * 1024 * 1024) {  // 2MB limit
+        FCITX_ERROR() << "Response size too large: " << readLen;
+        close(sock_);
+        sock_ = -1;
+        return std::nullopt;
+    }
+
+    std::vector<char> buf(readLen);
+    if (!readAll(sock_, buf.data(), readLen)) {
+        FCITX_ERROR() << "Failed to read response body.";
+        close(sock_);
+        sock_ = -1;
+        return std::nullopt;
+    }
+
     hazkey::commands::ResultData resp;
     if (!resp.ParseFromArray(buf.data(), readLen)) {
-        FCITX_ERROR() << "Failed to parse received JSON\n";
+        FCITX_ERROR() << "Failed to parse received data\n";
         return std::nullopt;
     }
+
+    FCITX_DEBUG() << "Successfully received and parsed response";
     return resp;
 }
 

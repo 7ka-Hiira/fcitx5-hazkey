@@ -16,15 +16,21 @@ class HazkeyServerConnector {
     // HazkeyServerConnector();
     // ~HazkeyServerConnector();
 
-    HazkeyServerConnector() { connect_server(); }
+    HazkeyServerConnector() {
+        // start_hazkey_server();
+        connect_server();
+        FCITX_DEBUG() << "Connector initialized";
+    };
 
     std::string get_socket_path();
 
     void connect_server();
 
-    std::optional<hazkey::commands::ResultData> transact(const hazkey::commands::QueryData& send_data);
+    std::optional<hazkey::commands::ResultData> transact(
+        const hazkey::commands::QueryData& send_data);
 
-    std::string getComposingText(hazkey::commands::QueryData::GetComposingStringProps::CharType type);
+    std::string getComposingText(
+        hazkey::commands::QueryData::GetComposingStringProps::CharType type);
 
     std::string getComposingHiraganaWithCursor();
 
@@ -56,8 +62,9 @@ class HazkeyServerConnector {
     std::vector<CandidateData> getCandidates(bool isPredictMode, int n_best);
 
    private:
+    bool retry_connect();
     void start_hazkey_server();
-    int sock_;
+    int sock_ = -1;
     std::string socket_path_;
 };
 
