@@ -1,4 +1,5 @@
 #include "hazkey_state.h"
+
 #include <fcitx-utils/log.h>
 
 #include <string>
@@ -57,7 +58,8 @@ void HazkeyState::keyEvent(KeyEvent &event) {
     auto candidateList = std::dynamic_pointer_cast<HazkeyCandidateList>(
         event.inputContext()->inputPanel().candidateList());
 
-    std::string composingText = engine_->server().getComposingText(hazkey::commands::QueryData_GetComposingStringProps_CharType_HIRAGANA);
+    std::string composingText = engine_->server().getComposingText(
+        hazkey::commands::QueryData_GetComposingStringProps_CharType_HIRAGANA);
 
     if (candidateList != nullptr && candidateList->focused() &&
         !event.isRelease()) {
@@ -68,7 +70,7 @@ void HazkeyState::keyEvent(KeyEvent &event) {
         noPreeditKeyEvent(event);
     } else if (composingText != "" && candidateList != nullptr &&
                !candidateList->focused()) {
-        setAuxDownText( std::string(_("[Alt+Number to Select]")));
+        setAuxDownText(std::string(_("[Alt+Number to Select]")));
     } else {
         setAuxDownText(std::nullopt);
     }
@@ -327,17 +329,17 @@ void HazkeyState::functionKeyHandler(KeyEvent &event) {
             directCharactorConversion(ConversionMode::RawFullwidth);
             break;
         case FcitxKey_F10:
-        case FcitxKey_Muhenkan:
             directCharactorConversion(ConversionMode::RawHalfwidth);
             break;
         default:
-            break;
+            FCITX_ERROR() << "functionKeyHandler: unhandled key code: " << keysym;
+            return;
     }
     isDirectConversionMode_ = true;
 }
 
 void HazkeyState::directCharactorConversion(ConversionMode mode) {
-    std::string converted = nullptr;
+    std::string converted;
     // TODO: cleanup
     switch (mode) {
         case ConversionMode::Hiragana:
@@ -365,8 +367,6 @@ void HazkeyState::directCharactorConversion(ConversionMode mode) {
                 hazkey::commands::
                     QueryData_GetComposingStringProps_CharType_ALPHABET_HALF);
             break;
-        default:
-            return;
     }
     preedit_.setSimplePreeditHighlighted(converted);
     auto candidateList = ic_->inputPanel().candidateList();

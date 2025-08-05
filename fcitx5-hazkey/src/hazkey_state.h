@@ -28,7 +28,6 @@ class HazkeyState : public InputContextProperty {
 
    private:
     enum class ConversionMode {
-        None,
         Hiragana,
         KatakanaFullwidth,
         KatakanaHalfwidth,
