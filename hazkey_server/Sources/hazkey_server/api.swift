@@ -240,7 +240,8 @@ import SwiftUtils
 }
 
 @MainActor func getComposingString(
-  charType: Hazkey_Commands_QueryData.GetComposingStringProps.CharType
+  charType: Hazkey_Commands_QueryData.GetComposingStringProps.CharType,
+  currentPreedit: String
 ) -> Hazkey_Commands_ResultData {
   let result: String
   switch charType {

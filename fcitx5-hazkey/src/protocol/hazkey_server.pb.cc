@@ -201,6 +201,9 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 inline constexpr QueryData_GetComposingStringProps::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
+        current_preedit_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
         char_type_{static_cast< ::hazkey::commands::QueryData_GetComposingStringProps_CharType >(0)} {}
 
 template <typename>
@@ -387,8 +390,10 @@ const ::uint32_t
         0,
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::hazkey::commands::QueryData_GetComposingStringProps, _impl_._has_bits_),
-        4, // hasbit index offset
+        5, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::hazkey::commands::QueryData_GetComposingStringProps, _impl_.char_type_),
+        PROTOBUF_FIELD_OFFSET(::hazkey::commands::QueryData_GetComposingStringProps, _impl_.current_preedit_),
+        1,
         0,
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::hazkey::commands::QueryData_GetCandidatesProps, _impl_._has_bits_),
@@ -455,11 +460,11 @@ static const ::_pbi::MigrationSchema
         {35, sizeof(::hazkey::commands::QueryData_MoveCursorProps)},
         {40, sizeof(::hazkey::commands::QueryData_PrefixCompleteProps)},
         {45, sizeof(::hazkey::commands::QueryData_GetComposingStringProps)},
-        {50, sizeof(::hazkey::commands::QueryData_GetCandidatesProps)},
-        {57, sizeof(::hazkey::commands::QueryData)},
-        {78, sizeof(::hazkey::commands::ResultData_CandidatesResult_Candidate)},
-        {85, sizeof(::hazkey::commands::ResultData_CandidatesResult)},
-        {92, sizeof(::hazkey::commands::ResultData)},
+        {52, sizeof(::hazkey::commands::QueryData_GetCandidatesProps)},
+        {59, sizeof(::hazkey::commands::QueryData)},
+        {80, sizeof(::hazkey::commands::ResultData_CandidatesResult_Candidate)},
+        {87, sizeof(::hazkey::commands::ResultData_CandidatesResult)},
+        {94, sizeof(::hazkey::commands::ResultData)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::hazkey::commands::_QueryData_SetConfigProps_default_instance_._instance,
@@ -476,8 +481,8 @@ static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
 };
 const char descriptor_table_protodef_hazkey_5fserver_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
-    "\n\023hazkey_server.proto\022\017hazkey.commands\"\355"
-    "\013\n\tQueryData\0223\n\010function\030\001 \001(\0162!.hazkey."
+    "\n\023hazkey_server.proto\022\017hazkey.commands\"\206"
+    "\014\n\tQueryData\0223\n\010function\030\001 \001(\0162!.hazkey."
     "commands.QueryData.KkcApi\022\?\n\nset_config\030"
     "\002 \001(\0132).hazkey.commands.QueryData.SetCon"
     "figPropsH\000\022J\n\020set_left_context\030\003 \001(\0132..h"
@@ -501,37 +506,38 @@ const char descriptor_table_protodef_hazkey_5fserver_2eproto[] ABSL_ATTRIBUTE_SE
     "\030\001 \001(\t\022\016\n\006anchor\030\002 \001(\005\0321\n\016InputTextProps"
     "\022\014\n\004text\030\001 \001(\t\022\021\n\tis_direct\030\002 \001(\010\032!\n\017Mov"
     "eCursorProps\022\016\n\006offset\030\001 \001(\005\032$\n\023PrefixCo"
-    "mpleteProps\022\r\n\005index\030\001 \001(\005\032\317\001\n\027GetCompos"
+    "mpleteProps\022\r\n\005index\030\001 \001(\005\032\350\001\n\027GetCompos"
     "ingStringProps\022N\n\tchar_type\030\001 \001(\0162;.hazk"
     "ey.commands.QueryData.GetComposingString"
-    "Props.CharType\"d\n\010CharType\022\014\n\010HIRAGANA\020\000"
-    "\022\021\n\rKATAKANA_FULL\020\001\022\021\n\rKATAKANA_HALF\020\002\022\021"
-    "\n\rALPHABET_FULL\020\003\022\021\n\rALPHABET_HALF\020\004\032=\n\022"
-    "GetCandidatesProps\022\027\n\017is_predict_mode\030\001 "
-    "\001(\010\022\016\n\006n_best\030\002 \001(\005\"\367\001\n\006KkcApi\022\016\n\nSET_CO"
-    "NFIG\020\000\022\024\n\020SET_LEFT_CONTEXT\020\001\022\"\n\036CREATE_C"
-    "OMPOSING_TEXT_INSTANCE\020\002\022\016\n\nINPUT_TEXT\020\003"
-    "\022\017\n\013DELETE_LEFT\020\004\022\020\n\014DELETE_RIGHT\020\005\022\023\n\017C"
-    "OMPLETE_PREFIX\020\006\022\017\n\013MOVE_CURSOR\020\007\022\034\n\030GET"
-    "_HIRAGANA_WITH_CURSOR\020\010\022\030\n\024GET_COMPOSING"
-    "_STRING\020\t\022\022\n\016GET_CANDIDATES\020\nB\007\n\005props\"\252"
-    "\003\n\nResultData\0226\n\006status\030\001 \001(\0162&.hazkey.c"
-    "ommands.ResultData.StatusCode\022\024\n\014errorMe"
-    "ssage\030\002 \001(\t\022\020\n\006result\030\003 \001(\tH\000\022B\n\ncandida"
-    "tes\030\004 \001(\0132,.hazkey.commands.ResultData.C"
-    "andidatesResultH\000\032\307\001\n\020CandidatesResult\0226"
+    "Props.CharType\022\027\n\017current_preedit\030\002 \001(\t\""
+    "d\n\010CharType\022\014\n\010HIRAGANA\020\000\022\021\n\rKATAKANA_FU"
+    "LL\020\001\022\021\n\rKATAKANA_HALF\020\002\022\021\n\rALPHABET_FULL"
+    "\020\003\022\021\n\rALPHABET_HALF\020\004\032=\n\022GetCandidatesPr"
+    "ops\022\027\n\017is_predict_mode\030\001 \001(\010\022\016\n\006n_best\030\002"
+    " \001(\005\"\367\001\n\006KkcApi\022\016\n\nSET_CONFIG\020\000\022\024\n\020SET_L"
+    "EFT_CONTEXT\020\001\022\"\n\036CREATE_COMPOSING_TEXT_I"
+    "NSTANCE\020\002\022\016\n\nINPUT_TEXT\020\003\022\017\n\013DELETE_LEFT"
+    "\020\004\022\020\n\014DELETE_RIGHT\020\005\022\023\n\017COMPLETE_PREFIX\020"
+    "\006\022\017\n\013MOVE_CURSOR\020\007\022\034\n\030GET_HIRAGANA_WITH_"
+    "CURSOR\020\010\022\030\n\024GET_COMPOSING_STRING\020\t\022\022\n\016GE"
+    "T_CANDIDATES\020\nB\007\n\005props\"\252\003\n\nResultData\0226"
     "\n\006status\030\001 \001(\0162&.hazkey.commands.ResultD"
-    "ata.StatusCode\022J\n\ncandidates\030\002 \003(\01326.haz"
+    "ata.StatusCode\022\024\n\014errorMessage\030\002 \001(\t\022\020\n\006"
+    "result\030\003 \001(\tH\000\022B\n\ncandidates\030\004 \001(\0132,.haz"
     "key.commands.ResultData.CandidatesResult"
-    ".Candidate\032/\n\tCandidate\022\014\n\004text\030\001 \001(\t\022\024\n"
-    "\014sub_hiragana\030\002 \001(\t\"%\n\nStatusCode\022\013\n\007SUC"
-    "CESS\020\000\022\n\n\006FAILED\020\001B\007\n\005propsb\006proto3"
+    "H\000\032\307\001\n\020CandidatesResult\0226\n\006status\030\001 \001(\0162"
+    "&.hazkey.commands.ResultData.StatusCode\022"
+    "J\n\ncandidates\030\002 \003(\01326.hazkey.commands.Re"
+    "sultData.CandidatesResult.Candidate\032/\n\tC"
+    "andidate\022\014\n\004text\030\001 \001(\t\022\024\n\014sub_hiragana\030\002"
+    " \001(\t\"%\n\nStatusCode\022\013\n\007SUCCESS\020\000\022\n\n\006FAILE"
+    "D\020\001B\007\n\005propsb\006proto3"
 };
 static ::absl::once_flag descriptor_table_hazkey_5fserver_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_hazkey_5fserver_2eproto = {
     false,
     false,
-    1995,
+    2020,
     descriptor_table_protodef_hazkey_5fserver_2eproto,
     "hazkey_server.proto",
     &descriptor_table_hazkey_5fserver_2eproto_once,
@@ -2158,21 +2164,36 @@ QueryData_GetComposingStringProps::QueryData_GetComposingStringProps(::google::p
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:hazkey.commands.QueryData.GetComposingStringProps)
 }
+PROTOBUF_NDEBUG_INLINE QueryData_GetComposingStringProps::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+    const ::hazkey::commands::QueryData_GetComposingStringProps& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0},
+        current_preedit_(arena, from.current_preedit_) {}
+
 QueryData_GetComposingStringProps::QueryData_GetComposingStringProps(
-    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const QueryData_GetComposingStringProps& from)
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
+    const QueryData_GetComposingStringProps& from)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, QueryData_GetComposingStringProps_class_data_.base()),
+    : ::google::protobuf::Message(arena, QueryData_GetComposingStringProps_class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena),
+    : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
-      _impl_(from._impl_) {
+  QueryData_GetComposingStringProps* const _this = this;
+  (void)_this;
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  _impl_.char_type_ = from._impl_.char_type_;
+
+  // @@protoc_insertion_point(copy_constructor:hazkey.commands.QueryData.GetComposingStringProps)
 }
 PROTOBUF_NDEBUG_INLINE QueryData_GetComposingStringProps::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
-      : _cached_size_{0} {}
+      : _cached_size_{0},
+        current_preedit_(arena) {}
 
 inline void QueryData_GetComposingStringProps::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
@@ -2186,6 +2207,7 @@ inline void QueryData_GetComposingStringProps::SharedDtor(MessageLite& self) {
   QueryData_GetComposingStringProps& this_ = static_cast<QueryData_GetComposingStringProps&>(self);
   this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.current_preedit_.Destroy();
   this_._impl_.~Impl_();
 }
 
@@ -2195,7 +2217,7 @@ inline void* PROTOBUF_NONNULL QueryData_GetComposingStringProps::PlacementNew_(
   return ::new (mem) QueryData_GetComposingStringProps(arena);
 }
 constexpr auto QueryData_GetComposingStringProps::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(QueryData_GetComposingStringProps),
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(QueryData_GetComposingStringProps),
                                             alignof(QueryData_GetComposingStringProps));
 }
 constexpr auto QueryData_GetComposingStringProps::InternalGenerateClassData_() {
@@ -2232,16 +2254,16 @@ QueryData_GetComposingStringProps::GetClassData() const {
   return QueryData_GetComposingStringProps_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 0, 0, 2>
+const ::_pbi::TcParseTable<1, 2, 0, 73, 2>
 QueryData_GetComposingStringProps::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(QueryData_GetComposingStringProps, _impl_._has_bits_),
     0, // no _extensions_
-    1, 0,  // max_field_number, fast_idx_mask
+    2, 8,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967294,  // skipmap
+    4294967292,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    1,  // num_field_entries
+    2,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     QueryData_GetComposingStringProps_class_data_.base(),
@@ -2251,18 +2273,27 @@ QueryData_GetComposingStringProps::_table_ = {
     ::_pbi::TcParser::GetTable<::hazkey::commands::QueryData_GetComposingStringProps>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
+    // string current_preedit = 2;
+    {::_pbi::TcParser::FastUS1,
+     {18, 0, 0, PROTOBUF_FIELD_OFFSET(QueryData_GetComposingStringProps, _impl_.current_preedit_)}},
     // .hazkey.commands.QueryData.GetComposingStringProps.CharType char_type = 1;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(QueryData_GetComposingStringProps, _impl_.char_type_), 0>(),
-     {8, 0, 0, PROTOBUF_FIELD_OFFSET(QueryData_GetComposingStringProps, _impl_.char_type_)}},
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(QueryData_GetComposingStringProps, _impl_.char_type_), 1>(),
+     {8, 1, 0, PROTOBUF_FIELD_OFFSET(QueryData_GetComposingStringProps, _impl_.char_type_)}},
   }}, {{
     65535, 65535
   }}, {{
     // .hazkey.commands.QueryData.GetComposingStringProps.CharType char_type = 1;
-    {PROTOBUF_FIELD_OFFSET(QueryData_GetComposingStringProps, _impl_.char_type_), _Internal::kHasBitsOffset + 0, 0,
+    {PROTOBUF_FIELD_OFFSET(QueryData_GetComposingStringProps, _impl_.char_type_), _Internal::kHasBitsOffset + 1, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kOpenEnum)},
+    // string current_preedit = 2;
+    {PROTOBUF_FIELD_OFFSET(QueryData_GetComposingStringProps, _impl_.current_preedit_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
   // no aux_entries
   {{
+    "\61\0\17\0\0\0\0\0"
+    "hazkey.commands.QueryData.GetComposingStringProps"
+    "current_preedit"
   }},
 };
 PROTOBUF_NOINLINE void QueryData_GetComposingStringProps::Clear() {
@@ -2272,6 +2303,10 @@ PROTOBUF_NOINLINE void QueryData_GetComposingStringProps::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  cached_has_bits = _impl_._has_bits_[0];
+  if ((cached_has_bits & 0x00000001u) != 0) {
+    _impl_.current_preedit_.ClearNonDefaultToEmpty();
+  }
   _impl_.char_type_ = 0;
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
@@ -2293,11 +2328,21 @@ PROTOBUF_NOINLINE void QueryData_GetComposingStringProps::Clear() {
   (void)cached_has_bits;
 
   // .hazkey.commands.QueryData.GetComposingStringProps.CharType char_type = 1;
-  if ((this_._impl_._has_bits_[0] & 0x00000001u) != 0) {
+  if ((this_._impl_._has_bits_[0] & 0x00000002u) != 0) {
     if (this_._internal_char_type() != 0) {
       target = stream->EnsureSpace(target);
       target = ::_pbi::WireFormatLite::WriteEnumToArray(
           1, this_._internal_char_type(), target);
+    }
+  }
+
+  // string current_preedit = 2;
+  if ((this_._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    if (!this_._internal_current_preedit().empty()) {
+      const ::std::string& _s = this_._internal_current_preedit();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "hazkey.commands.QueryData.GetComposingStringProps.current_preedit");
+      target = stream->WriteStringMaybeAliased(2, _s, target);
     }
   }
 
@@ -2324,10 +2369,18 @@ PROTOBUF_NOINLINE void QueryData_GetComposingStringProps::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void)cached_has_bits;
 
-   {
-    // .hazkey.commands.QueryData.GetComposingStringProps.CharType char_type = 1;
-    cached_has_bits = this_._impl_._has_bits_[0];
+  ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+  cached_has_bits = this_._impl_._has_bits_[0];
+  if ((cached_has_bits & 0x00000003u) != 0) {
+    // string current_preedit = 2;
     if ((cached_has_bits & 0x00000001u) != 0) {
+      if (!this_._internal_current_preedit().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_current_preedit());
+      }
+    }
+    // .hazkey.commands.QueryData.GetComposingStringProps.CharType char_type = 1;
+    if ((cached_has_bits & 0x00000002u) != 0) {
       if (this_._internal_char_type() != 0) {
         total_size += 1 +
                       ::_pbi::WireFormatLite::EnumSize(this_._internal_char_type());
@@ -2347,9 +2400,20 @@ void QueryData_GetComposingStringProps::MergeImpl(::google::protobuf::MessageLit
   (void) cached_has_bits;
 
   cached_has_bits = from._impl_._has_bits_[0];
-  if ((cached_has_bits & 0x00000001u) != 0) {
-    if (from._internal_char_type() != 0) {
-      _this->_impl_.char_type_ = from._impl_.char_type_;
+  if ((cached_has_bits & 0x00000003u) != 0) {
+    if ((cached_has_bits & 0x00000001u) != 0) {
+      if (!from._internal_current_preedit().empty()) {
+        _this->_internal_set_current_preedit(from._internal_current_preedit());
+      } else {
+        if (_this->_impl_.current_preedit_.IsDefault()) {
+          _this->_internal_set_current_preedit("");
+        }
+      }
+    }
+    if ((cached_has_bits & 0x00000002u) != 0) {
+      if (from._internal_char_type() != 0) {
+        _this->_impl_.char_type_ = from._impl_.char_type_;
+      }
     }
   }
   _this->_impl_._has_bits_[0] |= cached_has_bits;
@@ -2366,8 +2430,11 @@ void QueryData_GetComposingStringProps::CopyFrom(const QueryData_GetComposingStr
 
 void QueryData_GetComposingStringProps::InternalSwap(QueryData_GetComposingStringProps* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
   using ::std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.current_preedit_, &other->_impl_.current_preedit_, arena);
   swap(_impl_.char_type_, other->_impl_.char_type_);
 }
 

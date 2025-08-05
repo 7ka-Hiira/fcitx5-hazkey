@@ -255,6 +255,8 @@ struct Hazkey_Commands_QueryData: Sendable {
 
     var charType: Hazkey_Commands_QueryData.GetComposingStringProps.CharType = .hiragana
 
+    var currentPreedit: String = String()
+
     var unknownFields = SwiftProtobuf.UnknownStorage()
 
     enum CharType: SwiftProtobuf.Enum, Swift.CaseIterable {
@@ -833,6 +835,7 @@ extension Hazkey_Commands_QueryData.GetComposingStringProps: SwiftProtobuf.Messa
   static let protoMessageName: String = Hazkey_Commands_QueryData.protoMessageName + ".GetComposingStringProps"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .standard(proto: "char_type"),
+    2: .standard(proto: "current_preedit"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -842,6 +845,7 @@ extension Hazkey_Commands_QueryData.GetComposingStringProps: SwiftProtobuf.Messa
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
       case 1: try { try decoder.decodeSingularEnumField(value: &self.charType) }()
+      case 2: try { try decoder.decodeSingularStringField(value: &self.currentPreedit) }()
       default: break
       }
     }
@@ -851,11 +855,15 @@ extension Hazkey_Commands_QueryData.GetComposingStringProps: SwiftProtobuf.Messa
     if self.charType != .hiragana {
       try visitor.visitSingularEnumField(value: self.charType, fieldNumber: 1)
     }
+    if !self.currentPreedit.isEmpty {
+      try visitor.visitSingularStringField(value: self.currentPreedit, fieldNumber: 2)
+    }
     try unknownFields.traverse(visitor: &visitor)
   }
 
   static func ==(lhs: Hazkey_Commands_QueryData.GetComposingStringProps, rhs: Hazkey_Commands_QueryData.GetComposingStringProps) -> Bool {
     if lhs.charType != rhs.charType {return false}
+    if lhs.currentPreedit != rhs.currentPreedit {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }

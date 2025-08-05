@@ -257,12 +257,13 @@ std::optional<hazkey::commands::ResultData> HazkeyServerConnector::transact(
 }
 
 std::string HazkeyServerConnector::getComposingText(
-    hazkey::commands::QueryData::GetComposingStringProps::CharType type) {
+    hazkey::commands::QueryData::GetComposingStringProps::CharType type, std::string currentPreedit) {
     hazkey::commands::QueryData query;
     query.set_function(hazkey::commands::QueryData_KkcApi::
                            QueryData_KkcApi_GET_COMPOSING_STRING);
     auto props = query.mutable_get_composing_string();
     props->set_char_type(type);
+    props->set_current_preedit(currentPreedit);
     auto response = transact(query);
     if (response == std::nullopt) {
         FCITX_ERROR() << "Error while transacting getComposingText().";

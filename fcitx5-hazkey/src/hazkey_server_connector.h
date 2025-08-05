@@ -30,7 +30,8 @@ class HazkeyServerConnector {
         const hazkey::commands::QueryData& send_data);
 
     std::string getComposingText(
-        hazkey::commands::QueryData::GetComposingStringProps::CharType type);
+        hazkey::commands::QueryData::GetComposingStringProps::CharType type,
+        std::string currentPreedit);
 
     std::string getComposingHiraganaWithCursor();
 

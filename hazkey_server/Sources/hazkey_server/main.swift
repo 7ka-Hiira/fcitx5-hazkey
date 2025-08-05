@@ -126,7 +126,6 @@ guard listen(fd, 10) != -1 else {
 var config: KkcConfig
 var composingText: ComposingTextBox = ComposingTextBox()
 var currentCandidateList: [Candidate]? = nil
-var currentPreedit: String = ""
 
 // FIXME: read config file
 let _ = setConfig(

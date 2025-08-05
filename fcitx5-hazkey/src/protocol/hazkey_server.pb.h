@@ -1718,8 +1718,24 @@ class QueryData_GetComposingStringProps final : public ::google::protobuf::Messa
 
   // accessors -------------------------------------------------------
   enum : int {
+    kCurrentPreeditFieldNumber = 2,
     kCharTypeFieldNumber = 1,
   };
+  // string current_preedit = 2;
+  void clear_current_preedit() ;
+  const ::std::string& current_preedit() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_current_preedit(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_current_preedit();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_current_preedit();
+  void set_allocated_current_preedit(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_current_preedit() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_current_preedit(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_current_preedit();
+
+  public:
   // .hazkey.commands.QueryData.GetComposingStringProps.CharType char_type = 1;
   void clear_char_type() ;
   ::hazkey::commands::QueryData_GetComposingStringProps_CharType char_type() const;
@@ -1734,8 +1750,8 @@ class QueryData_GetComposingStringProps final : public ::google::protobuf::Messa
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<0, 1,
-                                   0, 0,
+  static const ::google::protobuf::internal::TcParseTable<1, 2,
+                                   0, 73,
                                    2>
       _table_;
 
@@ -1756,6 +1772,7 @@ class QueryData_GetComposingStringProps final : public ::google::protobuf::Messa
         const QueryData_GetComposingStringProps& from_msg);
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::internal::ArenaStringPtr current_preedit_;
     int char_type_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -3386,7 +3403,7 @@ inline void QueryData_PrefixCompleteProps::_internal_set_index(::int32_t value) 
 inline void QueryData_GetComposingStringProps::clear_char_type() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.char_type_ = 0;
-  _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_._has_bits_[0] &= ~0x00000002u;
 }
 inline ::hazkey::commands::QueryData_GetComposingStringProps_CharType QueryData_GetComposingStringProps::char_type() const {
   // @@protoc_insertion_point(field_get:hazkey.commands.QueryData.GetComposingStringProps.char_type)
@@ -3394,7 +3411,7 @@ inline ::hazkey::commands::QueryData_GetComposingStringProps_CharType QueryData_
 }
 inline void QueryData_GetComposingStringProps::set_char_type(::hazkey::commands::QueryData_GetComposingStringProps_CharType value) {
   _internal_set_char_type(value);
-  _impl_._has_bits_[0] |= 0x00000001u;
+  _impl_._has_bits_[0] |= 0x00000002u;
   // @@protoc_insertion_point(field_set:hazkey.commands.QueryData.GetComposingStringProps.char_type)
 }
 inline ::hazkey::commands::QueryData_GetComposingStringProps_CharType QueryData_GetComposingStringProps::_internal_char_type() const {
@@ -3404,6 +3421,71 @@ inline ::hazkey::commands::QueryData_GetComposingStringProps_CharType QueryData_
 inline void QueryData_GetComposingStringProps::_internal_set_char_type(::hazkey::commands::QueryData_GetComposingStringProps_CharType value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.char_type_ = value;
+}
+
+// string current_preedit = 2;
+inline void QueryData_GetComposingStringProps::clear_current_preedit() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.current_preedit_.ClearToEmpty();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::std::string& QueryData_GetComposingStringProps::current_preedit() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:hazkey.commands.QueryData.GetComposingStringProps.current_preedit)
+  return _internal_current_preedit();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void QueryData_GetComposingStringProps::set_current_preedit(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000001u;
+  _impl_.current_preedit_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:hazkey.commands.QueryData.GetComposingStringProps.current_preedit)
+}
+inline ::std::string* PROTOBUF_NONNULL QueryData_GetComposingStringProps::mutable_current_preedit()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::std::string* _s = _internal_mutable_current_preedit();
+  // @@protoc_insertion_point(field_mutable:hazkey.commands.QueryData.GetComposingStringProps.current_preedit)
+  return _s;
+}
+inline const ::std::string& QueryData_GetComposingStringProps::_internal_current_preedit() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.current_preedit_.Get();
+}
+inline void QueryData_GetComposingStringProps::_internal_set_current_preedit(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000001u;
+  _impl_.current_preedit_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL QueryData_GetComposingStringProps::_internal_mutable_current_preedit() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000001u;
+  return _impl_.current_preedit_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE QueryData_GetComposingStringProps::release_current_preedit() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:hazkey.commands.QueryData.GetComposingStringProps.current_preedit)
+  if ((_impl_._has_bits_[0] & 0x00000001u) == 0) {
+    return nullptr;
+  }
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  auto* released = _impl_.current_preedit_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.current_preedit_.Set("", GetArena());
+  }
+  return released;
+}
+inline void QueryData_GetComposingStringProps::set_allocated_current_preedit(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  _impl_.current_preedit_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.current_preedit_.IsDefault()) {
+    _impl_.current_preedit_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:hazkey.commands.QueryData.GetComposingStringProps.current_preedit)
 }
 
 // -------------------------------------------------------------------

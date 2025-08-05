@@ -59,7 +59,8 @@ void HazkeyState::keyEvent(KeyEvent &event) {
         event.inputContext()->inputPanel().candidateList());
 
     std::string composingText = engine_->server().getComposingText(
-        hazkey::commands::QueryData_GetComposingStringProps_CharType_HIRAGANA);
+        hazkey::commands::QueryData_GetComposingStringProps_CharType_HIRAGANA,
+        preedit_.text());
 
     if (candidateList != nullptr && candidateList->focused() &&
         !event.isRelease()) {
@@ -332,7 +333,8 @@ void HazkeyState::functionKeyHandler(KeyEvent &event) {
             directCharactorConversion(ConversionMode::RawHalfwidth);
             break;
         default:
-            FCITX_ERROR() << "functionKeyHandler: unhandled key code: " << keysym;
+            FCITX_ERROR() << "functionKeyHandler: unhandled key code: "
+                          << keysym;
             return;
     }
     isDirectConversionMode_ = true;
@@ -345,27 +347,32 @@ void HazkeyState::directCharactorConversion(ConversionMode mode) {
         case ConversionMode::Hiragana:
             converted = engine_->server().getComposingText(
                 hazkey::commands::
-                    QueryData_GetComposingStringProps_CharType_HIRAGANA);
+                    QueryData_GetComposingStringProps_CharType_HIRAGANA,
+                preedit_.text());
             break;
         case ConversionMode::KatakanaFullwidth:
             converted = engine_->server().getComposingText(
                 hazkey::commands::
-                    QueryData_GetComposingStringProps_CharType_KATAKANA_FULL);
+                    QueryData_GetComposingStringProps_CharType_KATAKANA_FULL,
+                preedit_.text());
             break;
         case ConversionMode::KatakanaHalfwidth:
             converted = engine_->server().getComposingText(
                 hazkey::commands::
-                    QueryData_GetComposingStringProps_CharType_KATAKANA_HALF);
+                    QueryData_GetComposingStringProps_CharType_KATAKANA_HALF,
+                preedit_.text());
             break;
         case ConversionMode::RawFullwidth:
             converted = engine_->server().getComposingText(
                 hazkey::commands::
-                    QueryData_GetComposingStringProps_CharType_ALPHABET_FULL);
+                    QueryData_GetComposingStringProps_CharType_ALPHABET_FULL,
+                preedit_.text());
             break;
         case ConversionMode::RawHalfwidth:
             converted = engine_->server().getComposingText(
                 hazkey::commands::
-                    QueryData_GetComposingStringProps_CharType_ALPHABET_HALF);
+                    QueryData_GetComposingStringProps_CharType_ALPHABET_HALF,
+                preedit_.text());
             break;
     }
     preedit_.setSimplePreeditHighlighted(converted);
@@ -403,7 +410,8 @@ void HazkeyState::showCandidateList(showCandidateMode mode, int nBest) {
     // preedit conversion is disabled or conversion result is not
     // available show hiragana preedit
     auto hiragana = engine_->server().getComposingText(
-        hazkey::commands::QueryData_GetComposingStringProps_CharType_HIRAGANA);
+        hazkey::commands::QueryData_GetComposingStringProps_CharType_HIRAGANA,
+        preedit_.text());
     preedit_.setSimplePreedit(hiragana);
     // }
 
@@ -429,7 +437,8 @@ void HazkeyState::showNonPredictCandidateList() {
 
 void HazkeyState::showPreeditCandidateList() {
     auto hiragana = engine_->server().getComposingText(
-        hazkey::commands::QueryData_GetComposingStringProps_CharType_HIRAGANA);
+        hazkey::commands::QueryData_GetComposingStringProps_CharType_HIRAGANA,
+        preedit_.text());
     if (hiragana == "" || hiragana.length() == 0) {
         reset();
         return;

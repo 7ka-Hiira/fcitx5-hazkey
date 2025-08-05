@@ -52,7 +52,7 @@ func processProto(data: Data) -> Data {
     response = getHiraganaWithCursor()
   case .getComposingString:
     let props = query.getComposingString
-    response = getComposingString(charType: props.charType)
+    response = getComposingString(charType: props.charType, currentPreedit: props.currentPreedit)
   case .getCandidates:
     let props = query.getCandidates
     response = getCandidates(isPredictMode: props.isPredictMode, nBest: Int(props.nBest))

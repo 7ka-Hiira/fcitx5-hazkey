@@ -57,6 +57,7 @@ message QueryData {
         }
 
         CharType char_type = 1;
+        string current_preedit = 2;
     }
 
     message GetCandidatesProps {
