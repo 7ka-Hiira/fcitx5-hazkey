@@ -4,7 +4,7 @@ import SwiftUtils
 
 /// Config
 
-// TODO: 数字に変換せず直接スタイルをわたす
+// TODO: 設定ファイルを直接読み込む
 @MainActor func setConfig(
   zenzaiEnabled: Bool, zenzaiInferLimit: Int,
   numberFullwidth: Int, symbolFullwidth: Int, periodStyleIndex: Int,
@@ -36,14 +36,6 @@ import SwiftUtils
     profileText: profileText)
 
   kkcConfig = config
-
-  // preload model to avoid delay on first input
-  // if zenzaiEnabled {
-    // var dummyComposingText = ComposingText()
-    // dummyComposingText.insertAtCursorPosition("a", inputStyle: .direct)
-    // let _ = config.converter.requestCandidates(
-    //   dummyComposingText, options: config.convertOptions)
-  // }
 
   return Hazkey_Commands_ResultData.with {
     $0.status = .success

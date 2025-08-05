@@ -32,6 +32,7 @@ let package = Package(
           package: "AzooKeyKanaKanjiConverter"),
         .product(name: "SwiftProtobuf", package: "swift-protobuf"),
       ],
+      resources: [.copy("Protocol/hazkey_server.proto")],
       swiftSettings: [.interoperabilityMode(.Cxx)],
       linkerSettings: [
         .unsafeFlags([
