@@ -40,8 +40,6 @@ class HazkeyState : public InputContextProperty {
         NonPredictWithFirstPreedit,
     };
 
-    // get new composing text
-    void newComposingText();
     // update surrounding text
     void updateSurroundingText();
 

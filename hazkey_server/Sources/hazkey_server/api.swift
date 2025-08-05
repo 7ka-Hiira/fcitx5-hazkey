@@ -45,11 +45,13 @@ import SwiftUtils
 ) -> Hazkey_Commands_ResultData {
   let leftContext = String(surroundingText.prefix(anchorIndex))
 
-  config.convertOptions.zenzaiMode = .on(
-    weight: config.zenzaiWeight,
-    personalizationMode: nil,  // TODO: handle this correctly
-    versionDependentMode: .v3(.init(profile: config.profileText, leftSideContext: leftContext))
-  )
+  if .off != config.convertOptions.zenzaiMode {
+      config.convertOptions.zenzaiMode = .on(
+          weight: config.zenzaiWeight,
+          personalizationMode: nil, // TODO: handle this correctly
+          versionDependentMode: .v3(.init(profile: config.profileText, leftSideContext: leftContext))
+      )
+  }
 
   return Hazkey_Commands_ResultData.with {
     $0.status = .success

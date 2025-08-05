@@ -107,7 +107,7 @@ void HazkeyState::noPreeditKeyEvent(KeyEvent &event) {
             break;
         default:
             if (isInputableEvent(event)) {
-                // newComposingText();
+                updateSurroundingText();
                 engine_->server().addToComposingText(Key::keySymToUTF8(keysym),
                                                      isDirectInputMode_);
                 showPreeditCandidateList();
@@ -190,7 +190,6 @@ void HazkeyState::preeditKeyEvent(
                 if (isDirectConversionMode_) {
                     preedit_.commitPreedit();
                     reset();
-                    // newComposingText();
                 }
                 engine_->server().addToComposingText(Key::keySymToUTF8(keysym),
                                                      isDirectInputMode_);
@@ -268,7 +267,6 @@ void HazkeyState::candidateKeyEvent(
             } else if (isInputableEvent(event)) {
                 preedit_.commitPreedit();
                 reset();
-                // newComposingText();
                 engine_->server().addToComposingText(Key::keySymToUTF8(keysym),
                                                      isDirectInputMode_);
                 showPreeditCandidateList();
@@ -296,20 +294,13 @@ void HazkeyState::candidateCompleteHandler(
     }
 }
 
-void HazkeyState::newComposingText() {
-    FCITX_DEBUG() << "DISABLED: newComposingText()";
-    // engine_->server().createComposingTextInstance();
-    // updateSurroundingText();
-}
-
 void HazkeyState::updateSurroundingText() {
-    if (engine_->config().zenzaiSurroundingTextEnabled.value()) {
-        if (ic_->capabilityFlags().test(CapabilityFlag::SurroundingText) &&
-            ic_->surroundingText().isValid()) {
-            auto &surroundingText = ic_->surroundingText();
-            engine_->server().setLeftContext(surroundingText.text(),
-                                             surroundingText.anchor());
-        }
+    if (engine_->config().zenzaiSurroundingTextEnabled.value() &&
+        ic_->capabilityFlags().test(CapabilityFlag::SurroundingText) &&
+        ic_->surroundingText().isValid()) {
+        auto &surroundingText = ic_->surroundingText();
+        engine_->server().setLeftContext(surroundingText.text(),
+                                         surroundingText.anchor());
     } else {
         engine_->server().setLeftContext("", 0);
     }

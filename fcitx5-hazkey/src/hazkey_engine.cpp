@@ -55,9 +55,9 @@ void HazkeyEngine::setConfig(const RawConfig &config) {
 }
 
 void HazkeyEngine::reloadConfig() {
-    // server directly read config
+    // server will directly read config
     //
-    // readAsIni(config_, "conf/hazkey.conf");
+    readAsIni(config_, "conf/hazkey.conf");
     // server_.setServerConfig(
     //     *config().zenzaiEnabled, *config().zenzaiInferenceLimit,
     //     static_cast<int>(*config().numberStyle),
