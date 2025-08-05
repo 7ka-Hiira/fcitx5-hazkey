@@ -123,7 +123,7 @@ guard listen(fd, 10) != -1 else {
 }
 
 // FIXME: unglobalize these vars
-var kkcConfig: KkcConfig? = nil
+var config: KkcConfig
 var composingText: ComposingTextBox = ComposingTextBox()
 var currentCandidateList: [Candidate]? = nil
 var currentPreedit: String = ""
@@ -132,6 +132,7 @@ var currentPreedit: String = ""
 let _ = setConfig(
   zenzaiEnabled: false, zenzaiInferLimit: 1, numberFullwidth: 0, symbolFullwidth: 0,
   periodStyleIndex: 0, commaStyleIndex: 0, spaceFullwidth: 0, tenCombining: 0, profileText: "")
+
 // set non-blocking
 var flags = fcntl(fd, F_GETFL, 0)
 let fcntlRes = fcntl(fd, F_SETFL, flags | O_NONBLOCK)

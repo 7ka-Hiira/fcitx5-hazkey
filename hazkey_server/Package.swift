@@ -50,7 +50,7 @@ let package = Package(
       ],
     ),
     .testTarget(
-      name: "hazkey_server",
+      name: "hazkey_server_tests",
       dependencies: [
         "hazkey_server",
         .product(name: "SwiftProtobuf", package: "swift-protobuf"),

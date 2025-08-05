@@ -29,13 +29,11 @@ import SwiftUtils
     ? .halfwidth
     : tenCombining == 2 ? .combining : .fullwidth
 
-  let config = genDefaultConfig(
+  config = genDefaultConfig(
     zenzaiEnabled: zenzaiEnabled, zenzaiInferLimit: zenzaiInferLimit, numberStyle: numberStyle,
     symbolStyle: symbolStyle, periodStyle: periodStyle,
     commaStyle: commaStyle, spaceStyle: spaceStyle, diacriticStyle: diacriticStyle,
     profileText: profileText)
-
-  kkcConfig = config
 
   return Hazkey_Commands_ResultData.with {
     $0.status = .success
@@ -45,13 +43,6 @@ import SwiftUtils
 @MainActor func setLeftContext(
   surroundingText: String, anchorIndex: Int
 ) -> Hazkey_Commands_ResultData {
-  guard let config = kkcConfig, config.convertOptions.zenzaiMode != .off else {
-    return Hazkey_Commands_ResultData.with {
-      $0.status = .failed
-      $0.errorMessage = "config not found."
-    }
-  }
-
   let leftContext = String(surroundingText.prefix(anchorIndex))
 
   config.convertOptions.zenzaiMode = .on(
@@ -82,13 +73,6 @@ import SwiftUtils
     return Hazkey_Commands_ResultData.with {
       $0.status = .failed
       $0.errorMessage = "failed to get first unicode character"
-    }
-  }
-
-  guard let config = kkcConfig else {
-    return Hazkey_Commands_ResultData.with {
-      $0.status = .failed
-      $0.errorMessage = "config not found."
     }
   }
 
@@ -289,13 +273,6 @@ import SwiftUtils
 // TODO: return error message
 @MainActor
 func getCandidates(isPredictMode: Bool = false, nBest: Int = 9) -> Hazkey_Commands_ResultData {
-  guard let config = kkcConfig else {
-    return Hazkey_Commands_ResultData.with {
-      $0.status = .failed
-      $0.errorMessage = "config not found."
-    }
-  }
-
   var options = config.convertOptions
   options.N_best = nBest
   options.requireJapanesePrediction = isPredictMode

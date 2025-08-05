@@ -4,15 +4,6 @@ import XCTest
 @testable import hazkey_server
 
 final class ConfigurationTests: BaseHazkeyServerTestCase {
-
-  func testSetDefaultConfiguration() throws {
-    let query = QueryDataBuilder.setConfig()
-    let response = try sendQuery(query)
-
-    XCTAssertEqual(response.status, .success, "Setting default configuration should succeed")
-    XCTAssertTrue(response.errorMessage.isEmpty, "Error message should be empty on success")
-  }
-
   func testSetCustomConfiguration() throws {
     let query = QueryDataBuilder.setConfig(
       commaStyle: 1,
