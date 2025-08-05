@@ -58,6 +58,7 @@ class HazkeyServerConnector {
     struct CandidateData {
         std::string candidateText;
         std::string subHiragana;
+        bool liveCompat;
     };
 
     std::vector<CandidateData> getCandidates(bool isPredictMode, int n_best);

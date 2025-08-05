@@ -288,7 +288,9 @@ func getCandidates(isPredictMode: Bool = false, nBest: Int = 9) -> Hazkey_Comman
   var candidatesResult = Hazkey_Commands_ResultData.CandidatesResult()
   candidatesResult.candidates = converted.mainResults.map { c in
     var candidate = Hazkey_Commands_ResultData.CandidatesResult.Candidate()
+
     candidate.text = c.text
+
     if let idx = hiraganaPreedit.index(
       hiraganaPreedit.startIndex, offsetBy: c.rubyCount, limitedBy: hiraganaPreedit.endIndex)
     {
@@ -296,6 +298,8 @@ func getCandidates(isPredictMode: Bool = false, nBest: Int = 9) -> Hazkey_Comman
     } else {
       candidate.subHiragana = ""
     }
+
+    candidate.liveCompat = (c.rubyCount == hiraganaPreedit.count)
 
     return candidate
   }

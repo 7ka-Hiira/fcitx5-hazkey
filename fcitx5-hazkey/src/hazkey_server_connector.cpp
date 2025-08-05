@@ -257,7 +257,8 @@ std::optional<hazkey::commands::ResultData> HazkeyServerConnector::transact(
 }
 
 std::string HazkeyServerConnector::getComposingText(
-    hazkey::commands::QueryData::GetComposingStringProps::CharType type, std::string currentPreedit) {
+    hazkey::commands::QueryData::GetComposingStringProps::CharType type,
+    std::string currentPreedit) {
     hazkey::commands::QueryData query;
     query.set_function(hazkey::commands::QueryData_KkcApi::
                            QueryData_KkcApi_GET_COMPOSING_STRING);
@@ -490,7 +491,7 @@ HazkeyServerConnector::getCandidates(bool isPredictMode, int n_best) {
     std::vector<CandidateData> candidates;
     for (const auto& item : responseVal.candidates().candidates()) {
         CandidateData candidate =
-            CandidateData(item.text(), item.sub_hiragana());
+            CandidateData(item.text(), item.sub_hiragana(), item.live_compat());
         candidates.push_back(candidate);
     }
     return candidates;

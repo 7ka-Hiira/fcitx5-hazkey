@@ -414,6 +414,8 @@ struct Hazkey_Commands_ResultData: Sendable {
 
       var subHiragana: String = String()
 
+      var liveCompat: Bool = false
+
       var unknownFields = SwiftProtobuf.UnknownStorage()
 
       init() {}
@@ -1044,6 +1046,7 @@ extension Hazkey_Commands_ResultData.CandidatesResult.Candidate: SwiftProtobuf.M
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "text"),
     2: .standard(proto: "sub_hiragana"),
+    3: .standard(proto: "live_compat"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -1054,6 +1057,7 @@ extension Hazkey_Commands_ResultData.CandidatesResult.Candidate: SwiftProtobuf.M
       switch fieldNumber {
       case 1: try { try decoder.decodeSingularStringField(value: &self.text) }()
       case 2: try { try decoder.decodeSingularStringField(value: &self.subHiragana) }()
+      case 3: try { try decoder.decodeSingularBoolField(value: &self.liveCompat) }()
       default: break
       }
     }
@@ -1066,12 +1070,16 @@ extension Hazkey_Commands_ResultData.CandidatesResult.Candidate: SwiftProtobuf.M
     if !self.subHiragana.isEmpty {
       try visitor.visitSingularStringField(value: self.subHiragana, fieldNumber: 2)
     }
+    if self.liveCompat != false {
+      try visitor.visitSingularBoolField(value: self.liveCompat, fieldNumber: 3)
+    }
     try unknownFields.traverse(visitor: &visitor)
   }
 
   static func ==(lhs: Hazkey_Commands_ResultData.CandidatesResult.Candidate, rhs: Hazkey_Commands_ResultData.CandidatesResult.Candidate) -> Bool {
     if lhs.text != rhs.text {return false}
     if lhs.subHiragana != rhs.subHiragana {return false}
+    if lhs.liveCompat != rhs.liveCompat {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }

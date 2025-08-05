@@ -394,6 +394,7 @@ class ResultData_CandidatesResult_Candidate final : public ::google::protobuf::M
   enum : int {
     kTextFieldNumber = 1,
     kSubHiraganaFieldNumber = 2,
+    kLiveCompatFieldNumber = 3,
   };
   // string text = 1;
   void clear_text() ;
@@ -425,11 +426,21 @@ class ResultData_CandidatesResult_Candidate final : public ::google::protobuf::M
   ::std::string* PROTOBUF_NONNULL _internal_mutable_sub_hiragana();
 
   public:
+  // bool live_compat = 3;
+  void clear_live_compat() ;
+  bool live_compat() const;
+  void set_live_compat(bool value);
+
+  private:
+  bool _internal_live_compat() const;
+  void _internal_set_live_compat(bool value);
+
+  public:
   // @@protoc_insertion_point(class_scope:hazkey.commands.ResultData.CandidatesResult.Candidate)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<1, 2,
+  static const ::google::protobuf::internal::TcParseTable<2, 3,
                                    0, 78,
                                    2>
       _table_;
@@ -453,6 +464,7 @@ class ResultData_CandidatesResult_Candidate final : public ::google::protobuf::M
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::google::protobuf::internal::ArenaStringPtr text_;
     ::google::protobuf::internal::ArenaStringPtr sub_hiragana_;
+    bool live_compat_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -4278,6 +4290,30 @@ inline void ResultData_CandidatesResult_Candidate::set_allocated_sub_hiragana(::
   // @@protoc_insertion_point(field_set_allocated:hazkey.commands.ResultData.CandidatesResult.Candidate.sub_hiragana)
 }
 
+// bool live_compat = 3;
+inline void ResultData_CandidatesResult_Candidate::clear_live_compat() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.live_compat_ = false;
+  _impl_._has_bits_[0] &= ~0x00000004u;
+}
+inline bool ResultData_CandidatesResult_Candidate::live_compat() const {
+  // @@protoc_insertion_point(field_get:hazkey.commands.ResultData.CandidatesResult.Candidate.live_compat)
+  return _internal_live_compat();
+}
+inline void ResultData_CandidatesResult_Candidate::set_live_compat(bool value) {
+  _internal_set_live_compat(value);
+  _impl_._has_bits_[0] |= 0x00000004u;
+  // @@protoc_insertion_point(field_set:hazkey.commands.ResultData.CandidatesResult.Candidate.live_compat)
+}
+inline bool ResultData_CandidatesResult_Candidate::_internal_live_compat() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.live_compat_;
+}
+inline void ResultData_CandidatesResult_Candidate::_internal_set_live_compat(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.live_compat_ = value;
+}
+
 // -------------------------------------------------------------------
 
 // ResultData_CandidatesResult
@@ -4603,7 +4639,7 @@ inline ::hazkey::commands::ResultData_CandidatesResult* PROTOBUF_NONNULL ResultD
   if (props_case() != kCandidates) {
     clear_props();
     set_has_candidates();
-    _impl_.props_.candidates_ = 
+    _impl_.props_.candidates_ =
         ::google::protobuf::Message::DefaultConstruct<::hazkey::commands::ResultData_CandidatesResult>(GetArena());
   }
   return _impl_.props_.candidates_;

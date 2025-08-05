@@ -87,6 +87,7 @@ message ResultData {
         message Candidate {
             string text = 1;
             string sub_hiragana = 2;
+            bool live_compat = 3;
         }
 
         StatusCode status = 1;

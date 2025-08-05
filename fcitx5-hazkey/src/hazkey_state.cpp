@@ -2,6 +2,7 @@
 
 #include <fcitx-utils/log.h>
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -390,10 +391,18 @@ void HazkeyState::showCandidateList(showCandidateMode mode, int nBest) {
 
     bool enabledPredictMode = mode == showCandidateMode::PredictWithLivePreedit;
 
-    // auto preeditSegmentsPtr = std::make_shared<std::vector<std::string>>();
+    std::optional<std::string> livePreedit = std::nullopt;
 
     auto candidates =
         engine_->server().getCandidates(enabledPredictMode, nBest);
+
+    // search live text compatible candidate
+    for (auto candidate : candidates) {
+        if (candidate.liveCompat) {
+            livePreedit = candidate.candidateText;
+            break;
+        }
+    }
 
     auto candidateList =
         std::make_unique<HazkeyCandidateList>(std::move(candidates));
@@ -402,18 +411,19 @@ void HazkeyState::showCandidateList(showCandidateMode mode, int nBest) {
 
     ic_->inputPanel().reset();
 
-    // if (!preeditSegmentsPtr->empty()) {
-    //     // preedit conversion is enabled and conversion result is found
-    //     // show preedit conversion result
-    //     preedit_.setMultiSegmentPreedit(*preeditSegmentsPtr, -1);
-    // } else {
-    // preedit conversion is disabled or conversion result is not
-    // available show hiragana preedit
-    auto hiragana = engine_->server().getComposingText(
-        hazkey::commands::QueryData_GetComposingStringProps_CharType_HIRAGANA,
-        preedit_.text());
-    preedit_.setSimplePreedit(hiragana);
-    // }
+    if (livePreedit != std::nullopt) {
+        // preedit conversion is enabled and conversion result is found
+        // show preedit conversion result
+        preedit_.setSimplePreedit(livePreedit.value());
+    } else {
+        // preedit conversion is disabled or conversion result is not
+        // available show hiragana preedit
+        auto hiragana = engine_->server().getComposingText(
+            hazkey::commands::
+                QueryData_GetComposingStringProps_CharType_HIRAGANA,
+            preedit_.text());
+        preedit_.setSimplePreedit(hiragana);
+    }
 
     ic_->inputPanel().setCandidateList(std::move(candidateList));
 }
