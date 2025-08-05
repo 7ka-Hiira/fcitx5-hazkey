@@ -328,7 +328,7 @@ struct Hazkey_Commands_ResultData: Sendable {
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  var status: Hazkey_Commands_ResultData.StatusCode = .unused
+  var status: Hazkey_Commands_ResultData.StatusCode = .success
 
   var errorMessage: String = String()
 
@@ -360,38 +360,32 @@ struct Hazkey_Commands_ResultData: Sendable {
 
   enum StatusCode: SwiftProtobuf.Enum, Swift.CaseIterable {
     typealias RawValue = Int
-
-    /// must return a non-default value so that clients can recognize the response
-    case unused // = 0
-    case success // = 1
-    case failed // = 2
+    case success // = 0
+    case failed // = 1
     case UNRECOGNIZED(Int)
 
     init() {
-      self = .unused
+      self = .success
     }
 
     init?(rawValue: Int) {
       switch rawValue {
-      case 0: self = .unused
-      case 1: self = .success
-      case 2: self = .failed
+      case 0: self = .success
+      case 1: self = .failed
       default: self = .UNRECOGNIZED(rawValue)
       }
     }
 
     var rawValue: Int {
       switch self {
-      case .unused: return 0
-      case .success: return 1
-      case .failed: return 2
+      case .success: return 0
+      case .failed: return 1
       case .UNRECOGNIZED(let i): return i
       }
     }
 
     // The compiler won't synthesize support with the UNRECOGNIZED case.
     static let allCases: [Hazkey_Commands_ResultData.StatusCode] = [
-      .unused,
       .success,
       .failed,
     ]
@@ -403,7 +397,7 @@ struct Hazkey_Commands_ResultData: Sendable {
     // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
     // methods supported on all messages.
 
-    var status: Hazkey_Commands_ResultData.StatusCode = .unused
+    var status: Hazkey_Commands_ResultData.StatusCode = .success
 
     var candidates: [Hazkey_Commands_ResultData.CandidatesResult.Candidate] = []
 
@@ -963,7 +957,7 @@ extension Hazkey_Commands_ResultData: SwiftProtobuf.Message, SwiftProtobuf._Mess
     // allocates stack space for every if/case branch local when no optimizations
     // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
     // https://github.com/apple/swift-protobuf/issues/1182
-    if self.status != .unused {
+    if self.status != .success {
       try visitor.visitSingularEnumField(value: self.status, fieldNumber: 1)
     }
     if !self.errorMessage.isEmpty {
@@ -994,9 +988,8 @@ extension Hazkey_Commands_ResultData: SwiftProtobuf.Message, SwiftProtobuf._Mess
 
 extension Hazkey_Commands_ResultData.StatusCode: SwiftProtobuf._ProtoNameProviding {
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    0: .same(proto: "UNUSED"),
-    1: .same(proto: "SUCCESS"),
-    2: .same(proto: "FAILED"),
+    0: .same(proto: "SUCCESS"),
+    1: .same(proto: "FAILED"),
   ]
 }
 
@@ -1021,7 +1014,7 @@ extension Hazkey_Commands_ResultData.CandidatesResult: SwiftProtobuf.Message, Sw
   }
 
   func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if self.status != .unused {
+    if self.status != .success {
       try visitor.visitSingularEnumField(value: self.status, fieldNumber: 1)
     }
     if !self.candidates.isEmpty {

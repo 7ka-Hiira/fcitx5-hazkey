@@ -514,7 +514,7 @@ const char descriptor_table_protodef_hazkey_5fserver_2eproto[] ABSL_ATTRIBUTE_SE
     "\022\017\n\013DELETE_LEFT\020\004\022\020\n\014DELETE_RIGHT\020\005\022\023\n\017C"
     "OMPLETE_PREFIX\020\006\022\017\n\013MOVE_CURSOR\020\007\022\034\n\030GET"
     "_HIRAGANA_WITH_CURSOR\020\010\022\030\n\024GET_COMPOSING"
-    "_STRING\020\t\022\022\n\016GET_CANDIDATES\020\nB\007\n\005props\"\266"
+    "_STRING\020\t\022\022\n\016GET_CANDIDATES\020\nB\007\n\005props\"\252"
     "\003\n\nResultData\0226\n\006status\030\001 \001(\0162&.hazkey.c"
     "ommands.ResultData.StatusCode\022\024\n\014errorMe"
     "ssage\030\002 \001(\t\022\020\n\006result\030\003 \001(\tH\000\022B\n\ncandida"
@@ -524,15 +524,14 @@ const char descriptor_table_protodef_hazkey_5fserver_2eproto[] ABSL_ATTRIBUTE_SE
     "ata.StatusCode\022J\n\ncandidates\030\002 \003(\01326.haz"
     "key.commands.ResultData.CandidatesResult"
     ".Candidate\032/\n\tCandidate\022\014\n\004text\030\001 \001(\t\022\024\n"
-    "\014sub_hiragana\030\002 \001(\t\"1\n\nStatusCode\022\n\n\006UNU"
-    "SED\020\000\022\013\n\007SUCCESS\020\001\022\n\n\006FAILED\020\002B\007\n\005propsb"
-    "\006proto3"
+    "\014sub_hiragana\030\002 \001(\t\"%\n\nStatusCode\022\013\n\007SUC"
+    "CESS\020\000\022\n\n\006FAILED\020\001B\007\n\005propsb\006proto3"
 };
 static ::absl::once_flag descriptor_table_hazkey_5fserver_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_hazkey_5fserver_2eproto = {
     false,
     false,
-    2007,
+    1995,
     descriptor_table_protodef_hazkey_5fserver_2eproto,
     "hazkey_server.proto",
     &descriptor_table_hazkey_5fserver_2eproto_once,
@@ -564,7 +563,7 @@ const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL ResultData_StatusCode
   return file_level_enum_descriptors_hazkey_5fserver_2eproto[2];
 }
 PROTOBUF_CONSTINIT const uint32_t ResultData_StatusCode_internal_data_[] = {
-    196608u, 0u, };
+    131072u, 0u, };
 // ===================================================================
 
 class QueryData_SetConfigProps::_Internal {

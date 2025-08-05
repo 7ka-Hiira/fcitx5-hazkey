@@ -208,9 +208,8 @@ inline bool QueryData_KkcApi_Parse(
                                            value);
 }
 enum ResultData_StatusCode : int {
-  ResultData_StatusCode_UNUSED = 0,
-  ResultData_StatusCode_SUCCESS = 1,
-  ResultData_StatusCode_FAILED = 2,
+  ResultData_StatusCode_SUCCESS = 0,
+  ResultData_StatusCode_FAILED = 1,
   ResultData_StatusCode_ResultData_StatusCode_INT_MIN_SENTINEL_DO_NOT_USE_ =
       ::std::numeric_limits<::int32_t>::min(),
   ResultData_StatusCode_ResultData_StatusCode_INT_MAX_SENTINEL_DO_NOT_USE_ =
@@ -221,11 +220,11 @@ extern const uint32_t ResultData_StatusCode_internal_data_[];
 inline constexpr ResultData_StatusCode ResultData_StatusCode_StatusCode_MIN =
     static_cast<ResultData_StatusCode>(0);
 inline constexpr ResultData_StatusCode ResultData_StatusCode_StatusCode_MAX =
-    static_cast<ResultData_StatusCode>(2);
+    static_cast<ResultData_StatusCode>(1);
 inline bool ResultData_StatusCode_IsValid(int value) {
-  return 0 <= value && value <= 2;
+  return 0 <= value && value <= 1;
 }
-inline constexpr int ResultData_StatusCode_StatusCode_ARRAYSIZE = 2 + 1;
+inline constexpr int ResultData_StatusCode_StatusCode_ARRAYSIZE = 1 + 1;
 const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL ResultData_StatusCode_descriptor();
 template <typename T>
 const ::std::string& ResultData_StatusCode_Name(T value) {
@@ -236,7 +235,7 @@ const ::std::string& ResultData_StatusCode_Name(T value) {
 }
 template <>
 inline const ::std::string& ResultData_StatusCode_Name(ResultData_StatusCode value) {
-  return ::google::protobuf::internal::NameOfDenseEnum<ResultData_StatusCode_descriptor, 0, 2>(
+  return ::google::protobuf::internal::NameOfDenseEnum<ResultData_StatusCode_descriptor, 0, 1>(
       static_cast<int>(value));
 }
 inline bool ResultData_StatusCode_Parse(
@@ -2728,7 +2727,6 @@ class ResultData final : public ::google::protobuf::Message
   // nested types ----------------------------------------------------
   using CandidatesResult = ResultData_CandidatesResult;
   using StatusCode = ResultData_StatusCode;
-  static constexpr StatusCode UNUSED = ResultData_StatusCode_UNUSED;
   static constexpr StatusCode SUCCESS = ResultData_StatusCode_SUCCESS;
   static constexpr StatusCode FAILED = ResultData_StatusCode_FAILED;
   static inline bool StatusCode_IsValid(int value) {
