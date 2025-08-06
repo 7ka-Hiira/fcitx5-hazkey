@@ -41,7 +41,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="interfaceTab">
     <attribute name="title">
@@ -89,9 +89,6 @@
       </item>
       <item>
        <layout class="QFormLayout" name="typingUIGrid">
-        <property name="fieldGrowthPolicy">
-         <enum>QFormLayout::FieldGrowthPolicy::AllNonFixedFieldsGrow</enum>
-        </property>
         <property name="horizontalSpacing">
          <number>12</number>
         </property>
@@ -289,13 +286,273 @@
         </item>
        </layout>
       </item>
+      <item>
+       <spacer name="interfaceTabBottomSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
      </layout>
     </widget>
    </widget>
    <widget class="QWidget" name="convertTab">
     <attribute name="title">
-     <string>Convert</string>
+     <string>Convertion</string>
     </attribute>
+    <widget class="QWidget" name="verticalLayoutWidget_2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>601</width>
+       <height>371</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="ConvertMainLayout">
+      <item>
+       <layout class="QHBoxLayout" name="historyHeader">
+        <property name="topMargin">
+         <number>10</number>
+        </property>
+        <property name="bottomMargin">
+         <number>10</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="historyLabel">
+          <property name="text">
+           <string>History</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Line" name="historyLine">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QFormLayout" name="historyGrid">
+        <property name="fieldGrowthPolicy">
+         <enum>QFormLayout::FieldGrowthPolicy::ExpandingFieldsGrow</enum>
+        </property>
+        <property name="horizontalSpacing">
+         <number>12</number>
+        </property>
+        <property name="verticalSpacing">
+         <number>12</number>
+        </property>
+        <property name="leftMargin">
+         <number>20</number>
+        </property>
+        <property name="topMargin">
+         <number>10</number>
+        </property>
+        <property name="rightMargin">
+         <number>20</number>
+        </property>
+        <property name="bottomMargin">
+         <number>20</number>
+        </property>
+        <item row="0" column="1">
+         <widget class="QCheckBox" name="enableLearningCheck">
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="enableLearningLabel">
+          <property name="text">
+           <string>Use input history</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QCheckBox" name="stopNewLearningCheck"/>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="stopNewLearningLabel">
+          <property name="text">
+           <string>Stop storing new history</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QPushButton" name="clearHistoryButton">
+          <property name="text">
+           <string>Clear all history data</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="manageHistoryLabel">
+          <property name="text">
+           <string>Manage history</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="specialConversionHeader">
+        <property name="topMargin">
+         <number>10</number>
+        </property>
+        <property name="bottomMargin">
+         <number>10</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="specialConvertLabel">
+          <property name="text">
+           <string>Special conversions</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Line" name="specialConvertLine">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QGridLayout" name="specialConversionsGrid">
+        <property name="leftMargin">
+         <number>20</number>
+        </property>
+        <property name="topMargin">
+         <number>10</number>
+        </property>
+        <property name="rightMargin">
+         <number>20</number>
+        </property>
+        <property name="bottomMargin">
+         <number>20</number>
+        </property>
+        <property name="spacing">
+         <number>12</number>
+        </property>
+        <item row="0" column="2">
+         <widget class="QCheckBox" name="unicodeCodePointConversionCheck">
+          <property name="text">
+           <string>Unicode code point</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QCheckBox" name="mailDomainConversionCheck">
+          <property name="text">
+           <string>Mail domain</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QCheckBox" name="calenderConversionCheck">
+          <property name="text">
+           <string>Calender</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QCheckBox" name="commaSeparatedNumConvertCheck">
+          <property name="text">
+           <string>Comma separated number</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QCheckBox" name="romanTypographyConversionCheck">
+          <property name="text">
+           <string>Roman typography</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QCheckBox" name="timeConversionCheck">
+          <property name="text">
+           <string>Time</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QCheckBox" name="hazkeyVersionConversionCheck">
+          <property name="text">
+           <string>Hazkey version</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QCheckBox" name="halfwidthKatakanaConversionCheck">
+          <property name="text">
+           <string>Halfwidth katakana</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <spacer name="conversionTabBottomSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
    </widget>
    <widget class="QWidget" name="keymapTab">
     <attribute name="title">
@@ -305,11 +562,6 @@
    <widget class="QWidget" name="dictionaryTab">
     <attribute name="title">
      <string>Dictionary</string>
-    </attribute>
-   </widget>
-   <widget class="QWidget" name="learningTab">
-    <attribute name="title">
-     <string>Learning</string>
     </attribute>
    </widget>
    <widget class="QWidget" name="zenzaiTab">
