@@ -37,7 +37,7 @@
      <x>10</x>
      <y>10</y>
      <width>620</width>
-     <height>421</height>
+     <height>420</height>
     </rect>
    </property>
    <property name="currentIndex">
@@ -50,10 +50,10 @@
     <widget class="QWidget" name="verticalLayoutWidget">
      <property name="geometry">
       <rect>
-       <x>20</x>
+       <x>10</x>
        <y>10</y>
-       <width>581</width>
-       <height>361</height>
+       <width>601</width>
+       <height>371</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="interfaceMainLayout">
@@ -89,6 +89,9 @@
       </item>
       <item>
        <layout class="QFormLayout" name="typingUIGrid">
+        <property name="fieldGrowthPolicy">
+         <enum>QFormLayout::FieldGrowthPolicy::AllNonFixedFieldsGrow</enum>
+        </property>
         <property name="horizontalSpacing">
          <number>12</number>
         </property>
@@ -152,7 +155,7 @@
         <item row="2" column="0">
          <widget class="QLabel" name="suggestionListLabel">
           <property name="text">
-           <string>Suggestion list</string>
+           <string>Suggestion list mode</string>
           </property>
          </widget>
         </item>
@@ -289,11 +292,6 @@
      </layout>
     </widget>
    </widget>
-   <widget class="QWidget" name="characterStyleTab">
-    <attribute name="title">
-     <string>Character Style</string>
-    </attribute>
-   </widget>
    <widget class="QWidget" name="convertTab">
     <attribute name="title">
      <string>Convert</string>
@@ -328,9 +326,9 @@
   <widget class="QDialogButtonBox" name="dialogButtonBox">
    <property name="geometry">
     <rect>
-     <x>15</x>
+     <x>10</x>
      <y>440</y>
-     <width>601</width>
+     <width>620</width>
      <height>24</height>
     </rect>
    </property>
