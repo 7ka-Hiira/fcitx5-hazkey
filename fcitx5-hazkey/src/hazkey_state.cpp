@@ -9,13 +9,12 @@
 #include "hazkey_candidate.h"
 #include "hazkey_engine.h"
 #include "hazkey_server_connector.h"
-#include "protocol/hazkey_server.pb.h"
 
 namespace fcitx {
 
 HazkeyState::HazkeyState(HazkeyEngine *engine, InputContext *ic)
     : engine_(engine), ic_(ic), preedit_(HazkeyPreedit(ic)) {
-    engine_->server().createComposingTextInstance();
+    engine_->server().newComposingText();
 }
 
 bool HazkeyState::isInputableEvent(const KeyEvent &event) {
@@ -60,7 +59,7 @@ void HazkeyState::keyEvent(KeyEvent &event) {
         event.inputContext()->inputPanel().candidateList());
 
     std::string composingText = engine_->server().getComposingText(
-        hazkey::commands::QueryData_GetComposingStringProps_CharType_HIRAGANA,
+        hazkey::commands::GetComposingString_CharType_HIRAGANA,
         preedit_.text());
 
     if (candidateList != nullptr && candidateList->focused() &&
@@ -108,8 +107,8 @@ void HazkeyState::noPreeditKeyEvent(KeyEvent &event) {
         default:
             if (isInputableEvent(event)) {
                 updateSurroundingText();
-                engine_->server().addToComposingText(Key::keySymToUTF8(keysym),
-                                                     isDirectInputMode_);
+                engine_->server().inputChar(Key::keySymToUTF8(keysym),
+                                            isDirectInputMode_);
                 showPreeditCandidateList();
                 setHiraganaAUX();
             } else {
@@ -191,8 +190,8 @@ void HazkeyState::preeditKeyEvent(
                     preedit_.commitPreedit();
                     reset();
                 }
-                engine_->server().addToComposingText(Key::keySymToUTF8(keysym),
-                                                     isDirectInputMode_);
+                engine_->server().inputChar(Key::keySymToUTF8(keysym),
+                                            isDirectInputMode_);
                 showPreeditCandidateList();
             }
             break;
@@ -267,8 +266,8 @@ void HazkeyState::candidateKeyEvent(
             } else if (isInputableEvent(event)) {
                 preedit_.commitPreedit();
                 reset();
-                engine_->server().addToComposingText(Key::keySymToUTF8(keysym),
-                                                     isDirectInputMode_);
+                engine_->server().inputChar(Key::keySymToUTF8(keysym),
+                                            isDirectInputMode_);
                 showPreeditCandidateList();
             } else {
                 return event.filter();
@@ -299,10 +298,10 @@ void HazkeyState::updateSurroundingText() {
         ic_->capabilityFlags().test(CapabilityFlag::SurroundingText) &&
         ic_->surroundingText().isValid()) {
         auto &surroundingText = ic_->surroundingText();
-        engine_->server().setLeftContext(surroundingText.text(),
-                                         surroundingText.anchor());
+        engine_->server().setContext(surroundingText.text(),
+                                     surroundingText.anchor());
     } else {
-        engine_->server().setLeftContext("", 0);
+        engine_->server().setContext("", 0);
     }
 }
 
@@ -334,36 +333,31 @@ void HazkeyState::functionKeyHandler(KeyEvent &event) {
 
 void HazkeyState::directCharactorConversion(ConversionMode mode) {
     std::string converted;
-    // TODO: cleanup
+    // TODO: use protobuf type for all program
     switch (mode) {
         case ConversionMode::Hiragana:
             converted = engine_->server().getComposingText(
-                hazkey::commands::
-                    QueryData_GetComposingStringProps_CharType_HIRAGANA,
+                hazkey::commands::GetComposingString_CharType_HIRAGANA,
                 preedit_.text());
             break;
         case ConversionMode::KatakanaFullwidth:
             converted = engine_->server().getComposingText(
-                hazkey::commands::
-                    QueryData_GetComposingStringProps_CharType_KATAKANA_FULL,
+                hazkey::commands::GetComposingString_CharType_KATAKANA_FULL,
                 preedit_.text());
             break;
         case ConversionMode::KatakanaHalfwidth:
             converted = engine_->server().getComposingText(
-                hazkey::commands::
-                    QueryData_GetComposingStringProps_CharType_KATAKANA_HALF,
+                hazkey::commands::GetComposingString_CharType_KATAKANA_HALF,
                 preedit_.text());
             break;
         case ConversionMode::RawFullwidth:
             converted = engine_->server().getComposingText(
-                hazkey::commands::
-                    QueryData_GetComposingStringProps_CharType_ALPHABET_FULL,
+                hazkey::commands::GetComposingString_CharType_ALPHABET_FULL,
                 preedit_.text());
             break;
         case ConversionMode::RawHalfwidth:
             converted = engine_->server().getComposingText(
-                hazkey::commands::
-                    QueryData_GetComposingStringProps_CharType_ALPHABET_HALF,
+                hazkey::commands::GetComposingString_CharType_ALPHABET_HALF,
                 preedit_.text());
             break;
     }
@@ -410,8 +404,7 @@ void HazkeyState::showCandidateList(showCandidateMode mode, int nBest) {
         // preedit conversion is disabled or conversion result is not
         // available show hiragana preedit
         auto hiragana = engine_->server().getComposingText(
-            hazkey::commands::
-                QueryData_GetComposingStringProps_CharType_HIRAGANA,
+            hazkey::commands::GetComposingString_CharType_HIRAGANA,
             preedit_.text());
         preedit_.setSimplePreedit(hiragana);
     }
@@ -438,7 +431,7 @@ void HazkeyState::showNonPredictCandidateList() {
 
 void HazkeyState::showPreeditCandidateList() {
     auto hiragana = engine_->server().getComposingText(
-        hazkey::commands::QueryData_GetComposingStringProps_CharType_HIRAGANA,
+        hazkey::commands::GetComposingString_CharType_HIRAGANA,
         preedit_.text());
     if (hiragana == "" || hiragana.length() == 0) {
         reset();
@@ -515,7 +508,7 @@ void HazkeyState::reset() {
     // do not reset isShiftPressedAlone_ because shift may still be pressed
     isDirectInputMode_ = false;
     isCursorMoving_ = false;
-    engine_->server().createComposingTextInstance();
+    engine_->server().newComposingText();
     ic_->inputPanel().reset();
 }
 

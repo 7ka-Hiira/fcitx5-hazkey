@@ -19,7 +19,8 @@
 #include <thread>
 
 #include "env_config.h"
-#include "protocol/hazkey_server.pb.h"
+#include "protocol/base.pb.h"
+#include "protocol/commands.pb.h"
 
 static std::mutex transact_mutex;
 
@@ -174,8 +175,8 @@ void HazkeyServerConnector::connect_server() {
                  << " attempts";
 }
 
-std::optional<hazkey::commands::ResultData> HazkeyServerConnector::transact(
-    const hazkey::commands::QueryData& send_data) {
+std::optional<hazkey::ResponseEnvelope> HazkeyServerConnector::transact(
+    const hazkey::RequestEnvelope& send_data) {
     std::lock_guard<std::mutex> lock(transact_mutex);
 
     if (sock_ == -1) {
@@ -246,7 +247,7 @@ std::optional<hazkey::commands::ResultData> HazkeyServerConnector::transact(
         return std::nullopt;
     }
 
-    hazkey::commands::ResultData resp;
+    hazkey::ResponseEnvelope resp;
     if (!resp.ParseFromArray(buf.data(), readLen)) {
         FCITX_ERROR() << "Failed to parse received data\n";
         return std::nullopt;
@@ -257,141 +258,139 @@ std::optional<hazkey::commands::ResultData> HazkeyServerConnector::transact(
 }
 
 std::string HazkeyServerConnector::getComposingText(
-    hazkey::commands::QueryData::GetComposingStringProps::CharType type,
+    hazkey::commands::GetComposingString::CharType type,
     std::string currentPreedit) {
-    hazkey::commands::QueryData query;
-    query.set_function(hazkey::commands::QueryData_KkcApi::
-                           QueryData_KkcApi_GET_COMPOSING_STRING);
-    auto props = query.mutable_get_composing_string();
+    hazkey::RequestEnvelope request;
+    auto props = request.mutable_get_composing_string();
     props->set_char_type(type);
     props->set_current_preedit(currentPreedit);
-    auto response = transact(query);
+    auto response = transact(request);
     if (response == std::nullopt) {
         FCITX_ERROR() << "Error while transacting getComposingText().";
         return "";
     }
     auto responseVal = response.value();
-    if (responseVal.status() != hazkey::commands::ResultData::SUCCESS) {
-        FCITX_ERROR() << "Server returned error: "
-                      << responseVal.errormessage();
+    if (responseVal.status() != hazkey::SUCCESS) {
+        FCITX_ERROR() << "getComposingText: " << "Server returned error: "
+                      << responseVal.error_message();
         return "";
     }
-    return responseVal.result();
+    if (!responseVal.has_text()) {
+        FCITX_ERROR() << "getComposingText: "
+                      << "Server returned unexpected response";
+        return "";
+    }
+    return responseVal.text();
 }
 
 std::string HazkeyServerConnector::getComposingHiraganaWithCursor() {
-    hazkey::commands::QueryData query;
-    query.set_function(hazkey::commands::QueryData_KkcApi::
-                           QueryData_KkcApi_GET_HIRAGANA_WITH_CURSOR);
-    auto response = transact(query);
+    hazkey::RequestEnvelope request;
+    request.mutable_get_hiragana_with_cursor();
+    auto response = transact(request);
     if (response == std::nullopt) {
         FCITX_ERROR()
             << "Error while transacting getComposingHiraganaWithCursor().";
         return "";
     }
     auto responseVal = response.value();
-    if (responseVal.status() != hazkey::commands::ResultData::SUCCESS) {
-        FCITX_ERROR() << "Server returned error: "
-                      << responseVal.errormessage();
+    if (responseVal.status() != hazkey::SUCCESS) {
+        FCITX_ERROR() << "getHiraganaWithCursor: " << "Server returned error: "
+                      << responseVal.error_message();
         return "";
     }
-    return responseVal.result();
+    if (!responseVal.has_text()) {
+        FCITX_ERROR() << "getHiraganaWithCursor: "
+                      << "Server returned unexpected response";
+        return "";
+    }
+    return responseVal.text();
 }
 
-void HazkeyServerConnector::addToComposingText(std::string text,
-                                               bool isDirect) {
-    hazkey::commands::QueryData query;
-    query.set_function(
-        hazkey::commands::QueryData_KkcApi::QueryData_KkcApi_INPUT_TEXT);
-    auto props = query.mutable_input_text();
+void HazkeyServerConnector::inputChar(std::string text, bool isDirect) {
+    hazkey::RequestEnvelope request;
+    auto props = request.mutable_input_char();
     props->set_text(text);
     props->set_is_direct(isDirect);
-    auto response = transact(query);
+    auto response = transact(request);
     if (response == std::nullopt) {
-        FCITX_ERROR() << "Error while transacting addToComposingText().";
+        FCITX_ERROR() << "Error while transacting inputChar().";
         return;
     }
     auto responseVal = response.value();
-    if (responseVal.status() != hazkey::commands::ResultData::SUCCESS) {
-        FCITX_ERROR() << "Server returned error: "
-                      << responseVal.errormessage();
+    if (responseVal.status() != hazkey::SUCCESS) {
+        FCITX_ERROR() << "inputChar: " << "Server returned error: "
+                      << responseVal.error_message();
         return;
     }
     return;
 }
 
 void HazkeyServerConnector::deleteLeft() {
-    hazkey::commands::QueryData query;
-    query.set_function(
-        hazkey::commands::QueryData_KkcApi::QueryData_KkcApi_DELETE_LEFT);
-    auto response = transact(query);
+    hazkey::RequestEnvelope request;
+    request.mutable_delete_left();
+    auto response = transact(request);
     if (response == std::nullopt) {
         FCITX_ERROR() << "Error while transacting deleteLeft().";
         return;
     }
     auto responseVal = response.value();
-    if (responseVal.status() != hazkey::commands::ResultData::SUCCESS) {
-        FCITX_ERROR() << "Server returned error: "
-                      << responseVal.errormessage();
+    if (responseVal.status() != hazkey::SUCCESS) {
+        FCITX_ERROR() << "deleteLeft: " << "Server returned error: "
+                      << responseVal.error_message();
         return;
     }
     return;
 }
 
 void HazkeyServerConnector::deleteRight() {
-    hazkey::commands::QueryData query;
-    query.set_function(
-        hazkey::commands::QueryData_KkcApi::QueryData_KkcApi_DELETE_RIGHT);
-    auto response = transact(query);
+    hazkey::RequestEnvelope request;
+    request.mutable_delete_right();
+    auto response = transact(request);
     if (response == std::nullopt) {
         FCITX_ERROR() << "Error while transacting deleteRight().";
         return;
     }
     auto responseVal = response.value();
-    if (responseVal.status() != hazkey::commands::ResultData::SUCCESS) {
-        FCITX_ERROR() << "Server returned error: "
-                      << responseVal.errormessage();
+    if (responseVal.status() != hazkey::SUCCESS) {
+        FCITX_ERROR() << "deleteRight: " << "Server returned error: "
+                      << responseVal.error_message();
         return;
     }
     return;
 }
 
 void HazkeyServerConnector::moveCursor(int offset) {
-    hazkey::commands::QueryData query;
-    query.set_function(
-        hazkey::commands::QueryData_KkcApi::QueryData_KkcApi_MOVE_CURSOR);
-    auto props = query.mutable_move_cursor();
+    hazkey::RequestEnvelope request;
+    auto props = request.mutable_move_cursor();
     props->set_offset(offset);
-    auto response = transact(query);
+    auto response = transact(request);
     if (response == std::nullopt) {
         FCITX_ERROR() << "Error while transacting moveCursor().";
         return;
     }
     auto responseVal = response.value();
-    if (responseVal.status() != hazkey::commands::ResultData::SUCCESS) {
-        FCITX_ERROR() << "Server returned error: "
-                      << responseVal.errormessage();
+    if (responseVal.status() != hazkey::SUCCESS) {
+        FCITX_ERROR() << "moveCursor:" << "Server returned error: "
+                      << responseVal.error_message();
         return;
     }
     return;
 }
 
-void HazkeyServerConnector::setLeftContext(std::string context, int anchor) {
-    hazkey::commands::QueryData query;
-    query.set_function(
-        hazkey::commands::QueryData_KkcApi::QueryData_KkcApi_SET_LEFT_CONTEXT);
-    auto props = query.mutable_set_left_context();
+void HazkeyServerConnector::setContext(std::string context, int anchor) {
+    hazkey::RequestEnvelope request;
+    auto props = request.mutable_set_context();
     props->set_context(context);
     props->set_anchor(anchor);
-    auto response = transact(query);
+    auto response = transact(request);
     if (response == std::nullopt) {
-        FCITX_ERROR() << "Error while transacting setLeftContext().";
+        FCITX_ERROR() << "Error while transacting setContext().";
         return;
     }
     auto responseVal = response.value();
-    if (responseVal.status() != hazkey::commands::ResultData::SUCCESS) {
-        FCITX_ERROR() << "Server returned error: "
-                      << responseVal.errormessage();
+    if (responseVal.status() != hazkey::SUCCESS) {
+        FCITX_ERROR() << "setContext:" << "Server returned error: "
+                      << responseVal.error_message();
         return;
     }
     return;
@@ -401,10 +400,8 @@ void HazkeyServerConnector::setServerConfig(
     int zenzaiEnabled, int zenzaiInferLimit, int numberFullwidth,
     int symbolFullwidth, int periodStyleIndex, int commaStyleIndex,
     int spaceFullwidth, int tenCombining, std::string profileText) {
-    hazkey::commands::QueryData query;
-    query.set_function(
-        hazkey::commands::QueryData_KkcApi::QueryData_KkcApi_SET_CONFIG);
-    auto props = query.mutable_set_config();
+    hazkey::RequestEnvelope request;
+    auto props = request.mutable_set_config();
     props->set_zenzai_enabled(zenzaiEnabled);
     props->set_zenzai_infer_limit(zenzaiInferLimit);
     props->set_number_fullwidth(numberFullwidth);
@@ -414,54 +411,52 @@ void HazkeyServerConnector::setServerConfig(
     props->set_space_fullwidth(spaceFullwidth);
     props->set_ten_combining(tenCombining);
     props->set_profile_text(profileText);
-    auto response = transact(query);
+    auto response = transact(request);
     if (response == std::nullopt) {
         FCITX_ERROR() << "Error while transacting setServerConfig().";
         return;
     }
     auto responseVal = response.value();
-    if (responseVal.status() != hazkey::commands::ResultData::SUCCESS) {
-        FCITX_ERROR() << "Server returned error: "
-                      << responseVal.errormessage();
+    if (responseVal.status() != hazkey::SUCCESS) {
+        FCITX_ERROR() << "setServerConfig:" << "Server returned error: "
+                      << responseVal.error_message();
         return;
     }
     return;
 }
 
-void HazkeyServerConnector::createComposingTextInstance() {
-    hazkey::commands::QueryData query;
-    query.set_function(hazkey::commands::QueryData_KkcApi::
-                           QueryData_KkcApi_CREATE_COMPOSING_TEXT_INSTANCE);
-    auto response = transact(query);
+void HazkeyServerConnector::newComposingText() {
+    hazkey::RequestEnvelope request;
+    request.mutable_new_composing_text();
+    auto response = transact(request);
     if (response == std::nullopt) {
         FCITX_ERROR()
             << "Error while transacting createComposingTextInstance().";
         return;
     }
     auto responseVal = response.value();
-    if (responseVal.status() != hazkey::commands::ResultData::SUCCESS) {
-        FCITX_ERROR() << "Server returned error: "
-                      << responseVal.errormessage();
+    if (responseVal.status() != hazkey::SUCCESS) {
+        FCITX_ERROR() << "createComposingTextInstance:"
+                      << "Server returned error: "
+                      << responseVal.error_message();
         return;
     }
     return;
 }
 
 void HazkeyServerConnector::completePrefix(int index) {
-    hazkey::commands::QueryData query;
-    query.set_function(
-        hazkey::commands::QueryData_KkcApi::QueryData_KkcApi_COMPLETE_PREFIX);
-    auto props = query.mutable_complete_prefix();
+    hazkey::RequestEnvelope request;
+    auto props = request.mutable_prefix_complete();
     props->set_index(index);
-    auto response = transact(query);
+    auto response = transact(request);
     if (response == std::nullopt) {
         FCITX_ERROR() << "Error while transacting completePrefix().";
         return;
     }
     auto responseVal = response.value();
-    if (responseVal.status() != hazkey::commands::ResultData::SUCCESS) {
-        FCITX_ERROR() << "Server returned error: "
-                      << responseVal.errormessage();
+    if (responseVal.status() != hazkey::SUCCESS) {
+        FCITX_ERROR() << "completePrefix: " << "Server returned error: "
+                      << responseVal.error_message();
         return;
     }
     return;
@@ -469,25 +464,30 @@ void HazkeyServerConnector::completePrefix(int index) {
 
 std::vector<HazkeyServerConnector::CandidateData>
 HazkeyServerConnector::getCandidates(bool isPredictMode, int n_best) {
-    hazkey::commands::QueryData query;
-    query.set_function(
-        hazkey::commands::QueryData_KkcApi::QueryData_KkcApi_GET_CANDIDATES);
-    auto props = query.mutable_get_candidates();
+    hazkey::RequestEnvelope request;
+    auto props = request.mutable_get_candidates();
     props->set_is_predict_mode(isPredictMode);
     props->set_n_best(n_best);
-    auto response = transact(query);
+    auto response = transact(request);
     if (response == std::nullopt) {
         FCITX_ERROR() << "Error while transacting setServerConfig().";
         std::vector<CandidateData> empty_vec;
         return empty_vec;
     }
     auto responseVal = response.value();
-    if (responseVal.status() != hazkey::commands::ResultData::SUCCESS) {
-        FCITX_ERROR() << "Server returned error: "
-                      << responseVal.errormessage();
+    if (responseVal.status() != hazkey::SUCCESS) {
+        FCITX_ERROR() << "getCandidates: " << "Server returned error: "
+                      << responseVal.error_message();
         std::vector<CandidateData> empty_vec;
         return empty_vec;
     }
+    // TODO: Error handling when response has no candidate
+    // if (responseVal..has_candidates()) {
+    //     FCITX_ERROR() << "getCandidates: "
+    //                   << "Server returned unexpected response";
+    //     std::vector<CandidateData> empty_vec;
+    //     return empty_vec;
+    // }
     std::vector<CandidateData> candidates;
     for (const auto& item : responseVal.candidates().candidates()) {
         CandidateData candidate =

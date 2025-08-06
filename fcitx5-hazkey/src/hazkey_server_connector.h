@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "env_config.h"
-#include "protocol/hazkey_server.pb.h"
+#include "protocol/base.pb.h"
 
 class HazkeyServerConnector {
    public:
@@ -26,16 +26,16 @@ class HazkeyServerConnector {
 
     void connect_server();
 
-    std::optional<hazkey::commands::ResultData> transact(
-        const hazkey::commands::QueryData& send_data);
+    std::optional<hazkey::ResponseEnvelope> transact(
+        const hazkey::RequestEnvelope& send_data);
 
     std::string getComposingText(
-        hazkey::commands::QueryData::GetComposingStringProps::CharType type,
+        hazkey::commands::GetComposingString::CharType type,
         std::string currentPreedit);
 
     std::string getComposingHiraganaWithCursor();
 
-    void addToComposingText(std::string text, bool isDirect);
+    void inputChar(std::string text, bool isDirect);
 
     void deleteLeft();
 
@@ -43,7 +43,7 @@ class HazkeyServerConnector {
 
     void moveCursor(int offset);
 
-    void setLeftContext(std::string context, int anchor);
+    void setContext(std::string context, int anchor);
 
     void setServerConfig(int zenzaiEnabled, int zenzaiInferLimit,
                          int numberFullwidth, int symbolFullwidth,
@@ -51,7 +51,7 @@ class HazkeyServerConnector {
                          int spaceFullwidth, int tenCombining,
                          std::string profileText);
 
-    void createComposingTextInstance();
+    void newComposingText();
 
     void completePrefix(int index);
 
@@ -66,6 +66,7 @@ class HazkeyServerConnector {
    private:
     bool retry_connect();
     void start_hazkey_server();
+    bool requestSuccess(hazkey::ResponseEnvelope);
     int sock_ = -1;
     std::string socket_path_;
 };

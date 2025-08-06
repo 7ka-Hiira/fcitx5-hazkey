@@ -3,20 +3,20 @@ import SwiftProtobuf
 
 @MainActor
 func processProto(data: Data) -> Data {
-  let query: Hazkey_Commands_QueryData
-  let response: Hazkey_Commands_ResultData
+  let query: Hazkey_RequestEnvelope
+  let response: Hazkey_ResponseEnvelope
   do {
-    query = try Hazkey_Commands_QueryData(serializedBytes: data)
+    query = try Hazkey_RequestEnvelope(serializedBytes: data)
   } catch {
     NSLog("Failed to parse protobuf: \(error)")
-    response = Hazkey_Commands_ResultData.with {
+    response = Hazkey_ResponseEnvelope.with {
       $0.status = .failed
       $0.errorMessage = "Failed to parse protobuf: \(error)"
     }
     return serializeResult(unserialized: response)
   }
 
-  switch query.function {
+  switch query.payload {
   case .setConfig:
     let props = query.setConfig
     response = setConfig(
@@ -30,20 +30,20 @@ func processProto(data: Data) -> Data {
       tenCombining: Int(props.tenCombining),
       profileText: props.profileText
     )
-  case .setLeftContext:
-    let props = query.setLeftContext
-    response = setLeftContext(surroundingText: props.context, anchorIndex: Int(props.anchor))
-  case .createComposingTextInstance:
+  case .setContext:
+    let props = query.setContext
+    response = setContext(surroundingText: props.context, anchorIndex: Int(props.anchor))
+  case .newComposingText:
     response = createComposingTextInstanse()
-  case .inputText:
-    let props = query.inputText
-    response = inputText(inputString: props.text, isDirect: props.isDirect)
+  case .inputChar:
+    let props = query.inputChar
+    response = inputChar(inputString: props.text, isDirect: props.isDirect)
   case .deleteLeft:
     response = deleteLeft()
   case .deleteRight:
     response = deleteRight()
-  case .completePrefix:
-    let props = query.completePrefix
+  case .prefixComplete:
+    let props = query.prefixComplete
     response = completePrefix(candidateIndex: Int(props.index))
   case .moveCursor:
     let props = query.moveCursor
@@ -56,17 +56,17 @@ func processProto(data: Data) -> Data {
   case .getCandidates:
     let props = query.getCandidates
     response = getCandidates(isPredictMode: props.isPredictMode, nBest: Int(props.nBest))
-  case .UNRECOGNIZED(_):
-    NSLog("Unimplemented function")
-    response = Hazkey_Commands_ResultData.with {
+  default:
+    NSLog("Unimplemented command")
+    response = Hazkey_ResponseEnvelope.with {
       $0.status = .failed
-      $0.errorMessage = "Unimplemented function: \(query.function.rawValue)"
+      $0.errorMessage = "Unimplemented command: \(query)"
     }
   }
   return serializeResult(unserialized: response)
 }
 
-func serializeResult(unserialized: Hazkey_Commands_ResultData) -> Data {
+func serializeResult(unserialized: Hazkey_ResponseEnvelope) -> Data {
   do {
     let serialized = try unserialized.serializedData()
     return serialized

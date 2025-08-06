@@ -10,7 +10,7 @@ import SwiftUtils
   numberFullwidth: Int, symbolFullwidth: Int, periodStyleIndex: Int,
   commaStyleIndex: Int, spaceFullwidth: Int, tenCombining: Int,
   profileText: String
-) -> Hazkey_Commands_ResultData {
+) -> Hazkey_ResponseEnvelope {
   let numberStyle: KkcConfig.Style = numberFullwidth == 1 ? .fullwidth : .halfwidth
   let symbolStyle: KkcConfig.Style = symbolFullwidth == 1 ? .fullwidth : .halfwidth
   let periodStyle: KkcConfig.TenStyle =
@@ -35,44 +35,44 @@ import SwiftUtils
     commaStyle: commaStyle, spaceStyle: spaceStyle, diacriticStyle: diacriticStyle,
     profileText: profileText)
 
-  return Hazkey_Commands_ResultData.with {
+  return Hazkey_ResponseEnvelope.with {
     $0.status = .success
   }
 }
 
-@MainActor func setLeftContext(
+@MainActor func setContext(
   surroundingText: String, anchorIndex: Int
-) -> Hazkey_Commands_ResultData {
+) -> Hazkey_ResponseEnvelope {
   let leftContext = String(surroundingText.prefix(anchorIndex))
 
   if .off != config.convertOptions.zenzaiMode {
-      config.convertOptions.zenzaiMode = .on(
-          weight: config.zenzaiWeight,
-          personalizationMode: nil, // TODO: handle this correctly
-          versionDependentMode: .v3(.init(profile: config.profileText, leftSideContext: leftContext))
-      )
+    config.convertOptions.zenzaiMode = .on(
+      weight: config.zenzaiWeight,
+      personalizationMode: nil,  // TODO: handle this correctly
+      versionDependentMode: .v3(.init(profile: config.profileText, leftSideContext: leftContext))
+    )
   }
 
-  return Hazkey_Commands_ResultData.with {
+  return Hazkey_ResponseEnvelope.with {
     $0.status = .success
   }
 }
 
 /// ComposingText
 
-@MainActor func createComposingTextInstanse() -> Hazkey_Commands_ResultData {
+@MainActor func createComposingTextInstanse() -> Hazkey_ResponseEnvelope {
   composingText = ComposingTextBox()
   currentCandidateList = nil
-  return Hazkey_Commands_ResultData.with {
+  return Hazkey_ResponseEnvelope.with {
     $0.status = .success
   }
 }
 
-@MainActor func inputText(
+@MainActor func inputChar(
   inputString: String, isDirect: Bool
-) -> Hazkey_Commands_ResultData {
+) -> Hazkey_ResponseEnvelope {
   guard var inputUnicode = inputString.unicodeScalars.first else {
-    return Hazkey_Commands_ResultData.with {
+    return Hazkey_ResponseEnvelope.with {
       $0.status = .failed
       $0.errorMessage = "failed to get first unicode character"
     }
@@ -192,59 +192,62 @@ import SwiftUtils
   } else {
     composingText.value.insertAtCursorPosition(String(inputUnicode), inputStyle: .direct)
   }
-  return Hazkey_Commands_ResultData.with { $0.status = .success }
+  return Hazkey_ResponseEnvelope.with { $0.status = .success }
 }
 
-@MainActor func deleteLeft() -> Hazkey_Commands_ResultData {
+@MainActor func deleteLeft() -> Hazkey_ResponseEnvelope {
   composingText.value.deleteBackwardFromCursorPosition(count: 1)
-  return Hazkey_Commands_ResultData.with {
+  return Hazkey_ResponseEnvelope.with {
     $0.status = .success
   }
 }
 
-@MainActor func deleteRight() -> Hazkey_Commands_ResultData {
+@MainActor func deleteRight() -> Hazkey_ResponseEnvelope {
   composingText.value.deleteForwardFromCursorPosition(count: 1)
-  return Hazkey_Commands_ResultData.with {
+  return Hazkey_ResponseEnvelope.with {
     $0.status = .success
   }
 }
 
-@MainActor func completePrefix(candidateIndex: Int) -> Hazkey_Commands_ResultData {
+@MainActor func completePrefix(candidateIndex: Int) -> Hazkey_ResponseEnvelope {
   if let completedCandidate = currentCandidateList?[candidateIndex] {
     composingText.value.prefixComplete(composingCount: completedCandidate.composingCount)
   } else {
-    return Hazkey_Commands_ResultData.with {
+    return Hazkey_ResponseEnvelope.with {
       $0.status = .failed
       $0.errorMessage = "Candidate index \(candidateIndex) not found."
     }
   }
-  return Hazkey_Commands_ResultData.with {
+  return Hazkey_ResponseEnvelope.with {
     $0.status = .success
   }
 }
 
-@MainActor func moveCursor(offset: Int) -> Hazkey_Commands_ResultData {
+@MainActor func moveCursor(offset: Int) -> Hazkey_ResponseEnvelope {
   let _ = composingText.value.moveCursorFromCursorPosition(count: offset)
-  return Hazkey_Commands_ResultData.with {
+  return Hazkey_ResponseEnvelope.with {
     $0.status = .success
   }
 }
 
 /// ComposingText -> Characters
 
-@MainActor func getHiraganaWithCursor() -> Hazkey_Commands_ResultData {
+@MainActor func getHiraganaWithCursor() -> Hazkey_ResponseEnvelope {
   var hiragana = composingText.value.toHiragana()
   let cursorPos = composingText.value.convertTargetCursorPosition
-  hiragana.insert("|", at: hiragana.index(hiragana.startIndex, offsetBy: cursorPos))
-  return Hazkey_Commands_ResultData.with {
+  if !hiragana.isEmpty {
+    hiragana.insert("|", at: hiragana.index(hiragana.startIndex, offsetBy: cursorPos))
+  }
+  return Hazkey_ResponseEnvelope.with {
     $0.status = .success
+    $0.text = hiragana
   }
 }
 
 @MainActor func getComposingString(
-  charType: Hazkey_Commands_QueryData.GetComposingStringProps.CharType,
+  charType: Hazkey_Commands_GetComposingString.CharType,
   currentPreedit: String
-) -> Hazkey_Commands_ResultData {
+) -> Hazkey_ResponseEnvelope {
   let result: String
   switch charType {
   case .hiragana:
@@ -260,14 +263,14 @@ import SwiftUtils
     result = cycleAlphabetCase(
       composingText.value.toAlphabet(false), preedit: currentPreedit)
   case .UNRECOGNIZED(_):
-    return Hazkey_Commands_ResultData.with {
+    return Hazkey_ResponseEnvelope.with {
       $0.status = .failed
       $0.errorMessage = "unrecognized charType: \(charType.rawValue)"
     }
   }
-  return Hazkey_Commands_ResultData.with {
+  return Hazkey_ResponseEnvelope.with {
     $0.status = .success
-    $0.result = result
+    $0.text = result
   }
 }
 
@@ -275,7 +278,7 @@ import SwiftUtils
 
 // TODO: return error message
 @MainActor
-func getCandidates(isPredictMode: Bool = false, nBest: Int = 9) -> Hazkey_Commands_ResultData {
+func getCandidates(isPredictMode: Bool = false, nBest: Int = 9) -> Hazkey_ResponseEnvelope {
   var options = config.convertOptions
   options.N_best = nBest
   options.requireJapanesePrediction = isPredictMode
@@ -287,9 +290,9 @@ func getCandidates(isPredictMode: Bool = false, nBest: Int = 9) -> Hazkey_Comman
 
   let hiraganaPreedit = composingText.value.toHiragana()
 
-  var candidatesResult = Hazkey_Commands_ResultData.CandidatesResult()
+  var candidatesResult = Hazkey_Commands_CandidatesResult()
   candidatesResult.candidates = converted.mainResults.map { c in
-    var candidate = Hazkey_Commands_ResultData.CandidatesResult.Candidate()
+    var candidate = Hazkey_Commands_CandidatesResult.Candidate()
 
     candidate.text = c.text
 
@@ -306,7 +309,9 @@ func getCandidates(isPredictMode: Bool = false, nBest: Int = 9) -> Hazkey_Comman
     return candidate
   }
 
-  return Hazkey_Commands_ResultData.with {
+  candidatesResult.liveText = ""  // unimplemented
+
+  return Hazkey_ResponseEnvelope.with {
     $0.status = .success
     $0.candidates = candidatesResult
   }

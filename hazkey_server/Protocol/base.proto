@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package hazkey;
+
+import "commands.proto";
+
+message RequestEnvelope {
+    oneof payload {
+        hazkey.commands.NewComposingText new_composing_text = 1;
+        hazkey.commands.SetConfig set_config = 2;
+        hazkey.commands.SetContext set_context = 3;
+        hazkey.commands.InputChar input_char = 4;
+        hazkey.commands.MoveCursor move_cursor = 5;
+        hazkey.commands.PrefixComplete prefix_complete = 6;
+        hazkey.commands.DeleteLeft delete_left = 7;
+        hazkey.commands.DeleteRight delete_right = 8;
+        hazkey.commands.GetComposingString get_composing_string = 9;
+        hazkey.commands.GetHiraganaWithCursor get_hiragana_with_cursor = 10;
+        hazkey.commands.GetCandidates get_candidates = 11;
+    }
+}
+
+enum StatusCode {
+    SUCCESS = 0;
+    FAILED = 1;
+}
+
+message ResponseEnvelope {
+    StatusCode status = 1;
+    string error_message = 2;
+    oneof payload {
+        string text = 3;
+        hazkey.commands.CandidatesResult candidates = 4;
+    }
+}
