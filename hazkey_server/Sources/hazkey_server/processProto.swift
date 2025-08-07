@@ -30,32 +30,26 @@ func processProto(data: Data) -> Data {
       tenCombining: Int(props.tenCombining),
       profileText: props.profileText
     )
-  case .setContext:
-    let props = query.setContext
-    response = setContext(surroundingText: props.context, anchorIndex: Int(props.anchor))
-  case .newComposingText:
+  case .setContext(let req):
+    response = setContext(surroundingText: req.context, anchorIndex: Int(req.anchor))
+  case .newComposingText(_):
     response = createComposingTextInstanse()
-  case .inputChar:
-    let props = query.inputChar
-    response = inputChar(inputString: props.text, isDirect: props.isDirect)
-  case .deleteLeft:
+  case .inputChar(let req):
+    response = inputChar(inputString: req.text, isDirect: req.isDirect)
+  case .deleteLeft(_):
     response = deleteLeft()
-  case .deleteRight:
+  case .deleteRight(_):
     response = deleteRight()
-  case .prefixComplete:
-    let props = query.prefixComplete
-    response = completePrefix(candidateIndex: Int(props.index))
-  case .moveCursor:
-    let props = query.moveCursor
-    response = moveCursor(offset: Int(props.offset))
-  case .getHiraganaWithCursor:
+  case .prefixComplete(let req):
+    response = completePrefix(candidateIndex: Int(req.index))
+  case .moveCursor(let req):
+    response = moveCursor(offset: Int(req.offset))
+  case .getHiraganaWithCursor(_):
     response = getHiraganaWithCursor()
-  case .getComposingString:
-    let props = query.getComposingString
-    response = getComposingString(charType: props.charType, currentPreedit: props.currentPreedit)
-  case .getCandidates:
-    let props = query.getCandidates
-    response = getCandidates(isPredictMode: props.isPredictMode, nBest: Int(props.nBest))
+  case .getComposingString(let req):
+    response = getComposingString(charType: req.charType, currentPreedit: req.currentPreedit)
+  case .getCandidates(let req):
+    response = getCandidates(isPredictMode: req.isPredictMode, nBest: Int(req.nBest))
   default:
     NSLog("Unimplemented command")
     response = Hazkey_ResponseEnvelope.with {
