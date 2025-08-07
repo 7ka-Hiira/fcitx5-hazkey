@@ -6,10 +6,10 @@
 #include <sys/un.h>
 
 #include <string>
-#include <vector>
 
 #include "env_config.h"
 #include "protocol/base.pb.h"
+#include "protocol/commands.pb.h"
 
 class HazkeyServerConnector {
    public:
@@ -58,10 +58,10 @@ class HazkeyServerConnector {
     struct CandidateData {
         std::string candidateText;
         std::string subHiragana;
-        bool liveCompat;
     };
 
-    std::vector<CandidateData> getCandidates(bool isPredictMode, int n_best);
+    hazkey::commands::CandidatesResult getCandidates(bool isPredictMode,
+                                                     int n_best);
 
    private:
     bool retry_connect();

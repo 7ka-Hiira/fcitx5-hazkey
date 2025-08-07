@@ -462,7 +462,7 @@ void HazkeyServerConnector::completePrefix(int index) {
     return;
 }
 
-std::vector<HazkeyServerConnector::CandidateData>
+hazkey::commands::CandidatesResult
 HazkeyServerConnector::getCandidates(bool isPredictMode, int n_best) {
     hazkey::RequestEnvelope request;
     auto props = request.mutable_get_candidates();
@@ -472,27 +472,21 @@ HazkeyServerConnector::getCandidates(bool isPredictMode, int n_best) {
     if (response == std::nullopt) {
         FCITX_ERROR() << "Error while transacting setServerConfig().";
         std::vector<CandidateData> empty_vec;
-        return empty_vec;
+        return hazkey::commands::CandidatesResult();
     }
     auto responseVal = response.value();
     if (responseVal.status() != hazkey::SUCCESS) {
         FCITX_ERROR() << "getCandidates: " << "Server returned error: "
                       << responseVal.error_message();
         std::vector<CandidateData> empty_vec;
-        return empty_vec;
+        return hazkey::commands::CandidatesResult();
     }
     // TODO: Error handling when response has no candidate
     // if (responseVal..has_candidates()) {
     //     FCITX_ERROR() << "getCandidates: "
     //                   << "Server returned unexpected response";
     //     std::vector<CandidateData> empty_vec;
-    //     return empty_vec;
+    //     return hazkey::commands::CandidatesResult();
     // }
-    std::vector<CandidateData> candidates;
-    for (const auto& item : responseVal.candidates().candidates()) {
-        CandidateData candidate =
-            CandidateData(item.text(), item.sub_hiragana(), item.live_compat());
-        candidates.push_back(candidate);
-    }
-    return candidates;
+    return responseVal.candidates();
 }

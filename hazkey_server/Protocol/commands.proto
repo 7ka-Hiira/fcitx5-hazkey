@@ -71,9 +71,8 @@ message CandidatesResult {
     message Candidate {
         string text = 1;
         string sub_hiragana = 2;
-        bool live_compat = 3;
     }
 
     repeated Candidate candidates = 1;
-    string live_text = 2;  // unused
+    string live_text = 2;
 }

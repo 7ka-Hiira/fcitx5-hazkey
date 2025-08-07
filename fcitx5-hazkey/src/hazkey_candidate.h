@@ -6,8 +6,9 @@
 #include <fcitx/text.h>
 
 #include <string>
-// #include "hazkey_state.h"
-#include "hazkey_server_connector.h"
+#include <vector>
+
+#include "protocol/commands.pb.h"
 
 namespace fcitx {
 
@@ -25,12 +26,12 @@ const KeyList defaultSelectionKeys = {
 class HazkeyCandidateWord : public CandidateWord {
    public:
     HazkeyCandidateWord(const int index,
-                        const HazkeyServerConnector::CandidateData data)
-        : CandidateWord(Text(data.candidateText)),
+                        const hazkey::commands::CandidatesResult_Candidate data)
+        : CandidateWord(Text(data.text())),
           index_(index),
-          candidate_(std::move(data.candidateText)),
-          hiragana_(std::move(data.subHiragana)) {
-        setText(Text(data.candidateText));
+          candidate_(std::move(data.text())),
+          hiragana_(std::move(data.sub_hiragana())) {
+        setText(Text(data.text()));
     }
 
     // called when the candidate is selected (by pointing device?)
@@ -53,8 +54,9 @@ class HazkeyCandidateWord : public CandidateWord {
 
 class HazkeyCandidateList : public CommonCandidateList {
    public:
-    HazkeyCandidateList(
-        std::vector<HazkeyServerConnector::CandidateData> candidates);
+    HazkeyCandidateList(google::protobuf::RepeatedPtrField<
+                        hazkey::commands::CandidatesResult_Candidate>
+                            candidates);
 
     // return the direction of the candidate list
     // currently always vertical

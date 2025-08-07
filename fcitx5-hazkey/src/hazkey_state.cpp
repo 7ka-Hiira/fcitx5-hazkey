@@ -9,6 +9,7 @@
 #include "hazkey_candidate.h"
 #include "hazkey_engine.h"
 #include "hazkey_server_connector.h"
+#include "protocol/commands.pb.h"
 
 namespace fcitx {
 
@@ -376,30 +377,21 @@ void HazkeyState::showCandidateList(showCandidateMode mode, int nBest) {
 
     bool enabledPredictMode = mode == showCandidateMode::PredictWithLivePreedit;
 
-    std::optional<std::string> livePreedit = std::nullopt;
-
-    auto candidates =
+    auto response =
         engine_->server().getCandidates(enabledPredictMode, nBest);
 
-    // search live text compatible candidate
-    for (auto candidate : candidates) {
-        if (candidate.liveCompat) {
-            livePreedit = candidate.candidateText;
-            break;
-        }
-    }
-
     auto candidateList =
-        std::make_unique<HazkeyCandidateList>(std::move(candidates));
+        std::make_unique<HazkeyCandidateList>(std::move(response.candidates()));
 
     candidateList->setSelectionKey(defaultSelectionKeys);
 
     ic_->inputPanel().reset();
 
-    if (livePreedit != std::nullopt) {
+    // TODO: check live preedit config
+    if (!response.live_text().empty()) {
         // preedit conversion is enabled and conversion result is found
         // show preedit conversion result
-        preedit_.setSimplePreedit(livePreedit.value());
+        preedit_.setSimplePreedit(response.live_text());
     } else {
         // preedit conversion is disabled or conversion result is not
         // available show hiragana preedit

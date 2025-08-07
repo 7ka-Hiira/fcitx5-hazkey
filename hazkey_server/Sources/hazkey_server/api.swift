@@ -304,12 +304,12 @@ func getCandidates(isPredictMode: Bool = false, nBest: Int = 9) -> Hazkey_Respon
       candidate.subHiragana = ""
     }
 
-    candidate.liveCompat = (c.rubyCount == hiraganaPreedit.count)
+    if candidatesResult.liveText.isEmpty && c.rubyCount == hiraganaPreedit.count {
+      candidatesResult.liveText = c.text
+    }
 
     return candidate
   }
-
-  candidatesResult.liveText = ""  // unimplemented
 
   return Hazkey_ResponseEnvelope.with {
     $0.status = .success

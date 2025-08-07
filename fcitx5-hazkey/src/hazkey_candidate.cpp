@@ -1,6 +1,8 @@
 #include "hazkey_candidate.h"
 
-#include "hazkey_server_connector.h"
+#include <vector>
+
+#include "protocol/commands.pb.h"
 
 namespace fcitx {
 
@@ -22,11 +24,15 @@ void HazkeyCandidateWord::select(InputContext* ic) const {
 /// CandidateList
 
 HazkeyCandidateList::HazkeyCandidateList(
-    std::vector<HazkeyServerConnector::CandidateData> candidates)
+    const google::protobuf::RepeatedPtrField<
+        ::hazkey::commands::CandidatesResult_Candidate>
+        candidates)
     : CommonCandidateList() {
-    for (size_t i = 0; i < candidates.size(); i++) {
-        HazkeyServerConnector::CandidateData candidate = candidates[i];
+    // CandidateWord needs to know their own index
+    int i = 0;
+    for (const auto &candidate: candidates) {
         append(std::make_unique<HazkeyCandidateWord>(i, candidate));
+        i++;
     }
 }
 
