@@ -19,29 +19,13 @@ extension ComposingText {
   }
 
   func toAlphabet(_ fullwidth: Bool) -> String {
-    var beforeCharacter: Character?
-    // reverse to process "っ" correctly
-    // reverse back to original order
-    let romaji = self.input.reversed().map {
-      // convert symbol first because applyingTransform doesn't work for them
-      var character = symbolJaToEn(
-        character: symbolHalfwidthToFullwidth(
-          character: symbolJaToEn(character: $0.character, reverse: false), reverse: fullwidth),
-        reverse: false)
-      switch character {
-      case "ん":
-        character = "n"
-      case "っ":
-        if let beforeCharacter = beforeCharacter {
-          character = beforeCharacter
-        }
-      default:
-        break
+    let romaji = self.input.compactMap {
+      if case let .character(character) = $0.piece {
+        return character
       }
-      beforeCharacter = character
-      return String(character)
-    }.reversed().joined()
-    return romaji.applyingTransform(.fullwidthToHalfwidth, reverse: fullwidth) ?? ""
+      return nil
+    }
+    return String(romaji).applyingTransform(.fullwidthToHalfwidth, reverse: fullwidth) ?? ""
   }
 }
 
@@ -58,72 +42,5 @@ func cycleAlphabetCase(_ alphabet: String, preedit: String) -> String {
     return alphabet
   } else {
     return alphabet.lowercased()
-  }
-}
-
-func symbolJaToEn(character: Character, reverse: Bool) -> Character {
-  let h2z: [Character: Character] = [
-    "。": "．",
-    "、": "，",
-    "・": "／",
-    "「": "［",
-    "」": "］",
-    "￥": "＼",
-    "｡": ".",
-    "､": ",",
-    "･": "/",
-    "｢": "[",
-    "｣": "]",
-    "¥": "\\",
-  ]
-  if reverse {
-    let z2h = Dictionary(uniqueKeysWithValues: h2z.map { ($1, $0) })
-    return z2h[character] ?? character
-  } else {
-    return h2z[character] ?? character
-  }
-}
-
-func symbolHalfwidthToFullwidth(character: Character, reverse: Bool) -> Character {
-  let h2z: [Character: Character] = [
-    "!": "！",
-    "\"": "”",
-    "#": "＃",
-    "$": "＄",
-    "%": "％",
-    "&": "＆",
-    "'": "’",
-    "(": "（",
-    ")": "）",
-    "=": "＝",
-    "~": "〜",
-    "|": "｜",
-    "`": "｀",
-    "{": "『",
-    "+": "＋",
-    "*": "＊",
-    "}": "』",
-    "<": "＜",
-    ">": "＞",
-    "?": "？",
-    "_": "＿",
-    "-": "ー",
-    "^": "＾",
-    "\\": "＼",
-    "¥": "￥",
-    "@": "＠",
-    "[": "「",
-    ";": "；",
-    ":": "：",
-    "]": "」",
-    "/": "・",
-    ",": "、",
-    ".": "。",
-  ]
-  if reverse {
-    let z2h = Dictionary(uniqueKeysWithValues: h2z.map { ($1, $0) })
-    return z2h[character] ?? character
-  } else {
-    return h2z[character] ?? character
   }
 }
