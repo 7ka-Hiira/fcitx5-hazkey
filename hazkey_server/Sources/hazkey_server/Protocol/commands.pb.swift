@@ -644,7 +644,7 @@ extension Hazkey_Commands_GetCandidates: SwiftProtobuf.Message, SwiftProtobuf._M
 extension Hazkey_Commands_Text: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   static let protoMessageName: String = _protobuf_package + ".Text"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    3: .same(proto: "text"),
+    1: .same(proto: "text"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -653,7 +653,7 @@ extension Hazkey_Commands_Text: SwiftProtobuf.Message, SwiftProtobuf._MessageImp
       // allocates stack space for every case branch when no optimizations are
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
-      case 3: try { try decoder.decodeSingularStringField(value: &self.text) }()
+      case 1: try { try decoder.decodeSingularStringField(value: &self.text) }()
       default: break
       }
     }
@@ -661,7 +661,7 @@ extension Hazkey_Commands_Text: SwiftProtobuf.Message, SwiftProtobuf._MessageImp
 
   func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
     if !self.text.isEmpty {
-      try visitor.visitSingularStringField(value: self.text, fieldNumber: 3)
+      try visitor.visitSingularStringField(value: self.text, fieldNumber: 1)
     }
     try unknownFields.traverse(visitor: &visitor)
   }

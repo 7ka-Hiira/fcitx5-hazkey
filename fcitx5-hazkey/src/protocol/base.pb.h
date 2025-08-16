@@ -31,6 +31,7 @@
 #include "google/protobuf/generated_enum_reflection.h"
 #include "google/protobuf/unknown_field_set.h"
 #include "commands.pb.h"
+#include "config.pb.h"
 // @@protoc_insertion_point(includes)
 
 // Must be included last.
@@ -76,8 +77,9 @@ internal::EnumTraitsT<::hazkey::StatusCode_internal_data_>
 
 namespace hazkey {
 enum StatusCode : int {
-  SUCCESS = 0,
-  FAILED = 1,
+  UNSPECIFIED = 0,
+  SUCCESS = 1,
+  FAILED = 2,
   StatusCode_INT_MIN_SENTINEL_DO_NOT_USE_ =
       ::std::numeric_limits<::int32_t>::min(),
   StatusCode_INT_MAX_SENTINEL_DO_NOT_USE_ =
@@ -88,11 +90,11 @@ extern const uint32_t StatusCode_internal_data_[];
 inline constexpr StatusCode StatusCode_MIN =
     static_cast<StatusCode>(0);
 inline constexpr StatusCode StatusCode_MAX =
-    static_cast<StatusCode>(1);
+    static_cast<StatusCode>(2);
 inline bool StatusCode_IsValid(int value) {
-  return 0 <= value && value <= 1;
+  return 0 <= value && value <= 2;
 }
-inline constexpr int StatusCode_ARRAYSIZE = 1 + 1;
+inline constexpr int StatusCode_ARRAYSIZE = 2 + 1;
 const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL StatusCode_descriptor();
 template <typename T>
 const ::std::string& StatusCode_Name(T value) {
@@ -103,7 +105,7 @@ const ::std::string& StatusCode_Name(T value) {
 }
 template <>
 inline const ::std::string& StatusCode_Name(StatusCode value) {
-  return ::google::protobuf::internal::NameOfDenseEnum<StatusCode_descriptor, 0, 1>(
+  return ::google::protobuf::internal::NameOfDenseEnum<StatusCode_descriptor, 0, 2>(
       static_cast<int>(value));
 }
 inline bool StatusCode_Parse(
@@ -115,449 +117,6 @@ inline bool StatusCode_Parse(
 // ===================================================================
 
 
-// -------------------------------------------------------------------
-
-class RequestEnvelope final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:hazkey.RequestEnvelope) */ {
- public:
-  inline RequestEnvelope() : RequestEnvelope(nullptr) {}
-  ~RequestEnvelope() PROTOBUF_FINAL;
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(RequestEnvelope* PROTOBUF_NONNULL msg, std::destroying_delete_t) {
-    SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(RequestEnvelope));
-  }
-#endif
-
-  template <typename = void>
-  explicit PROTOBUF_CONSTEXPR RequestEnvelope(::google::protobuf::internal::ConstantInitialized);
-
-  inline RequestEnvelope(const RequestEnvelope& from) : RequestEnvelope(nullptr, from) {}
-  inline RequestEnvelope(RequestEnvelope&& from) noexcept
-      : RequestEnvelope(nullptr, ::std::move(from)) {}
-  inline RequestEnvelope& operator=(const RequestEnvelope& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline RequestEnvelope& operator=(RequestEnvelope&& from) noexcept {
-    if (this == &from) return *this;
-    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const RequestEnvelope& default_instance() {
-    return *reinterpret_cast<const RequestEnvelope*>(
-        &_RequestEnvelope_default_instance_);
-  }
-  enum PayloadCase {
-    kNewComposingText = 1,
-    kSetConfig = 2,
-    kSetContext = 3,
-    kInputChar = 4,
-    kMoveCursor = 5,
-    kPrefixComplete = 6,
-    kDeleteLeft = 7,
-    kDeleteRight = 8,
-    kGetComposingString = 9,
-    kGetHiraganaWithCursor = 10,
-    kGetCandidates = 11,
-    PAYLOAD_NOT_SET = 0,
-  };
-  static constexpr int kIndexInFileMessages = 0;
-  friend void swap(RequestEnvelope& a, RequestEnvelope& b) { a.Swap(&b); }
-  inline void Swap(RequestEnvelope* PROTOBUF_NONNULL other) {
-    if (other == this) return;
-    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(RequestEnvelope* PROTOBUF_NONNULL other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  RequestEnvelope* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
-    return ::google::protobuf::Message::DefaultConstruct<RequestEnvelope>(arena);
-  }
-  using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const RequestEnvelope& from);
-  using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom(const RequestEnvelope& from) { RequestEnvelope::MergeImpl(*this, from); }
-
-  private:
-  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
-                        const ::google::protobuf::MessageLite& from_msg);
-
-  public:
-  bool IsInitialized() const {
-    return true;
-  }
-  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-  #if defined(PROTOBUF_CUSTOM_VTABLE)
-  private:
-  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
-      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
-      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
-
-  public:
-  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
-      ::uint8_t* PROTOBUF_NONNULL target,
-      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
-    return _InternalSerialize(*this, target, stream);
-  }
-  #else   // PROTOBUF_CUSTOM_VTABLE
-  ::size_t ByteSizeLong() const final;
-  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
-      ::uint8_t* PROTOBUF_NONNULL target,
-      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
-  #endif  // PROTOBUF_CUSTOM_VTABLE
-  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
-
-  private:
-  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  static void SharedDtor(MessageLite& self);
-  void InternalSwap(RequestEnvelope* PROTOBUF_NONNULL other);
- private:
-  template <typename T>
-  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "hazkey.RequestEnvelope"; }
-
- protected:
-  explicit RequestEnvelope(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  RequestEnvelope(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const RequestEnvelope& from);
-  RequestEnvelope(
-      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, RequestEnvelope&& from) noexcept
-      : RequestEnvelope(arena) {
-    *this = ::std::move(from);
-  }
-  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
-  static void* PROTOBUF_NONNULL PlacementNew_(
-      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
-      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  static constexpr auto InternalNewImpl_();
-
- public:
-  static constexpr auto InternalGenerateClassData_();
-
-  ::google::protobuf::Metadata GetMetadata() const;
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-  enum : int {
-    kNewComposingTextFieldNumber = 1,
-    kSetConfigFieldNumber = 2,
-    kSetContextFieldNumber = 3,
-    kInputCharFieldNumber = 4,
-    kMoveCursorFieldNumber = 5,
-    kPrefixCompleteFieldNumber = 6,
-    kDeleteLeftFieldNumber = 7,
-    kDeleteRightFieldNumber = 8,
-    kGetComposingStringFieldNumber = 9,
-    kGetHiraganaWithCursorFieldNumber = 10,
-    kGetCandidatesFieldNumber = 11,
-  };
-  // .hazkey.commands.NewComposingText new_composing_text = 1;
-  bool has_new_composing_text() const;
-  private:
-  bool _internal_has_new_composing_text() const;
-
-  public:
-  void clear_new_composing_text() ;
-  const ::hazkey::commands::NewComposingText& new_composing_text() const;
-  [[nodiscard]] ::hazkey::commands::NewComposingText* PROTOBUF_NULLABLE release_new_composing_text();
-  ::hazkey::commands::NewComposingText* PROTOBUF_NONNULL mutable_new_composing_text();
-  void set_allocated_new_composing_text(::hazkey::commands::NewComposingText* PROTOBUF_NULLABLE value);
-  void unsafe_arena_set_allocated_new_composing_text(::hazkey::commands::NewComposingText* PROTOBUF_NULLABLE value);
-  ::hazkey::commands::NewComposingText* PROTOBUF_NULLABLE unsafe_arena_release_new_composing_text();
-
-  private:
-  const ::hazkey::commands::NewComposingText& _internal_new_composing_text() const;
-  ::hazkey::commands::NewComposingText* PROTOBUF_NONNULL _internal_mutable_new_composing_text();
-
-  public:
-  // .hazkey.commands.SetConfig set_config = 2;
-  bool has_set_config() const;
-  private:
-  bool _internal_has_set_config() const;
-
-  public:
-  void clear_set_config() ;
-  const ::hazkey::commands::SetConfig& set_config() const;
-  [[nodiscard]] ::hazkey::commands::SetConfig* PROTOBUF_NULLABLE release_set_config();
-  ::hazkey::commands::SetConfig* PROTOBUF_NONNULL mutable_set_config();
-  void set_allocated_set_config(::hazkey::commands::SetConfig* PROTOBUF_NULLABLE value);
-  void unsafe_arena_set_allocated_set_config(::hazkey::commands::SetConfig* PROTOBUF_NULLABLE value);
-  ::hazkey::commands::SetConfig* PROTOBUF_NULLABLE unsafe_arena_release_set_config();
-
-  private:
-  const ::hazkey::commands::SetConfig& _internal_set_config() const;
-  ::hazkey::commands::SetConfig* PROTOBUF_NONNULL _internal_mutable_set_config();
-
-  public:
-  // .hazkey.commands.SetContext set_context = 3;
-  bool has_set_context() const;
-  private:
-  bool _internal_has_set_context() const;
-
-  public:
-  void clear_set_context() ;
-  const ::hazkey::commands::SetContext& set_context() const;
-  [[nodiscard]] ::hazkey::commands::SetContext* PROTOBUF_NULLABLE release_set_context();
-  ::hazkey::commands::SetContext* PROTOBUF_NONNULL mutable_set_context();
-  void set_allocated_set_context(::hazkey::commands::SetContext* PROTOBUF_NULLABLE value);
-  void unsafe_arena_set_allocated_set_context(::hazkey::commands::SetContext* PROTOBUF_NULLABLE value);
-  ::hazkey::commands::SetContext* PROTOBUF_NULLABLE unsafe_arena_release_set_context();
-
-  private:
-  const ::hazkey::commands::SetContext& _internal_set_context() const;
-  ::hazkey::commands::SetContext* PROTOBUF_NONNULL _internal_mutable_set_context();
-
-  public:
-  // .hazkey.commands.InputChar input_char = 4;
-  bool has_input_char() const;
-  private:
-  bool _internal_has_input_char() const;
-
-  public:
-  void clear_input_char() ;
-  const ::hazkey::commands::InputChar& input_char() const;
-  [[nodiscard]] ::hazkey::commands::InputChar* PROTOBUF_NULLABLE release_input_char();
-  ::hazkey::commands::InputChar* PROTOBUF_NONNULL mutable_input_char();
-  void set_allocated_input_char(::hazkey::commands::InputChar* PROTOBUF_NULLABLE value);
-  void unsafe_arena_set_allocated_input_char(::hazkey::commands::InputChar* PROTOBUF_NULLABLE value);
-  ::hazkey::commands::InputChar* PROTOBUF_NULLABLE unsafe_arena_release_input_char();
-
-  private:
-  const ::hazkey::commands::InputChar& _internal_input_char() const;
-  ::hazkey::commands::InputChar* PROTOBUF_NONNULL _internal_mutable_input_char();
-
-  public:
-  // .hazkey.commands.MoveCursor move_cursor = 5;
-  bool has_move_cursor() const;
-  private:
-  bool _internal_has_move_cursor() const;
-
-  public:
-  void clear_move_cursor() ;
-  const ::hazkey::commands::MoveCursor& move_cursor() const;
-  [[nodiscard]] ::hazkey::commands::MoveCursor* PROTOBUF_NULLABLE release_move_cursor();
-  ::hazkey::commands::MoveCursor* PROTOBUF_NONNULL mutable_move_cursor();
-  void set_allocated_move_cursor(::hazkey::commands::MoveCursor* PROTOBUF_NULLABLE value);
-  void unsafe_arena_set_allocated_move_cursor(::hazkey::commands::MoveCursor* PROTOBUF_NULLABLE value);
-  ::hazkey::commands::MoveCursor* PROTOBUF_NULLABLE unsafe_arena_release_move_cursor();
-
-  private:
-  const ::hazkey::commands::MoveCursor& _internal_move_cursor() const;
-  ::hazkey::commands::MoveCursor* PROTOBUF_NONNULL _internal_mutable_move_cursor();
-
-  public:
-  // .hazkey.commands.PrefixComplete prefix_complete = 6;
-  bool has_prefix_complete() const;
-  private:
-  bool _internal_has_prefix_complete() const;
-
-  public:
-  void clear_prefix_complete() ;
-  const ::hazkey::commands::PrefixComplete& prefix_complete() const;
-  [[nodiscard]] ::hazkey::commands::PrefixComplete* PROTOBUF_NULLABLE release_prefix_complete();
-  ::hazkey::commands::PrefixComplete* PROTOBUF_NONNULL mutable_prefix_complete();
-  void set_allocated_prefix_complete(::hazkey::commands::PrefixComplete* PROTOBUF_NULLABLE value);
-  void unsafe_arena_set_allocated_prefix_complete(::hazkey::commands::PrefixComplete* PROTOBUF_NULLABLE value);
-  ::hazkey::commands::PrefixComplete* PROTOBUF_NULLABLE unsafe_arena_release_prefix_complete();
-
-  private:
-  const ::hazkey::commands::PrefixComplete& _internal_prefix_complete() const;
-  ::hazkey::commands::PrefixComplete* PROTOBUF_NONNULL _internal_mutable_prefix_complete();
-
-  public:
-  // .hazkey.commands.DeleteLeft delete_left = 7;
-  bool has_delete_left() const;
-  private:
-  bool _internal_has_delete_left() const;
-
-  public:
-  void clear_delete_left() ;
-  const ::hazkey::commands::DeleteLeft& delete_left() const;
-  [[nodiscard]] ::hazkey::commands::DeleteLeft* PROTOBUF_NULLABLE release_delete_left();
-  ::hazkey::commands::DeleteLeft* PROTOBUF_NONNULL mutable_delete_left();
-  void set_allocated_delete_left(::hazkey::commands::DeleteLeft* PROTOBUF_NULLABLE value);
-  void unsafe_arena_set_allocated_delete_left(::hazkey::commands::DeleteLeft* PROTOBUF_NULLABLE value);
-  ::hazkey::commands::DeleteLeft* PROTOBUF_NULLABLE unsafe_arena_release_delete_left();
-
-  private:
-  const ::hazkey::commands::DeleteLeft& _internal_delete_left() const;
-  ::hazkey::commands::DeleteLeft* PROTOBUF_NONNULL _internal_mutable_delete_left();
-
-  public:
-  // .hazkey.commands.DeleteRight delete_right = 8;
-  bool has_delete_right() const;
-  private:
-  bool _internal_has_delete_right() const;
-
-  public:
-  void clear_delete_right() ;
-  const ::hazkey::commands::DeleteRight& delete_right() const;
-  [[nodiscard]] ::hazkey::commands::DeleteRight* PROTOBUF_NULLABLE release_delete_right();
-  ::hazkey::commands::DeleteRight* PROTOBUF_NONNULL mutable_delete_right();
-  void set_allocated_delete_right(::hazkey::commands::DeleteRight* PROTOBUF_NULLABLE value);
-  void unsafe_arena_set_allocated_delete_right(::hazkey::commands::DeleteRight* PROTOBUF_NULLABLE value);
-  ::hazkey::commands::DeleteRight* PROTOBUF_NULLABLE unsafe_arena_release_delete_right();
-
-  private:
-  const ::hazkey::commands::DeleteRight& _internal_delete_right() const;
-  ::hazkey::commands::DeleteRight* PROTOBUF_NONNULL _internal_mutable_delete_right();
-
-  public:
-  // .hazkey.commands.GetComposingString get_composing_string = 9;
-  bool has_get_composing_string() const;
-  private:
-  bool _internal_has_get_composing_string() const;
-
-  public:
-  void clear_get_composing_string() ;
-  const ::hazkey::commands::GetComposingString& get_composing_string() const;
-  [[nodiscard]] ::hazkey::commands::GetComposingString* PROTOBUF_NULLABLE release_get_composing_string();
-  ::hazkey::commands::GetComposingString* PROTOBUF_NONNULL mutable_get_composing_string();
-  void set_allocated_get_composing_string(::hazkey::commands::GetComposingString* PROTOBUF_NULLABLE value);
-  void unsafe_arena_set_allocated_get_composing_string(::hazkey::commands::GetComposingString* PROTOBUF_NULLABLE value);
-  ::hazkey::commands::GetComposingString* PROTOBUF_NULLABLE unsafe_arena_release_get_composing_string();
-
-  private:
-  const ::hazkey::commands::GetComposingString& _internal_get_composing_string() const;
-  ::hazkey::commands::GetComposingString* PROTOBUF_NONNULL _internal_mutable_get_composing_string();
-
-  public:
-  // .hazkey.commands.GetHiraganaWithCursor get_hiragana_with_cursor = 10;
-  bool has_get_hiragana_with_cursor() const;
-  private:
-  bool _internal_has_get_hiragana_with_cursor() const;
-
-  public:
-  void clear_get_hiragana_with_cursor() ;
-  const ::hazkey::commands::GetHiraganaWithCursor& get_hiragana_with_cursor() const;
-  [[nodiscard]] ::hazkey::commands::GetHiraganaWithCursor* PROTOBUF_NULLABLE release_get_hiragana_with_cursor();
-  ::hazkey::commands::GetHiraganaWithCursor* PROTOBUF_NONNULL mutable_get_hiragana_with_cursor();
-  void set_allocated_get_hiragana_with_cursor(::hazkey::commands::GetHiraganaWithCursor* PROTOBUF_NULLABLE value);
-  void unsafe_arena_set_allocated_get_hiragana_with_cursor(::hazkey::commands::GetHiraganaWithCursor* PROTOBUF_NULLABLE value);
-  ::hazkey::commands::GetHiraganaWithCursor* PROTOBUF_NULLABLE unsafe_arena_release_get_hiragana_with_cursor();
-
-  private:
-  const ::hazkey::commands::GetHiraganaWithCursor& _internal_get_hiragana_with_cursor() const;
-  ::hazkey::commands::GetHiraganaWithCursor* PROTOBUF_NONNULL _internal_mutable_get_hiragana_with_cursor();
-
-  public:
-  // .hazkey.commands.GetCandidates get_candidates = 11;
-  bool has_get_candidates() const;
-  private:
-  bool _internal_has_get_candidates() const;
-
-  public:
-  void clear_get_candidates() ;
-  const ::hazkey::commands::GetCandidates& get_candidates() const;
-  [[nodiscard]] ::hazkey::commands::GetCandidates* PROTOBUF_NULLABLE release_get_candidates();
-  ::hazkey::commands::GetCandidates* PROTOBUF_NONNULL mutable_get_candidates();
-  void set_allocated_get_candidates(::hazkey::commands::GetCandidates* PROTOBUF_NULLABLE value);
-  void unsafe_arena_set_allocated_get_candidates(::hazkey::commands::GetCandidates* PROTOBUF_NULLABLE value);
-  ::hazkey::commands::GetCandidates* PROTOBUF_NULLABLE unsafe_arena_release_get_candidates();
-
-  private:
-  const ::hazkey::commands::GetCandidates& _internal_get_candidates() const;
-  ::hazkey::commands::GetCandidates* PROTOBUF_NONNULL _internal_mutable_get_candidates();
-
-  public:
-  void clear_payload();
-  PayloadCase payload_case() const;
-  // @@protoc_insertion_point(class_scope:hazkey.RequestEnvelope)
- private:
-  class _Internal;
-  void set_has_new_composing_text();
-  void set_has_set_config();
-  void set_has_set_context();
-  void set_has_input_char();
-  void set_has_move_cursor();
-  void set_has_prefix_complete();
-  void set_has_delete_left();
-  void set_has_delete_right();
-  void set_has_get_composing_string();
-  void set_has_get_hiragana_with_cursor();
-  void set_has_get_candidates();
-  inline bool has_payload() const;
-  inline void clear_has_payload();
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<0, 11,
-                                   11, 0,
-                                   2>
-      _table_;
-
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-    inline explicit Impl_(
-        ::google::protobuf::internal::InternalVisibility visibility,
-        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-    inline explicit Impl_(
-        ::google::protobuf::internal::InternalVisibility visibility,
-        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
-        const RequestEnvelope& from_msg);
-    union PayloadUnion {
-      constexpr PayloadUnion() : _constinit_{} {}
-      ::google::protobuf::internal::ConstantInitialized _constinit_;
-      ::google::protobuf::Message* PROTOBUF_NULLABLE new_composing_text_;
-      ::google::protobuf::Message* PROTOBUF_NULLABLE set_config_;
-      ::google::protobuf::Message* PROTOBUF_NULLABLE set_context_;
-      ::google::protobuf::Message* PROTOBUF_NULLABLE input_char_;
-      ::google::protobuf::Message* PROTOBUF_NULLABLE move_cursor_;
-      ::google::protobuf::Message* PROTOBUF_NULLABLE prefix_complete_;
-      ::google::protobuf::Message* PROTOBUF_NULLABLE delete_left_;
-      ::google::protobuf::Message* PROTOBUF_NULLABLE delete_right_;
-      ::google::protobuf::Message* PROTOBUF_NULLABLE get_composing_string_;
-      ::google::protobuf::Message* PROTOBUF_NULLABLE get_hiragana_with_cursor_;
-      ::google::protobuf::Message* PROTOBUF_NULLABLE get_candidates_;
-    } payload_;
-    ::google::protobuf::internal::CachedSize _cached_size_;
-    ::uint32_t _oneof_case_[1];
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_base_2eproto;
-};
-
-extern const ::google::protobuf::internal::ClassDataFull RequestEnvelope_class_data_;
 // -------------------------------------------------------------------
 
 class ResponseEnvelope final : public ::google::protobuf::Message
@@ -821,6 +380,518 @@ class ResponseEnvelope final : public ::google::protobuf::Message
 };
 
 extern const ::google::protobuf::internal::ClassDataFull ResponseEnvelope_class_data_;
+// -------------------------------------------------------------------
+
+class RequestEnvelope final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:hazkey.RequestEnvelope) */ {
+ public:
+  inline RequestEnvelope() : RequestEnvelope(nullptr) {}
+  ~RequestEnvelope() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(RequestEnvelope* PROTOBUF_NONNULL msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(RequestEnvelope));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR RequestEnvelope(::google::protobuf::internal::ConstantInitialized);
+
+  inline RequestEnvelope(const RequestEnvelope& from) : RequestEnvelope(nullptr, from) {}
+  inline RequestEnvelope(RequestEnvelope&& from) noexcept
+      : RequestEnvelope(nullptr, ::std::move(from)) {}
+  inline RequestEnvelope& operator=(const RequestEnvelope& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline RequestEnvelope& operator=(RequestEnvelope&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const RequestEnvelope& default_instance() {
+    return *reinterpret_cast<const RequestEnvelope*>(
+        &_RequestEnvelope_default_instance_);
+  }
+  enum PayloadCase {
+    kNewComposingText = 1,
+    kSetContext = 2,
+    kInputChar = 3,
+    kMoveCursor = 4,
+    kPrefixComplete = 5,
+    kDeleteLeft = 6,
+    kDeleteRight = 7,
+    kGetComposingString = 8,
+    kGetHiraganaWithCursor = 9,
+    kGetCandidates = 10,
+    kGetCurrentConfig = 100,
+    kSetConfig = 101,
+    kGetDefaultConfig = 102,
+    kClearAllHistory = 103,
+    PAYLOAD_NOT_SET = 0,
+  };
+  static constexpr int kIndexInFileMessages = 0;
+  friend void swap(RequestEnvelope& a, RequestEnvelope& b) { a.Swap(&b); }
+  inline void Swap(RequestEnvelope* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(RequestEnvelope* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  RequestEnvelope* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<RequestEnvelope>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const RequestEnvelope& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const RequestEnvelope& from) { RequestEnvelope::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(RequestEnvelope* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "hazkey.RequestEnvelope"; }
+
+ protected:
+  explicit RequestEnvelope(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  RequestEnvelope(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const RequestEnvelope& from);
+  RequestEnvelope(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, RequestEnvelope&& from) noexcept
+      : RequestEnvelope(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kNewComposingTextFieldNumber = 1,
+    kSetContextFieldNumber = 2,
+    kInputCharFieldNumber = 3,
+    kMoveCursorFieldNumber = 4,
+    kPrefixCompleteFieldNumber = 5,
+    kDeleteLeftFieldNumber = 6,
+    kDeleteRightFieldNumber = 7,
+    kGetComposingStringFieldNumber = 8,
+    kGetHiraganaWithCursorFieldNumber = 9,
+    kGetCandidatesFieldNumber = 10,
+    kGetCurrentConfigFieldNumber = 100,
+    kSetConfigFieldNumber = 101,
+    kGetDefaultConfigFieldNumber = 102,
+    kClearAllHistoryFieldNumber = 103,
+  };
+  // .hazkey.commands.NewComposingText new_composing_text = 1;
+  bool has_new_composing_text() const;
+  private:
+  bool _internal_has_new_composing_text() const;
+
+  public:
+  void clear_new_composing_text() ;
+  const ::hazkey::commands::NewComposingText& new_composing_text() const;
+  [[nodiscard]] ::hazkey::commands::NewComposingText* PROTOBUF_NULLABLE release_new_composing_text();
+  ::hazkey::commands::NewComposingText* PROTOBUF_NONNULL mutable_new_composing_text();
+  void set_allocated_new_composing_text(::hazkey::commands::NewComposingText* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_new_composing_text(::hazkey::commands::NewComposingText* PROTOBUF_NULLABLE value);
+  ::hazkey::commands::NewComposingText* PROTOBUF_NULLABLE unsafe_arena_release_new_composing_text();
+
+  private:
+  const ::hazkey::commands::NewComposingText& _internal_new_composing_text() const;
+  ::hazkey::commands::NewComposingText* PROTOBUF_NONNULL _internal_mutable_new_composing_text();
+
+  public:
+  // .hazkey.commands.SetContext set_context = 2;
+  bool has_set_context() const;
+  private:
+  bool _internal_has_set_context() const;
+
+  public:
+  void clear_set_context() ;
+  const ::hazkey::commands::SetContext& set_context() const;
+  [[nodiscard]] ::hazkey::commands::SetContext* PROTOBUF_NULLABLE release_set_context();
+  ::hazkey::commands::SetContext* PROTOBUF_NONNULL mutable_set_context();
+  void set_allocated_set_context(::hazkey::commands::SetContext* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_set_context(::hazkey::commands::SetContext* PROTOBUF_NULLABLE value);
+  ::hazkey::commands::SetContext* PROTOBUF_NULLABLE unsafe_arena_release_set_context();
+
+  private:
+  const ::hazkey::commands::SetContext& _internal_set_context() const;
+  ::hazkey::commands::SetContext* PROTOBUF_NONNULL _internal_mutable_set_context();
+
+  public:
+  // .hazkey.commands.InputChar input_char = 3;
+  bool has_input_char() const;
+  private:
+  bool _internal_has_input_char() const;
+
+  public:
+  void clear_input_char() ;
+  const ::hazkey::commands::InputChar& input_char() const;
+  [[nodiscard]] ::hazkey::commands::InputChar* PROTOBUF_NULLABLE release_input_char();
+  ::hazkey::commands::InputChar* PROTOBUF_NONNULL mutable_input_char();
+  void set_allocated_input_char(::hazkey::commands::InputChar* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_input_char(::hazkey::commands::InputChar* PROTOBUF_NULLABLE value);
+  ::hazkey::commands::InputChar* PROTOBUF_NULLABLE unsafe_arena_release_input_char();
+
+  private:
+  const ::hazkey::commands::InputChar& _internal_input_char() const;
+  ::hazkey::commands::InputChar* PROTOBUF_NONNULL _internal_mutable_input_char();
+
+  public:
+  // .hazkey.commands.MoveCursor move_cursor = 4;
+  bool has_move_cursor() const;
+  private:
+  bool _internal_has_move_cursor() const;
+
+  public:
+  void clear_move_cursor() ;
+  const ::hazkey::commands::MoveCursor& move_cursor() const;
+  [[nodiscard]] ::hazkey::commands::MoveCursor* PROTOBUF_NULLABLE release_move_cursor();
+  ::hazkey::commands::MoveCursor* PROTOBUF_NONNULL mutable_move_cursor();
+  void set_allocated_move_cursor(::hazkey::commands::MoveCursor* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_move_cursor(::hazkey::commands::MoveCursor* PROTOBUF_NULLABLE value);
+  ::hazkey::commands::MoveCursor* PROTOBUF_NULLABLE unsafe_arena_release_move_cursor();
+
+  private:
+  const ::hazkey::commands::MoveCursor& _internal_move_cursor() const;
+  ::hazkey::commands::MoveCursor* PROTOBUF_NONNULL _internal_mutable_move_cursor();
+
+  public:
+  // .hazkey.commands.PrefixComplete prefix_complete = 5;
+  bool has_prefix_complete() const;
+  private:
+  bool _internal_has_prefix_complete() const;
+
+  public:
+  void clear_prefix_complete() ;
+  const ::hazkey::commands::PrefixComplete& prefix_complete() const;
+  [[nodiscard]] ::hazkey::commands::PrefixComplete* PROTOBUF_NULLABLE release_prefix_complete();
+  ::hazkey::commands::PrefixComplete* PROTOBUF_NONNULL mutable_prefix_complete();
+  void set_allocated_prefix_complete(::hazkey::commands::PrefixComplete* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_prefix_complete(::hazkey::commands::PrefixComplete* PROTOBUF_NULLABLE value);
+  ::hazkey::commands::PrefixComplete* PROTOBUF_NULLABLE unsafe_arena_release_prefix_complete();
+
+  private:
+  const ::hazkey::commands::PrefixComplete& _internal_prefix_complete() const;
+  ::hazkey::commands::PrefixComplete* PROTOBUF_NONNULL _internal_mutable_prefix_complete();
+
+  public:
+  // .hazkey.commands.DeleteLeft delete_left = 6;
+  bool has_delete_left() const;
+  private:
+  bool _internal_has_delete_left() const;
+
+  public:
+  void clear_delete_left() ;
+  const ::hazkey::commands::DeleteLeft& delete_left() const;
+  [[nodiscard]] ::hazkey::commands::DeleteLeft* PROTOBUF_NULLABLE release_delete_left();
+  ::hazkey::commands::DeleteLeft* PROTOBUF_NONNULL mutable_delete_left();
+  void set_allocated_delete_left(::hazkey::commands::DeleteLeft* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_delete_left(::hazkey::commands::DeleteLeft* PROTOBUF_NULLABLE value);
+  ::hazkey::commands::DeleteLeft* PROTOBUF_NULLABLE unsafe_arena_release_delete_left();
+
+  private:
+  const ::hazkey::commands::DeleteLeft& _internal_delete_left() const;
+  ::hazkey::commands::DeleteLeft* PROTOBUF_NONNULL _internal_mutable_delete_left();
+
+  public:
+  // .hazkey.commands.DeleteRight delete_right = 7;
+  bool has_delete_right() const;
+  private:
+  bool _internal_has_delete_right() const;
+
+  public:
+  void clear_delete_right() ;
+  const ::hazkey::commands::DeleteRight& delete_right() const;
+  [[nodiscard]] ::hazkey::commands::DeleteRight* PROTOBUF_NULLABLE release_delete_right();
+  ::hazkey::commands::DeleteRight* PROTOBUF_NONNULL mutable_delete_right();
+  void set_allocated_delete_right(::hazkey::commands::DeleteRight* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_delete_right(::hazkey::commands::DeleteRight* PROTOBUF_NULLABLE value);
+  ::hazkey::commands::DeleteRight* PROTOBUF_NULLABLE unsafe_arena_release_delete_right();
+
+  private:
+  const ::hazkey::commands::DeleteRight& _internal_delete_right() const;
+  ::hazkey::commands::DeleteRight* PROTOBUF_NONNULL _internal_mutable_delete_right();
+
+  public:
+  // .hazkey.commands.GetComposingString get_composing_string = 8;
+  bool has_get_composing_string() const;
+  private:
+  bool _internal_has_get_composing_string() const;
+
+  public:
+  void clear_get_composing_string() ;
+  const ::hazkey::commands::GetComposingString& get_composing_string() const;
+  [[nodiscard]] ::hazkey::commands::GetComposingString* PROTOBUF_NULLABLE release_get_composing_string();
+  ::hazkey::commands::GetComposingString* PROTOBUF_NONNULL mutable_get_composing_string();
+  void set_allocated_get_composing_string(::hazkey::commands::GetComposingString* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_get_composing_string(::hazkey::commands::GetComposingString* PROTOBUF_NULLABLE value);
+  ::hazkey::commands::GetComposingString* PROTOBUF_NULLABLE unsafe_arena_release_get_composing_string();
+
+  private:
+  const ::hazkey::commands::GetComposingString& _internal_get_composing_string() const;
+  ::hazkey::commands::GetComposingString* PROTOBUF_NONNULL _internal_mutable_get_composing_string();
+
+  public:
+  // .hazkey.commands.GetHiraganaWithCursor get_hiragana_with_cursor = 9;
+  bool has_get_hiragana_with_cursor() const;
+  private:
+  bool _internal_has_get_hiragana_with_cursor() const;
+
+  public:
+  void clear_get_hiragana_with_cursor() ;
+  const ::hazkey::commands::GetHiraganaWithCursor& get_hiragana_with_cursor() const;
+  [[nodiscard]] ::hazkey::commands::GetHiraganaWithCursor* PROTOBUF_NULLABLE release_get_hiragana_with_cursor();
+  ::hazkey::commands::GetHiraganaWithCursor* PROTOBUF_NONNULL mutable_get_hiragana_with_cursor();
+  void set_allocated_get_hiragana_with_cursor(::hazkey::commands::GetHiraganaWithCursor* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_get_hiragana_with_cursor(::hazkey::commands::GetHiraganaWithCursor* PROTOBUF_NULLABLE value);
+  ::hazkey::commands::GetHiraganaWithCursor* PROTOBUF_NULLABLE unsafe_arena_release_get_hiragana_with_cursor();
+
+  private:
+  const ::hazkey::commands::GetHiraganaWithCursor& _internal_get_hiragana_with_cursor() const;
+  ::hazkey::commands::GetHiraganaWithCursor* PROTOBUF_NONNULL _internal_mutable_get_hiragana_with_cursor();
+
+  public:
+  // .hazkey.commands.GetCandidates get_candidates = 10;
+  bool has_get_candidates() const;
+  private:
+  bool _internal_has_get_candidates() const;
+
+  public:
+  void clear_get_candidates() ;
+  const ::hazkey::commands::GetCandidates& get_candidates() const;
+  [[nodiscard]] ::hazkey::commands::GetCandidates* PROTOBUF_NULLABLE release_get_candidates();
+  ::hazkey::commands::GetCandidates* PROTOBUF_NONNULL mutable_get_candidates();
+  void set_allocated_get_candidates(::hazkey::commands::GetCandidates* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_get_candidates(::hazkey::commands::GetCandidates* PROTOBUF_NULLABLE value);
+  ::hazkey::commands::GetCandidates* PROTOBUF_NULLABLE unsafe_arena_release_get_candidates();
+
+  private:
+  const ::hazkey::commands::GetCandidates& _internal_get_candidates() const;
+  ::hazkey::commands::GetCandidates* PROTOBUF_NONNULL _internal_mutable_get_candidates();
+
+  public:
+  // .hazkey.config.getCurrentConfig get_current_config = 100;
+  bool has_get_current_config() const;
+  private:
+  bool _internal_has_get_current_config() const;
+
+  public:
+  void clear_get_current_config() ;
+  const ::hazkey::config::getCurrentConfig& get_current_config() const;
+  [[nodiscard]] ::hazkey::config::getCurrentConfig* PROTOBUF_NULLABLE release_get_current_config();
+  ::hazkey::config::getCurrentConfig* PROTOBUF_NONNULL mutable_get_current_config();
+  void set_allocated_get_current_config(::hazkey::config::getCurrentConfig* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_get_current_config(::hazkey::config::getCurrentConfig* PROTOBUF_NULLABLE value);
+  ::hazkey::config::getCurrentConfig* PROTOBUF_NULLABLE unsafe_arena_release_get_current_config();
+
+  private:
+  const ::hazkey::config::getCurrentConfig& _internal_get_current_config() const;
+  ::hazkey::config::getCurrentConfig* PROTOBUF_NONNULL _internal_mutable_get_current_config();
+
+  public:
+  // .hazkey.config.setConfig set_config = 101;
+  bool has_set_config() const;
+  private:
+  bool _internal_has_set_config() const;
+
+  public:
+  void clear_set_config() ;
+  const ::hazkey::config::setConfig& set_config() const;
+  [[nodiscard]] ::hazkey::config::setConfig* PROTOBUF_NULLABLE release_set_config();
+  ::hazkey::config::setConfig* PROTOBUF_NONNULL mutable_set_config();
+  void set_allocated_set_config(::hazkey::config::setConfig* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_set_config(::hazkey::config::setConfig* PROTOBUF_NULLABLE value);
+  ::hazkey::config::setConfig* PROTOBUF_NULLABLE unsafe_arena_release_set_config();
+
+  private:
+  const ::hazkey::config::setConfig& _internal_set_config() const;
+  ::hazkey::config::setConfig* PROTOBUF_NONNULL _internal_mutable_set_config();
+
+  public:
+  // .hazkey.config.getDefaultConfig get_default_config = 102;
+  bool has_get_default_config() const;
+  private:
+  bool _internal_has_get_default_config() const;
+
+  public:
+  void clear_get_default_config() ;
+  const ::hazkey::config::getDefaultConfig& get_default_config() const;
+  [[nodiscard]] ::hazkey::config::getDefaultConfig* PROTOBUF_NULLABLE release_get_default_config();
+  ::hazkey::config::getDefaultConfig* PROTOBUF_NONNULL mutable_get_default_config();
+  void set_allocated_get_default_config(::hazkey::config::getDefaultConfig* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_get_default_config(::hazkey::config::getDefaultConfig* PROTOBUF_NULLABLE value);
+  ::hazkey::config::getDefaultConfig* PROTOBUF_NULLABLE unsafe_arena_release_get_default_config();
+
+  private:
+  const ::hazkey::config::getDefaultConfig& _internal_get_default_config() const;
+  ::hazkey::config::getDefaultConfig* PROTOBUF_NONNULL _internal_mutable_get_default_config();
+
+  public:
+  // .hazkey.config.clearAllHistory clear_all_history = 103;
+  bool has_clear_all_history() const;
+  private:
+  bool _internal_has_clear_all_history() const;
+
+  public:
+  void clear_clear_all_history() ;
+  const ::hazkey::config::clearAllHistory& clear_all_history() const;
+  [[nodiscard]] ::hazkey::config::clearAllHistory* PROTOBUF_NULLABLE release_clear_all_history();
+  ::hazkey::config::clearAllHistory* PROTOBUF_NONNULL mutable_clear_all_history();
+  void set_allocated_clear_all_history(::hazkey::config::clearAllHistory* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_clear_all_history(::hazkey::config::clearAllHistory* PROTOBUF_NULLABLE value);
+  ::hazkey::config::clearAllHistory* PROTOBUF_NULLABLE unsafe_arena_release_clear_all_history();
+
+  private:
+  const ::hazkey::config::clearAllHistory& _internal_clear_all_history() const;
+  ::hazkey::config::clearAllHistory* PROTOBUF_NONNULL _internal_mutable_clear_all_history();
+
+  public:
+  void clear_payload();
+  PayloadCase payload_case() const;
+  // @@protoc_insertion_point(class_scope:hazkey.RequestEnvelope)
+ private:
+  class _Internal;
+  void set_has_new_composing_text();
+  void set_has_set_context();
+  void set_has_input_char();
+  void set_has_move_cursor();
+  void set_has_prefix_complete();
+  void set_has_delete_left();
+  void set_has_delete_right();
+  void set_has_get_composing_string();
+  void set_has_get_hiragana_with_cursor();
+  void set_has_get_candidates();
+  void set_has_get_current_config();
+  void set_has_set_config();
+  void set_has_get_default_config();
+  void set_has_clear_all_history();
+  inline bool has_payload() const;
+  inline void clear_has_payload();
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<0, 14,
+                                   14, 0,
+                                   7>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const RequestEnvelope& from_msg);
+    union PayloadUnion {
+      constexpr PayloadUnion() : _constinit_{} {}
+      ::google::protobuf::internal::ConstantInitialized _constinit_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE new_composing_text_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE set_context_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE input_char_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE move_cursor_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE prefix_complete_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE delete_left_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE delete_right_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE get_composing_string_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE get_hiragana_with_cursor_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE get_candidates_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE get_current_config_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE set_config_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE get_default_config_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE clear_all_history_;
+    } payload_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::uint32_t _oneof_case_[1];
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_base_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull RequestEnvelope_class_data_;
 
 // ===================================================================
 
@@ -908,77 +979,7 @@ inline ::hazkey::commands::NewComposingText* PROTOBUF_NONNULL RequestEnvelope::m
   return _msg;
 }
 
-// .hazkey.commands.SetConfig set_config = 2;
-inline bool RequestEnvelope::has_set_config() const {
-  return payload_case() == kSetConfig;
-}
-inline bool RequestEnvelope::_internal_has_set_config() const {
-  return payload_case() == kSetConfig;
-}
-inline void RequestEnvelope::set_has_set_config() {
-  _impl_._oneof_case_[0] = kSetConfig;
-}
-inline ::hazkey::commands::SetConfig* PROTOBUF_NULLABLE RequestEnvelope::release_set_config() {
-  // @@protoc_insertion_point(field_release:hazkey.RequestEnvelope.set_config)
-  if (payload_case() == kSetConfig) {
-    clear_has_payload();
-    auto* temp = reinterpret_cast<::hazkey::commands::SetConfig*>(_impl_.payload_.set_config_);
-    if (GetArena() != nullptr) {
-      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
-    }
-    _impl_.payload_.set_config_ = nullptr;
-    return temp;
-  } else {
-    return nullptr;
-  }
-}
-inline const ::hazkey::commands::SetConfig& RequestEnvelope::_internal_set_config() const {
-  return payload_case() == kSetConfig ? *reinterpret_cast<::hazkey::commands::SetConfig*>(_impl_.payload_.set_config_) : reinterpret_cast<::hazkey::commands::SetConfig&>(::hazkey::commands::_SetConfig_default_instance_);
-}
-inline const ::hazkey::commands::SetConfig& RequestEnvelope::set_config() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:hazkey.RequestEnvelope.set_config)
-  return _internal_set_config();
-}
-inline ::hazkey::commands::SetConfig* PROTOBUF_NULLABLE RequestEnvelope::unsafe_arena_release_set_config() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:hazkey.RequestEnvelope.set_config)
-  if (payload_case() == kSetConfig) {
-    clear_has_payload();
-    auto* temp = reinterpret_cast<::hazkey::commands::SetConfig*>(_impl_.payload_.set_config_);
-    _impl_.payload_.set_config_ = nullptr;
-    return temp;
-  } else {
-    return nullptr;
-  }
-}
-inline void RequestEnvelope::unsafe_arena_set_allocated_set_config(
-    ::hazkey::commands::SetConfig* PROTOBUF_NULLABLE value) {
-  // We rely on the oneof clear method to free the earlier contents
-  // of this oneof. We can directly use the pointer we're given to
-  // set the new value.
-  clear_payload();
-  if (value) {
-    set_has_set_config();
-    _impl_.payload_.set_config_ = reinterpret_cast<::google::protobuf::Message*>(value);
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:hazkey.RequestEnvelope.set_config)
-}
-inline ::hazkey::commands::SetConfig* PROTOBUF_NONNULL RequestEnvelope::_internal_mutable_set_config() {
-  if (payload_case() != kSetConfig) {
-    clear_payload();
-    set_has_set_config();
-    _impl_.payload_.set_config_ = reinterpret_cast<::google::protobuf::Message*>(
-        ::google::protobuf::Message::DefaultConstruct<::hazkey::commands::SetConfig>(GetArena()));
-  }
-  return reinterpret_cast<::hazkey::commands::SetConfig*>(_impl_.payload_.set_config_);
-}
-inline ::hazkey::commands::SetConfig* PROTOBUF_NONNULL RequestEnvelope::mutable_set_config()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::hazkey::commands::SetConfig* _msg = _internal_mutable_set_config();
-  // @@protoc_insertion_point(field_mutable:hazkey.RequestEnvelope.set_config)
-  return _msg;
-}
-
-// .hazkey.commands.SetContext set_context = 3;
+// .hazkey.commands.SetContext set_context = 2;
 inline bool RequestEnvelope::has_set_context() const {
   return payload_case() == kSetContext;
 }
@@ -1048,7 +1049,7 @@ inline ::hazkey::commands::SetContext* PROTOBUF_NONNULL RequestEnvelope::mutable
   return _msg;
 }
 
-// .hazkey.commands.InputChar input_char = 4;
+// .hazkey.commands.InputChar input_char = 3;
 inline bool RequestEnvelope::has_input_char() const {
   return payload_case() == kInputChar;
 }
@@ -1118,7 +1119,7 @@ inline ::hazkey::commands::InputChar* PROTOBUF_NONNULL RequestEnvelope::mutable_
   return _msg;
 }
 
-// .hazkey.commands.MoveCursor move_cursor = 5;
+// .hazkey.commands.MoveCursor move_cursor = 4;
 inline bool RequestEnvelope::has_move_cursor() const {
   return payload_case() == kMoveCursor;
 }
@@ -1188,7 +1189,7 @@ inline ::hazkey::commands::MoveCursor* PROTOBUF_NONNULL RequestEnvelope::mutable
   return _msg;
 }
 
-// .hazkey.commands.PrefixComplete prefix_complete = 6;
+// .hazkey.commands.PrefixComplete prefix_complete = 5;
 inline bool RequestEnvelope::has_prefix_complete() const {
   return payload_case() == kPrefixComplete;
 }
@@ -1258,7 +1259,7 @@ inline ::hazkey::commands::PrefixComplete* PROTOBUF_NONNULL RequestEnvelope::mut
   return _msg;
 }
 
-// .hazkey.commands.DeleteLeft delete_left = 7;
+// .hazkey.commands.DeleteLeft delete_left = 6;
 inline bool RequestEnvelope::has_delete_left() const {
   return payload_case() == kDeleteLeft;
 }
@@ -1328,7 +1329,7 @@ inline ::hazkey::commands::DeleteLeft* PROTOBUF_NONNULL RequestEnvelope::mutable
   return _msg;
 }
 
-// .hazkey.commands.DeleteRight delete_right = 8;
+// .hazkey.commands.DeleteRight delete_right = 7;
 inline bool RequestEnvelope::has_delete_right() const {
   return payload_case() == kDeleteRight;
 }
@@ -1398,7 +1399,7 @@ inline ::hazkey::commands::DeleteRight* PROTOBUF_NONNULL RequestEnvelope::mutabl
   return _msg;
 }
 
-// .hazkey.commands.GetComposingString get_composing_string = 9;
+// .hazkey.commands.GetComposingString get_composing_string = 8;
 inline bool RequestEnvelope::has_get_composing_string() const {
   return payload_case() == kGetComposingString;
 }
@@ -1468,7 +1469,7 @@ inline ::hazkey::commands::GetComposingString* PROTOBUF_NONNULL RequestEnvelope:
   return _msg;
 }
 
-// .hazkey.commands.GetHiraganaWithCursor get_hiragana_with_cursor = 10;
+// .hazkey.commands.GetHiraganaWithCursor get_hiragana_with_cursor = 9;
 inline bool RequestEnvelope::has_get_hiragana_with_cursor() const {
   return payload_case() == kGetHiraganaWithCursor;
 }
@@ -1538,7 +1539,7 @@ inline ::hazkey::commands::GetHiraganaWithCursor* PROTOBUF_NONNULL RequestEnvelo
   return _msg;
 }
 
-// .hazkey.commands.GetCandidates get_candidates = 11;
+// .hazkey.commands.GetCandidates get_candidates = 10;
 inline bool RequestEnvelope::has_get_candidates() const {
   return payload_case() == kGetCandidates;
 }
@@ -1605,6 +1606,286 @@ inline ::hazkey::commands::GetCandidates* PROTOBUF_NONNULL RequestEnvelope::muta
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::hazkey::commands::GetCandidates* _msg = _internal_mutable_get_candidates();
   // @@protoc_insertion_point(field_mutable:hazkey.RequestEnvelope.get_candidates)
+  return _msg;
+}
+
+// .hazkey.config.getCurrentConfig get_current_config = 100;
+inline bool RequestEnvelope::has_get_current_config() const {
+  return payload_case() == kGetCurrentConfig;
+}
+inline bool RequestEnvelope::_internal_has_get_current_config() const {
+  return payload_case() == kGetCurrentConfig;
+}
+inline void RequestEnvelope::set_has_get_current_config() {
+  _impl_._oneof_case_[0] = kGetCurrentConfig;
+}
+inline ::hazkey::config::getCurrentConfig* PROTOBUF_NULLABLE RequestEnvelope::release_get_current_config() {
+  // @@protoc_insertion_point(field_release:hazkey.RequestEnvelope.get_current_config)
+  if (payload_case() == kGetCurrentConfig) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::hazkey::config::getCurrentConfig*>(_impl_.payload_.get_current_config_);
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.payload_.get_current_config_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::hazkey::config::getCurrentConfig& RequestEnvelope::_internal_get_current_config() const {
+  return payload_case() == kGetCurrentConfig ? *reinterpret_cast<::hazkey::config::getCurrentConfig*>(_impl_.payload_.get_current_config_) : reinterpret_cast<::hazkey::config::getCurrentConfig&>(::hazkey::config::_getCurrentConfig_default_instance_);
+}
+inline const ::hazkey::config::getCurrentConfig& RequestEnvelope::get_current_config() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:hazkey.RequestEnvelope.get_current_config)
+  return _internal_get_current_config();
+}
+inline ::hazkey::config::getCurrentConfig* PROTOBUF_NULLABLE RequestEnvelope::unsafe_arena_release_get_current_config() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:hazkey.RequestEnvelope.get_current_config)
+  if (payload_case() == kGetCurrentConfig) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::hazkey::config::getCurrentConfig*>(_impl_.payload_.get_current_config_);
+    _impl_.payload_.get_current_config_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void RequestEnvelope::unsafe_arena_set_allocated_get_current_config(
+    ::hazkey::config::getCurrentConfig* PROTOBUF_NULLABLE value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_payload();
+  if (value) {
+    set_has_get_current_config();
+    _impl_.payload_.get_current_config_ = reinterpret_cast<::google::protobuf::Message*>(value);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:hazkey.RequestEnvelope.get_current_config)
+}
+inline ::hazkey::config::getCurrentConfig* PROTOBUF_NONNULL RequestEnvelope::_internal_mutable_get_current_config() {
+  if (payload_case() != kGetCurrentConfig) {
+    clear_payload();
+    set_has_get_current_config();
+    _impl_.payload_.get_current_config_ = reinterpret_cast<::google::protobuf::Message*>(
+        ::google::protobuf::Message::DefaultConstruct<::hazkey::config::getCurrentConfig>(GetArena()));
+  }
+  return reinterpret_cast<::hazkey::config::getCurrentConfig*>(_impl_.payload_.get_current_config_);
+}
+inline ::hazkey::config::getCurrentConfig* PROTOBUF_NONNULL RequestEnvelope::mutable_get_current_config()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::hazkey::config::getCurrentConfig* _msg = _internal_mutable_get_current_config();
+  // @@protoc_insertion_point(field_mutable:hazkey.RequestEnvelope.get_current_config)
+  return _msg;
+}
+
+// .hazkey.config.setConfig set_config = 101;
+inline bool RequestEnvelope::has_set_config() const {
+  return payload_case() == kSetConfig;
+}
+inline bool RequestEnvelope::_internal_has_set_config() const {
+  return payload_case() == kSetConfig;
+}
+inline void RequestEnvelope::set_has_set_config() {
+  _impl_._oneof_case_[0] = kSetConfig;
+}
+inline ::hazkey::config::setConfig* PROTOBUF_NULLABLE RequestEnvelope::release_set_config() {
+  // @@protoc_insertion_point(field_release:hazkey.RequestEnvelope.set_config)
+  if (payload_case() == kSetConfig) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::hazkey::config::setConfig*>(_impl_.payload_.set_config_);
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.payload_.set_config_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::hazkey::config::setConfig& RequestEnvelope::_internal_set_config() const {
+  return payload_case() == kSetConfig ? *reinterpret_cast<::hazkey::config::setConfig*>(_impl_.payload_.set_config_) : reinterpret_cast<::hazkey::config::setConfig&>(::hazkey::config::_setConfig_default_instance_);
+}
+inline const ::hazkey::config::setConfig& RequestEnvelope::set_config() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:hazkey.RequestEnvelope.set_config)
+  return _internal_set_config();
+}
+inline ::hazkey::config::setConfig* PROTOBUF_NULLABLE RequestEnvelope::unsafe_arena_release_set_config() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:hazkey.RequestEnvelope.set_config)
+  if (payload_case() == kSetConfig) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::hazkey::config::setConfig*>(_impl_.payload_.set_config_);
+    _impl_.payload_.set_config_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void RequestEnvelope::unsafe_arena_set_allocated_set_config(
+    ::hazkey::config::setConfig* PROTOBUF_NULLABLE value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_payload();
+  if (value) {
+    set_has_set_config();
+    _impl_.payload_.set_config_ = reinterpret_cast<::google::protobuf::Message*>(value);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:hazkey.RequestEnvelope.set_config)
+}
+inline ::hazkey::config::setConfig* PROTOBUF_NONNULL RequestEnvelope::_internal_mutable_set_config() {
+  if (payload_case() != kSetConfig) {
+    clear_payload();
+    set_has_set_config();
+    _impl_.payload_.set_config_ = reinterpret_cast<::google::protobuf::Message*>(
+        ::google::protobuf::Message::DefaultConstruct<::hazkey::config::setConfig>(GetArena()));
+  }
+  return reinterpret_cast<::hazkey::config::setConfig*>(_impl_.payload_.set_config_);
+}
+inline ::hazkey::config::setConfig* PROTOBUF_NONNULL RequestEnvelope::mutable_set_config()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::hazkey::config::setConfig* _msg = _internal_mutable_set_config();
+  // @@protoc_insertion_point(field_mutable:hazkey.RequestEnvelope.set_config)
+  return _msg;
+}
+
+// .hazkey.config.getDefaultConfig get_default_config = 102;
+inline bool RequestEnvelope::has_get_default_config() const {
+  return payload_case() == kGetDefaultConfig;
+}
+inline bool RequestEnvelope::_internal_has_get_default_config() const {
+  return payload_case() == kGetDefaultConfig;
+}
+inline void RequestEnvelope::set_has_get_default_config() {
+  _impl_._oneof_case_[0] = kGetDefaultConfig;
+}
+inline ::hazkey::config::getDefaultConfig* PROTOBUF_NULLABLE RequestEnvelope::release_get_default_config() {
+  // @@protoc_insertion_point(field_release:hazkey.RequestEnvelope.get_default_config)
+  if (payload_case() == kGetDefaultConfig) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::hazkey::config::getDefaultConfig*>(_impl_.payload_.get_default_config_);
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.payload_.get_default_config_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::hazkey::config::getDefaultConfig& RequestEnvelope::_internal_get_default_config() const {
+  return payload_case() == kGetDefaultConfig ? *reinterpret_cast<::hazkey::config::getDefaultConfig*>(_impl_.payload_.get_default_config_) : reinterpret_cast<::hazkey::config::getDefaultConfig&>(::hazkey::config::_getDefaultConfig_default_instance_);
+}
+inline const ::hazkey::config::getDefaultConfig& RequestEnvelope::get_default_config() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:hazkey.RequestEnvelope.get_default_config)
+  return _internal_get_default_config();
+}
+inline ::hazkey::config::getDefaultConfig* PROTOBUF_NULLABLE RequestEnvelope::unsafe_arena_release_get_default_config() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:hazkey.RequestEnvelope.get_default_config)
+  if (payload_case() == kGetDefaultConfig) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::hazkey::config::getDefaultConfig*>(_impl_.payload_.get_default_config_);
+    _impl_.payload_.get_default_config_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void RequestEnvelope::unsafe_arena_set_allocated_get_default_config(
+    ::hazkey::config::getDefaultConfig* PROTOBUF_NULLABLE value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_payload();
+  if (value) {
+    set_has_get_default_config();
+    _impl_.payload_.get_default_config_ = reinterpret_cast<::google::protobuf::Message*>(value);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:hazkey.RequestEnvelope.get_default_config)
+}
+inline ::hazkey::config::getDefaultConfig* PROTOBUF_NONNULL RequestEnvelope::_internal_mutable_get_default_config() {
+  if (payload_case() != kGetDefaultConfig) {
+    clear_payload();
+    set_has_get_default_config();
+    _impl_.payload_.get_default_config_ = reinterpret_cast<::google::protobuf::Message*>(
+        ::google::protobuf::Message::DefaultConstruct<::hazkey::config::getDefaultConfig>(GetArena()));
+  }
+  return reinterpret_cast<::hazkey::config::getDefaultConfig*>(_impl_.payload_.get_default_config_);
+}
+inline ::hazkey::config::getDefaultConfig* PROTOBUF_NONNULL RequestEnvelope::mutable_get_default_config()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::hazkey::config::getDefaultConfig* _msg = _internal_mutable_get_default_config();
+  // @@protoc_insertion_point(field_mutable:hazkey.RequestEnvelope.get_default_config)
+  return _msg;
+}
+
+// .hazkey.config.clearAllHistory clear_all_history = 103;
+inline bool RequestEnvelope::has_clear_all_history() const {
+  return payload_case() == kClearAllHistory;
+}
+inline bool RequestEnvelope::_internal_has_clear_all_history() const {
+  return payload_case() == kClearAllHistory;
+}
+inline void RequestEnvelope::set_has_clear_all_history() {
+  _impl_._oneof_case_[0] = kClearAllHistory;
+}
+inline ::hazkey::config::clearAllHistory* PROTOBUF_NULLABLE RequestEnvelope::release_clear_all_history() {
+  // @@protoc_insertion_point(field_release:hazkey.RequestEnvelope.clear_all_history)
+  if (payload_case() == kClearAllHistory) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::hazkey::config::clearAllHistory*>(_impl_.payload_.clear_all_history_);
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.payload_.clear_all_history_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::hazkey::config::clearAllHistory& RequestEnvelope::_internal_clear_all_history() const {
+  return payload_case() == kClearAllHistory ? *reinterpret_cast<::hazkey::config::clearAllHistory*>(_impl_.payload_.clear_all_history_) : reinterpret_cast<::hazkey::config::clearAllHistory&>(::hazkey::config::_clearAllHistory_default_instance_);
+}
+inline const ::hazkey::config::clearAllHistory& RequestEnvelope::clear_all_history() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:hazkey.RequestEnvelope.clear_all_history)
+  return _internal_clear_all_history();
+}
+inline ::hazkey::config::clearAllHistory* PROTOBUF_NULLABLE RequestEnvelope::unsafe_arena_release_clear_all_history() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:hazkey.RequestEnvelope.clear_all_history)
+  if (payload_case() == kClearAllHistory) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::hazkey::config::clearAllHistory*>(_impl_.payload_.clear_all_history_);
+    _impl_.payload_.clear_all_history_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void RequestEnvelope::unsafe_arena_set_allocated_clear_all_history(
+    ::hazkey::config::clearAllHistory* PROTOBUF_NULLABLE value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_payload();
+  if (value) {
+    set_has_clear_all_history();
+    _impl_.payload_.clear_all_history_ = reinterpret_cast<::google::protobuf::Message*>(value);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:hazkey.RequestEnvelope.clear_all_history)
+}
+inline ::hazkey::config::clearAllHistory* PROTOBUF_NONNULL RequestEnvelope::_internal_mutable_clear_all_history() {
+  if (payload_case() != kClearAllHistory) {
+    clear_payload();
+    set_has_clear_all_history();
+    _impl_.payload_.clear_all_history_ = reinterpret_cast<::google::protobuf::Message*>(
+        ::google::protobuf::Message::DefaultConstruct<::hazkey::config::clearAllHistory>(GetArena()));
+  }
+  return reinterpret_cast<::hazkey::config::clearAllHistory*>(_impl_.payload_.clear_all_history_);
+}
+inline ::hazkey::config::clearAllHistory* PROTOBUF_NONNULL RequestEnvelope::mutable_clear_all_history()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::hazkey::config::clearAllHistory* _msg = _internal_mutable_clear_all_history();
+  // @@protoc_insertion_point(field_mutable:hazkey.RequestEnvelope.clear_all_history)
   return _msg;
 }
 

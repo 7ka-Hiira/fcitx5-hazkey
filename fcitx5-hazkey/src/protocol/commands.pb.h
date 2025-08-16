@@ -314,9 +314,9 @@ class Text final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
-    kTextFieldNumber = 3,
+    kTextFieldNumber = 1,
   };
-  // string text = 3;
+  // string text = 1;
   void clear_text() ;
   const ::std::string& text() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -3583,7 +3583,7 @@ inline void GetCandidates::_internal_set_n_best(::int32_t value) {
 
 // Text
 
-// string text = 3;
+// string text = 1;
 inline void Text::clear_text() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.text_.ClearToEmpty();

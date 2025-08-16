@@ -26,32 +26,6 @@ namespace _pbi = ::google::protobuf::internal;
 namespace _fl = ::google::protobuf::internal::field_layout;
 namespace hazkey {
 
-inline constexpr RequestEnvelope::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : payload_{},
-        _cached_size_{0},
-        _oneof_case_{} {}
-
-template <typename>
-PROTOBUF_CONSTEXPR RequestEnvelope::RequestEnvelope(::_pbi::ConstantInitialized)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(RequestEnvelope_class_data_.base()),
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(),
-#endif  // PROTOBUF_CUSTOM_VTABLE
-      _impl_(::_pbi::ConstantInitialized()) {
-}
-struct RequestEnvelopeDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR RequestEnvelopeDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~RequestEnvelopeDefaultTypeInternal() {}
-  union {
-    RequestEnvelope _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RequestEnvelopeDefaultTypeInternal _RequestEnvelope_default_instance_;
-
 inline constexpr ResponseEnvelope::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
@@ -81,6 +55,32 @@ struct ResponseEnvelopeDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ResponseEnvelopeDefaultTypeInternal _ResponseEnvelope_default_instance_;
+
+inline constexpr RequestEnvelope::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : payload_{},
+        _cached_size_{0},
+        _oneof_case_{} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR RequestEnvelope::RequestEnvelope(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(RequestEnvelope_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct RequestEnvelopeDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR RequestEnvelopeDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~RequestEnvelopeDefaultTypeInternal() {}
+  union {
+    RequestEnvelope _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RequestEnvelopeDefaultTypeInternal _RequestEnvelope_default_instance_;
 }  // namespace hazkey
 static const ::_pb::EnumDescriptor* PROTOBUF_NONNULL
     file_level_enum_descriptors_base_2eproto[1];
@@ -91,6 +91,9 @@ const ::uint32_t
         protodesc_cold) = {
         0x004, // bitmap
         PROTOBUF_FIELD_OFFSET(::hazkey::RequestEnvelope, _impl_._oneof_case_[0]),
+        ::_pbi::kInvalidFieldOffsetTag,
+        ::_pbi::kInvalidFieldOffsetTag,
+        ::_pbi::kInvalidFieldOffsetTag,
         ::_pbi::kInvalidFieldOffsetTag,
         ::_pbi::kInvalidFieldOffsetTag,
         ::_pbi::kInvalidFieldOffsetTag,
@@ -121,7 +124,7 @@ const ::uint32_t
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
         {0, sizeof(::hazkey::RequestEnvelope)},
-        {14, sizeof(::hazkey::ResponseEnvelope)},
+        {17, sizeof(::hazkey::ResponseEnvelope)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::hazkey::_RequestEnvelope_default_instance_._instance,
@@ -129,44 +132,51 @@ static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
 };
 const char descriptor_table_protodef_base_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
-    "\n\nbase.proto\022\006hazkey\032\016commands.proto\"\232\005\n"
-    "\017RequestEnvelope\022\?\n\022new_composing_text\030\001"
-    " \001(\0132!.hazkey.commands.NewComposingTextH"
-    "\000\0220\n\nset_config\030\002 \001(\0132\032.hazkey.commands."
-    "SetConfigH\000\0222\n\013set_context\030\003 \001(\0132\033.hazke"
-    "y.commands.SetContextH\000\0220\n\ninput_char\030\004 "
-    "\001(\0132\032.hazkey.commands.InputCharH\000\0222\n\013mov"
-    "e_cursor\030\005 \001(\0132\033.hazkey.commands.MoveCur"
-    "sorH\000\022:\n\017prefix_complete\030\006 \001(\0132\037.hazkey."
-    "commands.PrefixCompleteH\000\0222\n\013delete_left"
-    "\030\007 \001(\0132\033.hazkey.commands.DeleteLeftH\000\0224\n"
-    "\014delete_right\030\010 \001(\0132\034.hazkey.commands.De"
-    "leteRightH\000\022C\n\024get_composing_string\030\t \001("
-    "\0132#.hazkey.commands.GetComposingStringH\000"
-    "\022J\n\030get_hiragana_with_cursor\030\n \001(\0132&.haz"
-    "key.commands.GetHiraganaWithCursorH\000\0228\n\016"
-    "get_candidates\030\013 \001(\0132\036.hazkey.commands.G"
-    "etCandidatesH\000B\t\n\007payload\"\241\001\n\020ResponseEn"
-    "velope\022\"\n\006status\030\001 \001(\0162\022.hazkey.StatusCo"
-    "de\022\025\n\rerror_message\030\002 \001(\t\022\016\n\004text\030\003 \001(\tH"
-    "\000\0227\n\ncandidates\030\004 \001(\0132!.hazkey.commands."
-    "CandidatesResultH\000B\t\n\007payload*%\n\nStatusC"
-    "ode\022\013\n\007SUCCESS\020\000\022\n\n\006FAILED\020\001b\006proto3"
+    "\n\nbase.proto\022\006hazkey\032\016commands.proto\032\014co"
+    "nfig.proto\"\323\006\n\017RequestEnvelope\022\?\n\022new_co"
+    "mposing_text\030\001 \001(\0132!.hazkey.commands.New"
+    "ComposingTextH\000\0222\n\013set_context\030\002 \001(\0132\033.h"
+    "azkey.commands.SetContextH\000\0220\n\ninput_cha"
+    "r\030\003 \001(\0132\032.hazkey.commands.InputCharH\000\0222\n"
+    "\013move_cursor\030\004 \001(\0132\033.hazkey.commands.Mov"
+    "eCursorH\000\022:\n\017prefix_complete\030\005 \001(\0132\037.haz"
+    "key.commands.PrefixCompleteH\000\0222\n\013delete_"
+    "left\030\006 \001(\0132\033.hazkey.commands.DeleteLeftH"
+    "\000\0224\n\014delete_right\030\007 \001(\0132\034.hazkey.command"
+    "s.DeleteRightH\000\022C\n\024get_composing_string\030"
+    "\010 \001(\0132#.hazkey.commands.GetComposingStri"
+    "ngH\000\022J\n\030get_hiragana_with_cursor\030\t \001(\0132&"
+    ".hazkey.commands.GetHiraganaWithCursorH\000"
+    "\0228\n\016get_candidates\030\n \001(\0132\036.hazkey.comman"
+    "ds.GetCandidatesH\000\022=\n\022get_current_config"
+    "\030d \001(\0132\037.hazkey.config.getCurrentConfigH"
+    "\000\022.\n\nset_config\030e \001(\0132\030.hazkey.config.se"
+    "tConfigH\000\022=\n\022get_default_config\030f \001(\0132\037."
+    "hazkey.config.getDefaultConfigH\000\022;\n\021clea"
+    "r_all_history\030g \001(\0132\036.hazkey.config.clea"
+    "rAllHistoryH\000B\t\n\007payload\"\241\001\n\020ResponseEnv"
+    "elope\022\"\n\006status\030\001 \001(\0162\022.hazkey.StatusCod"
+    "e\022\025\n\rerror_message\030\002 \001(\t\022\016\n\004text\030\003 \001(\tH\000"
+    "\0227\n\ncandidates\030\004 \001(\0132!.hazkey.commands.C"
+    "andidatesResultH\000B\t\n\007payload*6\n\nStatusCo"
+    "de\022\017\n\013UNSPECIFIED\020\000\022\013\n\007SUCCESS\020\001\022\n\n\006FAIL"
+    "ED\020\002b\006proto3"
 };
 static const ::_pbi::DescriptorTable* PROTOBUF_NONNULL const
-    descriptor_table_base_2eproto_deps[1] = {
+    descriptor_table_base_2eproto_deps[2] = {
         &::descriptor_table_commands_2eproto,
+        &::descriptor_table_config_2eproto,
 };
 static ::absl::once_flag descriptor_table_base_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_base_2eproto = {
     false,
     false,
-    916,
+    1132,
     descriptor_table_protodef_base_2eproto,
     "base.proto",
     &descriptor_table_base_2eproto_once,
     descriptor_table_base_2eproto_deps,
-    1,
+    2,
     2,
     schemas,
     file_default_instances,
@@ -180,7 +190,7 @@ const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL StatusCode_descriptor
   return file_level_enum_descriptors_base_2eproto[0];
 }
 PROTOBUF_CONSTINIT const uint32_t StatusCode_internal_data_[] = {
-    131072u, 0u, };
+    196608u, 0u, };
 // ===================================================================
 
 class RequestEnvelope::_Internal {
@@ -209,30 +219,6 @@ void RequestEnvelope::clear_new_composing_text() {
       delete _impl_.payload_.new_composing_text_;
     } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
       ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.new_composing_text_);
-    }
-    clear_has_payload();
-  }
-}
-void RequestEnvelope::set_allocated_set_config(::hazkey::commands::SetConfig* PROTOBUF_NULLABLE set_config) {
-  ::google::protobuf::Arena* message_arena = GetArena();
-  clear_payload();
-  if (set_config) {
-    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::google::protobuf::Message*>(set_config)->GetArena();
-    if (message_arena != submessage_arena) {
-      set_config = ::google::protobuf::internal::GetOwnedMessage(message_arena, set_config, submessage_arena);
-    }
-    set_has_set_config();
-    _impl_.payload_.set_config_ = set_config;
-  }
-  // @@protoc_insertion_point(field_set_allocated:hazkey.RequestEnvelope.set_config)
-}
-void RequestEnvelope::clear_set_config() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (payload_case() == kSetConfig) {
-    if (GetArena() == nullptr) {
-      delete _impl_.payload_.set_config_;
-    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
-      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.set_config_);
     }
     clear_has_payload();
   }
@@ -453,6 +439,102 @@ void RequestEnvelope::clear_get_candidates() {
     clear_has_payload();
   }
 }
+void RequestEnvelope::set_allocated_get_current_config(::hazkey::config::getCurrentConfig* PROTOBUF_NULLABLE get_current_config) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  clear_payload();
+  if (get_current_config) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::google::protobuf::Message*>(get_current_config)->GetArena();
+    if (message_arena != submessage_arena) {
+      get_current_config = ::google::protobuf::internal::GetOwnedMessage(message_arena, get_current_config, submessage_arena);
+    }
+    set_has_get_current_config();
+    _impl_.payload_.get_current_config_ = get_current_config;
+  }
+  // @@protoc_insertion_point(field_set_allocated:hazkey.RequestEnvelope.get_current_config)
+}
+void RequestEnvelope::clear_get_current_config() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (payload_case() == kGetCurrentConfig) {
+    if (GetArena() == nullptr) {
+      delete _impl_.payload_.get_current_config_;
+    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.get_current_config_);
+    }
+    clear_has_payload();
+  }
+}
+void RequestEnvelope::set_allocated_set_config(::hazkey::config::setConfig* PROTOBUF_NULLABLE set_config) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  clear_payload();
+  if (set_config) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::google::protobuf::Message*>(set_config)->GetArena();
+    if (message_arena != submessage_arena) {
+      set_config = ::google::protobuf::internal::GetOwnedMessage(message_arena, set_config, submessage_arena);
+    }
+    set_has_set_config();
+    _impl_.payload_.set_config_ = set_config;
+  }
+  // @@protoc_insertion_point(field_set_allocated:hazkey.RequestEnvelope.set_config)
+}
+void RequestEnvelope::clear_set_config() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (payload_case() == kSetConfig) {
+    if (GetArena() == nullptr) {
+      delete _impl_.payload_.set_config_;
+    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.set_config_);
+    }
+    clear_has_payload();
+  }
+}
+void RequestEnvelope::set_allocated_get_default_config(::hazkey::config::getDefaultConfig* PROTOBUF_NULLABLE get_default_config) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  clear_payload();
+  if (get_default_config) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::google::protobuf::Message*>(get_default_config)->GetArena();
+    if (message_arena != submessage_arena) {
+      get_default_config = ::google::protobuf::internal::GetOwnedMessage(message_arena, get_default_config, submessage_arena);
+    }
+    set_has_get_default_config();
+    _impl_.payload_.get_default_config_ = get_default_config;
+  }
+  // @@protoc_insertion_point(field_set_allocated:hazkey.RequestEnvelope.get_default_config)
+}
+void RequestEnvelope::clear_get_default_config() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (payload_case() == kGetDefaultConfig) {
+    if (GetArena() == nullptr) {
+      delete _impl_.payload_.get_default_config_;
+    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.get_default_config_);
+    }
+    clear_has_payload();
+  }
+}
+void RequestEnvelope::set_allocated_clear_all_history(::hazkey::config::clearAllHistory* PROTOBUF_NULLABLE clear_all_history) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  clear_payload();
+  if (clear_all_history) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::google::protobuf::Message*>(clear_all_history)->GetArena();
+    if (message_arena != submessage_arena) {
+      clear_all_history = ::google::protobuf::internal::GetOwnedMessage(message_arena, clear_all_history, submessage_arena);
+    }
+    set_has_clear_all_history();
+    _impl_.payload_.clear_all_history_ = clear_all_history;
+  }
+  // @@protoc_insertion_point(field_set_allocated:hazkey.RequestEnvelope.clear_all_history)
+}
+void RequestEnvelope::clear_clear_all_history() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (payload_case() == kClearAllHistory) {
+    if (GetArena() == nullptr) {
+      delete _impl_.payload_.clear_all_history_;
+    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.clear_all_history_);
+    }
+    clear_has_payload();
+  }
+}
 RequestEnvelope::RequestEnvelope(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::Message(arena, RequestEnvelope_class_data_.base()) {
@@ -489,9 +571,6 @@ RequestEnvelope::RequestEnvelope(
       case kNewComposingText:
         _impl_.payload_.new_composing_text_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.new_composing_text_);
         break;
-      case kSetConfig:
-        _impl_.payload_.set_config_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.set_config_);
-        break;
       case kSetContext:
         _impl_.payload_.set_context_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.set_context_);
         break;
@@ -518,6 +597,18 @@ RequestEnvelope::RequestEnvelope(
         break;
       case kGetCandidates:
         _impl_.payload_.get_candidates_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.get_candidates_);
+        break;
+      case kGetCurrentConfig:
+        _impl_.payload_.get_current_config_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.get_current_config_);
+        break;
+      case kSetConfig:
+        _impl_.payload_.set_config_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.set_config_);
+        break;
+      case kGetDefaultConfig:
+        _impl_.payload_.get_default_config_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.get_default_config_);
+        break;
+      case kClearAllHistory:
+        _impl_.payload_.clear_all_history_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.clear_all_history_);
         break;
   }
 
@@ -556,14 +647,6 @@ void RequestEnvelope::clear_payload() {
         delete _impl_.payload_.new_composing_text_;
       } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
         ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.new_composing_text_);
-      }
-      break;
-    }
-    case kSetConfig: {
-      if (GetArena() == nullptr) {
-        delete _impl_.payload_.set_config_;
-      } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
-        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.set_config_);
       }
       break;
     }
@@ -639,6 +722,38 @@ void RequestEnvelope::clear_payload() {
       }
       break;
     }
+    case kGetCurrentConfig: {
+      if (GetArena() == nullptr) {
+        delete _impl_.payload_.get_current_config_;
+      } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.get_current_config_);
+      }
+      break;
+    }
+    case kSetConfig: {
+      if (GetArena() == nullptr) {
+        delete _impl_.payload_.set_config_;
+      } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.set_config_);
+      }
+      break;
+    }
+    case kGetDefaultConfig: {
+      if (GetArena() == nullptr) {
+        delete _impl_.payload_.get_default_config_;
+      } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.get_default_config_);
+      }
+      break;
+    }
+    case kClearAllHistory: {
+      if (GetArena() == nullptr) {
+        delete _impl_.payload_.clear_all_history_;
+      } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.clear_all_history_);
+      }
+      break;
+    }
     case PAYLOAD_NOT_SET: {
       break;
     }
@@ -690,17 +805,17 @@ RequestEnvelope::GetClassData() const {
   return RequestEnvelope_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 11, 11, 0, 2>
+const ::_pbi::TcParseTable<0, 14, 14, 0, 7>
 RequestEnvelope::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    11, 0,  // max_field_number, fast_idx_mask
+    103, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294965248,  // skipmap
+    4294966272,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    11,  // num_field_entries
-    11,  // num_aux_entries
+    14,  // num_field_entries
+    14,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     RequestEnvelope_class_data_.base(),
     nullptr,  // post_loop_handler
@@ -711,45 +826,55 @@ RequestEnvelope::_table_ = {
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
   }}, {{
+    100, 0, 1,
+    65520, 10,
     65535, 65535
   }}, {{
     // .hazkey.commands.NewComposingText new_composing_text = 1;
     {PROTOBUF_FIELD_OFFSET(RequestEnvelope, _impl_.payload_.new_composing_text_), _Internal::kOneofCaseOffset + 0, 0,
     (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .hazkey.commands.SetConfig set_config = 2;
-    {PROTOBUF_FIELD_OFFSET(RequestEnvelope, _impl_.payload_.set_config_), _Internal::kOneofCaseOffset + 0, 1,
+    // .hazkey.commands.SetContext set_context = 2;
+    {PROTOBUF_FIELD_OFFSET(RequestEnvelope, _impl_.payload_.set_context_), _Internal::kOneofCaseOffset + 0, 1,
     (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .hazkey.commands.SetContext set_context = 3;
-    {PROTOBUF_FIELD_OFFSET(RequestEnvelope, _impl_.payload_.set_context_), _Internal::kOneofCaseOffset + 0, 2,
+    // .hazkey.commands.InputChar input_char = 3;
+    {PROTOBUF_FIELD_OFFSET(RequestEnvelope, _impl_.payload_.input_char_), _Internal::kOneofCaseOffset + 0, 2,
     (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .hazkey.commands.InputChar input_char = 4;
-    {PROTOBUF_FIELD_OFFSET(RequestEnvelope, _impl_.payload_.input_char_), _Internal::kOneofCaseOffset + 0, 3,
+    // .hazkey.commands.MoveCursor move_cursor = 4;
+    {PROTOBUF_FIELD_OFFSET(RequestEnvelope, _impl_.payload_.move_cursor_), _Internal::kOneofCaseOffset + 0, 3,
     (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .hazkey.commands.MoveCursor move_cursor = 5;
-    {PROTOBUF_FIELD_OFFSET(RequestEnvelope, _impl_.payload_.move_cursor_), _Internal::kOneofCaseOffset + 0, 4,
+    // .hazkey.commands.PrefixComplete prefix_complete = 5;
+    {PROTOBUF_FIELD_OFFSET(RequestEnvelope, _impl_.payload_.prefix_complete_), _Internal::kOneofCaseOffset + 0, 4,
     (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .hazkey.commands.PrefixComplete prefix_complete = 6;
-    {PROTOBUF_FIELD_OFFSET(RequestEnvelope, _impl_.payload_.prefix_complete_), _Internal::kOneofCaseOffset + 0, 5,
+    // .hazkey.commands.DeleteLeft delete_left = 6;
+    {PROTOBUF_FIELD_OFFSET(RequestEnvelope, _impl_.payload_.delete_left_), _Internal::kOneofCaseOffset + 0, 5,
     (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .hazkey.commands.DeleteLeft delete_left = 7;
-    {PROTOBUF_FIELD_OFFSET(RequestEnvelope, _impl_.payload_.delete_left_), _Internal::kOneofCaseOffset + 0, 6,
+    // .hazkey.commands.DeleteRight delete_right = 7;
+    {PROTOBUF_FIELD_OFFSET(RequestEnvelope, _impl_.payload_.delete_right_), _Internal::kOneofCaseOffset + 0, 6,
     (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .hazkey.commands.DeleteRight delete_right = 8;
-    {PROTOBUF_FIELD_OFFSET(RequestEnvelope, _impl_.payload_.delete_right_), _Internal::kOneofCaseOffset + 0, 7,
+    // .hazkey.commands.GetComposingString get_composing_string = 8;
+    {PROTOBUF_FIELD_OFFSET(RequestEnvelope, _impl_.payload_.get_composing_string_), _Internal::kOneofCaseOffset + 0, 7,
     (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .hazkey.commands.GetComposingString get_composing_string = 9;
-    {PROTOBUF_FIELD_OFFSET(RequestEnvelope, _impl_.payload_.get_composing_string_), _Internal::kOneofCaseOffset + 0, 8,
+    // .hazkey.commands.GetHiraganaWithCursor get_hiragana_with_cursor = 9;
+    {PROTOBUF_FIELD_OFFSET(RequestEnvelope, _impl_.payload_.get_hiragana_with_cursor_), _Internal::kOneofCaseOffset + 0, 8,
     (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .hazkey.commands.GetHiraganaWithCursor get_hiragana_with_cursor = 10;
-    {PROTOBUF_FIELD_OFFSET(RequestEnvelope, _impl_.payload_.get_hiragana_with_cursor_), _Internal::kOneofCaseOffset + 0, 9,
+    // .hazkey.commands.GetCandidates get_candidates = 10;
+    {PROTOBUF_FIELD_OFFSET(RequestEnvelope, _impl_.payload_.get_candidates_), _Internal::kOneofCaseOffset + 0, 9,
     (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .hazkey.commands.GetCandidates get_candidates = 11;
-    {PROTOBUF_FIELD_OFFSET(RequestEnvelope, _impl_.payload_.get_candidates_), _Internal::kOneofCaseOffset + 0, 10,
+    // .hazkey.config.getCurrentConfig get_current_config = 100;
+    {PROTOBUF_FIELD_OFFSET(RequestEnvelope, _impl_.payload_.get_current_config_), _Internal::kOneofCaseOffset + 0, 10,
+    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .hazkey.config.setConfig set_config = 101;
+    {PROTOBUF_FIELD_OFFSET(RequestEnvelope, _impl_.payload_.set_config_), _Internal::kOneofCaseOffset + 0, 11,
+    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .hazkey.config.getDefaultConfig get_default_config = 102;
+    {PROTOBUF_FIELD_OFFSET(RequestEnvelope, _impl_.payload_.get_default_config_), _Internal::kOneofCaseOffset + 0, 12,
+    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .hazkey.config.clearAllHistory clear_all_history = 103;
+    {PROTOBUF_FIELD_OFFSET(RequestEnvelope, _impl_.payload_.clear_all_history_), _Internal::kOneofCaseOffset + 0, 13,
     (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
       {::_pbi::TcParser::GetTable<::hazkey::commands::NewComposingText>()},
-      {::_pbi::TcParser::GetTable<::hazkey::commands::SetConfig>()},
       {::_pbi::TcParser::GetTable<::hazkey::commands::SetContext>()},
       {::_pbi::TcParser::GetTable<::hazkey::commands::InputChar>()},
       {::_pbi::TcParser::GetTable<::hazkey::commands::MoveCursor>()},
@@ -759,6 +884,10 @@ RequestEnvelope::_table_ = {
       {::_pbi::TcParser::GetTable<::hazkey::commands::GetComposingString>()},
       {::_pbi::TcParser::GetTable<::hazkey::commands::GetHiraganaWithCursor>()},
       {::_pbi::TcParser::GetTable<::hazkey::commands::GetCandidates>()},
+      {::_pbi::TcParser::GetTable<::hazkey::config::getCurrentConfig>()},
+      {::_pbi::TcParser::GetTable<::hazkey::config::setConfig>()},
+      {::_pbi::TcParser::GetTable<::hazkey::config::getDefaultConfig>()},
+      {::_pbi::TcParser::GetTable<::hazkey::config::clearAllHistory>()},
   }},
   {{
   }},
@@ -796,63 +925,81 @@ PROTOBUF_NOINLINE void RequestEnvelope::Clear() {
           stream);
       break;
     }
-    case kSetConfig: {
-      target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-          2, *this_._impl_.payload_.set_config_, this_._impl_.payload_.set_config_->GetCachedSize(), target,
-          stream);
-      break;
-    }
     case kSetContext: {
       target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-          3, *this_._impl_.payload_.set_context_, this_._impl_.payload_.set_context_->GetCachedSize(), target,
+          2, *this_._impl_.payload_.set_context_, this_._impl_.payload_.set_context_->GetCachedSize(), target,
           stream);
       break;
     }
     case kInputChar: {
       target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-          4, *this_._impl_.payload_.input_char_, this_._impl_.payload_.input_char_->GetCachedSize(), target,
+          3, *this_._impl_.payload_.input_char_, this_._impl_.payload_.input_char_->GetCachedSize(), target,
           stream);
       break;
     }
     case kMoveCursor: {
       target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-          5, *this_._impl_.payload_.move_cursor_, this_._impl_.payload_.move_cursor_->GetCachedSize(), target,
+          4, *this_._impl_.payload_.move_cursor_, this_._impl_.payload_.move_cursor_->GetCachedSize(), target,
           stream);
       break;
     }
     case kPrefixComplete: {
       target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-          6, *this_._impl_.payload_.prefix_complete_, this_._impl_.payload_.prefix_complete_->GetCachedSize(), target,
+          5, *this_._impl_.payload_.prefix_complete_, this_._impl_.payload_.prefix_complete_->GetCachedSize(), target,
           stream);
       break;
     }
     case kDeleteLeft: {
       target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-          7, *this_._impl_.payload_.delete_left_, this_._impl_.payload_.delete_left_->GetCachedSize(), target,
+          6, *this_._impl_.payload_.delete_left_, this_._impl_.payload_.delete_left_->GetCachedSize(), target,
           stream);
       break;
     }
     case kDeleteRight: {
       target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-          8, *this_._impl_.payload_.delete_right_, this_._impl_.payload_.delete_right_->GetCachedSize(), target,
+          7, *this_._impl_.payload_.delete_right_, this_._impl_.payload_.delete_right_->GetCachedSize(), target,
           stream);
       break;
     }
     case kGetComposingString: {
       target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-          9, *this_._impl_.payload_.get_composing_string_, this_._impl_.payload_.get_composing_string_->GetCachedSize(), target,
+          8, *this_._impl_.payload_.get_composing_string_, this_._impl_.payload_.get_composing_string_->GetCachedSize(), target,
           stream);
       break;
     }
     case kGetHiraganaWithCursor: {
       target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-          10, *this_._impl_.payload_.get_hiragana_with_cursor_, this_._impl_.payload_.get_hiragana_with_cursor_->GetCachedSize(), target,
+          9, *this_._impl_.payload_.get_hiragana_with_cursor_, this_._impl_.payload_.get_hiragana_with_cursor_->GetCachedSize(), target,
           stream);
       break;
     }
     case kGetCandidates: {
       target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-          11, *this_._impl_.payload_.get_candidates_, this_._impl_.payload_.get_candidates_->GetCachedSize(), target,
+          10, *this_._impl_.payload_.get_candidates_, this_._impl_.payload_.get_candidates_->GetCachedSize(), target,
+          stream);
+      break;
+    }
+    case kGetCurrentConfig: {
+      target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+          100, *this_._impl_.payload_.get_current_config_, this_._impl_.payload_.get_current_config_->GetCachedSize(), target,
+          stream);
+      break;
+    }
+    case kSetConfig: {
+      target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+          101, *this_._impl_.payload_.set_config_, this_._impl_.payload_.set_config_->GetCachedSize(), target,
+          stream);
+      break;
+    }
+    case kGetDefaultConfig: {
+      target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+          102, *this_._impl_.payload_.get_default_config_, this_._impl_.payload_.get_default_config_->GetCachedSize(), target,
+          stream);
+      break;
+    }
+    case kClearAllHistory: {
+      target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+          103, *this_._impl_.payload_.clear_all_history_, this_._impl_.payload_.clear_all_history_->GetCachedSize(), target,
           stream);
       break;
     }
@@ -889,64 +1036,82 @@ PROTOBUF_NOINLINE void RequestEnvelope::Clear() {
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.new_composing_text_);
       break;
     }
-    // .hazkey.commands.SetConfig set_config = 2;
-    case kSetConfig: {
-      total_size += 1 +
-                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.set_config_);
-      break;
-    }
-    // .hazkey.commands.SetContext set_context = 3;
+    // .hazkey.commands.SetContext set_context = 2;
     case kSetContext: {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.set_context_);
       break;
     }
-    // .hazkey.commands.InputChar input_char = 4;
+    // .hazkey.commands.InputChar input_char = 3;
     case kInputChar: {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.input_char_);
       break;
     }
-    // .hazkey.commands.MoveCursor move_cursor = 5;
+    // .hazkey.commands.MoveCursor move_cursor = 4;
     case kMoveCursor: {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.move_cursor_);
       break;
     }
-    // .hazkey.commands.PrefixComplete prefix_complete = 6;
+    // .hazkey.commands.PrefixComplete prefix_complete = 5;
     case kPrefixComplete: {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.prefix_complete_);
       break;
     }
-    // .hazkey.commands.DeleteLeft delete_left = 7;
+    // .hazkey.commands.DeleteLeft delete_left = 6;
     case kDeleteLeft: {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.delete_left_);
       break;
     }
-    // .hazkey.commands.DeleteRight delete_right = 8;
+    // .hazkey.commands.DeleteRight delete_right = 7;
     case kDeleteRight: {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.delete_right_);
       break;
     }
-    // .hazkey.commands.GetComposingString get_composing_string = 9;
+    // .hazkey.commands.GetComposingString get_composing_string = 8;
     case kGetComposingString: {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.get_composing_string_);
       break;
     }
-    // .hazkey.commands.GetHiraganaWithCursor get_hiragana_with_cursor = 10;
+    // .hazkey.commands.GetHiraganaWithCursor get_hiragana_with_cursor = 9;
     case kGetHiraganaWithCursor: {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.get_hiragana_with_cursor_);
       break;
     }
-    // .hazkey.commands.GetCandidates get_candidates = 11;
+    // .hazkey.commands.GetCandidates get_candidates = 10;
     case kGetCandidates: {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.get_candidates_);
+      break;
+    }
+    // .hazkey.config.getCurrentConfig get_current_config = 100;
+    case kGetCurrentConfig: {
+      total_size += 2 +
+                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.get_current_config_);
+      break;
+    }
+    // .hazkey.config.setConfig set_config = 101;
+    case kSetConfig: {
+      total_size += 2 +
+                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.set_config_);
+      break;
+    }
+    // .hazkey.config.getDefaultConfig get_default_config = 102;
+    case kGetDefaultConfig: {
+      total_size += 2 +
+                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.get_default_config_);
+      break;
+    }
+    // .hazkey.config.clearAllHistory clear_all_history = 103;
+    case kClearAllHistory: {
+      total_size += 2 +
+                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.clear_all_history_);
       break;
     }
     case PAYLOAD_NOT_SET: {
@@ -982,14 +1147,6 @@ void RequestEnvelope::MergeImpl(::google::protobuf::MessageLite& to_msg, const :
           _this->_impl_.payload_.new_composing_text_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.new_composing_text_);
         } else {
           _this->_impl_.payload_.new_composing_text_->MergeFrom(*from._impl_.payload_.new_composing_text_);
-        }
-        break;
-      }
-      case kSetConfig: {
-        if (oneof_needs_init) {
-          _this->_impl_.payload_.set_config_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.set_config_);
-        } else {
-          _this->_impl_.payload_.set_config_->MergeFrom(*from._impl_.payload_.set_config_);
         }
         break;
       }
@@ -1062,6 +1219,38 @@ void RequestEnvelope::MergeImpl(::google::protobuf::MessageLite& to_msg, const :
           _this->_impl_.payload_.get_candidates_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.get_candidates_);
         } else {
           _this->_impl_.payload_.get_candidates_->MergeFrom(*from._impl_.payload_.get_candidates_);
+        }
+        break;
+      }
+      case kGetCurrentConfig: {
+        if (oneof_needs_init) {
+          _this->_impl_.payload_.get_current_config_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.get_current_config_);
+        } else {
+          _this->_impl_.payload_.get_current_config_->MergeFrom(*from._impl_.payload_.get_current_config_);
+        }
+        break;
+      }
+      case kSetConfig: {
+        if (oneof_needs_init) {
+          _this->_impl_.payload_.set_config_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.set_config_);
+        } else {
+          _this->_impl_.payload_.set_config_->MergeFrom(*from._impl_.payload_.set_config_);
+        }
+        break;
+      }
+      case kGetDefaultConfig: {
+        if (oneof_needs_init) {
+          _this->_impl_.payload_.get_default_config_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.get_default_config_);
+        } else {
+          _this->_impl_.payload_.get_default_config_->MergeFrom(*from._impl_.payload_.get_default_config_);
+        }
+        break;
+      }
+      case kClearAllHistory: {
+        if (oneof_needs_init) {
+          _this->_impl_.payload_.clear_all_history_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.clear_all_history_);
+        } else {
+          _this->_impl_.payload_.clear_all_history_->MergeFrom(*from._impl_.payload_.clear_all_history_);
         }
         break;
       }
