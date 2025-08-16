@@ -17,19 +17,6 @@ func processProto(data: Data) -> Data {
   }
 
   switch query.payload {
-  case .setConfig:
-    let props = query.setConfig
-    response = setConfig(
-      zenzaiEnabled: props.zenzaiEnabled,
-      zenzaiInferLimit: Int(props.zenzaiInferLimit),
-      numberFullwidth: Int(props.numberFullwidth),
-      symbolFullwidth: Int(props.symbolFullwidth),
-      periodStyleIndex: Int(props.periodStyle),
-      commaStyleIndex: Int(props.commaStyle),
-      spaceFullwidth: Int(props.spaceFullwidth),
-      tenCombining: Int(props.tenCombining),
-      profileText: props.profileText
-    )
   case .setContext(let req):
     response = setContext(surroundingText: req.context, anchorIndex: Int(req.anchor))
   case .newComposingText(_):
@@ -50,6 +37,8 @@ func processProto(data: Data) -> Data {
     response = getComposingString(charType: req.charType, currentPreedit: req.currentPreedit)
   case .getCandidates(let req):
     response = getCandidates(isPredictMode: req.isPredictMode, nBest: Int(req.nBest))
+  case .setConfig(let req):
+    response = setConfig(req.hash, req.tableOperations, req.config)
   default:
     NSLog("Unimplemented command")
     response = Hazkey_ResponseEnvelope.with {

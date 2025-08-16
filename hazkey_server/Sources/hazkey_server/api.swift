@@ -2,56 +2,11 @@ import Foundation
 import KanaKanjiConverterModule
 import SwiftUtils
 
-/// Config
-
-// TODO: 設定ファイルを直接読み込む
-@MainActor func setConfig(
-  zenzaiEnabled: Bool, zenzaiInferLimit: Int,
-  numberFullwidth: Int, symbolFullwidth: Int, periodStyleIndex: Int,
-  commaStyleIndex: Int, spaceFullwidth: Int, tenCombining: Int,
-  profileText: String
-) -> Hazkey_ResponseEnvelope {
-  let numberStyle: KkcConfig.Style = numberFullwidth == 1 ? .fullwidth : .halfwidth
-  let symbolStyle: KkcConfig.Style = symbolFullwidth == 1 ? .fullwidth : .halfwidth
-  let periodStyle: KkcConfig.TenStyle =
-    periodStyleIndex == 1
-    ? .halfwidthJapanese
-    : periodStyleIndex == 2
-      ? .fullwidthLatin : periodStyleIndex == 3 ? .halfwidthLatin : .fullwidthJapanese
-  let commaStyle: KkcConfig.TenStyle =
-    commaStyleIndex == 1
-    ? .halfwidthJapanese
-    : commaStyleIndex == 2
-      ? .fullwidthLatin : commaStyleIndex == 3 ? .halfwidthLatin : .fullwidthJapanese
-  let spaceStyle: KkcConfig.Style = spaceFullwidth == 1 ? .fullwidth : .halfwidth
-  let diacriticStyle: KkcConfig.DiacriticStyle =
-    tenCombining == 1
-    ? .halfwidth
-    : tenCombining == 2 ? .combining : .fullwidth
-
-  config = genDefaultConfig(
-    zenzaiEnabled: zenzaiEnabled, zenzaiInferLimit: zenzaiInferLimit, numberStyle: numberStyle,
-    symbolStyle: symbolStyle, periodStyle: periodStyle,
-    commaStyle: commaStyle, spaceStyle: spaceStyle, diacriticStyle: diacriticStyle,
-    profileText: profileText)
-
-  return Hazkey_ResponseEnvelope.with {
-    $0.status = .success
-  }
-}
-
 @MainActor func setContext(
   surroundingText: String, anchorIndex: Int
 ) -> Hazkey_ResponseEnvelope {
   let leftContext = String(surroundingText.prefix(anchorIndex))
-
-  if .off != config.convertOptions.zenzaiMode {
-    config.convertOptions.zenzaiMode = .on(
-      weight: config.zenzaiWeight,
-      personalizationMode: nil,  // TODO: handle this correctly
-      versionDependentMode: .v3(.init(profile: config.profileText, leftSideContext: leftContext))
-    )
-  }
+  baseConvertRequestOptions.zenzaiMode = genZenzaiMode(leftContext: leftContext)
 
   return Hazkey_ResponseEnvelope.with {
     $0.status = .success
@@ -174,12 +129,12 @@ import SwiftUtils
 // TODO: return error message
 @MainActor
 func getCandidates(isPredictMode: Bool = false, nBest: Int = 9) -> Hazkey_ResponseEnvelope {
-  var options = config.convertOptions
+  var options = baseConvertRequestOptions
   options.N_best = nBest
   options.requireJapanesePrediction = isPredictMode
   options.requireEnglishPrediction = isPredictMode
 
-  let converted = config.converter.requestCandidates(composingText.value, options: options)
+  let converted = converter.requestCandidates(composingText.value, options: options)
 
   currentCandidateList = converted.mainResults
 

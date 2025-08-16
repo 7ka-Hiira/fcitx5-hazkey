@@ -1,64 +1,140 @@
 import Foundation
 import KanaKanjiConverterModule
+import SwiftProtobuf
 
-public class KkcConfig {
-  enum Style {
-    case halfwidth
-    case fullwidth
-  }
+func setConfig(
+  _ hashes: Hazkey_Config_ConfigFileHashes,
+  _ inputTableOperations: [Hazkey_Config_Table_EditOperation],
+  _ config: [Hazkey_Config_ConfigProfile]
+) -> Hazkey_ResponseEnvelope {
 
-  enum TenStyle {
-    case fullwidthJapanese
-    case halfwidthJapanese
-    case fullwidthLatin
-    case halfwidthLatin
-  }
+  saveConfig(config: config)
 
-  enum DiacriticStyle {
-    case fullwidth
-    case halfwidth
-    case combining
-  }
-
-  var convertOptions: ConvertRequestOptions
-
-  let numberStyle: Style
-  let symbolStyle: Style
-  let periodStyle: TenStyle
-  let commaStyle: TenStyle
-  let spaceStyle: Style
-
-  let tenCombiningStyle: DiacriticStyle
-
-  let zenzaiWeight: URL
-  let profileText: String?
-
-  let converter: KanaKanjiConverter
-
-  @MainActor init(
-    convertOptions: ConvertRequestOptions, numberStyle: Style, symbolStyle: Style,
-    periodStyle: TenStyle, commaStyle: TenStyle, spaceStyle: Style, diacriticStyle: DiacriticStyle,
-    zenzaiWeight: URL, profileText: String?
-  ) {
-    self.convertOptions = convertOptions
-    self.numberStyle = numberStyle
-    self.symbolStyle = symbolStyle
-    self.periodStyle = periodStyle
-    self.commaStyle = commaStyle
-    self.spaceStyle = spaceStyle
-    self.tenCombiningStyle = diacriticStyle
-    self.zenzaiWeight = zenzaiWeight
-    self.profileText = profileText
-    self.converter = KanaKanjiConverter()
+  return Hazkey_ResponseEnvelope.with {
+    $0.status = .success
   }
 }
 
-@MainActor func genDefaultConfig(
-  zenzaiEnabled: Bool = false, zenzaiInferLimit: Int = 1, numberStyle: KkcConfig.Style,
-  symbolStyle: KkcConfig.Style,
-  periodStyle: KkcConfig.TenStyle, commaStyle: KkcConfig.TenStyle, spaceStyle: KkcConfig.Style,
-  diacriticStyle: KkcConfig.DiacriticStyle, profileText: String?
-) -> KkcConfig {
+func saveConfig(config: [Hazkey_Config_ConfigProfile]) {
+  do {
+    let configDir = getConfigDirectory()
+    let configPath = configDir.appendingPathComponent("config.json")
+
+    // Create directory if it doesn't exist
+    try FileManager.default.createDirectory(
+      at: configDir, withIntermediateDirectories: true, attributes: nil)
+
+    // Convert each protobuf to JSON string and then combine into array
+    var jsonObjects: [Any] = []
+    for profile in config {
+      let jsonString = try profile.jsonString()
+      let jsonData = jsonString.data(using: .utf8)!
+      let jsonObject = try JSONSerialization.jsonObject(with: jsonData, options: [])
+      jsonObjects.append(jsonObject)
+    }
+
+    // Convert array to JSON data
+    let jsonData = try JSONSerialization.data(
+      withJSONObject: jsonObjects, options: [.prettyPrinted])
+
+    // Write to file
+    try jsonData.write(to: configPath)
+
+    NSLog("Config saved to: \(configPath.path)")
+  } catch {
+    NSLog("Failed to save config: \(error)")
+  }
+}
+
+func loadConfig() -> [Hazkey_Config_ConfigProfile] {
+  do {
+    let configDir = getConfigDirectory()
+    let configPath = configDir.appendingPathComponent("config.json")
+
+    // Check if config file exists
+    guard FileManager.default.fileExists(atPath: configPath.path) else {
+      NSLog("Config file does not exist at: \(configPath.path), returning empty config")
+      return []
+    }
+
+    // Read file contents
+    let jsonData = try Data(contentsOf: configPath)
+
+    // Parse JSON array
+    let jsonArray =
+      try JSONSerialization.jsonObject(with: jsonData, options: []) as! [[String: Any]]
+
+    var configs: [Hazkey_Config_ConfigProfile] = []
+    for jsonObject in jsonArray {
+      let jsonObjectData = try JSONSerialization.data(withJSONObject: jsonObject, options: [])
+      let config = try Hazkey_Config_ConfigProfile(jsonUTF8Data: jsonObjectData)
+      configs.append(config)
+    }
+
+    NSLog("Config loaded from: \(configPath.path)")
+    return configs
+  } catch {
+    NSLog("Failed to load config: \(error), returning empty config")
+    return []
+  }
+}
+
+// replace with FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!?
+func getConfigDirectory() -> URL {
+  let homeDir = FileManager.default.homeDirectoryForCurrentUser
+
+  // Check for XDG_CONFIG_HOME environment variable
+  if let xdgConfigHome = ProcessInfo.processInfo.environment["XDG_CONFIG_HOME"],
+    !xdgConfigHome.isEmpty
+  {
+    return URL(fileURLWithPath: xdgConfigHome).appendingPathComponent("hazkey")
+  }
+
+  // Fallback to ~/.config/hazkey
+  return homeDir.appendingPathComponent(".config").appendingPathComponent("hazkey")
+}
+
+@MainActor
+func genZenzaiMode(leftContext: String) -> ConvertRequestOptions.ZenzaiMode {
+  var systemResourceDir: URL {
+    URL(fileURLWithPath: systemResourcePath, isDirectory: true)
+  }
+
+  if currentProfile.zenzaiEnable {
+    return ConvertRequestOptions.ZenzaiMode.on(
+      weight: systemResourceDir.appendingPathComponent("zenzai.gguf", isDirectory: false),
+      inferenceLimit: Int(currentProfile.zenzaiInferLimit),
+      requestRichCandidates: currentProfile.useWiseCandidates,
+      personalizationMode: nil,
+      versionDependentMode: {
+        return switch currentProfile.zenzaiVersionConfig.version {
+        case .v1(_):
+          .v1
+        case .v2(let versionConfig):
+          .v2(
+            ConvertRequestOptions.ZenzaiV2DependentMode.init(
+              profile: versionConfig.profile,
+              leftSideContext: nil))
+        case .v3(let versionConfig):
+          .v3(
+            ConvertRequestOptions.ZenzaiV3DependentMode.init(
+              profile: versionConfig.profile,
+              topic: versionConfig.topic,
+              style: versionConfig.style,
+              preference: versionConfig.style,
+              leftSideContext: nil))
+        default:
+          .v1
+        }
+      }()
+    )
+  } else {
+    return ConvertRequestOptions.ZenzaiMode.off
+  }
+}
+
+@MainActor
+func genBaseConvertRequestOptions() -> ConvertRequestOptions {
   var userDataDir: URL {
     FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
       .appendingPathComponent("hazkey", isDirectory: true)
@@ -68,47 +144,57 @@ public class KkcConfig {
     URL(fileURLWithPath: systemResourcePath, isDirectory: true)
   }
 
-  do {
-    try FileManager.default.createDirectory(at: userDataDir, withIntermediateDirectories: true)
-  } catch {
-    print("Error creating directory: \(error)")
-  }
+  let learningType =
+    switch (currentProfile.useInputHistory, currentProfile.stopStoreNewHistory) {
+    case (true, false):
+      LearningType.inputAndOutput
+    case (true, true):
+      LearningType.onlyOutput
+    default:
+      LearningType.nothing
+    }
 
-  let options = ConvertRequestOptions(
-    N_best: 9,
-    needTypoCorrection: nil,
+  let specialCandidateProviders: [any SpecialCandidateProvider] = {
+    let mode = currentProfile.specialConversionMode
+    let providers: [SpecialCandidateProvider?] = [
+      mode.commaSeparatedNumber ? CommaSeparatedNumberSpecialCandidateProvider() : nil,
+      mode.calender ? CalendarSpecialCandidateProvider() : nil,
+      mode.hazkeyVersion ? VersionSpecialCandidateProvider() : nil,
+      mode.mailDomain ? EmailAddressSpecialCandidateProvider() : nil,
+      mode.romanTypography ? TypographySpecialCandidateProvider() : nil,
+      mode.time ? TimeExpressionSpecialCandidateProvider() : nil,
+      mode.unicodeCodepoint ? UnicodeSpecialCandidateProvider() : nil,
+    ]
+    return providers.compactMap { $0 }
+  }()
+
+  let zenzaiMode = genZenzaiMode(leftContext: "")
+
+  return ConvertRequestOptions.init(
+    N_best: Int(currentProfile.numCandidatesPerPage),
+    needTypoCorrection: false,
     requireJapanesePrediction: false,
     requireEnglishPrediction: false,
-    keyboardLanguage: .ja_JP,
+    keyboardLanguage: .none,
     englishCandidateInRoman2KanaInput: false,
     fullWidthRomanCandidate: true,
     halfWidthKanaCandidate: true,
-    learningType: .nothing,
+    learningType: learningType,
     maxMemoryCount: 65536,
-    shouldResetMemory: true,
+    shouldResetMemory: false,
     dictionaryResourceURL: systemResourceDir.appendingPathComponent(
       "Dictionary", isDirectory: true),
-    memoryDirectoryURL: userDataDir,
-    sharedContainerURL: userDataDir,
+    memoryDirectoryURL: userDataDir.appendingPathComponent(
+      "memory", isDirectory: true),
+    sharedContainerURL: userDataDir.appendingPathComponent(
+      "shared", isDirectory: true),
     textReplacer: .init(emojiDataProvider: {
       systemResourceDir.appendingPathComponent(
         "emoji_all_E16.0.txt", isDirectory: false)
     }),
-    specialCandidateProviders: nil,
-    zenzaiMode: zenzaiEnabled
-      ? .on(
-        weight: systemResourceDir.appendingPathComponent("zenzai.gguf", isDirectory: false),
-        inferenceLimit: zenzaiInferLimit, personalizationMode: nil,
-        versionDependentMode: .v3(.init(profile: profileText))) : .off,
-    metadata: ConvertRequestOptions.Metadata(
-      versionString: "fcitx5-hazkey 0.1.0"
-    ),
-  )
-  return KkcConfig(
-    convertOptions: options, numberStyle: numberStyle, symbolStyle: symbolStyle,
-    periodStyle: periodStyle, commaStyle: commaStyle, spaceStyle: spaceStyle,
-    diacriticStyle: diacriticStyle,
-    zenzaiWeight: systemResourceDir.appendingPathComponent("zenzai.gguf", isDirectory: false),
-    profileText: profileText
+    specialCandidateProviders: specialCandidateProviders,
+    zenzaiMode: zenzaiMode,
+    preloadDictionary: false,
+    metadata: ConvertRequestOptions.Metadata.init(versionString: "Hazkey 0.0.9")
   )
 }

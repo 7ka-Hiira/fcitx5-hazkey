@@ -123,15 +123,18 @@ guard listen(fd, 10) != -1 else {
 }
 
 // FIXME: unglobalize these vars
-var config: KkcConfig
+var converter = KanaKanjiConverter.init()
+var profiles: [Hazkey_Config_ConfigProfile] = []
 var composingText: ComposingTextBox = ComposingTextBox()
 var currentCandidateList: [Candidate]? = nil
 
 // FIXME: read config file
-let _ = setConfig(
-  zenzaiEnabled: false, zenzaiInferLimit: 1, numberFullwidth: 0, symbolFullwidth: 0,
-  periodStyleIndex: 0, commaStyleIndex: 0, spaceFullwidth: 0, tenCombining: 0, profileText: "")
+profiles = loadConfig()
 
+// TODO: add [0] out of range handling
+var currentProfile = profiles[0]
+
+var baseConvertRequestOptions = genBaseConvertRequestOptions()
 // set non-blocking
 var flags = fcntl(fd, F_GETFL, 0)
 let fcntlRes = fcntl(fd, F_SETFL, flags | O_NONBLOCK)
