@@ -3,26 +3,32 @@ syntax = "proto3";
 package hazkey;
 
 import "commands.proto";
+import "config.proto";
 
 message RequestEnvelope {
     oneof payload {
         hazkey.commands.NewComposingText new_composing_text = 1;
-        hazkey.commands.SetConfig set_config = 2;
-        hazkey.commands.SetContext set_context = 3;
-        hazkey.commands.InputChar input_char = 4;
-        hazkey.commands.MoveCursor move_cursor = 5;
-        hazkey.commands.PrefixComplete prefix_complete = 6;
-        hazkey.commands.DeleteLeft delete_left = 7;
-        hazkey.commands.DeleteRight delete_right = 8;
-        hazkey.commands.GetComposingString get_composing_string = 9;
-        hazkey.commands.GetHiraganaWithCursor get_hiragana_with_cursor = 10;
-        hazkey.commands.GetCandidates get_candidates = 11;
+        hazkey.commands.SetContext set_context = 2;
+        hazkey.commands.InputChar input_char = 3;
+        hazkey.commands.MoveCursor move_cursor = 4;
+        hazkey.commands.PrefixComplete prefix_complete = 5;
+        hazkey.commands.DeleteLeft delete_left = 6;
+        hazkey.commands.DeleteRight delete_right = 7;
+        hazkey.commands.GetComposingString get_composing_string = 8;
+        hazkey.commands.GetHiraganaWithCursor get_hiragana_with_cursor = 9;
+        hazkey.commands.GetCandidates get_candidates = 10;
+
+        hazkey.config.getCurrentConfig get_current_config = 100;
+        hazkey.config.setConfig set_config = 101;
+        hazkey.config.getDefaultConfig get_default_config = 102;
+        hazkey.config.clearAllHistory clear_all_history = 103;
     }
 }
 
 enum StatusCode {
-    SUCCESS = 0;
-    FAILED = 1;
+    UNSPECIFIED = 0;
+    SUCCESS = 1;
+    FAILED = 2;
 }
 
 message ResponseEnvelope {

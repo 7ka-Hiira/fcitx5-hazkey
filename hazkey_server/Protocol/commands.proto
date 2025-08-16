@@ -64,7 +64,7 @@ message GetCandidates {
 // Response messages
 
 message Text {
-    string text = 3;
+    string text = 1;
 }
 
 message CandidatesResult {

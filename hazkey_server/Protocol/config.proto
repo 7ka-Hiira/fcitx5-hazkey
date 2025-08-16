@@ -1,0 +1,125 @@
+syntax = "proto3";
+
+package hazkey.config;
+
+import "table.proto";
+
+message ConfigFileHashes {
+    message FileHash {
+        string path = 1;
+        string sha256sum = 2;
+    }
+
+    repeated FileHash file_hashes = 1;
+}
+
+message ConfigProfile {
+    enum AutoConvertMode {
+        AUTO_CONVERT_MODE_UNSPECIFIED = 0;
+        AUTO_CONVERT_NEVER = 1;
+        AUTO_CONVERT_ALWAYS = 2;
+        AUTO_CONVERT_AFTER_SECOND_CHARACTER = 3;
+    }
+
+    enum AuxTextMode {
+        AUX_TEXT_MODE_UNSPECIFIED = 0;
+        AUX_TEXT_SHOW_NEVER = 1;
+        AUX_TEXT_SHOW_ALWAYS = 2;
+        AUX_TEXT_SHOW_WHEN_CURSOR_NOT_AT_END = 3;
+    }
+
+    enum SuggestionListMode {
+        SUGGESTION_LIST_MODE_UNSPECIFIED = 0;
+        SUGGESTION_LIST_SHOW_NEVER = 1;
+        SUGGESTION_LIST_SHOW_NORMAL_RESULTS = 2;
+        SUGGESTION_LIST_SHOW_PREDICTIVE_RESULTS = 3;
+    }
+
+    message SpecialConversionMode {
+        bool comma_separated_number = 1;
+        bool mail_domain = 2;
+        bool calender = 3;
+        bool time = 4;
+        bool roman_typography = 5;
+        bool unicode_codepoint = 6;
+        bool hazkey_version = 7;
+        bool halfwidth_katakana = 50;
+        bool extended_emoji = 51;
+    }
+
+    message InputTable {
+        string name = 1;
+        bool is_default = 2;
+    }
+
+    message ZenzaiVersionConfig {
+        message V1 {}
+
+        message V2 {
+            string profile = 1;
+        }
+
+        message V3 {
+            string profile = 1;
+            string topic = 2;
+            string style = 3;
+            string preference = 4;
+        }
+
+        oneof version {
+            V1 v1 = 1;
+            V2 v2 = 2;
+            V3 v3 = 3;
+        }
+    }
+
+    message ZenzaiModel {
+        string name = 1;
+        string filename = 2;
+        bool is_system = 3;
+    }
+
+    string profile_name = 5;
+
+    AutoConvertMode auto_convert_mode = 10;
+    AuxTextMode aux_text_mode = 11;
+    SuggestionListMode suggestion_list_mode = 12;
+    bool use_wise_suggestion = 13;
+    int32 num_suggestions = 14;
+    int32 num_candidates_per_page = 15;
+    bool use_wise_candidates = 16;
+
+    bool use_input_history = 20;
+    bool stop_store_new_history = 21;
+
+    SpecialConversionMode special_conversion_mode = 30;
+
+    repeated InputTable enabled_tables = 40;
+
+    bool zenzai_enable = 100;
+    int32 zenzai_infer_limit = 101;
+    bool zenzai_contextual_mode = 102;
+    ZenzaiVersionConfig zenzai_version_config = 103;
+}
+
+// Request messages
+
+message getCurrentConfig {}
+
+message setConfig {
+    ConfigFileHashes hash = 1;
+    repeated hazkey.config.table.EditOperation table_operations = 2;
+    repeated ConfigProfile config = 3;
+}
+
+message getDefaultConfig {}
+
+message clearAllHistory {}
+
+// Response messages
+
+message CurrentConfig {
+    ConfigFileHashes hash = 1;
+    repeated hazkey.config.table.InputTable input_tables = 2;
+    repeated ConfigProfile configs = 3;
+}

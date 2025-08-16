@@ -525,7 +525,7 @@ const char descriptor_table_protodef_commands_2eproto[] ABSL_ATTRIBUTE_SECTION_V
     "HALF\020\002\022\021\n\rALPHABET_FULL\020\003\022\021\n\rALPHABET_HA"
     "LF\020\004\"\027\n\025GetHiraganaWithCursor\"8\n\rGetCand"
     "idates\022\027\n\017is_predict_mode\030\001 \001(\010\022\016\n\006n_bes"
-    "t\030\002 \001(\005\"\024\n\004Text\022\014\n\004text\030\003 \001(\t\"\227\001\n\020Candid"
+    "t\030\002 \001(\005\"\024\n\004Text\022\014\n\004text\030\001 \001(\t\"\227\001\n\020Candid"
     "atesResult\022\?\n\ncandidates\030\001 \003(\0132+.hazkey."
     "commands.CandidatesResult.Candidate\022\021\n\tl"
     "ive_text\030\002 \001(\t\032/\n\tCandidate\022\014\n\004text\030\001 \001("
@@ -3254,9 +3254,9 @@ Text::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(Text, _impl_._has_bits_),
     0, // no _extensions_
-    3, 0,  // max_field_number, fast_idx_mask
+    1, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967291,  // skipmap
+    4294967294,  // skipmap
     offsetof(decltype(_table_), field_entries),
     1,  // num_field_entries
     0,  // num_aux_entries
@@ -3268,13 +3268,13 @@ Text::_table_ = {
     ::_pbi::TcParser::GetTable<::hazkey::commands::Text>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string text = 3;
+    // string text = 1;
     {::_pbi::TcParser::FastUS1,
-     {26, 0, 0, PROTOBUF_FIELD_OFFSET(Text, _impl_.text_)}},
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(Text, _impl_.text_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string text = 3;
+    // string text = 1;
     {PROTOBUF_FIELD_OFFSET(Text, _impl_.text_), _Internal::kHasBitsOffset + 0, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
@@ -3315,13 +3315,13 @@ PROTOBUF_NOINLINE void Text::Clear() {
   ::uint32_t cached_has_bits = 0;
   (void)cached_has_bits;
 
-  // string text = 3;
+  // string text = 1;
   if ((this_._impl_._has_bits_[0] & 0x00000001u) != 0) {
     if (!this_._internal_text().empty()) {
       const ::std::string& _s = this_._internal_text();
       ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
           _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "hazkey.commands.Text.text");
-      target = stream->WriteStringMaybeAliased(3, _s, target);
+      target = stream->WriteStringMaybeAliased(1, _s, target);
     }
   }
 
@@ -3349,7 +3349,7 @@ PROTOBUF_NOINLINE void Text::Clear() {
   (void)cached_has_bits;
 
    {
-    // string text = 3;
+    // string text = 1;
     cached_has_bits = this_._impl_._has_bits_[0];
     if ((cached_has_bits & 0x00000001u) != 0) {
       if (!this_._internal_text().empty()) {
