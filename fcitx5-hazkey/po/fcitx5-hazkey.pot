@@ -14,83 +14,11 @@ msgstr ""
 msgid "Hazkey"
 msgstr ""
 
-msgid "Halfwidth"
+msgid "[Direct Input]"
 msgstr ""
 
-msgid "Fullwidth"
+msgid "[Press Tab to Select]"
 msgstr ""
 
-msgid "Combining"
-msgstr ""
-
-msgid "Disabled"
-msgstr ""
-
-msgid "[Alt+Number to Select]"
-msgstr ""
-
-msgid "。 (Fullwidth Kuten)"
-msgstr ""
-
-msgid "｡ (Halfwidth Kuten)"
-msgstr ""
-
-msgid "． (Fullwidth Period)"
-msgstr ""
-
-msgid ". (Halfwidth Period)"
-msgstr ""
-
-msgid "、 (Fullwidth Toten)"
-msgstr ""
-
-msgid "､ (Halfwidth Toten)"
-msgstr ""
-
-msgid "， (Fullwidth Comma)"
-msgstr ""
-
-msgid ", (Halfwidth Comma)"
-msgstr ""
-
-msgid "Enable prediction"
-msgstr ""
-
-msgid "Number style"
-msgstr ""
-
-msgid "Symbol style"
-msgstr ""
-
-msgid "Period style"
-msgstr ""
-
-msgid "Comma style"
-msgstr ""
-
-msgid "Space style"
-msgstr ""
-
-msgid "Diacritic style"
-msgstr ""
-
-msgid "Learn mode"
-msgstr ""
-
-msgid "Enable Zenzai (Experimental, Requires Vulkan)"
-msgstr ""
-
-msgid "Enable Zenzai contextual converision"
-msgstr ""
-
-msgid "Zenzai Profile"
-msgstr ""
-
-msgid "Zenzai Inference limit"
-msgstr ""
-
-msgid "GPU Layers"
-msgstr ""
-
-msgid "Click to open Zenzai Setup Guide"
+msgid "Show [Press Tab to Select] indicator"
 msgstr ""

@@ -3,7 +3,7 @@ configure_file(
   ${CMAKE_CURRENT_BINARY_DIR}/env_config.h
 )
 
-add_library(fcitx5-hazkey SHARED hazkey_state.cpp hazkey_engine.cpp hazkey_candidate.cpp hazkey_preedit.cpp hazkey_server_connector.cpp protocol/commands.pb.cc protocol/base.pb.cc)
+add_library(fcitx5-hazkey SHARED hazkey_state.cpp hazkey_engine.cpp hazkey_candidate.cpp hazkey_preedit.cpp hazkey_server_connector.cpp protocol/commands.pb.cc protocol/table.pb.cc protocol/config.pb.cc protocol/base.pb.cc)
 
 target_include_directories(fcitx5-hazkey PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 target_link_libraries(fcitx5-hazkey PRIVATE Fcitx5::Core Fcitx5::Config protobuf ${Protobuf_LIBRARIES} absl::log_internal_message absl::log_internal_check_op)

@@ -83,14 +83,27 @@ import SwiftUtils
 /// ComposingText -> Characters
 
 @MainActor func getHiraganaWithCursor() -> Hazkey_ResponseEnvelope {
-  var hiragana = composingText.value.toHiragana()
-  let cursorPos = composingText.value.convertTargetCursorPosition
-  if !hiragana.isEmpty {
-    hiragana.insert("|", at: hiragana.index(hiragana.startIndex, offsetBy: cursorPos))
+  func safeSubstring(_ text: String, start: Int, end: Int) -> String {
+    guard start >= 0, end >= 0, start < text.count, end <= text.count, start < end else {
+      return ""
+    }
+
+    let startIndex = text.index(text.startIndex, offsetBy: start)
+    let endIndex = text.index(text.startIndex, offsetBy: end)
+
+    return String(text[startIndex..<endIndex])
   }
+
+  let hiragana = composingText.value.toHiragana()
+  let cursorPos = composingText.value.convertTargetCursorPosition
+
   return Hazkey_ResponseEnvelope.with {
     $0.status = .success
-    $0.text = hiragana
+    $0.textWithCursor = Hazkey_Commands_TextWithCursor.with {
+      $0.beforeCursosr = safeSubstring(hiragana, start: 0, end: cursorPos)
+      $0.onCursor = safeSubstring(hiragana, start: cursorPos, end: cursorPos + 1)
+      $0.afterCursor = safeSubstring(hiragana, start: cursorPos + 1, end: hiragana.count)
+    }
   }
 }
 
@@ -128,11 +141,27 @@ import SwiftUtils
 
 // TODO: return error message
 @MainActor
-func getCandidates(isPredictMode: Bool = false, nBest: Int = 9) -> Hazkey_ResponseEnvelope {
+func getCandidates(is_suggest: Bool) -> Hazkey_ResponseEnvelope {
   var options = baseConvertRequestOptions
-  options.N_best = nBest
-  options.requireJapanesePrediction = isPredictMode
-  options.requireEnglishPrediction = isPredictMode
+  options.N_best = {
+    if is_suggest
+      && currentProfile.suggestionListMode
+        == Hazkey_Config_ConfigProfile.SuggestionListMode.suggestionListShowNever
+    {
+      // for auto conversion
+      return 1
+    } else if is_suggest {
+      return Int(currentProfile.numSuggestions)
+    } else {
+      return Int(currentProfile.numCandidatesPerPage)
+    }
+  }()
+
+  options.requireJapanesePrediction =
+    is_suggest
+    && currentProfile.suggestionListMode
+      == Hazkey_Config_ConfigProfile.SuggestionListMode.suggestionListShowPredictiveResults
+  options.requireEnglishPrediction = options.requireJapanesePrediction
 
   let converted = converter.requestCandidates(composingText.value, options: options)
 
@@ -160,6 +189,27 @@ func getCandidates(isPredictMode: Bool = false, nBest: Int = 9) -> Hazkey_Respon
 
     return candidate
   }
+
+  // Do not automatically convert if there is only one character
+  if currentProfile.autoConvertMode
+    == Hazkey_Config_ConfigProfile.AutoConvertMode.autoConvertSkipSingleChar
+    && hiraganaPreedit.count == 1
+  {
+    candidatesResult.liveText = ""
+  }
+
+  candidatesResult.pageSize = {
+    if is_suggest
+      && currentProfile.suggestionListMode
+        == Hazkey_Config_ConfigProfile.SuggestionListMode.suggestionListShowNever
+    {
+      return 0
+    } else if is_suggest {
+      return currentProfile.numSuggestions
+    } else {
+      return currentProfile.numCandidatesPerPage
+    }
+  }()
 
   return Hazkey_ResponseEnvelope.with {
     $0.status = .success

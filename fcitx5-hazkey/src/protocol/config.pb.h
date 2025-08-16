@@ -63,14 +63,6 @@ enum ConfigProfile_AuxTextMode : int;
 extern const uint32_t ConfigProfile_AuxTextMode_internal_data_[];
 enum ConfigProfile_SuggestionListMode : int;
 extern const uint32_t ConfigProfile_SuggestionListMode_internal_data_[];
-class ConfigFileHashes;
-struct ConfigFileHashesDefaultTypeInternal;
-extern ConfigFileHashesDefaultTypeInternal _ConfigFileHashes_default_instance_;
-extern const ::google::protobuf::internal::ClassDataFull ConfigFileHashes_class_data_;
-class ConfigFileHashes_FileHash;
-struct ConfigFileHashes_FileHashDefaultTypeInternal;
-extern ConfigFileHashes_FileHashDefaultTypeInternal _ConfigFileHashes_FileHash_default_instance_;
-extern const ::google::protobuf::internal::ClassDataFull ConfigFileHashes_FileHash_class_data_;
 class ConfigProfile;
 struct ConfigProfileDefaultTypeInternal;
 extern ConfigProfileDefaultTypeInternal _ConfigProfile_default_instance_;
@@ -107,6 +99,10 @@ class CurrentConfig;
 struct CurrentConfigDefaultTypeInternal;
 extern CurrentConfigDefaultTypeInternal _CurrentConfig_default_instance_;
 extern const ::google::protobuf::internal::ClassDataFull CurrentConfig_class_data_;
+class FileHash;
+struct FileHashDefaultTypeInternal;
+extern FileHashDefaultTypeInternal _FileHash_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull FileHash_class_data_;
 class clearAllHistory;
 struct clearAllHistoryDefaultTypeInternal;
 extern clearAllHistoryDefaultTypeInternal _clearAllHistory_default_instance_;
@@ -145,7 +141,7 @@ enum ConfigProfile_AutoConvertMode : int {
   ConfigProfile_AutoConvertMode_AUTO_CONVERT_MODE_UNSPECIFIED = 0,
   ConfigProfile_AutoConvertMode_AUTO_CONVERT_NEVER = 1,
   ConfigProfile_AutoConvertMode_AUTO_CONVERT_ALWAYS = 2,
-  ConfigProfile_AutoConvertMode_AUTO_CONVERT_AFTER_SECOND_CHARACTER = 3,
+  ConfigProfile_AutoConvertMode_AUTO_CONVERT_SKIP_SINGLE_CHAR = 3,
   ConfigProfile_AutoConvertMode_ConfigProfile_AutoConvertMode_INT_MIN_SENTINEL_DO_NOT_USE_ =
       ::std::numeric_limits<::int32_t>::min(),
   ConfigProfile_AutoConvertMode_ConfigProfile_AutoConvertMode_INT_MAX_SENTINEL_DO_NOT_USE_ =
@@ -315,7 +311,7 @@ class getDefaultConfig final : public ::google::protobuf::internal::ZeroFieldsBa
     return *reinterpret_cast<const getDefaultConfig*>(
         &_getDefaultConfig_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 12;
+  static constexpr int kIndexInFileMessages = 11;
   friend void swap(getDefaultConfig& a, getDefaultConfig& b) { a.Swap(&b); }
   inline void Swap(getDefaultConfig* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -461,7 +457,7 @@ class getCurrentConfig final : public ::google::protobuf::internal::ZeroFieldsBa
     return *reinterpret_cast<const getCurrentConfig*>(
         &_getCurrentConfig_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 10;
+  static constexpr int kIndexInFileMessages = 9;
   friend void swap(getCurrentConfig& a, getCurrentConfig& b) { a.Swap(&b); }
   inline void Swap(getCurrentConfig* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -607,7 +603,7 @@ class clearAllHistory final : public ::google::protobuf::internal::ZeroFieldsBas
     return *reinterpret_cast<const clearAllHistory*>(
         &_clearAllHistory_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 13;
+  static constexpr int kIndexInFileMessages = 12;
   friend void swap(clearAllHistory& a, clearAllHistory& b) { a.Swap(&b); }
   inline void Swap(clearAllHistory* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -699,6 +695,219 @@ class clearAllHistory final : public ::google::protobuf::internal::ZeroFieldsBas
 extern const ::google::protobuf::internal::ClassDataFull clearAllHistory_class_data_;
 // -------------------------------------------------------------------
 
+class FileHash final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:hazkey.config.FileHash) */ {
+ public:
+  inline FileHash() : FileHash(nullptr) {}
+  ~FileHash() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(FileHash* PROTOBUF_NONNULL msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(FileHash));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR FileHash(::google::protobuf::internal::ConstantInitialized);
+
+  inline FileHash(const FileHash& from) : FileHash(nullptr, from) {}
+  inline FileHash(FileHash&& from) noexcept
+      : FileHash(nullptr, ::std::move(from)) {}
+  inline FileHash& operator=(const FileHash& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline FileHash& operator=(FileHash&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const FileHash& default_instance() {
+    return *reinterpret_cast<const FileHash*>(
+        &_FileHash_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 0;
+  friend void swap(FileHash& a, FileHash& b) { a.Swap(&b); }
+  inline void Swap(FileHash* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(FileHash* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  FileHash* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<FileHash>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const FileHash& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const FileHash& from) { FileHash::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(FileHash* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "hazkey.config.FileHash"; }
+
+ protected:
+  explicit FileHash(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  FileHash(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const FileHash& from);
+  FileHash(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, FileHash&& from) noexcept
+      : FileHash(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kPathFieldNumber = 1,
+    kSha256SumFieldNumber = 2,
+  };
+  // string path = 1;
+  void clear_path() ;
+  const ::std::string& path() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_path(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_path();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_path();
+  void set_allocated_path(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_path() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_path(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_path();
+
+  public:
+  // string sha256sum = 2;
+  void clear_sha256sum() ;
+  const ::std::string& sha256sum() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_sha256sum(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_sha256sum();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_sha256sum();
+  void set_allocated_sha256sum(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_sha256sum() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_sha256sum(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_sha256sum();
+
+  public:
+  // @@protoc_insertion_point(class_scope:hazkey.config.FileHash)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<1, 2,
+                                   0, 44,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const FileHash& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::internal::ArenaStringPtr path_;
+    ::google::protobuf::internal::ArenaStringPtr sha256sum_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_config_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull FileHash_class_data_;
+// -------------------------------------------------------------------
+
 class ConfigProfile_ZenzaiVersionConfig_V3 final : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:hazkey.config.ConfigProfile.ZenzaiVersionConfig.V3) */ {
  public:
@@ -754,7 +963,7 @@ class ConfigProfile_ZenzaiVersionConfig_V3 final : public ::google::protobuf::Me
     return *reinterpret_cast<const ConfigProfile_ZenzaiVersionConfig_V3*>(
         &_ConfigProfile_ZenzaiVersionConfig_V3_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 6;
+  static constexpr int kIndexInFileMessages = 5;
   friend void swap(ConfigProfile_ZenzaiVersionConfig_V3& a, ConfigProfile_ZenzaiVersionConfig_V3& b) { a.Swap(&b); }
   inline void Swap(ConfigProfile_ZenzaiVersionConfig_V3* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1001,7 +1210,7 @@ class ConfigProfile_ZenzaiVersionConfig_V2 final : public ::google::protobuf::Me
     return *reinterpret_cast<const ConfigProfile_ZenzaiVersionConfig_V2*>(
         &_ConfigProfile_ZenzaiVersionConfig_V2_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 5;
+  static constexpr int kIndexInFileMessages = 4;
   friend void swap(ConfigProfile_ZenzaiVersionConfig_V2& a, ConfigProfile_ZenzaiVersionConfig_V2& b) { a.Swap(&b); }
   inline void Swap(ConfigProfile_ZenzaiVersionConfig_V2* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1196,7 +1405,7 @@ class ConfigProfile_ZenzaiVersionConfig_V1 final : public ::google::protobuf::in
     return *reinterpret_cast<const ConfigProfile_ZenzaiVersionConfig_V1*>(
         &_ConfigProfile_ZenzaiVersionConfig_V1_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 4;
+  static constexpr int kIndexInFileMessages = 3;
   friend void swap(ConfigProfile_ZenzaiVersionConfig_V1& a, ConfigProfile_ZenzaiVersionConfig_V1& b) { a.Swap(&b); }
   inline void Swap(ConfigProfile_ZenzaiVersionConfig_V1* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1343,7 +1552,7 @@ class ConfigProfile_ZenzaiModel final : public ::google::protobuf::Message
     return *reinterpret_cast<const ConfigProfile_ZenzaiModel*>(
         &_ConfigProfile_ZenzaiModel_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 8;
+  static constexpr int kIndexInFileMessages = 7;
   friend void swap(ConfigProfile_ZenzaiModel& a, ConfigProfile_ZenzaiModel& b) { a.Swap(&b); }
   inline void Swap(ConfigProfile_ZenzaiModel* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1568,7 +1777,7 @@ class ConfigProfile_SpecialConversionMode final : public ::google::protobuf::Mes
     return *reinterpret_cast<const ConfigProfile_SpecialConversionMode*>(
         &_ConfigProfile_SpecialConversionMode_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 2;
+  static constexpr int kIndexInFileMessages = 1;
   friend void swap(ConfigProfile_SpecialConversionMode& a, ConfigProfile_SpecialConversionMode& b) { a.Swap(&b); }
   inline void Swap(ConfigProfile_SpecialConversionMode* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1855,7 +2064,7 @@ class ConfigProfile_InputTable final : public ::google::protobuf::Message
     return *reinterpret_cast<const ConfigProfile_InputTable*>(
         &_ConfigProfile_InputTable_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 3;
+  static constexpr int kIndexInFileMessages = 2;
   friend void swap(ConfigProfile_InputTable& a, ConfigProfile_InputTable& b) { a.Swap(&b); }
   inline void Swap(ConfigProfile_InputTable* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -2008,219 +2217,6 @@ class ConfigProfile_InputTable final : public ::google::protobuf::Message
 extern const ::google::protobuf::internal::ClassDataFull ConfigProfile_InputTable_class_data_;
 // -------------------------------------------------------------------
 
-class ConfigFileHashes_FileHash final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:hazkey.config.ConfigFileHashes.FileHash) */ {
- public:
-  inline ConfigFileHashes_FileHash() : ConfigFileHashes_FileHash(nullptr) {}
-  ~ConfigFileHashes_FileHash() PROTOBUF_FINAL;
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(ConfigFileHashes_FileHash* PROTOBUF_NONNULL msg, std::destroying_delete_t) {
-    SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(ConfigFileHashes_FileHash));
-  }
-#endif
-
-  template <typename = void>
-  explicit PROTOBUF_CONSTEXPR ConfigFileHashes_FileHash(::google::protobuf::internal::ConstantInitialized);
-
-  inline ConfigFileHashes_FileHash(const ConfigFileHashes_FileHash& from) : ConfigFileHashes_FileHash(nullptr, from) {}
-  inline ConfigFileHashes_FileHash(ConfigFileHashes_FileHash&& from) noexcept
-      : ConfigFileHashes_FileHash(nullptr, ::std::move(from)) {}
-  inline ConfigFileHashes_FileHash& operator=(const ConfigFileHashes_FileHash& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline ConfigFileHashes_FileHash& operator=(ConfigFileHashes_FileHash&& from) noexcept {
-    if (this == &from) return *this;
-    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const ConfigFileHashes_FileHash& default_instance() {
-    return *reinterpret_cast<const ConfigFileHashes_FileHash*>(
-        &_ConfigFileHashes_FileHash_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages = 0;
-  friend void swap(ConfigFileHashes_FileHash& a, ConfigFileHashes_FileHash& b) { a.Swap(&b); }
-  inline void Swap(ConfigFileHashes_FileHash* PROTOBUF_NONNULL other) {
-    if (other == this) return;
-    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(ConfigFileHashes_FileHash* PROTOBUF_NONNULL other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  ConfigFileHashes_FileHash* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
-    return ::google::protobuf::Message::DefaultConstruct<ConfigFileHashes_FileHash>(arena);
-  }
-  using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const ConfigFileHashes_FileHash& from);
-  using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom(const ConfigFileHashes_FileHash& from) { ConfigFileHashes_FileHash::MergeImpl(*this, from); }
-
-  private:
-  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
-                        const ::google::protobuf::MessageLite& from_msg);
-
-  public:
-  bool IsInitialized() const {
-    return true;
-  }
-  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-  #if defined(PROTOBUF_CUSTOM_VTABLE)
-  private:
-  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
-      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
-      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
-
-  public:
-  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
-      ::uint8_t* PROTOBUF_NONNULL target,
-      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
-    return _InternalSerialize(*this, target, stream);
-  }
-  #else   // PROTOBUF_CUSTOM_VTABLE
-  ::size_t ByteSizeLong() const final;
-  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
-      ::uint8_t* PROTOBUF_NONNULL target,
-      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
-  #endif  // PROTOBUF_CUSTOM_VTABLE
-  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
-
-  private:
-  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  static void SharedDtor(MessageLite& self);
-  void InternalSwap(ConfigFileHashes_FileHash* PROTOBUF_NONNULL other);
- private:
-  template <typename T>
-  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "hazkey.config.ConfigFileHashes.FileHash"; }
-
- protected:
-  explicit ConfigFileHashes_FileHash(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  ConfigFileHashes_FileHash(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const ConfigFileHashes_FileHash& from);
-  ConfigFileHashes_FileHash(
-      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, ConfigFileHashes_FileHash&& from) noexcept
-      : ConfigFileHashes_FileHash(arena) {
-    *this = ::std::move(from);
-  }
-  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
-  static void* PROTOBUF_NONNULL PlacementNew_(
-      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
-      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  static constexpr auto InternalNewImpl_();
-
- public:
-  static constexpr auto InternalGenerateClassData_();
-
-  ::google::protobuf::Metadata GetMetadata() const;
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-  enum : int {
-    kPathFieldNumber = 1,
-    kSha256SumFieldNumber = 2,
-  };
-  // string path = 1;
-  void clear_path() ;
-  const ::std::string& path() const;
-  template <typename Arg_ = const ::std::string&, typename... Args_>
-  void set_path(Arg_&& arg, Args_... args);
-  ::std::string* PROTOBUF_NONNULL mutable_path();
-  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_path();
-  void set_allocated_path(::std::string* PROTOBUF_NULLABLE value);
-
-  private:
-  const ::std::string& _internal_path() const;
-  PROTOBUF_ALWAYS_INLINE void _internal_set_path(const ::std::string& value);
-  ::std::string* PROTOBUF_NONNULL _internal_mutable_path();
-
-  public:
-  // string sha256sum = 2;
-  void clear_sha256sum() ;
-  const ::std::string& sha256sum() const;
-  template <typename Arg_ = const ::std::string&, typename... Args_>
-  void set_sha256sum(Arg_&& arg, Args_... args);
-  ::std::string* PROTOBUF_NONNULL mutable_sha256sum();
-  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_sha256sum();
-  void set_allocated_sha256sum(::std::string* PROTOBUF_NULLABLE value);
-
-  private:
-  const ::std::string& _internal_sha256sum() const;
-  PROTOBUF_ALWAYS_INLINE void _internal_set_sha256sum(const ::std::string& value);
-  ::std::string* PROTOBUF_NONNULL _internal_mutable_sha256sum();
-
-  public:
-  // @@protoc_insertion_point(class_scope:hazkey.config.ConfigFileHashes.FileHash)
- private:
-  class _Internal;
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<1, 2,
-                                   0, 61,
-                                   2>
-      _table_;
-
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-    inline explicit Impl_(
-        ::google::protobuf::internal::InternalVisibility visibility,
-        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-    inline explicit Impl_(
-        ::google::protobuf::internal::InternalVisibility visibility,
-        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
-        const ConfigFileHashes_FileHash& from_msg);
-    ::google::protobuf::internal::HasBits<1> _has_bits_;
-    ::google::protobuf::internal::CachedSize _cached_size_;
-    ::google::protobuf::internal::ArenaStringPtr path_;
-    ::google::protobuf::internal::ArenaStringPtr sha256sum_;
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_config_2eproto;
-};
-
-extern const ::google::protobuf::internal::ClassDataFull ConfigFileHashes_FileHash_class_data_;
-// -------------------------------------------------------------------
-
 class ConfigProfile_ZenzaiVersionConfig final : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:hazkey.config.ConfigProfile.ZenzaiVersionConfig) */ {
  public:
@@ -2282,7 +2278,7 @@ class ConfigProfile_ZenzaiVersionConfig final : public ::google::protobuf::Messa
     kV3 = 3,
     VERSION_NOT_SET = 0,
   };
-  static constexpr int kIndexInFileMessages = 7;
+  static constexpr int kIndexInFileMessages = 6;
   friend void swap(ConfigProfile_ZenzaiVersionConfig& a, ConfigProfile_ZenzaiVersionConfig& b) { a.Swap(&b); }
   inline void Swap(ConfigProfile_ZenzaiVersionConfig* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -2483,204 +2479,6 @@ class ConfigProfile_ZenzaiVersionConfig final : public ::google::protobuf::Messa
 extern const ::google::protobuf::internal::ClassDataFull ConfigProfile_ZenzaiVersionConfig_class_data_;
 // -------------------------------------------------------------------
 
-class ConfigFileHashes final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:hazkey.config.ConfigFileHashes) */ {
- public:
-  inline ConfigFileHashes() : ConfigFileHashes(nullptr) {}
-  ~ConfigFileHashes() PROTOBUF_FINAL;
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(ConfigFileHashes* PROTOBUF_NONNULL msg, std::destroying_delete_t) {
-    SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(ConfigFileHashes));
-  }
-#endif
-
-  template <typename = void>
-  explicit PROTOBUF_CONSTEXPR ConfigFileHashes(::google::protobuf::internal::ConstantInitialized);
-
-  inline ConfigFileHashes(const ConfigFileHashes& from) : ConfigFileHashes(nullptr, from) {}
-  inline ConfigFileHashes(ConfigFileHashes&& from) noexcept
-      : ConfigFileHashes(nullptr, ::std::move(from)) {}
-  inline ConfigFileHashes& operator=(const ConfigFileHashes& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline ConfigFileHashes& operator=(ConfigFileHashes&& from) noexcept {
-    if (this == &from) return *this;
-    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const ConfigFileHashes& default_instance() {
-    return *reinterpret_cast<const ConfigFileHashes*>(
-        &_ConfigFileHashes_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages = 1;
-  friend void swap(ConfigFileHashes& a, ConfigFileHashes& b) { a.Swap(&b); }
-  inline void Swap(ConfigFileHashes* PROTOBUF_NONNULL other) {
-    if (other == this) return;
-    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(ConfigFileHashes* PROTOBUF_NONNULL other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  ConfigFileHashes* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
-    return ::google::protobuf::Message::DefaultConstruct<ConfigFileHashes>(arena);
-  }
-  using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const ConfigFileHashes& from);
-  using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom(const ConfigFileHashes& from) { ConfigFileHashes::MergeImpl(*this, from); }
-
-  private:
-  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
-                        const ::google::protobuf::MessageLite& from_msg);
-
-  public:
-  bool IsInitialized() const {
-    return true;
-  }
-  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-  #if defined(PROTOBUF_CUSTOM_VTABLE)
-  private:
-  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
-      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
-      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
-
-  public:
-  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
-      ::uint8_t* PROTOBUF_NONNULL target,
-      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
-    return _InternalSerialize(*this, target, stream);
-  }
-  #else   // PROTOBUF_CUSTOM_VTABLE
-  ::size_t ByteSizeLong() const final;
-  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
-      ::uint8_t* PROTOBUF_NONNULL target,
-      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
-  #endif  // PROTOBUF_CUSTOM_VTABLE
-  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
-
-  private:
-  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  static void SharedDtor(MessageLite& self);
-  void InternalSwap(ConfigFileHashes* PROTOBUF_NONNULL other);
- private:
-  template <typename T>
-  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "hazkey.config.ConfigFileHashes"; }
-
- protected:
-  explicit ConfigFileHashes(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  ConfigFileHashes(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const ConfigFileHashes& from);
-  ConfigFileHashes(
-      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, ConfigFileHashes&& from) noexcept
-      : ConfigFileHashes(arena) {
-    *this = ::std::move(from);
-  }
-  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
-  static void* PROTOBUF_NONNULL PlacementNew_(
-      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
-      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  static constexpr auto InternalNewImpl_();
-
- public:
-  static constexpr auto InternalGenerateClassData_();
-
-  ::google::protobuf::Metadata GetMetadata() const;
-  // nested types ----------------------------------------------------
-  using FileHash = ConfigFileHashes_FileHash;
-
-  // accessors -------------------------------------------------------
-  enum : int {
-    kFileHashesFieldNumber = 1,
-  };
-  // repeated .hazkey.config.ConfigFileHashes.FileHash file_hashes = 1;
-  int file_hashes_size() const;
-  private:
-  int _internal_file_hashes_size() const;
-
-  public:
-  void clear_file_hashes() ;
-  ::hazkey::config::ConfigFileHashes_FileHash* PROTOBUF_NONNULL mutable_file_hashes(int index);
-  ::google::protobuf::RepeatedPtrField<::hazkey::config::ConfigFileHashes_FileHash>* PROTOBUF_NONNULL mutable_file_hashes();
-
-  private:
-  const ::google::protobuf::RepeatedPtrField<::hazkey::config::ConfigFileHashes_FileHash>& _internal_file_hashes() const;
-  ::google::protobuf::RepeatedPtrField<::hazkey::config::ConfigFileHashes_FileHash>* PROTOBUF_NONNULL _internal_mutable_file_hashes();
-  public:
-  const ::hazkey::config::ConfigFileHashes_FileHash& file_hashes(int index) const;
-  ::hazkey::config::ConfigFileHashes_FileHash* PROTOBUF_NONNULL add_file_hashes();
-  const ::google::protobuf::RepeatedPtrField<::hazkey::config::ConfigFileHashes_FileHash>& file_hashes() const;
-  // @@protoc_insertion_point(class_scope:hazkey.config.ConfigFileHashes)
- private:
-  class _Internal;
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<0, 1,
-                                   1, 0,
-                                   2>
-      _table_;
-
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-    inline explicit Impl_(
-        ::google::protobuf::internal::InternalVisibility visibility,
-        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-    inline explicit Impl_(
-        ::google::protobuf::internal::InternalVisibility visibility,
-        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
-        const ConfigFileHashes& from_msg);
-    ::google::protobuf::RepeatedPtrField< ::hazkey::config::ConfigFileHashes_FileHash > file_hashes_;
-    ::google::protobuf::internal::CachedSize _cached_size_;
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_config_2eproto;
-};
-
-extern const ::google::protobuf::internal::ClassDataFull ConfigFileHashes_class_data_;
-// -------------------------------------------------------------------
-
 class ConfigProfile final : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:hazkey.config.ConfigProfile) */ {
  public:
@@ -2736,7 +2534,7 @@ class ConfigProfile final : public ::google::protobuf::Message
     return *reinterpret_cast<const ConfigProfile*>(
         &_ConfigProfile_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 9;
+  static constexpr int kIndexInFileMessages = 8;
   friend void swap(ConfigProfile& a, ConfigProfile& b) { a.Swap(&b); }
   inline void Swap(ConfigProfile* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -2829,7 +2627,7 @@ class ConfigProfile final : public ::google::protobuf::Message
   static constexpr AutoConvertMode AUTO_CONVERT_MODE_UNSPECIFIED = ConfigProfile_AutoConvertMode_AUTO_CONVERT_MODE_UNSPECIFIED;
   static constexpr AutoConvertMode AUTO_CONVERT_NEVER = ConfigProfile_AutoConvertMode_AUTO_CONVERT_NEVER;
   static constexpr AutoConvertMode AUTO_CONVERT_ALWAYS = ConfigProfile_AutoConvertMode_AUTO_CONVERT_ALWAYS;
-  static constexpr AutoConvertMode AUTO_CONVERT_AFTER_SECOND_CHARACTER = ConfigProfile_AutoConvertMode_AUTO_CONVERT_AFTER_SECOND_CHARACTER;
+  static constexpr AutoConvertMode AUTO_CONVERT_SKIP_SINGLE_CHAR = ConfigProfile_AutoConvertMode_AUTO_CONVERT_SKIP_SINGLE_CHAR;
   static inline bool AutoConvertMode_IsValid(int value) {
     return ConfigProfile_AutoConvertMode_IsValid(value);
   }
@@ -2903,8 +2701,8 @@ class ConfigProfile final : public ::google::protobuf::Message
     kSuggestionListModeFieldNumber = 12,
     kNumSuggestionsFieldNumber = 14,
     kNumCandidatesPerPageFieldNumber = 15,
-    kUseWiseSuggestionFieldNumber = 13,
-    kUseWiseCandidatesFieldNumber = 16,
+    kUseRichSuggestionFieldNumber = 13,
+    kUseRichCandidatesFieldNumber = 16,
     kUseInputHistoryFieldNumber = 20,
     kStopStoreNewHistoryFieldNumber = 21,
     kZenzaiInferLimitFieldNumber = 101,
@@ -3023,24 +2821,24 @@ class ConfigProfile final : public ::google::protobuf::Message
   void _internal_set_num_candidates_per_page(::int32_t value);
 
   public:
-  // bool use_wise_suggestion = 13;
-  void clear_use_wise_suggestion() ;
-  bool use_wise_suggestion() const;
-  void set_use_wise_suggestion(bool value);
+  // bool use_rich_suggestion = 13;
+  void clear_use_rich_suggestion() ;
+  bool use_rich_suggestion() const;
+  void set_use_rich_suggestion(bool value);
 
   private:
-  bool _internal_use_wise_suggestion() const;
-  void _internal_set_use_wise_suggestion(bool value);
+  bool _internal_use_rich_suggestion() const;
+  void _internal_set_use_rich_suggestion(bool value);
 
   public:
-  // bool use_wise_candidates = 16;
-  void clear_use_wise_candidates() ;
-  bool use_wise_candidates() const;
-  void set_use_wise_candidates(bool value);
+  // bool use_rich_candidates = 16;
+  void clear_use_rich_candidates() ;
+  bool use_rich_candidates() const;
+  void set_use_rich_candidates(bool value);
 
   private:
-  bool _internal_use_wise_candidates() const;
-  void _internal_set_use_wise_candidates(bool value);
+  bool _internal_use_rich_candidates() const;
+  void _internal_set_use_rich_candidates(bool value);
 
   public:
   // bool use_input_history = 20;
@@ -3128,8 +2926,8 @@ class ConfigProfile final : public ::google::protobuf::Message
     int suggestion_list_mode_;
     ::int32_t num_suggestions_;
     ::int32_t num_candidates_per_page_;
-    bool use_wise_suggestion_;
-    bool use_wise_candidates_;
+    bool use_rich_suggestion_;
+    bool use_rich_candidates_;
     bool use_input_history_;
     bool stop_store_new_history_;
     ::int32_t zenzai_infer_limit_;
@@ -3199,7 +2997,7 @@ class CurrentConfig final : public ::google::protobuf::Message
     return *reinterpret_cast<const CurrentConfig*>(
         &_CurrentConfig_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 14;
+  static constexpr int kIndexInFileMessages = 13;
   friend void swap(CurrentConfig& a, CurrentConfig& b) { a.Swap(&b); }
   inline void Swap(CurrentConfig* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -3287,10 +3085,27 @@ class CurrentConfig final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
+    kFileHashesFieldNumber = 1,
     kInputTablesFieldNumber = 2,
     kConfigsFieldNumber = 3,
-    kHashFieldNumber = 1,
   };
+  // repeated .hazkey.config.FileHash file_hashes = 1;
+  int file_hashes_size() const;
+  private:
+  int _internal_file_hashes_size() const;
+
+  public:
+  void clear_file_hashes() ;
+  ::hazkey::config::FileHash* PROTOBUF_NONNULL mutable_file_hashes(int index);
+  ::google::protobuf::RepeatedPtrField<::hazkey::config::FileHash>* PROTOBUF_NONNULL mutable_file_hashes();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<::hazkey::config::FileHash>& _internal_file_hashes() const;
+  ::google::protobuf::RepeatedPtrField<::hazkey::config::FileHash>* PROTOBUF_NONNULL _internal_mutable_file_hashes();
+  public:
+  const ::hazkey::config::FileHash& file_hashes(int index) const;
+  ::hazkey::config::FileHash* PROTOBUF_NONNULL add_file_hashes();
+  const ::google::protobuf::RepeatedPtrField<::hazkey::config::FileHash>& file_hashes() const;
   // repeated .hazkey.config.table.InputTable input_tables = 2;
   int input_tables_size() const;
   private:
@@ -3325,21 +3140,6 @@ class CurrentConfig final : public ::google::protobuf::Message
   const ::hazkey::config::ConfigProfile& configs(int index) const;
   ::hazkey::config::ConfigProfile* PROTOBUF_NONNULL add_configs();
   const ::google::protobuf::RepeatedPtrField<::hazkey::config::ConfigProfile>& configs() const;
-  // .hazkey.config.ConfigFileHashes hash = 1;
-  bool has_hash() const;
-  void clear_hash() ;
-  const ::hazkey::config::ConfigFileHashes& hash() const;
-  [[nodiscard]] ::hazkey::config::ConfigFileHashes* PROTOBUF_NULLABLE release_hash();
-  ::hazkey::config::ConfigFileHashes* PROTOBUF_NONNULL mutable_hash();
-  void set_allocated_hash(::hazkey::config::ConfigFileHashes* PROTOBUF_NULLABLE value);
-  void unsafe_arena_set_allocated_hash(::hazkey::config::ConfigFileHashes* PROTOBUF_NULLABLE value);
-  ::hazkey::config::ConfigFileHashes* PROTOBUF_NULLABLE unsafe_arena_release_hash();
-
-  private:
-  const ::hazkey::config::ConfigFileHashes& _internal_hash() const;
-  ::hazkey::config::ConfigFileHashes* PROTOBUF_NONNULL _internal_mutable_hash();
-
-  public:
   // @@protoc_insertion_point(class_scope:hazkey.config.CurrentConfig)
  private:
   class _Internal;
@@ -3364,11 +3164,10 @@ class CurrentConfig final : public ::google::protobuf::Message
         ::google::protobuf::internal::InternalVisibility visibility,
         ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
         const CurrentConfig& from_msg);
-    ::google::protobuf::internal::HasBits<1> _has_bits_;
-    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::RepeatedPtrField< ::hazkey::config::FileHash > file_hashes_;
     ::google::protobuf::RepeatedPtrField< ::hazkey::config::table::InputTable > input_tables_;
     ::google::protobuf::RepeatedPtrField< ::hazkey::config::ConfigProfile > configs_;
-    ::hazkey::config::ConfigFileHashes* PROTOBUF_NULLABLE hash_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -3433,7 +3232,7 @@ class setConfig final : public ::google::protobuf::Message
     return *reinterpret_cast<const setConfig*>(
         &_setConfig_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 11;
+  static constexpr int kIndexInFileMessages = 10;
   friend void swap(setConfig& a, setConfig& b) { a.Swap(&b); }
   inline void Swap(setConfig* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -3521,10 +3320,27 @@ class setConfig final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
+    kFileHashesFieldNumber = 1,
     kTableOperationsFieldNumber = 2,
     kConfigFieldNumber = 3,
-    kHashFieldNumber = 1,
   };
+  // repeated .hazkey.config.FileHash file_hashes = 1;
+  int file_hashes_size() const;
+  private:
+  int _internal_file_hashes_size() const;
+
+  public:
+  void clear_file_hashes() ;
+  ::hazkey::config::FileHash* PROTOBUF_NONNULL mutable_file_hashes(int index);
+  ::google::protobuf::RepeatedPtrField<::hazkey::config::FileHash>* PROTOBUF_NONNULL mutable_file_hashes();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<::hazkey::config::FileHash>& _internal_file_hashes() const;
+  ::google::protobuf::RepeatedPtrField<::hazkey::config::FileHash>* PROTOBUF_NONNULL _internal_mutable_file_hashes();
+  public:
+  const ::hazkey::config::FileHash& file_hashes(int index) const;
+  ::hazkey::config::FileHash* PROTOBUF_NONNULL add_file_hashes();
+  const ::google::protobuf::RepeatedPtrField<::hazkey::config::FileHash>& file_hashes() const;
   // repeated .hazkey.config.table.EditOperation table_operations = 2;
   int table_operations_size() const;
   private:
@@ -3559,21 +3375,6 @@ class setConfig final : public ::google::protobuf::Message
   const ::hazkey::config::ConfigProfile& config(int index) const;
   ::hazkey::config::ConfigProfile* PROTOBUF_NONNULL add_config();
   const ::google::protobuf::RepeatedPtrField<::hazkey::config::ConfigProfile>& config() const;
-  // .hazkey.config.ConfigFileHashes hash = 1;
-  bool has_hash() const;
-  void clear_hash() ;
-  const ::hazkey::config::ConfigFileHashes& hash() const;
-  [[nodiscard]] ::hazkey::config::ConfigFileHashes* PROTOBUF_NULLABLE release_hash();
-  ::hazkey::config::ConfigFileHashes* PROTOBUF_NONNULL mutable_hash();
-  void set_allocated_hash(::hazkey::config::ConfigFileHashes* PROTOBUF_NULLABLE value);
-  void unsafe_arena_set_allocated_hash(::hazkey::config::ConfigFileHashes* PROTOBUF_NULLABLE value);
-  ::hazkey::config::ConfigFileHashes* PROTOBUF_NULLABLE unsafe_arena_release_hash();
-
-  private:
-  const ::hazkey::config::ConfigFileHashes& _internal_hash() const;
-  ::hazkey::config::ConfigFileHashes* PROTOBUF_NONNULL _internal_mutable_hash();
-
-  public:
   // @@protoc_insertion_point(class_scope:hazkey.config.setConfig)
  private:
   class _Internal;
@@ -3598,11 +3399,10 @@ class setConfig final : public ::google::protobuf::Message
         ::google::protobuf::internal::InternalVisibility visibility,
         ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
         const setConfig& from_msg);
-    ::google::protobuf::internal::HasBits<1> _has_bits_;
-    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::RepeatedPtrField< ::hazkey::config::FileHash > file_hashes_;
     ::google::protobuf::RepeatedPtrField< ::hazkey::config::table::EditOperation > table_operations_;
     ::google::protobuf::RepeatedPtrField< ::hazkey::config::ConfigProfile > config_;
-    ::hazkey::config::ConfigFileHashes* PROTOBUF_NULLABLE hash_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -3625,49 +3425,49 @@ extern const ::google::protobuf::internal::ClassDataFull setConfig_class_data_;
 #endif  // __GNUC__
 // -------------------------------------------------------------------
 
-// ConfigFileHashes_FileHash
+// FileHash
 
 // string path = 1;
-inline void ConfigFileHashes_FileHash::clear_path() {
+inline void FileHash::clear_path() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.path_.ClearToEmpty();
   _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::std::string& ConfigFileHashes_FileHash::path() const
+inline const ::std::string& FileHash::path() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:hazkey.config.ConfigFileHashes.FileHash.path)
+  // @@protoc_insertion_point(field_get:hazkey.config.FileHash.path)
   return _internal_path();
 }
 template <typename Arg_, typename... Args_>
-PROTOBUF_ALWAYS_INLINE void ConfigFileHashes_FileHash::set_path(Arg_&& arg, Args_... args) {
+PROTOBUF_ALWAYS_INLINE void FileHash::set_path(Arg_&& arg, Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_._has_bits_[0] |= 0x00000001u;
   _impl_.path_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:hazkey.config.ConfigFileHashes.FileHash.path)
+  // @@protoc_insertion_point(field_set:hazkey.config.FileHash.path)
 }
-inline ::std::string* PROTOBUF_NONNULL ConfigFileHashes_FileHash::mutable_path()
+inline ::std::string* PROTOBUF_NONNULL FileHash::mutable_path()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::std::string* _s = _internal_mutable_path();
-  // @@protoc_insertion_point(field_mutable:hazkey.config.ConfigFileHashes.FileHash.path)
+  // @@protoc_insertion_point(field_mutable:hazkey.config.FileHash.path)
   return _s;
 }
-inline const ::std::string& ConfigFileHashes_FileHash::_internal_path() const {
+inline const ::std::string& FileHash::_internal_path() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return _impl_.path_.Get();
 }
-inline void ConfigFileHashes_FileHash::_internal_set_path(const ::std::string& value) {
+inline void FileHash::_internal_set_path(const ::std::string& value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_._has_bits_[0] |= 0x00000001u;
   _impl_.path_.Set(value, GetArena());
 }
-inline ::std::string* PROTOBUF_NONNULL ConfigFileHashes_FileHash::_internal_mutable_path() {
+inline ::std::string* PROTOBUF_NONNULL FileHash::_internal_mutable_path() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_._has_bits_[0] |= 0x00000001u;
   return _impl_.path_.Mutable( GetArena());
 }
-inline ::std::string* PROTOBUF_NULLABLE ConfigFileHashes_FileHash::release_path() {
+inline ::std::string* PROTOBUF_NULLABLE FileHash::release_path() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:hazkey.config.ConfigFileHashes.FileHash.path)
+  // @@protoc_insertion_point(field_release:hazkey.config.FileHash.path)
   if ((_impl_._has_bits_[0] & 0x00000001u) == 0) {
     return nullptr;
   }
@@ -3678,7 +3478,7 @@ inline ::std::string* PROTOBUF_NULLABLE ConfigFileHashes_FileHash::release_path(
   }
   return released;
 }
-inline void ConfigFileHashes_FileHash::set_allocated_path(::std::string* PROTOBUF_NULLABLE value) {
+inline void FileHash::set_allocated_path(::std::string* PROTOBUF_NULLABLE value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001u;
@@ -3689,50 +3489,50 @@ inline void ConfigFileHashes_FileHash::set_allocated_path(::std::string* PROTOBU
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.path_.IsDefault()) {
     _impl_.path_.Set("", GetArena());
   }
-  // @@protoc_insertion_point(field_set_allocated:hazkey.config.ConfigFileHashes.FileHash.path)
+  // @@protoc_insertion_point(field_set_allocated:hazkey.config.FileHash.path)
 }
 
 // string sha256sum = 2;
-inline void ConfigFileHashes_FileHash::clear_sha256sum() {
+inline void FileHash::clear_sha256sum() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.sha256sum_.ClearToEmpty();
   _impl_._has_bits_[0] &= ~0x00000002u;
 }
-inline const ::std::string& ConfigFileHashes_FileHash::sha256sum() const
+inline const ::std::string& FileHash::sha256sum() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:hazkey.config.ConfigFileHashes.FileHash.sha256sum)
+  // @@protoc_insertion_point(field_get:hazkey.config.FileHash.sha256sum)
   return _internal_sha256sum();
 }
 template <typename Arg_, typename... Args_>
-PROTOBUF_ALWAYS_INLINE void ConfigFileHashes_FileHash::set_sha256sum(Arg_&& arg, Args_... args) {
+PROTOBUF_ALWAYS_INLINE void FileHash::set_sha256sum(Arg_&& arg, Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_._has_bits_[0] |= 0x00000002u;
   _impl_.sha256sum_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:hazkey.config.ConfigFileHashes.FileHash.sha256sum)
+  // @@protoc_insertion_point(field_set:hazkey.config.FileHash.sha256sum)
 }
-inline ::std::string* PROTOBUF_NONNULL ConfigFileHashes_FileHash::mutable_sha256sum()
+inline ::std::string* PROTOBUF_NONNULL FileHash::mutable_sha256sum()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::std::string* _s = _internal_mutable_sha256sum();
-  // @@protoc_insertion_point(field_mutable:hazkey.config.ConfigFileHashes.FileHash.sha256sum)
+  // @@protoc_insertion_point(field_mutable:hazkey.config.FileHash.sha256sum)
   return _s;
 }
-inline const ::std::string& ConfigFileHashes_FileHash::_internal_sha256sum() const {
+inline const ::std::string& FileHash::_internal_sha256sum() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return _impl_.sha256sum_.Get();
 }
-inline void ConfigFileHashes_FileHash::_internal_set_sha256sum(const ::std::string& value) {
+inline void FileHash::_internal_set_sha256sum(const ::std::string& value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_._has_bits_[0] |= 0x00000002u;
   _impl_.sha256sum_.Set(value, GetArena());
 }
-inline ::std::string* PROTOBUF_NONNULL ConfigFileHashes_FileHash::_internal_mutable_sha256sum() {
+inline ::std::string* PROTOBUF_NONNULL FileHash::_internal_mutable_sha256sum() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_._has_bits_[0] |= 0x00000002u;
   return _impl_.sha256sum_.Mutable( GetArena());
 }
-inline ::std::string* PROTOBUF_NULLABLE ConfigFileHashes_FileHash::release_sha256sum() {
+inline ::std::string* PROTOBUF_NULLABLE FileHash::release_sha256sum() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:hazkey.config.ConfigFileHashes.FileHash.sha256sum)
+  // @@protoc_insertion_point(field_release:hazkey.config.FileHash.sha256sum)
   if ((_impl_._has_bits_[0] & 0x00000002u) == 0) {
     return nullptr;
   }
@@ -3743,7 +3543,7 @@ inline ::std::string* PROTOBUF_NULLABLE ConfigFileHashes_FileHash::release_sha25
   }
   return released;
 }
-inline void ConfigFileHashes_FileHash::set_allocated_sha256sum(::std::string* PROTOBUF_NULLABLE value) {
+inline void FileHash::set_allocated_sha256sum(::std::string* PROTOBUF_NULLABLE value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000002u;
@@ -3754,61 +3554,7 @@ inline void ConfigFileHashes_FileHash::set_allocated_sha256sum(::std::string* PR
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.sha256sum_.IsDefault()) {
     _impl_.sha256sum_.Set("", GetArena());
   }
-  // @@protoc_insertion_point(field_set_allocated:hazkey.config.ConfigFileHashes.FileHash.sha256sum)
-}
-
-// -------------------------------------------------------------------
-
-// ConfigFileHashes
-
-// repeated .hazkey.config.ConfigFileHashes.FileHash file_hashes = 1;
-inline int ConfigFileHashes::_internal_file_hashes_size() const {
-  return _internal_file_hashes().size();
-}
-inline int ConfigFileHashes::file_hashes_size() const {
-  return _internal_file_hashes_size();
-}
-inline void ConfigFileHashes::clear_file_hashes() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.file_hashes_.Clear();
-}
-inline ::hazkey::config::ConfigFileHashes_FileHash* PROTOBUF_NONNULL ConfigFileHashes::mutable_file_hashes(int index)
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable:hazkey.config.ConfigFileHashes.file_hashes)
-  return _internal_mutable_file_hashes()->Mutable(index);
-}
-inline ::google::protobuf::RepeatedPtrField<::hazkey::config::ConfigFileHashes_FileHash>* PROTOBUF_NONNULL ConfigFileHashes::mutable_file_hashes()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable_list:hazkey.config.ConfigFileHashes.file_hashes)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _internal_mutable_file_hashes();
-}
-inline const ::hazkey::config::ConfigFileHashes_FileHash& ConfigFileHashes::file_hashes(int index) const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:hazkey.config.ConfigFileHashes.file_hashes)
-  return _internal_file_hashes().Get(index);
-}
-inline ::hazkey::config::ConfigFileHashes_FileHash* PROTOBUF_NONNULL ConfigFileHashes::add_file_hashes()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::hazkey::config::ConfigFileHashes_FileHash* _add = _internal_mutable_file_hashes()->Add();
-  // @@protoc_insertion_point(field_add:hazkey.config.ConfigFileHashes.file_hashes)
-  return _add;
-}
-inline const ::google::protobuf::RepeatedPtrField<::hazkey::config::ConfigFileHashes_FileHash>& ConfigFileHashes::file_hashes() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_list:hazkey.config.ConfigFileHashes.file_hashes)
-  return _internal_file_hashes();
-}
-inline const ::google::protobuf::RepeatedPtrField<::hazkey::config::ConfigFileHashes_FileHash>&
-ConfigFileHashes::_internal_file_hashes() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.file_hashes_;
-}
-inline ::google::protobuf::RepeatedPtrField<::hazkey::config::ConfigFileHashes_FileHash>* PROTOBUF_NONNULL
-ConfigFileHashes::_internal_mutable_file_hashes() {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return &_impl_.file_hashes_;
+  // @@protoc_insertion_point(field_set_allocated:hazkey.config.FileHash.sha256sum)
 }
 
 // -------------------------------------------------------------------
@@ -5016,28 +4762,28 @@ inline void ConfigProfile::_internal_set_suggestion_list_mode(::hazkey::config::
   _impl_.suggestion_list_mode_ = value;
 }
 
-// bool use_wise_suggestion = 13;
-inline void ConfigProfile::clear_use_wise_suggestion() {
+// bool use_rich_suggestion = 13;
+inline void ConfigProfile::clear_use_rich_suggestion() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.use_wise_suggestion_ = false;
+  _impl_.use_rich_suggestion_ = false;
   _impl_._has_bits_[0] &= ~0x00000100u;
 }
-inline bool ConfigProfile::use_wise_suggestion() const {
-  // @@protoc_insertion_point(field_get:hazkey.config.ConfigProfile.use_wise_suggestion)
-  return _internal_use_wise_suggestion();
+inline bool ConfigProfile::use_rich_suggestion() const {
+  // @@protoc_insertion_point(field_get:hazkey.config.ConfigProfile.use_rich_suggestion)
+  return _internal_use_rich_suggestion();
 }
-inline void ConfigProfile::set_use_wise_suggestion(bool value) {
-  _internal_set_use_wise_suggestion(value);
+inline void ConfigProfile::set_use_rich_suggestion(bool value) {
+  _internal_set_use_rich_suggestion(value);
   _impl_._has_bits_[0] |= 0x00000100u;
-  // @@protoc_insertion_point(field_set:hazkey.config.ConfigProfile.use_wise_suggestion)
+  // @@protoc_insertion_point(field_set:hazkey.config.ConfigProfile.use_rich_suggestion)
 }
-inline bool ConfigProfile::_internal_use_wise_suggestion() const {
+inline bool ConfigProfile::_internal_use_rich_suggestion() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.use_wise_suggestion_;
+  return _impl_.use_rich_suggestion_;
 }
-inline void ConfigProfile::_internal_set_use_wise_suggestion(bool value) {
+inline void ConfigProfile::_internal_set_use_rich_suggestion(bool value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.use_wise_suggestion_ = value;
+  _impl_.use_rich_suggestion_ = value;
 }
 
 // int32 num_suggestions = 14;
@@ -5088,28 +4834,28 @@ inline void ConfigProfile::_internal_set_num_candidates_per_page(::int32_t value
   _impl_.num_candidates_per_page_ = value;
 }
 
-// bool use_wise_candidates = 16;
-inline void ConfigProfile::clear_use_wise_candidates() {
+// bool use_rich_candidates = 16;
+inline void ConfigProfile::clear_use_rich_candidates() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.use_wise_candidates_ = false;
+  _impl_.use_rich_candidates_ = false;
   _impl_._has_bits_[0] &= ~0x00000200u;
 }
-inline bool ConfigProfile::use_wise_candidates() const {
-  // @@protoc_insertion_point(field_get:hazkey.config.ConfigProfile.use_wise_candidates)
-  return _internal_use_wise_candidates();
+inline bool ConfigProfile::use_rich_candidates() const {
+  // @@protoc_insertion_point(field_get:hazkey.config.ConfigProfile.use_rich_candidates)
+  return _internal_use_rich_candidates();
 }
-inline void ConfigProfile::set_use_wise_candidates(bool value) {
-  _internal_set_use_wise_candidates(value);
+inline void ConfigProfile::set_use_rich_candidates(bool value) {
+  _internal_set_use_rich_candidates(value);
   _impl_._has_bits_[0] |= 0x00000200u;
-  // @@protoc_insertion_point(field_set:hazkey.config.ConfigProfile.use_wise_candidates)
+  // @@protoc_insertion_point(field_set:hazkey.config.ConfigProfile.use_rich_candidates)
 }
-inline bool ConfigProfile::_internal_use_wise_candidates() const {
+inline bool ConfigProfile::_internal_use_rich_candidates() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.use_wise_candidates_;
+  return _impl_.use_rich_candidates_;
 }
-inline void ConfigProfile::_internal_set_use_wise_candidates(bool value) {
+inline void ConfigProfile::_internal_set_use_rich_candidates(bool value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.use_wise_candidates_ = value;
+  _impl_.use_rich_candidates_ = value;
 }
 
 // bool use_input_history = 20;
@@ -5486,102 +5232,54 @@ inline void ConfigProfile::set_allocated_zenzai_version_config(::hazkey::config:
 
 // setConfig
 
-// .hazkey.config.ConfigFileHashes hash = 1;
-inline bool setConfig::has_hash() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-  PROTOBUF_ASSUME(!value || _impl_.hash_ != nullptr);
-  return value;
+// repeated .hazkey.config.FileHash file_hashes = 1;
+inline int setConfig::_internal_file_hashes_size() const {
+  return _internal_file_hashes().size();
 }
-inline void setConfig::clear_hash() {
+inline int setConfig::file_hashes_size() const {
+  return _internal_file_hashes_size();
+}
+inline void setConfig::clear_file_hashes() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (_impl_.hash_ != nullptr) _impl_.hash_->Clear();
-  _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_.file_hashes_.Clear();
 }
-inline const ::hazkey::config::ConfigFileHashes& setConfig::_internal_hash() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  const ::hazkey::config::ConfigFileHashes* p = _impl_.hash_;
-  return p != nullptr ? *p : reinterpret_cast<const ::hazkey::config::ConfigFileHashes&>(::hazkey::config::_ConfigFileHashes_default_instance_);
-}
-inline const ::hazkey::config::ConfigFileHashes& setConfig::hash() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:hazkey.config.setConfig.hash)
-  return _internal_hash();
-}
-inline void setConfig::unsafe_arena_set_allocated_hash(
-    ::hazkey::config::ConfigFileHashes* PROTOBUF_NULLABLE value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (GetArena() == nullptr) {
-    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.hash_);
-  }
-  _impl_.hash_ = reinterpret_cast<::hazkey::config::ConfigFileHashes*>(value);
-  if (value != nullptr) {
-    _impl_._has_bits_[0] |= 0x00000001u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000001u;
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:hazkey.config.setConfig.hash)
-}
-inline ::hazkey::config::ConfigFileHashes* PROTOBUF_NULLABLE setConfig::release_hash() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-
-  _impl_._has_bits_[0] &= ~0x00000001u;
-  ::hazkey::config::ConfigFileHashes* released = _impl_.hash_;
-  _impl_.hash_ = nullptr;
-  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-    if (GetArena() == nullptr) {
-      delete old;
-    }
-  } else {
-    if (GetArena() != nullptr) {
-      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-    }
-  }
-  return released;
-}
-inline ::hazkey::config::ConfigFileHashes* PROTOBUF_NULLABLE setConfig::unsafe_arena_release_hash() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:hazkey.config.setConfig.hash)
-
-  _impl_._has_bits_[0] &= ~0x00000001u;
-  ::hazkey::config::ConfigFileHashes* temp = _impl_.hash_;
-  _impl_.hash_ = nullptr;
-  return temp;
-}
-inline ::hazkey::config::ConfigFileHashes* PROTOBUF_NONNULL setConfig::_internal_mutable_hash() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (_impl_.hash_ == nullptr) {
-    auto* p = ::google::protobuf::Message::DefaultConstruct<::hazkey::config::ConfigFileHashes>(GetArena());
-    _impl_.hash_ = reinterpret_cast<::hazkey::config::ConfigFileHashes*>(p);
-  }
-  return _impl_.hash_;
-}
-inline ::hazkey::config::ConfigFileHashes* PROTOBUF_NONNULL setConfig::mutable_hash()
+inline ::hazkey::config::FileHash* PROTOBUF_NONNULL setConfig::mutable_file_hashes(int index)
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  _impl_._has_bits_[0] |= 0x00000001u;
-  ::hazkey::config::ConfigFileHashes* _msg = _internal_mutable_hash();
-  // @@protoc_insertion_point(field_mutable:hazkey.config.setConfig.hash)
-  return _msg;
+  // @@protoc_insertion_point(field_mutable:hazkey.config.setConfig.file_hashes)
+  return _internal_mutable_file_hashes()->Mutable(index);
 }
-inline void setConfig::set_allocated_hash(::hazkey::config::ConfigFileHashes* PROTOBUF_NULLABLE value) {
-  ::google::protobuf::Arena* message_arena = GetArena();
+inline ::google::protobuf::RepeatedPtrField<::hazkey::config::FileHash>* PROTOBUF_NONNULL setConfig::mutable_file_hashes()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:hazkey.config.setConfig.file_hashes)
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (message_arena == nullptr) {
-    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.hash_);
-  }
-
-  if (value != nullptr) {
-    ::google::protobuf::Arena* submessage_arena = value->GetArena();
-    if (message_arena != submessage_arena) {
-      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
-    }
-    _impl_._has_bits_[0] |= 0x00000001u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000001u;
-  }
-
-  _impl_.hash_ = reinterpret_cast<::hazkey::config::ConfigFileHashes*>(value);
-  // @@protoc_insertion_point(field_set_allocated:hazkey.config.setConfig.hash)
+  return _internal_mutable_file_hashes();
+}
+inline const ::hazkey::config::FileHash& setConfig::file_hashes(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:hazkey.config.setConfig.file_hashes)
+  return _internal_file_hashes().Get(index);
+}
+inline ::hazkey::config::FileHash* PROTOBUF_NONNULL setConfig::add_file_hashes()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::hazkey::config::FileHash* _add = _internal_mutable_file_hashes()->Add();
+  // @@protoc_insertion_point(field_add:hazkey.config.setConfig.file_hashes)
+  return _add;
+}
+inline const ::google::protobuf::RepeatedPtrField<::hazkey::config::FileHash>& setConfig::file_hashes() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:hazkey.config.setConfig.file_hashes)
+  return _internal_file_hashes();
+}
+inline const ::google::protobuf::RepeatedPtrField<::hazkey::config::FileHash>&
+setConfig::_internal_file_hashes() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.file_hashes_;
+}
+inline ::google::protobuf::RepeatedPtrField<::hazkey::config::FileHash>* PROTOBUF_NONNULL
+setConfig::_internal_mutable_file_hashes() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.file_hashes_;
 }
 
 // repeated .hazkey.config.table.EditOperation table_operations = 2;
@@ -5692,102 +5390,54 @@ setConfig::_internal_mutable_config() {
 
 // CurrentConfig
 
-// .hazkey.config.ConfigFileHashes hash = 1;
-inline bool CurrentConfig::has_hash() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-  PROTOBUF_ASSUME(!value || _impl_.hash_ != nullptr);
-  return value;
+// repeated .hazkey.config.FileHash file_hashes = 1;
+inline int CurrentConfig::_internal_file_hashes_size() const {
+  return _internal_file_hashes().size();
 }
-inline void CurrentConfig::clear_hash() {
+inline int CurrentConfig::file_hashes_size() const {
+  return _internal_file_hashes_size();
+}
+inline void CurrentConfig::clear_file_hashes() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (_impl_.hash_ != nullptr) _impl_.hash_->Clear();
-  _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_.file_hashes_.Clear();
 }
-inline const ::hazkey::config::ConfigFileHashes& CurrentConfig::_internal_hash() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  const ::hazkey::config::ConfigFileHashes* p = _impl_.hash_;
-  return p != nullptr ? *p : reinterpret_cast<const ::hazkey::config::ConfigFileHashes&>(::hazkey::config::_ConfigFileHashes_default_instance_);
-}
-inline const ::hazkey::config::ConfigFileHashes& CurrentConfig::hash() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:hazkey.config.CurrentConfig.hash)
-  return _internal_hash();
-}
-inline void CurrentConfig::unsafe_arena_set_allocated_hash(
-    ::hazkey::config::ConfigFileHashes* PROTOBUF_NULLABLE value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (GetArena() == nullptr) {
-    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.hash_);
-  }
-  _impl_.hash_ = reinterpret_cast<::hazkey::config::ConfigFileHashes*>(value);
-  if (value != nullptr) {
-    _impl_._has_bits_[0] |= 0x00000001u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000001u;
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:hazkey.config.CurrentConfig.hash)
-}
-inline ::hazkey::config::ConfigFileHashes* PROTOBUF_NULLABLE CurrentConfig::release_hash() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-
-  _impl_._has_bits_[0] &= ~0x00000001u;
-  ::hazkey::config::ConfigFileHashes* released = _impl_.hash_;
-  _impl_.hash_ = nullptr;
-  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-    if (GetArena() == nullptr) {
-      delete old;
-    }
-  } else {
-    if (GetArena() != nullptr) {
-      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-    }
-  }
-  return released;
-}
-inline ::hazkey::config::ConfigFileHashes* PROTOBUF_NULLABLE CurrentConfig::unsafe_arena_release_hash() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:hazkey.config.CurrentConfig.hash)
-
-  _impl_._has_bits_[0] &= ~0x00000001u;
-  ::hazkey::config::ConfigFileHashes* temp = _impl_.hash_;
-  _impl_.hash_ = nullptr;
-  return temp;
-}
-inline ::hazkey::config::ConfigFileHashes* PROTOBUF_NONNULL CurrentConfig::_internal_mutable_hash() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (_impl_.hash_ == nullptr) {
-    auto* p = ::google::protobuf::Message::DefaultConstruct<::hazkey::config::ConfigFileHashes>(GetArena());
-    _impl_.hash_ = reinterpret_cast<::hazkey::config::ConfigFileHashes*>(p);
-  }
-  return _impl_.hash_;
-}
-inline ::hazkey::config::ConfigFileHashes* PROTOBUF_NONNULL CurrentConfig::mutable_hash()
+inline ::hazkey::config::FileHash* PROTOBUF_NONNULL CurrentConfig::mutable_file_hashes(int index)
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  _impl_._has_bits_[0] |= 0x00000001u;
-  ::hazkey::config::ConfigFileHashes* _msg = _internal_mutable_hash();
-  // @@protoc_insertion_point(field_mutable:hazkey.config.CurrentConfig.hash)
-  return _msg;
+  // @@protoc_insertion_point(field_mutable:hazkey.config.CurrentConfig.file_hashes)
+  return _internal_mutable_file_hashes()->Mutable(index);
 }
-inline void CurrentConfig::set_allocated_hash(::hazkey::config::ConfigFileHashes* PROTOBUF_NULLABLE value) {
-  ::google::protobuf::Arena* message_arena = GetArena();
+inline ::google::protobuf::RepeatedPtrField<::hazkey::config::FileHash>* PROTOBUF_NONNULL CurrentConfig::mutable_file_hashes()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:hazkey.config.CurrentConfig.file_hashes)
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (message_arena == nullptr) {
-    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.hash_);
-  }
-
-  if (value != nullptr) {
-    ::google::protobuf::Arena* submessage_arena = value->GetArena();
-    if (message_arena != submessage_arena) {
-      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
-    }
-    _impl_._has_bits_[0] |= 0x00000001u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000001u;
-  }
-
-  _impl_.hash_ = reinterpret_cast<::hazkey::config::ConfigFileHashes*>(value);
-  // @@protoc_insertion_point(field_set_allocated:hazkey.config.CurrentConfig.hash)
+  return _internal_mutable_file_hashes();
+}
+inline const ::hazkey::config::FileHash& CurrentConfig::file_hashes(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:hazkey.config.CurrentConfig.file_hashes)
+  return _internal_file_hashes().Get(index);
+}
+inline ::hazkey::config::FileHash* PROTOBUF_NONNULL CurrentConfig::add_file_hashes()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::hazkey::config::FileHash* _add = _internal_mutable_file_hashes()->Add();
+  // @@protoc_insertion_point(field_add:hazkey.config.CurrentConfig.file_hashes)
+  return _add;
+}
+inline const ::google::protobuf::RepeatedPtrField<::hazkey::config::FileHash>& CurrentConfig::file_hashes() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:hazkey.config.CurrentConfig.file_hashes)
+  return _internal_file_hashes();
+}
+inline const ::google::protobuf::RepeatedPtrField<::hazkey::config::FileHash>&
+CurrentConfig::_internal_file_hashes() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.file_hashes_;
+}
+inline ::google::protobuf::RepeatedPtrField<::hazkey::config::FileHash>* PROTOBUF_NONNULL
+CurrentConfig::_internal_mutable_file_hashes() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.file_hashes_;
 }
 
 // repeated .hazkey.config.table.InputTable input_tables = 2;

@@ -20,28 +20,16 @@ fileprivate struct _GeneratedWithProtocGenSwiftVersion: SwiftProtobuf.ProtobufAP
   typealias Version = _2
 }
 
-struct Hazkey_Config_ConfigFileHashes: Sendable {
+struct Hazkey_Config_FileHash: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  var fileHashes: [Hazkey_Config_ConfigFileHashes.FileHash] = []
+  var path: String = String()
+
+  var sha256Sum: String = String()
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
-
-  struct FileHash: Sendable {
-    // SwiftProtobuf.Message conformance is added in an extension below. See the
-    // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-    // methods supported on all messages.
-
-    var path: String = String()
-
-    var sha256Sum: String = String()
-
-    var unknownFields = SwiftProtobuf.UnknownStorage()
-
-    init() {}
-  }
 
   init() {}
 }
@@ -71,9 +59,9 @@ struct Hazkey_Config_ConfigProfile: @unchecked Sendable {
     set {_uniqueStorage()._suggestionListMode = newValue}
   }
 
-  var useWiseSuggestion: Bool {
-    get {return _storage._useWiseSuggestion}
-    set {_uniqueStorage()._useWiseSuggestion = newValue}
+  var useRichSuggestion: Bool {
+    get {return _storage._useRichSuggestion}
+    set {_uniqueStorage()._useRichSuggestion = newValue}
   }
 
   var numSuggestions: Int32 {
@@ -86,9 +74,9 @@ struct Hazkey_Config_ConfigProfile: @unchecked Sendable {
     set {_uniqueStorage()._numCandidatesPerPage = newValue}
   }
 
-  var useWiseCandidates: Bool {
-    get {return _storage._useWiseCandidates}
-    set {_uniqueStorage()._useWiseCandidates = newValue}
+  var useRichCandidates: Bool {
+    get {return _storage._useRichCandidates}
+    set {_uniqueStorage()._useRichCandidates = newValue}
   }
 
   var useInputHistory: Bool {
@@ -146,7 +134,7 @@ struct Hazkey_Config_ConfigProfile: @unchecked Sendable {
     case unspecified // = 0
     case autoConvertNever // = 1
     case autoConvertAlways // = 2
-    case autoConvertAfterSecondCharacter // = 3
+    case autoConvertSkipSingleChar // = 3
     case UNRECOGNIZED(Int)
 
     init() {
@@ -158,7 +146,7 @@ struct Hazkey_Config_ConfigProfile: @unchecked Sendable {
       case 0: self = .unspecified
       case 1: self = .autoConvertNever
       case 2: self = .autoConvertAlways
-      case 3: self = .autoConvertAfterSecondCharacter
+      case 3: self = .autoConvertSkipSingleChar
       default: self = .UNRECOGNIZED(rawValue)
       }
     }
@@ -168,7 +156,7 @@ struct Hazkey_Config_ConfigProfile: @unchecked Sendable {
       case .unspecified: return 0
       case .autoConvertNever: return 1
       case .autoConvertAlways: return 2
-      case .autoConvertAfterSecondCharacter: return 3
+      case .autoConvertSkipSingleChar: return 3
       case .UNRECOGNIZED(let i): return i
       }
     }
@@ -178,7 +166,7 @@ struct Hazkey_Config_ConfigProfile: @unchecked Sendable {
       .unspecified,
       .autoConvertNever,
       .autoConvertAlways,
-      .autoConvertAfterSecondCharacter,
+      .autoConvertSkipSingleChar,
     ]
 
   }
@@ -428,14 +416,7 @@ struct Hazkey_Config_setConfig: Sendable {
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  var hash: Hazkey_Config_ConfigFileHashes {
-    get {return _hash ?? Hazkey_Config_ConfigFileHashes()}
-    set {_hash = newValue}
-  }
-  /// Returns true if `hash` has been explicitly set.
-  var hasHash: Bool {return self._hash != nil}
-  /// Clears the value of `hash`. Subsequent reads from it will return its default value.
-  mutating func clearHash() {self._hash = nil}
+  var fileHashes: [Hazkey_Config_FileHash] = []
 
   var tableOperations: [Hazkey_Config_Table_EditOperation] = []
 
@@ -444,8 +425,6 @@ struct Hazkey_Config_setConfig: Sendable {
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   init() {}
-
-  fileprivate var _hash: Hazkey_Config_ConfigFileHashes? = nil
 }
 
 struct Hazkey_Config_getDefaultConfig: Sendable {
@@ -473,14 +452,7 @@ struct Hazkey_Config_CurrentConfig: Sendable {
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  var hash: Hazkey_Config_ConfigFileHashes {
-    get {return _hash ?? Hazkey_Config_ConfigFileHashes()}
-    set {_hash = newValue}
-  }
-  /// Returns true if `hash` has been explicitly set.
-  var hasHash: Bool {return self._hash != nil}
-  /// Clears the value of `hash`. Subsequent reads from it will return its default value.
-  mutating func clearHash() {self._hash = nil}
+  var fileHashes: [Hazkey_Config_FileHash] = []
 
   var inputTables: [Hazkey_Config_Table_InputTable] = []
 
@@ -489,48 +461,14 @@ struct Hazkey_Config_CurrentConfig: Sendable {
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   init() {}
-
-  fileprivate var _hash: Hazkey_Config_ConfigFileHashes? = nil
 }
 
 // MARK: - Code below here is support for the SwiftProtobuf runtime.
 
 fileprivate let _protobuf_package = "hazkey.config"
 
-extension Hazkey_Config_ConfigFileHashes: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = _protobuf_package + ".ConfigFileHashes"
-  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .standard(proto: "file_hashes"),
-  ]
-
-  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let fieldNumber = try decoder.nextFieldNumber() {
-      // The use of inline closures is to circumvent an issue where the compiler
-      // allocates stack space for every case branch when no optimizations are
-      // enabled. https://github.com/apple/swift-protobuf/issues/1034
-      switch fieldNumber {
-      case 1: try { try decoder.decodeRepeatedMessageField(value: &self.fileHashes) }()
-      default: break
-      }
-    }
-  }
-
-  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if !self.fileHashes.isEmpty {
-      try visitor.visitRepeatedMessageField(value: self.fileHashes, fieldNumber: 1)
-    }
-    try unknownFields.traverse(visitor: &visitor)
-  }
-
-  static func ==(lhs: Hazkey_Config_ConfigFileHashes, rhs: Hazkey_Config_ConfigFileHashes) -> Bool {
-    if lhs.fileHashes != rhs.fileHashes {return false}
-    if lhs.unknownFields != rhs.unknownFields {return false}
-    return true
-  }
-}
-
-extension Hazkey_Config_ConfigFileHashes.FileHash: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = Hazkey_Config_ConfigFileHashes.protoMessageName + ".FileHash"
+extension Hazkey_Config_FileHash: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".FileHash"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "path"),
     2: .same(proto: "sha256sum"),
@@ -559,7 +497,7 @@ extension Hazkey_Config_ConfigFileHashes.FileHash: SwiftProtobuf.Message, SwiftP
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: Hazkey_Config_ConfigFileHashes.FileHash, rhs: Hazkey_Config_ConfigFileHashes.FileHash) -> Bool {
+  static func ==(lhs: Hazkey_Config_FileHash, rhs: Hazkey_Config_FileHash) -> Bool {
     if lhs.path != rhs.path {return false}
     if lhs.sha256Sum != rhs.sha256Sum {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
@@ -574,10 +512,10 @@ extension Hazkey_Config_ConfigProfile: SwiftProtobuf.Message, SwiftProtobuf._Mes
     10: .standard(proto: "auto_convert_mode"),
     11: .standard(proto: "aux_text_mode"),
     12: .standard(proto: "suggestion_list_mode"),
-    13: .standard(proto: "use_wise_suggestion"),
+    13: .standard(proto: "use_rich_suggestion"),
     14: .standard(proto: "num_suggestions"),
     15: .standard(proto: "num_candidates_per_page"),
-    16: .standard(proto: "use_wise_candidates"),
+    16: .standard(proto: "use_rich_candidates"),
     20: .standard(proto: "use_input_history"),
     21: .standard(proto: "stop_store_new_history"),
     30: .standard(proto: "special_conversion_mode"),
@@ -593,10 +531,10 @@ extension Hazkey_Config_ConfigProfile: SwiftProtobuf.Message, SwiftProtobuf._Mes
     var _autoConvertMode: Hazkey_Config_ConfigProfile.AutoConvertMode = .unspecified
     var _auxTextMode: Hazkey_Config_ConfigProfile.AuxTextMode = .unspecified
     var _suggestionListMode: Hazkey_Config_ConfigProfile.SuggestionListMode = .unspecified
-    var _useWiseSuggestion: Bool = false
+    var _useRichSuggestion: Bool = false
     var _numSuggestions: Int32 = 0
     var _numCandidatesPerPage: Int32 = 0
-    var _useWiseCandidates: Bool = false
+    var _useRichCandidates: Bool = false
     var _useInputHistory: Bool = false
     var _stopStoreNewHistory: Bool = false
     var _specialConversionMode: Hazkey_Config_ConfigProfile.SpecialConversionMode? = nil
@@ -619,10 +557,10 @@ extension Hazkey_Config_ConfigProfile: SwiftProtobuf.Message, SwiftProtobuf._Mes
       _autoConvertMode = source._autoConvertMode
       _auxTextMode = source._auxTextMode
       _suggestionListMode = source._suggestionListMode
-      _useWiseSuggestion = source._useWiseSuggestion
+      _useRichSuggestion = source._useRichSuggestion
       _numSuggestions = source._numSuggestions
       _numCandidatesPerPage = source._numCandidatesPerPage
-      _useWiseCandidates = source._useWiseCandidates
+      _useRichCandidates = source._useRichCandidates
       _useInputHistory = source._useInputHistory
       _stopStoreNewHistory = source._stopStoreNewHistory
       _specialConversionMode = source._specialConversionMode
@@ -653,10 +591,10 @@ extension Hazkey_Config_ConfigProfile: SwiftProtobuf.Message, SwiftProtobuf._Mes
         case 10: try { try decoder.decodeSingularEnumField(value: &_storage._autoConvertMode) }()
         case 11: try { try decoder.decodeSingularEnumField(value: &_storage._auxTextMode) }()
         case 12: try { try decoder.decodeSingularEnumField(value: &_storage._suggestionListMode) }()
-        case 13: try { try decoder.decodeSingularBoolField(value: &_storage._useWiseSuggestion) }()
+        case 13: try { try decoder.decodeSingularBoolField(value: &_storage._useRichSuggestion) }()
         case 14: try { try decoder.decodeSingularInt32Field(value: &_storage._numSuggestions) }()
         case 15: try { try decoder.decodeSingularInt32Field(value: &_storage._numCandidatesPerPage) }()
-        case 16: try { try decoder.decodeSingularBoolField(value: &_storage._useWiseCandidates) }()
+        case 16: try { try decoder.decodeSingularBoolField(value: &_storage._useRichCandidates) }()
         case 20: try { try decoder.decodeSingularBoolField(value: &_storage._useInputHistory) }()
         case 21: try { try decoder.decodeSingularBoolField(value: &_storage._stopStoreNewHistory) }()
         case 30: try { try decoder.decodeSingularMessageField(value: &_storage._specialConversionMode) }()
@@ -689,8 +627,8 @@ extension Hazkey_Config_ConfigProfile: SwiftProtobuf.Message, SwiftProtobuf._Mes
       if _storage._suggestionListMode != .unspecified {
         try visitor.visitSingularEnumField(value: _storage._suggestionListMode, fieldNumber: 12)
       }
-      if _storage._useWiseSuggestion != false {
-        try visitor.visitSingularBoolField(value: _storage._useWiseSuggestion, fieldNumber: 13)
+      if _storage._useRichSuggestion != false {
+        try visitor.visitSingularBoolField(value: _storage._useRichSuggestion, fieldNumber: 13)
       }
       if _storage._numSuggestions != 0 {
         try visitor.visitSingularInt32Field(value: _storage._numSuggestions, fieldNumber: 14)
@@ -698,8 +636,8 @@ extension Hazkey_Config_ConfigProfile: SwiftProtobuf.Message, SwiftProtobuf._Mes
       if _storage._numCandidatesPerPage != 0 {
         try visitor.visitSingularInt32Field(value: _storage._numCandidatesPerPage, fieldNumber: 15)
       }
-      if _storage._useWiseCandidates != false {
-        try visitor.visitSingularBoolField(value: _storage._useWiseCandidates, fieldNumber: 16)
+      if _storage._useRichCandidates != false {
+        try visitor.visitSingularBoolField(value: _storage._useRichCandidates, fieldNumber: 16)
       }
       if _storage._useInputHistory != false {
         try visitor.visitSingularBoolField(value: _storage._useInputHistory, fieldNumber: 20)
@@ -738,10 +676,10 @@ extension Hazkey_Config_ConfigProfile: SwiftProtobuf.Message, SwiftProtobuf._Mes
         if _storage._autoConvertMode != rhs_storage._autoConvertMode {return false}
         if _storage._auxTextMode != rhs_storage._auxTextMode {return false}
         if _storage._suggestionListMode != rhs_storage._suggestionListMode {return false}
-        if _storage._useWiseSuggestion != rhs_storage._useWiseSuggestion {return false}
+        if _storage._useRichSuggestion != rhs_storage._useRichSuggestion {return false}
         if _storage._numSuggestions != rhs_storage._numSuggestions {return false}
         if _storage._numCandidatesPerPage != rhs_storage._numCandidatesPerPage {return false}
-        if _storage._useWiseCandidates != rhs_storage._useWiseCandidates {return false}
+        if _storage._useRichCandidates != rhs_storage._useRichCandidates {return false}
         if _storage._useInputHistory != rhs_storage._useInputHistory {return false}
         if _storage._stopStoreNewHistory != rhs_storage._stopStoreNewHistory {return false}
         if _storage._specialConversionMode != rhs_storage._specialConversionMode {return false}
@@ -764,7 +702,7 @@ extension Hazkey_Config_ConfigProfile.AutoConvertMode: SwiftProtobuf._ProtoNameP
     0: .same(proto: "AUTO_CONVERT_MODE_UNSPECIFIED"),
     1: .same(proto: "AUTO_CONVERT_NEVER"),
     2: .same(proto: "AUTO_CONVERT_ALWAYS"),
-    3: .same(proto: "AUTO_CONVERT_AFTER_SECOND_CHARACTER"),
+    3: .same(proto: "AUTO_CONVERT_SKIP_SINGLE_CHAR"),
   ]
 }
 
@@ -1159,7 +1097,7 @@ extension Hazkey_Config_getCurrentConfig: SwiftProtobuf.Message, SwiftProtobuf._
 extension Hazkey_Config_setConfig: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   static let protoMessageName: String = _protobuf_package + ".setConfig"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "hash"),
+    1: .standard(proto: "file_hashes"),
     2: .standard(proto: "table_operations"),
     3: .same(proto: "config"),
   ]
@@ -1170,7 +1108,7 @@ extension Hazkey_Config_setConfig: SwiftProtobuf.Message, SwiftProtobuf._Message
       // allocates stack space for every case branch when no optimizations are
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
-      case 1: try { try decoder.decodeSingularMessageField(value: &self._hash) }()
+      case 1: try { try decoder.decodeRepeatedMessageField(value: &self.fileHashes) }()
       case 2: try { try decoder.decodeRepeatedMessageField(value: &self.tableOperations) }()
       case 3: try { try decoder.decodeRepeatedMessageField(value: &self.config) }()
       default: break
@@ -1179,13 +1117,9 @@ extension Hazkey_Config_setConfig: SwiftProtobuf.Message, SwiftProtobuf._Message
   }
 
   func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    // The use of inline closures is to circumvent an issue where the compiler
-    // allocates stack space for every if/case branch local when no optimizations
-    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
-    // https://github.com/apple/swift-protobuf/issues/1182
-    try { if let v = self._hash {
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 1)
-    } }()
+    if !self.fileHashes.isEmpty {
+      try visitor.visitRepeatedMessageField(value: self.fileHashes, fieldNumber: 1)
+    }
     if !self.tableOperations.isEmpty {
       try visitor.visitRepeatedMessageField(value: self.tableOperations, fieldNumber: 2)
     }
@@ -1196,7 +1130,7 @@ extension Hazkey_Config_setConfig: SwiftProtobuf.Message, SwiftProtobuf._Message
   }
 
   static func ==(lhs: Hazkey_Config_setConfig, rhs: Hazkey_Config_setConfig) -> Bool {
-    if lhs._hash != rhs._hash {return false}
+    if lhs.fileHashes != rhs.fileHashes {return false}
     if lhs.tableOperations != rhs.tableOperations {return false}
     if lhs.config != rhs.config {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
@@ -1245,7 +1179,7 @@ extension Hazkey_Config_clearAllHistory: SwiftProtobuf.Message, SwiftProtobuf._M
 extension Hazkey_Config_CurrentConfig: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   static let protoMessageName: String = _protobuf_package + ".CurrentConfig"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "hash"),
+    1: .standard(proto: "file_hashes"),
     2: .standard(proto: "input_tables"),
     3: .same(proto: "configs"),
   ]
@@ -1256,7 +1190,7 @@ extension Hazkey_Config_CurrentConfig: SwiftProtobuf.Message, SwiftProtobuf._Mes
       // allocates stack space for every case branch when no optimizations are
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
-      case 1: try { try decoder.decodeSingularMessageField(value: &self._hash) }()
+      case 1: try { try decoder.decodeRepeatedMessageField(value: &self.fileHashes) }()
       case 2: try { try decoder.decodeRepeatedMessageField(value: &self.inputTables) }()
       case 3: try { try decoder.decodeRepeatedMessageField(value: &self.configs) }()
       default: break
@@ -1265,13 +1199,9 @@ extension Hazkey_Config_CurrentConfig: SwiftProtobuf.Message, SwiftProtobuf._Mes
   }
 
   func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    // The use of inline closures is to circumvent an issue where the compiler
-    // allocates stack space for every if/case branch local when no optimizations
-    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
-    // https://github.com/apple/swift-protobuf/issues/1182
-    try { if let v = self._hash {
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 1)
-    } }()
+    if !self.fileHashes.isEmpty {
+      try visitor.visitRepeatedMessageField(value: self.fileHashes, fieldNumber: 1)
+    }
     if !self.inputTables.isEmpty {
       try visitor.visitRepeatedMessageField(value: self.inputTables, fieldNumber: 2)
     }
@@ -1282,7 +1212,7 @@ extension Hazkey_Config_CurrentConfig: SwiftProtobuf.Message, SwiftProtobuf._Mes
   }
 
   static func ==(lhs: Hazkey_Config_CurrentConfig, rhs: Hazkey_Config_CurrentConfig) -> Bool {
-    if lhs._hash != rhs._hash {return false}
+    if lhs.fileHashes != rhs.fileHashes {return false}
     if lhs.inputTables != rhs.inputTables {return false}
     if lhs.configs != rhs.configs {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}

@@ -177,6 +177,7 @@ class ResponseEnvelope final : public ::google::protobuf::Message
   enum PayloadCase {
     kText = 3,
     kCandidates = 4,
+    kTextWithCursor = 5,
     PAYLOAD_NOT_SET = 0,
   };
   static constexpr int kIndexInFileMessages = 1;
@@ -271,6 +272,7 @@ class ResponseEnvelope final : public ::google::protobuf::Message
     kStatusFieldNumber = 1,
     kTextFieldNumber = 3,
     kCandidatesFieldNumber = 4,
+    kTextWithCursorFieldNumber = 5,
   };
   // string error_message = 2;
   void clear_error_message() ;
@@ -332,6 +334,25 @@ class ResponseEnvelope final : public ::google::protobuf::Message
   ::hazkey::commands::CandidatesResult* PROTOBUF_NONNULL _internal_mutable_candidates();
 
   public:
+  // .hazkey.commands.TextWithCursor text_with_cursor = 5;
+  bool has_text_with_cursor() const;
+  private:
+  bool _internal_has_text_with_cursor() const;
+
+  public:
+  void clear_text_with_cursor() ;
+  const ::hazkey::commands::TextWithCursor& text_with_cursor() const;
+  [[nodiscard]] ::hazkey::commands::TextWithCursor* PROTOBUF_NULLABLE release_text_with_cursor();
+  ::hazkey::commands::TextWithCursor* PROTOBUF_NONNULL mutable_text_with_cursor();
+  void set_allocated_text_with_cursor(::hazkey::commands::TextWithCursor* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_text_with_cursor(::hazkey::commands::TextWithCursor* PROTOBUF_NULLABLE value);
+  ::hazkey::commands::TextWithCursor* PROTOBUF_NULLABLE unsafe_arena_release_text_with_cursor();
+
+  private:
+  const ::hazkey::commands::TextWithCursor& _internal_text_with_cursor() const;
+  ::hazkey::commands::TextWithCursor* PROTOBUF_NONNULL _internal_mutable_text_with_cursor();
+
+  public:
   void clear_payload();
   PayloadCase payload_case() const;
   // @@protoc_insertion_point(class_scope:hazkey.ResponseEnvelope)
@@ -339,11 +360,12 @@ class ResponseEnvelope final : public ::google::protobuf::Message
   class _Internal;
   void set_has_text();
   void set_has_candidates();
+  void set_has_text_with_cursor();
   inline bool has_payload() const;
   inline void clear_has_payload();
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<1, 4,
-                                   1, 49,
+  static const ::google::protobuf::internal::TcParseTable<1, 5,
+                                   2, 49,
                                    2>
       _table_;
 
@@ -371,6 +393,7 @@ class ResponseEnvelope final : public ::google::protobuf::Message
       ::google::protobuf::internal::ConstantInitialized _constinit_;
       ::google::protobuf::internal::ArenaStringPtr text_;
       ::hazkey::commands::CandidatesResult* PROTOBUF_NULLABLE candidates_;
+      ::hazkey::commands::TextWithCursor* PROTOBUF_NULLABLE text_with_cursor_;
     } payload_;
     ::uint32_t _oneof_case_[1];
     PROTOBUF_TSAN_DECLARE_MEMBER
@@ -2143,6 +2166,76 @@ inline ::hazkey::commands::CandidatesResult* PROTOBUF_NONNULL ResponseEnvelope::
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::hazkey::commands::CandidatesResult* _msg = _internal_mutable_candidates();
   // @@protoc_insertion_point(field_mutable:hazkey.ResponseEnvelope.candidates)
+  return _msg;
+}
+
+// .hazkey.commands.TextWithCursor text_with_cursor = 5;
+inline bool ResponseEnvelope::has_text_with_cursor() const {
+  return payload_case() == kTextWithCursor;
+}
+inline bool ResponseEnvelope::_internal_has_text_with_cursor() const {
+  return payload_case() == kTextWithCursor;
+}
+inline void ResponseEnvelope::set_has_text_with_cursor() {
+  _impl_._oneof_case_[0] = kTextWithCursor;
+}
+inline ::hazkey::commands::TextWithCursor* PROTOBUF_NULLABLE ResponseEnvelope::release_text_with_cursor() {
+  // @@protoc_insertion_point(field_release:hazkey.ResponseEnvelope.text_with_cursor)
+  if (payload_case() == kTextWithCursor) {
+    clear_has_payload();
+    auto* temp = _impl_.payload_.text_with_cursor_;
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.payload_.text_with_cursor_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::hazkey::commands::TextWithCursor& ResponseEnvelope::_internal_text_with_cursor() const {
+  return payload_case() == kTextWithCursor ? *_impl_.payload_.text_with_cursor_ : reinterpret_cast<::hazkey::commands::TextWithCursor&>(::hazkey::commands::_TextWithCursor_default_instance_);
+}
+inline const ::hazkey::commands::TextWithCursor& ResponseEnvelope::text_with_cursor() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:hazkey.ResponseEnvelope.text_with_cursor)
+  return _internal_text_with_cursor();
+}
+inline ::hazkey::commands::TextWithCursor* PROTOBUF_NULLABLE ResponseEnvelope::unsafe_arena_release_text_with_cursor() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:hazkey.ResponseEnvelope.text_with_cursor)
+  if (payload_case() == kTextWithCursor) {
+    clear_has_payload();
+    auto* temp = _impl_.payload_.text_with_cursor_;
+    _impl_.payload_.text_with_cursor_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void ResponseEnvelope::unsafe_arena_set_allocated_text_with_cursor(
+    ::hazkey::commands::TextWithCursor* PROTOBUF_NULLABLE value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_payload();
+  if (value) {
+    set_has_text_with_cursor();
+    _impl_.payload_.text_with_cursor_ = value;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:hazkey.ResponseEnvelope.text_with_cursor)
+}
+inline ::hazkey::commands::TextWithCursor* PROTOBUF_NONNULL ResponseEnvelope::_internal_mutable_text_with_cursor() {
+  if (payload_case() != kTextWithCursor) {
+    clear_payload();
+    set_has_text_with_cursor();
+    _impl_.payload_.text_with_cursor_ = 
+        ::google::protobuf::Message::DefaultConstruct<::hazkey::commands::TextWithCursor>(GetArena());
+  }
+  return _impl_.payload_.text_with_cursor_;
+}
+inline ::hazkey::commands::TextWithCursor* PROTOBUF_NONNULL ResponseEnvelope::mutable_text_with_cursor()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::hazkey::commands::TextWithCursor* _msg = _internal_mutable_text_with_cursor();
+  // @@protoc_insertion_point(field_mutable:hazkey.ResponseEnvelope.text_with_cursor)
   return _msg;
 }
 

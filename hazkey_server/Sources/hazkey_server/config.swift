@@ -3,7 +3,7 @@ import KanaKanjiConverterModule
 import SwiftProtobuf
 
 func setConfig(
-  _ hashes: Hazkey_Config_ConfigFileHashes,
+  _ hashes: [Hazkey_Config_FileHash],
   _ inputTableOperations: [Hazkey_Config_Table_EditOperation],
   _ config: [Hazkey_Config_ConfigProfile]
 ) -> Hazkey_ResponseEnvelope {
@@ -13,6 +13,25 @@ func setConfig(
   return Hazkey_ResponseEnvelope.with {
     $0.status = .success
   }
+}
+
+func genDefaultConfig() -> Hazkey_Config_ConfigProfile {
+  var newConf = Hazkey_Config_ConfigProfile.init()
+  newConf.profileName = "Default"
+  newConf.autoConvertMode = Hazkey_Config_ConfigProfile.AutoConvertMode.autoConvertSkipSingleChar
+  newConf.auxTextMode = Hazkey_Config_ConfigProfile.AuxTextMode.auxTextShowAlways
+  newConf.suggestionListMode =
+    Hazkey_Config_ConfigProfile.SuggestionListMode.suggestionListShowNever
+  newConf.numSuggestions = 4
+  newConf.useRichSuggestion = false
+  newConf.numCandidatesPerPage = 9
+  newConf.useRichCandidates = false
+  newConf.useInputHistory = true
+  newConf.stopStoreNewHistory = false
+  newConf.zenzaiEnable = false
+  newConf.zenzaiInferLimit = 5
+  newConf.zenzaiContextualMode = false
+  return newConf
 }
 
 func saveConfig(config: [Hazkey_Config_ConfigProfile]) {
@@ -54,7 +73,7 @@ func loadConfig() -> [Hazkey_Config_ConfigProfile] {
     // Check if config file exists
     guard FileManager.default.fileExists(atPath: configPath.path) else {
       NSLog("Config file does not exist at: \(configPath.path), returning empty config")
-      return []
+      return [genDefaultConfig()]
     }
 
     // Read file contents
@@ -71,11 +90,16 @@ func loadConfig() -> [Hazkey_Config_ConfigProfile] {
       configs.append(config)
     }
 
+    if configs.count == 0 {
+      NSLog("Loaded empty config. returning default config...")
+      return [genDefaultConfig()]
+    }
+
     NSLog("Config loaded from: \(configPath.path)")
     return configs
   } catch {
-    NSLog("Failed to load config: \(error), returning empty config")
-    return []
+    NSLog("Failed to load config: \(error), returning default config")
+    return [genDefaultConfig()]
   }
 }
 
@@ -104,7 +128,7 @@ func genZenzaiMode(leftContext: String) -> ConvertRequestOptions.ZenzaiMode {
     return ConvertRequestOptions.ZenzaiMode.on(
       weight: systemResourceDir.appendingPathComponent("zenzai.gguf", isDirectory: false),
       inferenceLimit: Int(currentProfile.zenzaiInferLimit),
-      requestRichCandidates: currentProfile.useWiseCandidates,
+      requestRichCandidates: currentProfile.useRichCandidates,
       personalizationMode: nil,
       versionDependentMode: {
         return switch currentProfile.zenzaiVersionConfig.version {

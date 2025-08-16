@@ -81,6 +81,36 @@ struct clearAllHistoryDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 clearAllHistoryDefaultTypeInternal _clearAllHistory_default_instance_;
 
+inline constexpr FileHash::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        path_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        sha256sum_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()) {}
+
+template <typename>
+PROTOBUF_CONSTEXPR FileHash::FileHash(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(FileHash_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct FileHashDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR FileHashDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~FileHashDefaultTypeInternal() {}
+  union {
+    FileHash _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 FileHashDefaultTypeInternal _FileHash_default_instance_;
+
 inline constexpr ConfigProfile_ZenzaiVersionConfig_V3::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
@@ -254,36 +284,6 @@ struct ConfigProfile_InputTableDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ConfigProfile_InputTableDefaultTypeInternal _ConfigProfile_InputTable_default_instance_;
 
-inline constexpr ConfigFileHashes_FileHash::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : _cached_size_{0},
-        path_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        sha256sum_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()) {}
-
-template <typename>
-PROTOBUF_CONSTEXPR ConfigFileHashes_FileHash::ConfigFileHashes_FileHash(::_pbi::ConstantInitialized)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(ConfigFileHashes_FileHash_class_data_.base()),
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(),
-#endif  // PROTOBUF_CUSTOM_VTABLE
-      _impl_(::_pbi::ConstantInitialized()) {
-}
-struct ConfigFileHashes_FileHashDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR ConfigFileHashes_FileHashDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~ConfigFileHashes_FileHashDefaultTypeInternal() {}
-  union {
-    ConfigFileHashes_FileHash _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ConfigFileHashes_FileHashDefaultTypeInternal _ConfigFileHashes_FileHash_default_instance_;
-
 inline constexpr ConfigProfile_ZenzaiVersionConfig::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : version_{},
@@ -310,31 +310,6 @@ struct ConfigProfile_ZenzaiVersionConfigDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ConfigProfile_ZenzaiVersionConfigDefaultTypeInternal _ConfigProfile_ZenzaiVersionConfig_default_instance_;
 
-inline constexpr ConfigFileHashes::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : file_hashes_{},
-        _cached_size_{0} {}
-
-template <typename>
-PROTOBUF_CONSTEXPR ConfigFileHashes::ConfigFileHashes(::_pbi::ConstantInitialized)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(ConfigFileHashes_class_data_.base()),
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(),
-#endif  // PROTOBUF_CUSTOM_VTABLE
-      _impl_(::_pbi::ConstantInitialized()) {
-}
-struct ConfigFileHashesDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR ConfigFileHashesDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~ConfigFileHashesDefaultTypeInternal() {}
-  union {
-    ConfigFileHashes _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ConfigFileHashesDefaultTypeInternal _ConfigFileHashes_default_instance_;
-
 inline constexpr ConfigProfile::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
@@ -349,8 +324,8 @@ inline constexpr ConfigProfile::Impl_::Impl_(
         suggestion_list_mode_{static_cast< ::hazkey::config::ConfigProfile_SuggestionListMode >(0)},
         num_suggestions_{0},
         num_candidates_per_page_{0},
-        use_wise_suggestion_{false},
-        use_wise_candidates_{false},
+        use_rich_suggestion_{false},
+        use_rich_candidates_{false},
         use_input_history_{false},
         stop_store_new_history_{false},
         zenzai_infer_limit_{0},
@@ -379,10 +354,10 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 
 inline constexpr CurrentConfig::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
-      : _cached_size_{0},
+      : file_hashes_{},
         input_tables_{},
         configs_{},
-        hash_{nullptr} {}
+        _cached_size_{0} {}
 
 template <typename>
 PROTOBUF_CONSTEXPR CurrentConfig::CurrentConfig(::_pbi::ConstantInitialized)
@@ -406,10 +381,10 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 
 inline constexpr setConfig::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
-      : _cached_size_{0},
+      : file_hashes_{},
         table_operations_{},
         config_{},
-        hash_{nullptr} {}
+        _cached_size_{0} {}
 
 template <typename>
 PROTOBUF_CONSTEXPR setConfig::setConfig(::_pbi::ConstantInitialized)
@@ -440,14 +415,12 @@ const ::uint32_t
     TableStruct_config_2eproto::offsets[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
         protodesc_cold) = {
         0x081, // bitmap
-        PROTOBUF_FIELD_OFFSET(::hazkey::config::ConfigFileHashes_FileHash, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::hazkey::config::FileHash, _impl_._has_bits_),
         5, // hasbit index offset
-        PROTOBUF_FIELD_OFFSET(::hazkey::config::ConfigFileHashes_FileHash, _impl_.path_),
-        PROTOBUF_FIELD_OFFSET(::hazkey::config::ConfigFileHashes_FileHash, _impl_.sha256sum_),
+        PROTOBUF_FIELD_OFFSET(::hazkey::config::FileHash, _impl_.path_),
+        PROTOBUF_FIELD_OFFSET(::hazkey::config::FileHash, _impl_.sha256sum_),
         0,
         1,
-        0x000, // bitmap
-        PROTOBUF_FIELD_OFFSET(::hazkey::config::ConfigFileHashes, _impl_.file_hashes_),
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::hazkey::config::ConfigProfile_SpecialConversionMode, _impl_._has_bits_),
         12, // hasbit index offset
@@ -515,10 +488,10 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::hazkey::config::ConfigProfile, _impl_.auto_convert_mode_),
         PROTOBUF_FIELD_OFFSET(::hazkey::config::ConfigProfile, _impl_.aux_text_mode_),
         PROTOBUF_FIELD_OFFSET(::hazkey::config::ConfigProfile, _impl_.suggestion_list_mode_),
-        PROTOBUF_FIELD_OFFSET(::hazkey::config::ConfigProfile, _impl_.use_wise_suggestion_),
+        PROTOBUF_FIELD_OFFSET(::hazkey::config::ConfigProfile, _impl_.use_rich_suggestion_),
         PROTOBUF_FIELD_OFFSET(::hazkey::config::ConfigProfile, _impl_.num_suggestions_),
         PROTOBUF_FIELD_OFFSET(::hazkey::config::ConfigProfile, _impl_.num_candidates_per_page_),
-        PROTOBUF_FIELD_OFFSET(::hazkey::config::ConfigProfile, _impl_.use_wise_candidates_),
+        PROTOBUF_FIELD_OFFSET(::hazkey::config::ConfigProfile, _impl_.use_rich_candidates_),
         PROTOBUF_FIELD_OFFSET(::hazkey::config::ConfigProfile, _impl_.use_input_history_),
         PROTOBUF_FIELD_OFFSET(::hazkey::config::ConfigProfile, _impl_.stop_store_new_history_),
         PROTOBUF_FIELD_OFFSET(::hazkey::config::ConfigProfile, _impl_.special_conversion_mode_),
@@ -544,49 +517,37 @@ const ::uint32_t
         14,
         2,
         0x000, // bitmap
-        0x081, // bitmap
-        PROTOBUF_FIELD_OFFSET(::hazkey::config::setConfig, _impl_._has_bits_),
-        6, // hasbit index offset
-        PROTOBUF_FIELD_OFFSET(::hazkey::config::setConfig, _impl_.hash_),
+        0x000, // bitmap
+        PROTOBUF_FIELD_OFFSET(::hazkey::config::setConfig, _impl_.file_hashes_),
         PROTOBUF_FIELD_OFFSET(::hazkey::config::setConfig, _impl_.table_operations_),
         PROTOBUF_FIELD_OFFSET(::hazkey::config::setConfig, _impl_.config_),
-        0,
-        ~0u,
-        ~0u,
         0x000, // bitmap
         0x000, // bitmap
-        0x081, // bitmap
-        PROTOBUF_FIELD_OFFSET(::hazkey::config::CurrentConfig, _impl_._has_bits_),
-        6, // hasbit index offset
-        PROTOBUF_FIELD_OFFSET(::hazkey::config::CurrentConfig, _impl_.hash_),
+        0x000, // bitmap
+        PROTOBUF_FIELD_OFFSET(::hazkey::config::CurrentConfig, _impl_.file_hashes_),
         PROTOBUF_FIELD_OFFSET(::hazkey::config::CurrentConfig, _impl_.input_tables_),
         PROTOBUF_FIELD_OFFSET(::hazkey::config::CurrentConfig, _impl_.configs_),
-        0,
-        ~0u,
-        ~0u,
 };
 
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-        {0, sizeof(::hazkey::config::ConfigFileHashes_FileHash)},
-        {7, sizeof(::hazkey::config::ConfigFileHashes)},
-        {9, sizeof(::hazkey::config::ConfigProfile_SpecialConversionMode)},
-        {30, sizeof(::hazkey::config::ConfigProfile_InputTable)},
-        {37, sizeof(::hazkey::config::ConfigProfile_ZenzaiVersionConfig_V1)},
-        {38, sizeof(::hazkey::config::ConfigProfile_ZenzaiVersionConfig_V2)},
-        {43, sizeof(::hazkey::config::ConfigProfile_ZenzaiVersionConfig_V3)},
-        {54, sizeof(::hazkey::config::ConfigProfile_ZenzaiVersionConfig)},
-        {60, sizeof(::hazkey::config::ConfigProfile_ZenzaiModel)},
-        {69, sizeof(::hazkey::config::ConfigProfile)},
-        {104, sizeof(::hazkey::config::getCurrentConfig)},
-        {105, sizeof(::hazkey::config::setConfig)},
-        {114, sizeof(::hazkey::config::getDefaultConfig)},
-        {115, sizeof(::hazkey::config::clearAllHistory)},
-        {116, sizeof(::hazkey::config::CurrentConfig)},
+        {0, sizeof(::hazkey::config::FileHash)},
+        {7, sizeof(::hazkey::config::ConfigProfile_SpecialConversionMode)},
+        {28, sizeof(::hazkey::config::ConfigProfile_InputTable)},
+        {35, sizeof(::hazkey::config::ConfigProfile_ZenzaiVersionConfig_V1)},
+        {36, sizeof(::hazkey::config::ConfigProfile_ZenzaiVersionConfig_V2)},
+        {41, sizeof(::hazkey::config::ConfigProfile_ZenzaiVersionConfig_V3)},
+        {52, sizeof(::hazkey::config::ConfigProfile_ZenzaiVersionConfig)},
+        {58, sizeof(::hazkey::config::ConfigProfile_ZenzaiModel)},
+        {67, sizeof(::hazkey::config::ConfigProfile)},
+        {102, sizeof(::hazkey::config::getCurrentConfig)},
+        {103, sizeof(::hazkey::config::setConfig)},
+        {107, sizeof(::hazkey::config::getDefaultConfig)},
+        {108, sizeof(::hazkey::config::clearAllHistory)},
+        {109, sizeof(::hazkey::config::CurrentConfig)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
-    &::hazkey::config::_ConfigFileHashes_FileHash_default_instance_._instance,
-    &::hazkey::config::_ConfigFileHashes_default_instance_._instance,
+    &::hazkey::config::_FileHash_default_instance_._instance,
     &::hazkey::config::_ConfigProfile_SpecialConversionMode_default_instance_._instance,
     &::hazkey::config::_ConfigProfile_InputTable_default_instance_._instance,
     &::hazkey::config::_ConfigProfile_ZenzaiVersionConfig_V1_default_instance_._instance,
@@ -604,67 +565,65 @@ static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
 const char descriptor_table_protodef_config_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\014config.proto\022\rhazkey.config\032\013table.pro"
-    "to\"~\n\020ConfigFileHashes\022=\n\013file_hashes\030\001 "
-    "\003(\0132(.hazkey.config.ConfigFileHashes.Fil"
-    "eHash\032+\n\010FileHash\022\014\n\004path\030\001 \001(\t\022\021\n\tsha25"
-    "6sum\030\002 \001(\t\"\353\016\n\rConfigProfile\022\024\n\014profile_"
-    "name\030\005 \001(\t\022G\n\021auto_convert_mode\030\n \001(\0162,."
-    "hazkey.config.ConfigProfile.AutoConvertM"
-    "ode\022\?\n\raux_text_mode\030\013 \001(\0162(.hazkey.conf"
-    "ig.ConfigProfile.AuxTextMode\022M\n\024suggesti"
-    "on_list_mode\030\014 \001(\0162/.hazkey.config.Confi"
-    "gProfile.SuggestionListMode\022\033\n\023use_wise_"
-    "suggestion\030\r \001(\010\022\027\n\017num_suggestions\030\016 \001("
-    "\005\022\037\n\027num_candidates_per_page\030\017 \001(\005\022\033\n\023us"
-    "e_wise_candidates\030\020 \001(\010\022\031\n\021use_input_his"
-    "tory\030\024 \001(\010\022\036\n\026stop_store_new_history\030\025 \001"
-    "(\010\022S\n\027special_conversion_mode\030\036 \001(\01322.ha"
-    "zkey.config.ConfigProfile.SpecialConvers"
-    "ionMode\022\?\n\016enabled_tables\030( \003(\0132\'.hazkey"
-    ".config.ConfigProfile.InputTable\022\025\n\rzenz"
-    "ai_enable\030d \001(\010\022\032\n\022zenzai_infer_limit\030e "
-    "\001(\005\022\036\n\026zenzai_contextual_mode\030f \001(\010\022O\n\025z"
-    "enzai_version_config\030g \001(\01320.hazkey.conf"
-    "ig.ConfigProfile.ZenzaiVersionConfig\032\355\001\n"
-    "\025SpecialConversionMode\022\036\n\026comma_separate"
-    "d_number\030\001 \001(\010\022\023\n\013mail_domain\030\002 \001(\010\022\020\n\010c"
-    "alender\030\003 \001(\010\022\014\n\004time\030\004 \001(\010\022\030\n\020roman_typ"
-    "ography\030\005 \001(\010\022\031\n\021unicode_codepoint\030\006 \001(\010"
-    "\022\026\n\016hazkey_version\030\007 \001(\010\022\032\n\022halfwidth_ka"
-    "takana\0302 \001(\010\022\026\n\016extended_emoji\0303 \001(\010\032.\n\n"
-    "InputTable\022\014\n\004name\030\001 \001(\t\022\022\n\nis_default\030\002"
-    " \001(\010\032\317\002\n\023ZenzaiVersionConfig\022A\n\002v1\030\001 \001(\013"
-    "23.hazkey.config.ConfigProfile.ZenzaiVer"
-    "sionConfig.V1H\000\022A\n\002v2\030\002 \001(\01323.hazkey.con"
-    "fig.ConfigProfile.ZenzaiVersionConfig.V2"
-    "H\000\022A\n\002v3\030\003 \001(\01323.hazkey.config.ConfigPro"
-    "file.ZenzaiVersionConfig.V3H\000\032\004\n\002V1\032\025\n\002V"
-    "2\022\017\n\007profile\030\001 \001(\t\032G\n\002V3\022\017\n\007profile\030\001 \001("
-    "\t\022\r\n\005topic\030\002 \001(\t\022\r\n\005style\030\003 \001(\t\022\022\n\nprefe"
-    "rence\030\004 \001(\tB\t\n\007version\032@\n\013ZenzaiModel\022\014\n"
-    "\004name\030\001 \001(\t\022\020\n\010filename\030\002 \001(\t\022\021\n\tis_syst"
-    "em\030\003 \001(\010\"\216\001\n\017AutoConvertMode\022!\n\035AUTO_CON"
-    "VERT_MODE_UNSPECIFIED\020\000\022\026\n\022AUTO_CONVERT_"
-    "NEVER\020\001\022\027\n\023AUTO_CONVERT_ALWAYS\020\002\022\'\n#AUTO"
-    "_CONVERT_AFTER_SECOND_CHARACTER\020\003\"\211\001\n\013Au"
-    "xTextMode\022\035\n\031AUX_TEXT_MODE_UNSPECIFIED\020\000"
-    "\022\027\n\023AUX_TEXT_SHOW_NEVER\020\001\022\030\n\024AUX_TEXT_SH"
-    "OW_ALWAYS\020\002\022(\n$AUX_TEXT_SHOW_WHEN_CURSOR"
-    "_NOT_AT_END\020\003\"\260\001\n\022SuggestionListMode\022$\n "
-    "SUGGESTION_LIST_MODE_UNSPECIFIED\020\000\022\036\n\032SU"
-    "GGESTION_LIST_SHOW_NEVER\020\001\022\'\n#SUGGESTION"
-    "_LIST_SHOW_NORMAL_RESULTS\020\002\022+\n\'SUGGESTIO"
-    "N_LIST_SHOW_PREDICTIVE_RESULTS\020\003\"\022\n\020getC"
-    "urrentConfig\"\246\001\n\tsetConfig\022-\n\004hash\030\001 \001(\013"
-    "2\037.hazkey.config.ConfigFileHashes\022<\n\020tab"
-    "le_operations\030\002 \003(\0132\".hazkey.config.tabl"
-    "e.EditOperation\022,\n\006config\030\003 \003(\0132\034.hazkey"
-    ".config.ConfigProfile\"\022\n\020getDefaultConfi"
-    "g\"\021\n\017clearAllHistory\"\244\001\n\rCurrentConfig\022-"
-    "\n\004hash\030\001 \001(\0132\037.hazkey.config.ConfigFileH"
-    "ashes\0225\n\014input_tables\030\002 \003(\0132\037.hazkey.con"
-    "fig.table.InputTable\022-\n\007configs\030\003 \003(\0132\034."
-    "hazkey.config.ConfigProfileb\006proto3"
+    "to\"+\n\010FileHash\022\014\n\004path\030\001 \001(\t\022\021\n\tsha256su"
+    "m\030\002 \001(\t\"\345\016\n\rConfigProfile\022\024\n\014profile_nam"
+    "e\030\005 \001(\t\022G\n\021auto_convert_mode\030\n \001(\0162,.haz"
+    "key.config.ConfigProfile.AutoConvertMode"
+    "\022\?\n\raux_text_mode\030\013 \001(\0162(.hazkey.config."
+    "ConfigProfile.AuxTextMode\022M\n\024suggestion_"
+    "list_mode\030\014 \001(\0162/.hazkey.config.ConfigPr"
+    "ofile.SuggestionListMode\022\033\n\023use_rich_sug"
+    "gestion\030\r \001(\010\022\027\n\017num_suggestions\030\016 \001(\005\022\037"
+    "\n\027num_candidates_per_page\030\017 \001(\005\022\033\n\023use_r"
+    "ich_candidates\030\020 \001(\010\022\031\n\021use_input_histor"
+    "y\030\024 \001(\010\022\036\n\026stop_store_new_history\030\025 \001(\010\022"
+    "S\n\027special_conversion_mode\030\036 \001(\01322.hazke"
+    "y.config.ConfigProfile.SpecialConversion"
+    "Mode\022\?\n\016enabled_tables\030( \003(\0132\'.hazkey.co"
+    "nfig.ConfigProfile.InputTable\022\025\n\rzenzai_"
+    "enable\030d \001(\010\022\032\n\022zenzai_infer_limit\030e \001(\005"
+    "\022\036\n\026zenzai_contextual_mode\030f \001(\010\022O\n\025zenz"
+    "ai_version_config\030g \001(\01320.hazkey.config."
+    "ConfigProfile.ZenzaiVersionConfig\032\355\001\n\025Sp"
+    "ecialConversionMode\022\036\n\026comma_separated_n"
+    "umber\030\001 \001(\010\022\023\n\013mail_domain\030\002 \001(\010\022\020\n\010cale"
+    "nder\030\003 \001(\010\022\014\n\004time\030\004 \001(\010\022\030\n\020roman_typogr"
+    "aphy\030\005 \001(\010\022\031\n\021unicode_codepoint\030\006 \001(\010\022\026\n"
+    "\016hazkey_version\030\007 \001(\010\022\032\n\022halfwidth_katak"
+    "ana\0302 \001(\010\022\026\n\016extended_emoji\0303 \001(\010\032.\n\nInp"
+    "utTable\022\014\n\004name\030\001 \001(\t\022\022\n\nis_default\030\002 \001("
+    "\010\032\317\002\n\023ZenzaiVersionConfig\022A\n\002v1\030\001 \001(\01323."
+    "hazkey.config.ConfigProfile.ZenzaiVersio"
+    "nConfig.V1H\000\022A\n\002v2\030\002 \001(\01323.hazkey.config"
+    ".ConfigProfile.ZenzaiVersionConfig.V2H\000\022"
+    "A\n\002v3\030\003 \001(\01323.hazkey.config.ConfigProfil"
+    "e.ZenzaiVersionConfig.V3H\000\032\004\n\002V1\032\025\n\002V2\022\017"
+    "\n\007profile\030\001 \001(\t\032G\n\002V3\022\017\n\007profile\030\001 \001(\t\022\r"
+    "\n\005topic\030\002 \001(\t\022\r\n\005style\030\003 \001(\t\022\022\n\npreferen"
+    "ce\030\004 \001(\tB\t\n\007version\032@\n\013ZenzaiModel\022\014\n\004na"
+    "me\030\001 \001(\t\022\020\n\010filename\030\002 \001(\t\022\021\n\tis_system\030"
+    "\003 \001(\010\"\210\001\n\017AutoConvertMode\022!\n\035AUTO_CONVER"
+    "T_MODE_UNSPECIFIED\020\000\022\026\n\022AUTO_CONVERT_NEV"
+    "ER\020\001\022\027\n\023AUTO_CONVERT_ALWAYS\020\002\022!\n\035AUTO_CO"
+    "NVERT_SKIP_SINGLE_CHAR\020\003\"\211\001\n\013AuxTextMode"
+    "\022\035\n\031AUX_TEXT_MODE_UNSPECIFIED\020\000\022\027\n\023AUX_T"
+    "EXT_SHOW_NEVER\020\001\022\030\n\024AUX_TEXT_SHOW_ALWAYS"
+    "\020\002\022(\n$AUX_TEXT_SHOW_WHEN_CURSOR_NOT_AT_E"
+    "ND\020\003\"\260\001\n\022SuggestionListMode\022$\n SUGGESTIO"
+    "N_LIST_MODE_UNSPECIFIED\020\000\022\036\n\032SUGGESTION_"
+    "LIST_SHOW_NEVER\020\001\022\'\n#SUGGESTION_LIST_SHO"
+    "W_NORMAL_RESULTS\020\002\022+\n\'SUGGESTION_LIST_SH"
+    "OW_PREDICTIVE_RESULTS\020\003\"\022\n\020getCurrentCon"
+    "fig\"\245\001\n\tsetConfig\022,\n\013file_hashes\030\001 \003(\0132\027"
+    ".hazkey.config.FileHash\022<\n\020table_operati"
+    "ons\030\002 \003(\0132\".hazkey.config.table.EditOper"
+    "ation\022,\n\006config\030\003 \003(\0132\034.hazkey.config.Co"
+    "nfigProfile\"\022\n\020getDefaultConfig\"\021\n\017clear"
+    "AllHistory\"\243\001\n\rCurrentConfig\022,\n\013file_has"
+    "hes\030\001 \003(\0132\027.hazkey.config.FileHash\0225\n\014in"
+    "put_tables\030\002 \003(\0132\037.hazkey.config.table.I"
+    "nputTable\022-\n\007configs\030\003 \003(\0132\034.hazkey.conf"
+    "ig.ConfigProfileb\006proto3"
 };
 static const ::_pbi::DescriptorTable* PROTOBUF_NONNULL const
     descriptor_table_config_2eproto_deps[1] = {
@@ -674,13 +633,13 @@ static ::absl::once_flag descriptor_table_config_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_config_2eproto = {
     false,
     false,
-    2475,
+    2384,
     descriptor_table_protodef_config_2eproto,
     "config.proto",
     &descriptor_table_config_2eproto_once,
     descriptor_table_config_2eproto_deps,
     1,
-    15,
+    14,
     schemas,
     file_default_instances,
     TableStruct_config_2eproto::offsets,
@@ -709,64 +668,64 @@ PROTOBUF_CONSTINIT const uint32_t ConfigProfile_SuggestionListMode_internal_data
     262144u, 0u, };
 // ===================================================================
 
-class ConfigFileHashes_FileHash::_Internal {
+class FileHash::_Internal {
  public:
   using HasBits =
-      decltype(::std::declval<ConfigFileHashes_FileHash>()._impl_._has_bits_);
+      decltype(::std::declval<FileHash>()._impl_._has_bits_);
   static constexpr ::int32_t kHasBitsOffset =
-      8 * PROTOBUF_FIELD_OFFSET(ConfigFileHashes_FileHash, _impl_._has_bits_);
+      8 * PROTOBUF_FIELD_OFFSET(FileHash, _impl_._has_bits_);
 };
 
-ConfigFileHashes_FileHash::ConfigFileHashes_FileHash(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+FileHash::FileHash(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, ConfigFileHashes_FileHash_class_data_.base()) {
+    : ::google::protobuf::Message(arena, FileHash_class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
     : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
   SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:hazkey.config.ConfigFileHashes.FileHash)
+  // @@protoc_insertion_point(arena_constructor:hazkey.config.FileHash)
 }
-PROTOBUF_NDEBUG_INLINE ConfigFileHashes_FileHash::Impl_::Impl_(
+PROTOBUF_NDEBUG_INLINE FileHash::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
-    const ::hazkey::config::ConfigFileHashes_FileHash& from_msg)
+    const ::hazkey::config::FileHash& from_msg)
       : _has_bits_{from._has_bits_},
         _cached_size_{0},
         path_(arena, from.path_),
         sha256sum_(arena, from.sha256sum_) {}
 
-ConfigFileHashes_FileHash::ConfigFileHashes_FileHash(
+FileHash::FileHash(
     ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
-    const ConfigFileHashes_FileHash& from)
+    const FileHash& from)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, ConfigFileHashes_FileHash_class_data_.base()) {
+    : ::google::protobuf::Message(arena, FileHash_class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
     : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
-  ConfigFileHashes_FileHash* const _this = this;
+  FileHash* const _this = this;
   (void)_this;
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
 
-  // @@protoc_insertion_point(copy_constructor:hazkey.config.ConfigFileHashes.FileHash)
+  // @@protoc_insertion_point(copy_constructor:hazkey.config.FileHash)
 }
-PROTOBUF_NDEBUG_INLINE ConfigFileHashes_FileHash::Impl_::Impl_(
+PROTOBUF_NDEBUG_INLINE FileHash::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
       : _cached_size_{0},
         path_(arena),
         sha256sum_(arena) {}
 
-inline void ConfigFileHashes_FileHash::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+inline void FileHash::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
 }
-ConfigFileHashes_FileHash::~ConfigFileHashes_FileHash() {
-  // @@protoc_insertion_point(destructor:hazkey.config.ConfigFileHashes.FileHash)
+FileHash::~FileHash() {
+  // @@protoc_insertion_point(destructor:hazkey.config.FileHash)
   SharedDtor(*this);
 }
-inline void ConfigFileHashes_FileHash::SharedDtor(MessageLite& self) {
-  ConfigFileHashes_FileHash& this_ = static_cast<ConfigFileHashes_FileHash&>(self);
+inline void FileHash::SharedDtor(MessageLite& self) {
+  FileHash& this_ = static_cast<FileHash&>(self);
   this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   ABSL_DCHECK(this_.GetArena() == nullptr);
   this_._impl_.path_.Destroy();
@@ -774,53 +733,53 @@ inline void ConfigFileHashes_FileHash::SharedDtor(MessageLite& self) {
   this_._impl_.~Impl_();
 }
 
-inline void* PROTOBUF_NONNULL ConfigFileHashes_FileHash::PlacementNew_(
+inline void* PROTOBUF_NONNULL FileHash::PlacementNew_(
     const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
     ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
-  return ::new (mem) ConfigFileHashes_FileHash(arena);
+  return ::new (mem) FileHash(arena);
 }
-constexpr auto ConfigFileHashes_FileHash::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(ConfigFileHashes_FileHash),
-                                            alignof(ConfigFileHashes_FileHash));
+constexpr auto FileHash::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(FileHash),
+                                            alignof(FileHash));
 }
-constexpr auto ConfigFileHashes_FileHash::InternalGenerateClassData_() {
+constexpr auto FileHash::InternalGenerateClassData_() {
   return ::google::protobuf::internal::ClassDataFull{
       ::google::protobuf::internal::ClassData{
-          &_ConfigFileHashes_FileHash_default_instance_._instance,
+          &_FileHash_default_instance_._instance,
           &_table_.header,
           nullptr,  // OnDemandRegisterArenaDtor
           nullptr,  // IsInitialized
-          &ConfigFileHashes_FileHash::MergeImpl,
-          ::google::protobuf::Message::GetNewImpl<ConfigFileHashes_FileHash>(),
+          &FileHash::MergeImpl,
+          ::google::protobuf::Message::GetNewImpl<FileHash>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-          &ConfigFileHashes_FileHash::SharedDtor,
-          ::google::protobuf::Message::GetClearImpl<ConfigFileHashes_FileHash>(), &ConfigFileHashes_FileHash::ByteSizeLong,
-              &ConfigFileHashes_FileHash::_InternalSerialize,
+          &FileHash::SharedDtor,
+          ::google::protobuf::Message::GetClearImpl<FileHash>(), &FileHash::ByteSizeLong,
+              &FileHash::_InternalSerialize,
 #endif  // PROTOBUF_CUSTOM_VTABLE
-          PROTOBUF_FIELD_OFFSET(ConfigFileHashes_FileHash, _impl_._cached_size_),
+          PROTOBUF_FIELD_OFFSET(FileHash, _impl_._cached_size_),
           false,
       },
-      &ConfigFileHashes_FileHash::kDescriptorMethods,
+      &FileHash::kDescriptorMethods,
       &descriptor_table_config_2eproto,
       nullptr,  // tracker
   };
 }
 
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
-    ::google::protobuf::internal::ClassDataFull ConfigFileHashes_FileHash_class_data_ =
-        ConfigFileHashes_FileHash::InternalGenerateClassData_();
+    ::google::protobuf::internal::ClassDataFull FileHash_class_data_ =
+        FileHash::InternalGenerateClassData_();
 
 PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
-ConfigFileHashes_FileHash::GetClassData() const {
-  ::google::protobuf::internal::PrefetchToLocalCache(&ConfigFileHashes_FileHash_class_data_);
-  ::google::protobuf::internal::PrefetchToLocalCache(ConfigFileHashes_FileHash_class_data_.tc_table);
-  return ConfigFileHashes_FileHash_class_data_.base();
+FileHash::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&FileHash_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(FileHash_class_data_.tc_table);
+  return FileHash_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 2, 0, 61, 2>
-ConfigFileHashes_FileHash::_table_ = {
+const ::_pbi::TcParseTable<1, 2, 0, 44, 2>
+FileHash::_table_ = {
   {
-    PROTOBUF_FIELD_OFFSET(ConfigFileHashes_FileHash, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(FileHash, _impl_._has_bits_),
     0, // no _extensions_
     2, 8,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
@@ -829,39 +788,39 @@ ConfigFileHashes_FileHash::_table_ = {
     2,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
-    ConfigFileHashes_FileHash_class_data_.base(),
+    FileHash_class_data_.base(),
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
     #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::hazkey::config::ConfigFileHashes_FileHash>(),  // to_prefetch
+    ::_pbi::TcParser::GetTable<::hazkey::config::FileHash>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     // string sha256sum = 2;
     {::_pbi::TcParser::FastUS1,
-     {18, 1, 0, PROTOBUF_FIELD_OFFSET(ConfigFileHashes_FileHash, _impl_.sha256sum_)}},
+     {18, 1, 0, PROTOBUF_FIELD_OFFSET(FileHash, _impl_.sha256sum_)}},
     // string path = 1;
     {::_pbi::TcParser::FastUS1,
-     {10, 0, 0, PROTOBUF_FIELD_OFFSET(ConfigFileHashes_FileHash, _impl_.path_)}},
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(FileHash, _impl_.path_)}},
   }}, {{
     65535, 65535
   }}, {{
     // string path = 1;
-    {PROTOBUF_FIELD_OFFSET(ConfigFileHashes_FileHash, _impl_.path_), _Internal::kHasBitsOffset + 0, 0,
+    {PROTOBUF_FIELD_OFFSET(FileHash, _impl_.path_), _Internal::kHasBitsOffset + 0, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
     // string sha256sum = 2;
-    {PROTOBUF_FIELD_OFFSET(ConfigFileHashes_FileHash, _impl_.sha256sum_), _Internal::kHasBitsOffset + 1, 0,
+    {PROTOBUF_FIELD_OFFSET(FileHash, _impl_.sha256sum_), _Internal::kHasBitsOffset + 1, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
   // no aux_entries
   {{
-    "\47\4\11\0\0\0\0\0"
-    "hazkey.config.ConfigFileHashes.FileHash"
+    "\26\4\11\0\0\0\0\0"
+    "hazkey.config.FileHash"
     "path"
     "sha256sum"
   }},
 };
-PROTOBUF_NOINLINE void ConfigFileHashes_FileHash::Clear() {
-// @@protoc_insertion_point(message_clear_start:hazkey.config.ConfigFileHashes.FileHash)
+PROTOBUF_NOINLINE void FileHash::Clear() {
+// @@protoc_insertion_point(message_clear_start:hazkey.config.FileHash)
   ::google::protobuf::internal::TSanWrite(&_impl_);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
@@ -881,17 +840,17 @@ PROTOBUF_NOINLINE void ConfigFileHashes_FileHash::Clear() {
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* PROTOBUF_NONNULL ConfigFileHashes_FileHash::_InternalSerialize(
+::uint8_t* PROTOBUF_NONNULL FileHash::_InternalSerialize(
     const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
     ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
-  const ConfigFileHashes_FileHash& this_ = static_cast<const ConfigFileHashes_FileHash&>(base);
+  const FileHash& this_ = static_cast<const FileHash&>(base);
 #else   // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* PROTOBUF_NONNULL ConfigFileHashes_FileHash::_InternalSerialize(
+::uint8_t* PROTOBUF_NONNULL FileHash::_InternalSerialize(
     ::uint8_t* PROTOBUF_NONNULL target,
     ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
-  const ConfigFileHashes_FileHash& this_ = *this;
+  const FileHash& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-  // @@protoc_insertion_point(serialize_to_array_start:hazkey.config.ConfigFileHashes.FileHash)
+  // @@protoc_insertion_point(serialize_to_array_start:hazkey.config.FileHash)
   ::uint32_t cached_has_bits = 0;
   (void)cached_has_bits;
 
@@ -900,7 +859,7 @@ PROTOBUF_NOINLINE void ConfigFileHashes_FileHash::Clear() {
     if (!this_._internal_path().empty()) {
       const ::std::string& _s = this_._internal_path();
       ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "hazkey.config.ConfigFileHashes.FileHash.path");
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "hazkey.config.FileHash.path");
       target = stream->WriteStringMaybeAliased(1, _s, target);
     }
   }
@@ -910,7 +869,7 @@ PROTOBUF_NOINLINE void ConfigFileHashes_FileHash::Clear() {
     if (!this_._internal_sha256sum().empty()) {
       const ::std::string& _s = this_._internal_sha256sum();
       ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "hazkey.config.ConfigFileHashes.FileHash.sha256sum");
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "hazkey.config.FileHash.sha256sum");
       target = stream->WriteStringMaybeAliased(2, _s, target);
     }
   }
@@ -920,18 +879,18 @@ PROTOBUF_NOINLINE void ConfigFileHashes_FileHash::Clear() {
         ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
             this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:hazkey.config.ConfigFileHashes.FileHash)
+  // @@protoc_insertion_point(serialize_to_array_end:hazkey.config.FileHash)
   return target;
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t ConfigFileHashes_FileHash::ByteSizeLong(const MessageLite& base) {
-  const ConfigFileHashes_FileHash& this_ = static_cast<const ConfigFileHashes_FileHash&>(base);
+::size_t FileHash::ByteSizeLong(const MessageLite& base) {
+  const FileHash& this_ = static_cast<const FileHash&>(base);
 #else   // PROTOBUF_CUSTOM_VTABLE
-::size_t ConfigFileHashes_FileHash::ByteSizeLong() const {
-  const ConfigFileHashes_FileHash& this_ = *this;
+::size_t FileHash::ByteSizeLong() const {
+  const FileHash& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-  // @@protoc_insertion_point(message_byte_size_start:hazkey.config.ConfigFileHashes.FileHash)
+  // @@protoc_insertion_point(message_byte_size_start:hazkey.config.FileHash)
   ::size_t total_size = 0;
 
   ::uint32_t cached_has_bits = 0;
@@ -960,10 +919,10 @@ PROTOBUF_NOINLINE void ConfigFileHashes_FileHash::Clear() {
                                              &this_._impl_._cached_size_);
 }
 
-void ConfigFileHashes_FileHash::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
-  auto* const _this = static_cast<ConfigFileHashes_FileHash*>(&to_msg);
-  auto& from = static_cast<const ConfigFileHashes_FileHash&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:hazkey.config.ConfigFileHashes.FileHash)
+void FileHash::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<FileHash*>(&to_msg);
+  auto& from = static_cast<const FileHash&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:hazkey.config.FileHash)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
@@ -993,15 +952,15 @@ void ConfigFileHashes_FileHash::MergeImpl(::google::protobuf::MessageLite& to_ms
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void ConfigFileHashes_FileHash::CopyFrom(const ConfigFileHashes_FileHash& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:hazkey.config.ConfigFileHashes.FileHash)
+void FileHash::CopyFrom(const FileHash& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:hazkey.config.FileHash)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
 
-void ConfigFileHashes_FileHash::InternalSwap(ConfigFileHashes_FileHash* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+void FileHash::InternalSwap(FileHash* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
   using ::std::swap;
   auto* arena = GetArena();
   ABSL_DCHECK_EQ(arena, other->GetArena());
@@ -1011,259 +970,7 @@ void ConfigFileHashes_FileHash::InternalSwap(ConfigFileHashes_FileHash* PROTOBUF
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.sha256sum_, &other->_impl_.sha256sum_, arena);
 }
 
-::google::protobuf::Metadata ConfigFileHashes_FileHash::GetMetadata() const {
-  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
-}
-// ===================================================================
-
-class ConfigFileHashes::_Internal {
- public:
-};
-
-ConfigFileHashes::ConfigFileHashes(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, ConfigFileHashes_class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:hazkey.config.ConfigFileHashes)
-}
-PROTOBUF_NDEBUG_INLINE ConfigFileHashes::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
-    const ::hazkey::config::ConfigFileHashes& from_msg)
-      : file_hashes_{visibility, arena, from.file_hashes_},
-        _cached_size_{0} {}
-
-ConfigFileHashes::ConfigFileHashes(
-    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
-    const ConfigFileHashes& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, ConfigFileHashes_class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  ConfigFileHashes* const _this = this;
-  (void)_this;
-  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-      from._internal_metadata_);
-  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-
-  // @@protoc_insertion_point(copy_constructor:hazkey.config.ConfigFileHashes)
-}
-PROTOBUF_NDEBUG_INLINE ConfigFileHashes::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
-      : file_hashes_{visibility, arena},
-        _cached_size_{0} {}
-
-inline void ConfigFileHashes::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
-  new (&_impl_) Impl_(internal_visibility(), arena);
-}
-ConfigFileHashes::~ConfigFileHashes() {
-  // @@protoc_insertion_point(destructor:hazkey.config.ConfigFileHashes)
-  SharedDtor(*this);
-}
-inline void ConfigFileHashes::SharedDtor(MessageLite& self) {
-  ConfigFileHashes& this_ = static_cast<ConfigFileHashes&>(self);
-  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-  ABSL_DCHECK(this_.GetArena() == nullptr);
-  this_._impl_.~Impl_();
-}
-
-inline void* PROTOBUF_NONNULL ConfigFileHashes::PlacementNew_(
-    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
-    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
-  return ::new (mem) ConfigFileHashes(arena);
-}
-constexpr auto ConfigFileHashes::InternalNewImpl_() {
-  constexpr auto arena_bits = ::google::protobuf::internal::EncodePlacementArenaOffsets({
-      PROTOBUF_FIELD_OFFSET(ConfigFileHashes, _impl_.file_hashes_) +
-          decltype(ConfigFileHashes::_impl_.file_hashes_)::
-              InternalGetArenaOffset(
-                  ::google::protobuf::Message::internal_visibility()),
-  });
-  if (arena_bits.has_value()) {
-    return ::google::protobuf::internal::MessageCreator::ZeroInit(
-        sizeof(ConfigFileHashes), alignof(ConfigFileHashes), *arena_bits);
-  } else {
-    return ::google::protobuf::internal::MessageCreator(&ConfigFileHashes::PlacementNew_,
-                                 sizeof(ConfigFileHashes),
-                                 alignof(ConfigFileHashes));
-  }
-}
-constexpr auto ConfigFileHashes::InternalGenerateClassData_() {
-  return ::google::protobuf::internal::ClassDataFull{
-      ::google::protobuf::internal::ClassData{
-          &_ConfigFileHashes_default_instance_._instance,
-          &_table_.header,
-          nullptr,  // OnDemandRegisterArenaDtor
-          nullptr,  // IsInitialized
-          &ConfigFileHashes::MergeImpl,
-          ::google::protobuf::Message::GetNewImpl<ConfigFileHashes>(),
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-          &ConfigFileHashes::SharedDtor,
-          ::google::protobuf::Message::GetClearImpl<ConfigFileHashes>(), &ConfigFileHashes::ByteSizeLong,
-              &ConfigFileHashes::_InternalSerialize,
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          PROTOBUF_FIELD_OFFSET(ConfigFileHashes, _impl_._cached_size_),
-          false,
-      },
-      &ConfigFileHashes::kDescriptorMethods,
-      &descriptor_table_config_2eproto,
-      nullptr,  // tracker
-  };
-}
-
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
-    ::google::protobuf::internal::ClassDataFull ConfigFileHashes_class_data_ =
-        ConfigFileHashes::InternalGenerateClassData_();
-
-PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
-ConfigFileHashes::GetClassData() const {
-  ::google::protobuf::internal::PrefetchToLocalCache(&ConfigFileHashes_class_data_);
-  ::google::protobuf::internal::PrefetchToLocalCache(ConfigFileHashes_class_data_.tc_table);
-  return ConfigFileHashes_class_data_.base();
-}
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 1, 0, 2>
-ConfigFileHashes::_table_ = {
-  {
-    0,  // no _has_bits_
-    0, // no _extensions_
-    1, 0,  // max_field_number, fast_idx_mask
-    offsetof(decltype(_table_), field_lookup_table),
-    4294967294,  // skipmap
-    offsetof(decltype(_table_), field_entries),
-    1,  // num_field_entries
-    1,  // num_aux_entries
-    offsetof(decltype(_table_), aux_entries),
-    ConfigFileHashes_class_data_.base(),
-    nullptr,  // post_loop_handler
-    ::_pbi::TcParser::GenericFallback,  // fallback
-    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::hazkey::config::ConfigFileHashes>(),  // to_prefetch
-    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
-  }, {{
-    // repeated .hazkey.config.ConfigFileHashes.FileHash file_hashes = 1;
-    {::_pbi::TcParser::FastMtR1,
-     {10, 63, 0, PROTOBUF_FIELD_OFFSET(ConfigFileHashes, _impl_.file_hashes_)}},
-  }}, {{
-    65535, 65535
-  }}, {{
-    // repeated .hazkey.config.ConfigFileHashes.FileHash file_hashes = 1;
-    {PROTOBUF_FIELD_OFFSET(ConfigFileHashes, _impl_.file_hashes_), 0, 0,
-    (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
-  }},
-  {{
-      {::_pbi::TcParser::GetTable<::hazkey::config::ConfigFileHashes_FileHash>()},
-  }},
-  {{
-  }},
-};
-PROTOBUF_NOINLINE void ConfigFileHashes::Clear() {
-// @@protoc_insertion_point(message_clear_start:hazkey.config.ConfigFileHashes)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  _impl_.file_hashes_.Clear();
-  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* PROTOBUF_NONNULL ConfigFileHashes::_InternalSerialize(
-    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
-    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
-  const ConfigFileHashes& this_ = static_cast<const ConfigFileHashes&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* PROTOBUF_NONNULL ConfigFileHashes::_InternalSerialize(
-    ::uint8_t* PROTOBUF_NONNULL target,
-    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
-  const ConfigFileHashes& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  // @@protoc_insertion_point(serialize_to_array_start:hazkey.config.ConfigFileHashes)
-  ::uint32_t cached_has_bits = 0;
-  (void)cached_has_bits;
-
-  // repeated .hazkey.config.ConfigFileHashes.FileHash file_hashes = 1;
-  for (unsigned i = 0, n = static_cast<unsigned>(
-                           this_._internal_file_hashes_size());
-       i < n; i++) {
-    const auto& repfield = this_._internal_file_hashes().Get(i);
-    target =
-        ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-            1, repfield, repfield.GetCachedSize(),
-            target, stream);
-  }
-
-  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-    target =
-        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:hazkey.config.ConfigFileHashes)
-  return target;
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t ConfigFileHashes::ByteSizeLong(const MessageLite& base) {
-  const ConfigFileHashes& this_ = static_cast<const ConfigFileHashes&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-::size_t ConfigFileHashes::ByteSizeLong() const {
-  const ConfigFileHashes& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  // @@protoc_insertion_point(message_byte_size_start:hazkey.config.ConfigFileHashes)
-  ::size_t total_size = 0;
-
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void)cached_has_bits;
-
-  ::_pbi::Prefetch5LinesFrom7Lines(&this_);
-   {
-    // repeated .hazkey.config.ConfigFileHashes.FileHash file_hashes = 1;
-    {
-      total_size += 1UL * this_._internal_file_hashes_size();
-      for (const auto& msg : this_._internal_file_hashes()) {
-        total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
-      }
-    }
-  }
-  return this_.MaybeComputeUnknownFieldsSize(total_size,
-                                             &this_._impl_._cached_size_);
-}
-
-void ConfigFileHashes::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
-  auto* const _this = static_cast<ConfigFileHashes*>(&to_msg);
-  auto& from = static_cast<const ConfigFileHashes&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:hazkey.config.ConfigFileHashes)
-  ABSL_DCHECK_NE(&from, _this);
-  ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  _this->_internal_mutable_file_hashes()->MergeFrom(
-      from._internal_file_hashes());
-  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-}
-
-void ConfigFileHashes::CopyFrom(const ConfigFileHashes& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:hazkey.config.ConfigFileHashes)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-
-void ConfigFileHashes::InternalSwap(ConfigFileHashes* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
-  using ::std::swap;
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  _impl_.file_hashes_.InternalSwap(&other->_impl_.file_hashes_);
-}
-
-::google::protobuf::Metadata ConfigFileHashes::GetMetadata() const {
+::google::protobuf::Metadata FileHash::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
@@ -3704,18 +3411,18 @@ ConfigProfile::_table_ = {
     // .hazkey.config.ConfigProfile.SuggestionListMode suggestion_list_mode = 12;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(ConfigProfile, _impl_.suggestion_list_mode_), 5>(),
      {96, 5, 0, PROTOBUF_FIELD_OFFSET(ConfigProfile, _impl_.suggestion_list_mode_)}},
-    // bool use_wise_suggestion = 13;
-    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(ConfigProfile, _impl_.use_wise_suggestion_), 8>(),
-     {104, 8, 0, PROTOBUF_FIELD_OFFSET(ConfigProfile, _impl_.use_wise_suggestion_)}},
+    // bool use_rich_suggestion = 13;
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(ConfigProfile, _impl_.use_rich_suggestion_), 8>(),
+     {104, 8, 0, PROTOBUF_FIELD_OFFSET(ConfigProfile, _impl_.use_rich_suggestion_)}},
     // int32 num_suggestions = 14;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(ConfigProfile, _impl_.num_suggestions_), 6>(),
      {112, 6, 0, PROTOBUF_FIELD_OFFSET(ConfigProfile, _impl_.num_suggestions_)}},
     // int32 num_candidates_per_page = 15;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(ConfigProfile, _impl_.num_candidates_per_page_), 7>(),
      {120, 7, 0, PROTOBUF_FIELD_OFFSET(ConfigProfile, _impl_.num_candidates_per_page_)}},
-    // bool use_wise_candidates = 16;
+    // bool use_rich_candidates = 16;
     {::_pbi::TcParser::FastV8S2,
-     {384, 9, 0, PROTOBUF_FIELD_OFFSET(ConfigProfile, _impl_.use_wise_candidates_)}},
+     {384, 9, 0, PROTOBUF_FIELD_OFFSET(ConfigProfile, _impl_.use_rich_candidates_)}},
     {::_pbi::TcParser::MiniParse, {}},
     {::_pbi::TcParser::MiniParse, {}},
     {::_pbi::TcParser::MiniParse, {}},
@@ -3763,8 +3470,8 @@ ConfigProfile::_table_ = {
     // .hazkey.config.ConfigProfile.SuggestionListMode suggestion_list_mode = 12;
     {PROTOBUF_FIELD_OFFSET(ConfigProfile, _impl_.suggestion_list_mode_), _Internal::kHasBitsOffset + 5, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kOpenEnum)},
-    // bool use_wise_suggestion = 13;
-    {PROTOBUF_FIELD_OFFSET(ConfigProfile, _impl_.use_wise_suggestion_), _Internal::kHasBitsOffset + 8, 0,
+    // bool use_rich_suggestion = 13;
+    {PROTOBUF_FIELD_OFFSET(ConfigProfile, _impl_.use_rich_suggestion_), _Internal::kHasBitsOffset + 8, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kBool)},
     // int32 num_suggestions = 14;
     {PROTOBUF_FIELD_OFFSET(ConfigProfile, _impl_.num_suggestions_), _Internal::kHasBitsOffset + 6, 0,
@@ -3772,8 +3479,8 @@ ConfigProfile::_table_ = {
     // int32 num_candidates_per_page = 15;
     {PROTOBUF_FIELD_OFFSET(ConfigProfile, _impl_.num_candidates_per_page_), _Internal::kHasBitsOffset + 7, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
-    // bool use_wise_candidates = 16;
-    {PROTOBUF_FIELD_OFFSET(ConfigProfile, _impl_.use_wise_candidates_), _Internal::kHasBitsOffset + 9, 0,
+    // bool use_rich_candidates = 16;
+    {PROTOBUF_FIELD_OFFSET(ConfigProfile, _impl_.use_rich_candidates_), _Internal::kHasBitsOffset + 9, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kBool)},
     // bool use_input_history = 20;
     {PROTOBUF_FIELD_OFFSET(ConfigProfile, _impl_.use_input_history_), _Internal::kHasBitsOffset + 10, 0,
@@ -3839,9 +3546,9 @@ PROTOBUF_NOINLINE void ConfigProfile::Clear() {
         reinterpret_cast<char*>(&_impl_.auto_convert_mode_)) + sizeof(_impl_.num_candidates_per_page_));
   }
   if ((cached_has_bits & 0x00007f00u) != 0) {
-    ::memset(&_impl_.use_wise_suggestion_, 0, static_cast<::size_t>(
+    ::memset(&_impl_.use_rich_suggestion_, 0, static_cast<::size_t>(
         reinterpret_cast<char*>(&_impl_.zenzai_contextual_mode_) -
-        reinterpret_cast<char*>(&_impl_.use_wise_suggestion_)) + sizeof(_impl_.zenzai_contextual_mode_));
+        reinterpret_cast<char*>(&_impl_.use_rich_suggestion_)) + sizeof(_impl_.zenzai_contextual_mode_));
   }
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
@@ -3899,12 +3606,12 @@ PROTOBUF_NOINLINE void ConfigProfile::Clear() {
     }
   }
 
-  // bool use_wise_suggestion = 13;
+  // bool use_rich_suggestion = 13;
   if ((this_._impl_._has_bits_[0] & 0x00000100u) != 0) {
-    if (this_._internal_use_wise_suggestion() != 0) {
+    if (this_._internal_use_rich_suggestion() != 0) {
       target = stream->EnsureSpace(target);
       target = ::_pbi::WireFormatLite::WriteBoolToArray(
-          13, this_._internal_use_wise_suggestion(), target);
+          13, this_._internal_use_rich_suggestion(), target);
     }
   }
 
@@ -3926,12 +3633,12 @@ PROTOBUF_NOINLINE void ConfigProfile::Clear() {
     }
   }
 
-  // bool use_wise_candidates = 16;
+  // bool use_rich_candidates = 16;
   if ((this_._impl_._has_bits_[0] & 0x00000200u) != 0) {
-    if (this_._internal_use_wise_candidates() != 0) {
+    if (this_._internal_use_rich_candidates() != 0) {
       target = stream->EnsureSpace(target);
       target = ::_pbi::WireFormatLite::WriteBoolToArray(
-          16, this_._internal_use_wise_candidates(), target);
+          16, this_._internal_use_rich_candidates(), target);
     }
   }
 
@@ -4095,15 +3802,15 @@ PROTOBUF_NOINLINE void ConfigProfile::Clear() {
     }
   }
   if ((cached_has_bits & 0x00007f00u) != 0) {
-    // bool use_wise_suggestion = 13;
+    // bool use_rich_suggestion = 13;
     if ((cached_has_bits & 0x00000100u) != 0) {
-      if (this_._internal_use_wise_suggestion() != 0) {
+      if (this_._internal_use_rich_suggestion() != 0) {
         total_size += 2;
       }
     }
-    // bool use_wise_candidates = 16;
+    // bool use_rich_candidates = 16;
     if ((cached_has_bits & 0x00000200u) != 0) {
-      if (this_._internal_use_wise_candidates() != 0) {
+      if (this_._internal_use_rich_candidates() != 0) {
         total_size += 3;
       }
     }
@@ -4209,13 +3916,13 @@ void ConfigProfile::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::g
   }
   if ((cached_has_bits & 0x00007f00u) != 0) {
     if ((cached_has_bits & 0x00000100u) != 0) {
-      if (from._internal_use_wise_suggestion() != 0) {
-        _this->_impl_.use_wise_suggestion_ = from._impl_.use_wise_suggestion_;
+      if (from._internal_use_rich_suggestion() != 0) {
+        _this->_impl_.use_rich_suggestion_ = from._impl_.use_rich_suggestion_;
       }
     }
     if ((cached_has_bits & 0x00000200u) != 0) {
-      if (from._internal_use_wise_candidates() != 0) {
-        _this->_impl_.use_wise_candidates_ = from._impl_.use_wise_candidates_;
+      if (from._internal_use_rich_candidates() != 0) {
+        _this->_impl_.use_rich_candidates_ = from._impl_.use_rich_candidates_;
       }
     }
     if ((cached_has_bits & 0x00000400u) != 0) {
@@ -4388,10 +4095,6 @@ getCurrentConfig::_table_ = {
 
 class setConfig::_Internal {
  public:
-  using HasBits =
-      decltype(::std::declval<setConfig>()._impl_._has_bits_);
-  static constexpr ::int32_t kHasBitsOffset =
-      8 * PROTOBUF_FIELD_OFFSET(setConfig, _impl_._has_bits_);
 };
 
 void setConfig::clear_table_operations() {
@@ -4411,10 +4114,10 @@ PROTOBUF_NDEBUG_INLINE setConfig::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
     const ::hazkey::config::setConfig& from_msg)
-      : _has_bits_{from._has_bits_},
-        _cached_size_{0},
+      : file_hashes_{visibility, arena, from.file_hashes_},
         table_operations_{visibility, arena, from.table_operations_},
-        config_{visibility, arena, from.config_} {}
+        config_{visibility, arena, from.config_},
+        _cached_size_{0} {}
 
 setConfig::setConfig(
     ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
@@ -4429,23 +4132,19 @@ setConfig::setConfig(
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
-  _impl_.hash_ = ((cached_has_bits & 0x00000001u) != 0)
-                ? ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.hash_)
-                : nullptr;
 
   // @@protoc_insertion_point(copy_constructor:hazkey.config.setConfig)
 }
 PROTOBUF_NDEBUG_INLINE setConfig::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
-      : _cached_size_{0},
+      : file_hashes_{visibility, arena},
         table_operations_{visibility, arena},
-        config_{visibility, arena} {}
+        config_{visibility, arena},
+        _cached_size_{0} {}
 
 inline void setConfig::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
-  _impl_.hash_ = {};
 }
 setConfig::~setConfig() {
   // @@protoc_insertion_point(destructor:hazkey.config.setConfig)
@@ -4455,7 +4154,6 @@ inline void setConfig::SharedDtor(MessageLite& self) {
   setConfig& this_ = static_cast<setConfig&>(self);
   this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   ABSL_DCHECK(this_.GetArena() == nullptr);
-  delete this_._impl_.hash_;
   this_._impl_.~Impl_();
 }
 
@@ -4466,6 +4164,10 @@ inline void* PROTOBUF_NONNULL setConfig::PlacementNew_(
 }
 constexpr auto setConfig::InternalNewImpl_() {
   constexpr auto arena_bits = ::google::protobuf::internal::EncodePlacementArenaOffsets({
+      PROTOBUF_FIELD_OFFSET(setConfig, _impl_.file_hashes_) +
+          decltype(setConfig::_impl_.file_hashes_)::
+              InternalGetArenaOffset(
+                  ::google::protobuf::Message::internal_visibility()),
       PROTOBUF_FIELD_OFFSET(setConfig, _impl_.table_operations_) +
           decltype(setConfig::_impl_.table_operations_)::
               InternalGetArenaOffset(
@@ -4521,7 +4223,7 @@ PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
 const ::_pbi::TcParseTable<2, 3, 3, 0, 2>
 setConfig::_table_ = {
   {
-    PROTOBUF_FIELD_OFFSET(setConfig, _impl_._has_bits_),
+    0,  // no _has_bits_
     0, // no _extensions_
     3, 24,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
@@ -4538,9 +4240,9 @@ setConfig::_table_ = {
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
-    // .hazkey.config.ConfigFileHashes hash = 1;
-    {::_pbi::TcParser::FastMtS1,
-     {10, 0, 0, PROTOBUF_FIELD_OFFSET(setConfig, _impl_.hash_)}},
+    // repeated .hazkey.config.FileHash file_hashes = 1;
+    {::_pbi::TcParser::FastMtR1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(setConfig, _impl_.file_hashes_)}},
     // repeated .hazkey.config.table.EditOperation table_operations = 2;
     {::_pbi::TcParser::FastMtR1,
      {18, 63, 1, PROTOBUF_FIELD_OFFSET(setConfig, _impl_.table_operations_)}},
@@ -4550,18 +4252,18 @@ setConfig::_table_ = {
   }}, {{
     65535, 65535
   }}, {{
-    // .hazkey.config.ConfigFileHashes hash = 1;
-    {PROTOBUF_FIELD_OFFSET(setConfig, _impl_.hash_), _Internal::kHasBitsOffset + 0, 0,
-    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // repeated .hazkey.config.FileHash file_hashes = 1;
+    {PROTOBUF_FIELD_OFFSET(setConfig, _impl_.file_hashes_), 0, 0,
+    (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
     // repeated .hazkey.config.table.EditOperation table_operations = 2;
-    {PROTOBUF_FIELD_OFFSET(setConfig, _impl_.table_operations_), -1, 1,
+    {PROTOBUF_FIELD_OFFSET(setConfig, _impl_.table_operations_), 0, 1,
     (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
     // repeated .hazkey.config.ConfigProfile config = 3;
-    {PROTOBUF_FIELD_OFFSET(setConfig, _impl_.config_), -1, 2,
+    {PROTOBUF_FIELD_OFFSET(setConfig, _impl_.config_), 0, 2,
     (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
-      {::_pbi::TcParser::GetTable<::hazkey::config::ConfigFileHashes>()},
+      {::_pbi::TcParser::GetTable<::hazkey::config::FileHash>()},
       {::_pbi::TcParser::GetTable<::hazkey::config::table::EditOperation>()},
       {::_pbi::TcParser::GetTable<::hazkey::config::ConfigProfile>()},
   }},
@@ -4575,14 +4277,9 @@ PROTOBUF_NOINLINE void setConfig::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  _impl_.file_hashes_.Clear();
   _impl_.table_operations_.Clear();
   _impl_.config_.Clear();
-  cached_has_bits = _impl_._has_bits_[0];
-  if ((cached_has_bits & 0x00000001u) != 0) {
-    ABSL_DCHECK(_impl_.hash_ != nullptr);
-    _impl_.hash_->Clear();
-  }
-  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -4601,12 +4298,15 @@ PROTOBUF_NOINLINE void setConfig::Clear() {
   ::uint32_t cached_has_bits = 0;
   (void)cached_has_bits;
 
-  cached_has_bits = this_._impl_._has_bits_[0];
-  // .hazkey.config.ConfigFileHashes hash = 1;
-  if ((cached_has_bits & 0x00000001u) != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-        1, *this_._impl_.hash_, this_._impl_.hash_->GetCachedSize(), target,
-        stream);
+  // repeated .hazkey.config.FileHash file_hashes = 1;
+  for (unsigned i = 0, n = static_cast<unsigned>(
+                           this_._internal_file_hashes_size());
+       i < n; i++) {
+    const auto& repfield = this_._internal_file_hashes().Get(i);
+    target =
+        ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+            1, repfield, repfield.GetCachedSize(),
+            target, stream);
   }
 
   // repeated .hazkey.config.table.EditOperation table_operations = 2;
@@ -4656,6 +4356,13 @@ PROTOBUF_NOINLINE void setConfig::Clear() {
 
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
    {
+    // repeated .hazkey.config.FileHash file_hashes = 1;
+    {
+      total_size += 1UL * this_._internal_file_hashes_size();
+      for (const auto& msg : this_._internal_file_hashes()) {
+        total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
+      }
+    }
     // repeated .hazkey.config.table.EditOperation table_operations = 2;
     {
       total_size += 1UL * this_._internal_table_operations_size();
@@ -4671,14 +4378,6 @@ PROTOBUF_NOINLINE void setConfig::Clear() {
       }
     }
   }
-   {
-    // .hazkey.config.ConfigFileHashes hash = 1;
-    cached_has_bits = this_._impl_._has_bits_[0];
-    if ((cached_has_bits & 0x00000001u) != 0) {
-      total_size += 1 +
-                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.hash_);
-    }
-  }
   return this_.MaybeComputeUnknownFieldsSize(total_size,
                                              &this_._impl_._cached_size_);
 }
@@ -4686,26 +4385,17 @@ PROTOBUF_NOINLINE void setConfig::Clear() {
 void setConfig::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
   auto* const _this = static_cast<setConfig*>(&to_msg);
   auto& from = static_cast<const setConfig&>(from_msg);
-  ::google::protobuf::Arena* arena = _this->GetArena();
   // @@protoc_insertion_point(class_specific_merge_from_start:hazkey.config.setConfig)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  _this->_internal_mutable_file_hashes()->MergeFrom(
+      from._internal_file_hashes());
   _this->_internal_mutable_table_operations()->MergeFrom(
       from._internal_table_operations());
   _this->_internal_mutable_config()->MergeFrom(
       from._internal_config());
-  cached_has_bits = from._impl_._has_bits_[0];
-  if ((cached_has_bits & 0x00000001u) != 0) {
-    ABSL_DCHECK(from._impl_.hash_ != nullptr);
-    if (_this->_impl_.hash_ == nullptr) {
-      _this->_impl_.hash_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.hash_);
-    } else {
-      _this->_impl_.hash_->MergeFrom(*from._impl_.hash_);
-    }
-  }
-  _this->_impl_._has_bits_[0] |= cached_has_bits;
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -4720,10 +4410,9 @@ void setConfig::CopyFrom(const setConfig& from) {
 void setConfig::InternalSwap(setConfig* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
   using ::std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  _impl_.file_hashes_.InternalSwap(&other->_impl_.file_hashes_);
   _impl_.table_operations_.InternalSwap(&other->_impl_.table_operations_);
   _impl_.config_.InternalSwap(&other->_impl_.config_);
-  swap(_impl_.hash_, other->_impl_.hash_);
 }
 
 ::google::protobuf::Metadata setConfig::GetMetadata() const {
@@ -4951,10 +4640,6 @@ clearAllHistory::_table_ = {
 
 class CurrentConfig::_Internal {
  public:
-  using HasBits =
-      decltype(::std::declval<CurrentConfig>()._impl_._has_bits_);
-  static constexpr ::int32_t kHasBitsOffset =
-      8 * PROTOBUF_FIELD_OFFSET(CurrentConfig, _impl_._has_bits_);
 };
 
 void CurrentConfig::clear_input_tables() {
@@ -4974,10 +4659,10 @@ PROTOBUF_NDEBUG_INLINE CurrentConfig::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
     const ::hazkey::config::CurrentConfig& from_msg)
-      : _has_bits_{from._has_bits_},
-        _cached_size_{0},
+      : file_hashes_{visibility, arena, from.file_hashes_},
         input_tables_{visibility, arena, from.input_tables_},
-        configs_{visibility, arena, from.configs_} {}
+        configs_{visibility, arena, from.configs_},
+        _cached_size_{0} {}
 
 CurrentConfig::CurrentConfig(
     ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
@@ -4992,23 +4677,19 @@ CurrentConfig::CurrentConfig(
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
-  _impl_.hash_ = ((cached_has_bits & 0x00000001u) != 0)
-                ? ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.hash_)
-                : nullptr;
 
   // @@protoc_insertion_point(copy_constructor:hazkey.config.CurrentConfig)
 }
 PROTOBUF_NDEBUG_INLINE CurrentConfig::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
-      : _cached_size_{0},
+      : file_hashes_{visibility, arena},
         input_tables_{visibility, arena},
-        configs_{visibility, arena} {}
+        configs_{visibility, arena},
+        _cached_size_{0} {}
 
 inline void CurrentConfig::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
-  _impl_.hash_ = {};
 }
 CurrentConfig::~CurrentConfig() {
   // @@protoc_insertion_point(destructor:hazkey.config.CurrentConfig)
@@ -5018,7 +4699,6 @@ inline void CurrentConfig::SharedDtor(MessageLite& self) {
   CurrentConfig& this_ = static_cast<CurrentConfig&>(self);
   this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   ABSL_DCHECK(this_.GetArena() == nullptr);
-  delete this_._impl_.hash_;
   this_._impl_.~Impl_();
 }
 
@@ -5029,6 +4709,10 @@ inline void* PROTOBUF_NONNULL CurrentConfig::PlacementNew_(
 }
 constexpr auto CurrentConfig::InternalNewImpl_() {
   constexpr auto arena_bits = ::google::protobuf::internal::EncodePlacementArenaOffsets({
+      PROTOBUF_FIELD_OFFSET(CurrentConfig, _impl_.file_hashes_) +
+          decltype(CurrentConfig::_impl_.file_hashes_)::
+              InternalGetArenaOffset(
+                  ::google::protobuf::Message::internal_visibility()),
       PROTOBUF_FIELD_OFFSET(CurrentConfig, _impl_.input_tables_) +
           decltype(CurrentConfig::_impl_.input_tables_)::
               InternalGetArenaOffset(
@@ -5084,7 +4768,7 @@ PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
 const ::_pbi::TcParseTable<2, 3, 3, 0, 2>
 CurrentConfig::_table_ = {
   {
-    PROTOBUF_FIELD_OFFSET(CurrentConfig, _impl_._has_bits_),
+    0,  // no _has_bits_
     0, // no _extensions_
     3, 24,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
@@ -5101,9 +4785,9 @@ CurrentConfig::_table_ = {
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
-    // .hazkey.config.ConfigFileHashes hash = 1;
-    {::_pbi::TcParser::FastMtS1,
-     {10, 0, 0, PROTOBUF_FIELD_OFFSET(CurrentConfig, _impl_.hash_)}},
+    // repeated .hazkey.config.FileHash file_hashes = 1;
+    {::_pbi::TcParser::FastMtR1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(CurrentConfig, _impl_.file_hashes_)}},
     // repeated .hazkey.config.table.InputTable input_tables = 2;
     {::_pbi::TcParser::FastMtR1,
      {18, 63, 1, PROTOBUF_FIELD_OFFSET(CurrentConfig, _impl_.input_tables_)}},
@@ -5113,18 +4797,18 @@ CurrentConfig::_table_ = {
   }}, {{
     65535, 65535
   }}, {{
-    // .hazkey.config.ConfigFileHashes hash = 1;
-    {PROTOBUF_FIELD_OFFSET(CurrentConfig, _impl_.hash_), _Internal::kHasBitsOffset + 0, 0,
-    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // repeated .hazkey.config.FileHash file_hashes = 1;
+    {PROTOBUF_FIELD_OFFSET(CurrentConfig, _impl_.file_hashes_), 0, 0,
+    (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
     // repeated .hazkey.config.table.InputTable input_tables = 2;
-    {PROTOBUF_FIELD_OFFSET(CurrentConfig, _impl_.input_tables_), -1, 1,
+    {PROTOBUF_FIELD_OFFSET(CurrentConfig, _impl_.input_tables_), 0, 1,
     (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
     // repeated .hazkey.config.ConfigProfile configs = 3;
-    {PROTOBUF_FIELD_OFFSET(CurrentConfig, _impl_.configs_), -1, 2,
+    {PROTOBUF_FIELD_OFFSET(CurrentConfig, _impl_.configs_), 0, 2,
     (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
-      {::_pbi::TcParser::GetTable<::hazkey::config::ConfigFileHashes>()},
+      {::_pbi::TcParser::GetTable<::hazkey::config::FileHash>()},
       {::_pbi::TcParser::GetTable<::hazkey::config::table::InputTable>()},
       {::_pbi::TcParser::GetTable<::hazkey::config::ConfigProfile>()},
   }},
@@ -5138,14 +4822,9 @@ PROTOBUF_NOINLINE void CurrentConfig::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  _impl_.file_hashes_.Clear();
   _impl_.input_tables_.Clear();
   _impl_.configs_.Clear();
-  cached_has_bits = _impl_._has_bits_[0];
-  if ((cached_has_bits & 0x00000001u) != 0) {
-    ABSL_DCHECK(_impl_.hash_ != nullptr);
-    _impl_.hash_->Clear();
-  }
-  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -5164,12 +4843,15 @@ PROTOBUF_NOINLINE void CurrentConfig::Clear() {
   ::uint32_t cached_has_bits = 0;
   (void)cached_has_bits;
 
-  cached_has_bits = this_._impl_._has_bits_[0];
-  // .hazkey.config.ConfigFileHashes hash = 1;
-  if ((cached_has_bits & 0x00000001u) != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-        1, *this_._impl_.hash_, this_._impl_.hash_->GetCachedSize(), target,
-        stream);
+  // repeated .hazkey.config.FileHash file_hashes = 1;
+  for (unsigned i = 0, n = static_cast<unsigned>(
+                           this_._internal_file_hashes_size());
+       i < n; i++) {
+    const auto& repfield = this_._internal_file_hashes().Get(i);
+    target =
+        ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+            1, repfield, repfield.GetCachedSize(),
+            target, stream);
   }
 
   // repeated .hazkey.config.table.InputTable input_tables = 2;
@@ -5219,6 +4901,13 @@ PROTOBUF_NOINLINE void CurrentConfig::Clear() {
 
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
    {
+    // repeated .hazkey.config.FileHash file_hashes = 1;
+    {
+      total_size += 1UL * this_._internal_file_hashes_size();
+      for (const auto& msg : this_._internal_file_hashes()) {
+        total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
+      }
+    }
     // repeated .hazkey.config.table.InputTable input_tables = 2;
     {
       total_size += 1UL * this_._internal_input_tables_size();
@@ -5234,14 +4923,6 @@ PROTOBUF_NOINLINE void CurrentConfig::Clear() {
       }
     }
   }
-   {
-    // .hazkey.config.ConfigFileHashes hash = 1;
-    cached_has_bits = this_._impl_._has_bits_[0];
-    if ((cached_has_bits & 0x00000001u) != 0) {
-      total_size += 1 +
-                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.hash_);
-    }
-  }
   return this_.MaybeComputeUnknownFieldsSize(total_size,
                                              &this_._impl_._cached_size_);
 }
@@ -5249,26 +4930,17 @@ PROTOBUF_NOINLINE void CurrentConfig::Clear() {
 void CurrentConfig::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
   auto* const _this = static_cast<CurrentConfig*>(&to_msg);
   auto& from = static_cast<const CurrentConfig&>(from_msg);
-  ::google::protobuf::Arena* arena = _this->GetArena();
   // @@protoc_insertion_point(class_specific_merge_from_start:hazkey.config.CurrentConfig)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  _this->_internal_mutable_file_hashes()->MergeFrom(
+      from._internal_file_hashes());
   _this->_internal_mutable_input_tables()->MergeFrom(
       from._internal_input_tables());
   _this->_internal_mutable_configs()->MergeFrom(
       from._internal_configs());
-  cached_has_bits = from._impl_._has_bits_[0];
-  if ((cached_has_bits & 0x00000001u) != 0) {
-    ABSL_DCHECK(from._impl_.hash_ != nullptr);
-    if (_this->_impl_.hash_ == nullptr) {
-      _this->_impl_.hash_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.hash_);
-    } else {
-      _this->_impl_.hash_->MergeFrom(*from._impl_.hash_);
-    }
-  }
-  _this->_impl_._has_bits_[0] |= cached_has_bits;
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -5283,10 +4955,9 @@ void CurrentConfig::CopyFrom(const CurrentConfig& from) {
 void CurrentConfig::InternalSwap(CurrentConfig* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
   using ::std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  _impl_.file_hashes_.InternalSwap(&other->_impl_.file_hashes_);
   _impl_.input_tables_.InternalSwap(&other->_impl_.input_tables_);
   _impl_.configs_.InternalSwap(&other->_impl_.configs_);
-  swap(_impl_.hash_, other->_impl_.hash_);
 }
 
 ::google::protobuf::Metadata CurrentConfig::GetMetadata() const {

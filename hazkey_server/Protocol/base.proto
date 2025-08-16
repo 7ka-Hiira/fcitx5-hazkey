@@ -37,5 +37,6 @@ message ResponseEnvelope {
     oneof payload {
         string text = 3;
         hazkey.commands.CandidatesResult candidates = 4;
+        hazkey.commands.TextWithCursor text_with_cursor = 5;
     }
 }

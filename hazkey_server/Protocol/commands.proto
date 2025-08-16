@@ -4,19 +4,6 @@ package hazkey.commands;
 
 // Request messages
 
-// TODO: remove this, read directly from config file.
-message SetConfig {
-    bool zenzai_enabled = 1;
-    int32 zenzai_infer_limit = 2;
-    int32 number_fullwidth = 3;
-    int32 symbol_fullwidth = 4;
-    int32 period_style = 5;
-    int32 comma_style = 6;
-    int32 space_fullwidth = 7;
-    int32 ten_combining = 8;
-    string profile_text = 9;
-}
-
 message NewComposingText {}
 
 message SetContext {
@@ -57,8 +44,7 @@ message GetComposingString {
 message GetHiraganaWithCursor {}
 
 message GetCandidates {
-    bool is_predict_mode = 1;
-    int32 n_best = 2;
+    bool is_suggest = 1;
 }
 
 // Response messages
@@ -67,12 +53,21 @@ message Text {
     string text = 1;
 }
 
+message TextWithCursor {
+    string beforeCursosr = 1;
+    string onCursor = 2;
+    string afterCursor = 3;
+}
+
 message CandidatesResult {
     message Candidate {
         string text = 1;
         string sub_hiragana = 2;
+        repeated string words = 3;
+        repeated int32 diff_indexes = 4;
     }
 
     repeated Candidate candidates = 1;
     string live_text = 2;
+    int32 page_size = 3;
 }

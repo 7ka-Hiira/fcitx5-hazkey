@@ -2,6 +2,8 @@
 
 #include <arpa/inet.h>
 #include <fcitx-utils/log.h>
+#include <fcitx-utils/textformatflags.h>
+#include <fcitx/text.h>
 #include <fcntl.h>
 #include <sys/socket.h>
 #include <sys/un.h>
@@ -283,27 +285,32 @@ std::string HazkeyServerConnector::getComposingText(
     return responseVal.text();
 }
 
-std::string HazkeyServerConnector::getComposingHiraganaWithCursor() {
+fcitx::Text HazkeyServerConnector::getComposingHiraganaWithCursor() {
     hazkey::RequestEnvelope request;
     request.mutable_get_hiragana_with_cursor();
     auto response = transact(request);
     if (response == std::nullopt) {
         FCITX_ERROR()
             << "Error while transacting getComposingHiraganaWithCursor().";
-        return "";
+        return fcitx::Text();
     }
     auto responseVal = response.value();
     if (responseVal.status() != hazkey::SUCCESS) {
         FCITX_ERROR() << "getHiraganaWithCursor: " << "Server returned error: "
                       << responseVal.error_message();
-        return "";
+        return fcitx::Text();
     }
-    if (!responseVal.has_text()) {
+    if (!responseVal.has_text_with_cursor()) {
         FCITX_ERROR() << "getHiraganaWithCursor: "
                       << "Server returned unexpected response";
-        return "";
+        return fcitx::Text();
     }
-    return responseVal.text();
+    fcitx::Text text =
+        fcitx::Text(responseVal.text_with_cursor().beforecursosr());
+    text.append(responseVal.text_with_cursor().oncursor(),
+                fcitx::TextFormatFlag::Underline);
+    text.append(responseVal.text_with_cursor().aftercursor());
+    return text;
 }
 
 void HazkeyServerConnector::inputChar(std::string text, bool isDirect) {
@@ -396,35 +403,6 @@ void HazkeyServerConnector::setContext(std::string context, int anchor) {
     return;
 }
 
-void HazkeyServerConnector::setServerConfig(
-    int zenzaiEnabled, int zenzaiInferLimit, int numberFullwidth,
-    int symbolFullwidth, int periodStyleIndex, int commaStyleIndex,
-    int spaceFullwidth, int tenCombining, std::string profileText) {
-    hazkey::RequestEnvelope request;
-    auto props = request.mutable_set_config();
-    props->set_zenzai_enabled(zenzaiEnabled);
-    props->set_zenzai_infer_limit(zenzaiInferLimit);
-    props->set_number_fullwidth(numberFullwidth);
-    props->set_symbol_fullwidth(symbolFullwidth);
-    props->set_period_style(periodStyleIndex);
-    props->set_comma_style(commaStyleIndex);
-    props->set_space_fullwidth(spaceFullwidth);
-    props->set_ten_combining(tenCombining);
-    props->set_profile_text(profileText);
-    auto response = transact(request);
-    if (response == std::nullopt) {
-        FCITX_ERROR() << "Error while transacting setServerConfig().";
-        return;
-    }
-    auto responseVal = response.value();
-    if (responseVal.status() != hazkey::SUCCESS) {
-        FCITX_ERROR() << "setServerConfig:" << "Server returned error: "
-                      << responseVal.error_message();
-        return;
-    }
-    return;
-}
-
 void HazkeyServerConnector::newComposingText() {
     hazkey::RequestEnvelope request;
     request.mutable_new_composing_text();
@@ -462,12 +440,11 @@ void HazkeyServerConnector::completePrefix(int index) {
     return;
 }
 
-hazkey::commands::CandidatesResult
-HazkeyServerConnector::getCandidates(bool isPredictMode, int n_best) {
+hazkey::commands::CandidatesResult HazkeyServerConnector::getCandidates(
+    bool isSuggestMode) {
     hazkey::RequestEnvelope request;
     auto props = request.mutable_get_candidates();
-    props->set_is_predict_mode(isPredictMode);
-    props->set_n_best(n_best);
+    props->set_is_suggest(isSuggestMode);
     auto response = transact(request);
     if (response == std::nullopt) {
         FCITX_ERROR() << "Error while transacting setServerConfig().";

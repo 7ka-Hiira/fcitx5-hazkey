@@ -14,9 +14,6 @@ namespace fcitx {
 
 class HazkeyState;
 
-constexpr int NormalCandidateListSize = 9;
-constexpr int PredictCandidateListSize = 4;
-
 const KeyList defaultSelectionKeys = {
     Key{FcitxKey_1}, Key{FcitxKey_2}, Key{FcitxKey_3}, Key{FcitxKey_4},
     Key{FcitxKey_5}, Key{FcitxKey_6}, Key{FcitxKey_7}, Key{FcitxKey_8},

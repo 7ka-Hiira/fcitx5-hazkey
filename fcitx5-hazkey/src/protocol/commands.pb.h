@@ -102,10 +102,6 @@ class PrefixComplete;
 struct PrefixCompleteDefaultTypeInternal;
 extern PrefixCompleteDefaultTypeInternal _PrefixComplete_default_instance_;
 extern const ::google::protobuf::internal::ClassDataFull PrefixComplete_class_data_;
-class SetConfig;
-struct SetConfigDefaultTypeInternal;
-extern SetConfigDefaultTypeInternal _SetConfig_default_instance_;
-extern const ::google::protobuf::internal::ClassDataFull SetConfig_class_data_;
 class SetContext;
 struct SetContextDefaultTypeInternal;
 extern SetContextDefaultTypeInternal _SetContext_default_instance_;
@@ -114,6 +110,10 @@ class Text;
 struct TextDefaultTypeInternal;
 extern TextDefaultTypeInternal _Text_default_instance_;
 extern const ::google::protobuf::internal::ClassDataFull Text_class_data_;
+class TextWithCursor;
+struct TextWithCursorDefaultTypeInternal;
+extern TextWithCursorDefaultTypeInternal _TextWithCursor_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull TextWithCursor_class_data_;
 }  // namespace commands
 }  // namespace hazkey
 namespace google {
@@ -171,6 +171,236 @@ inline bool GetComposingString_CharType_Parse(
 
 // -------------------------------------------------------------------
 
+class TextWithCursor final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:hazkey.commands.TextWithCursor) */ {
+ public:
+  inline TextWithCursor() : TextWithCursor(nullptr) {}
+  ~TextWithCursor() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(TextWithCursor* PROTOBUF_NONNULL msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(TextWithCursor));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR TextWithCursor(::google::protobuf::internal::ConstantInitialized);
+
+  inline TextWithCursor(const TextWithCursor& from) : TextWithCursor(nullptr, from) {}
+  inline TextWithCursor(TextWithCursor&& from) noexcept
+      : TextWithCursor(nullptr, ::std::move(from)) {}
+  inline TextWithCursor& operator=(const TextWithCursor& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline TextWithCursor& operator=(TextWithCursor&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const TextWithCursor& default_instance() {
+    return *reinterpret_cast<const TextWithCursor*>(
+        &_TextWithCursor_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 11;
+  friend void swap(TextWithCursor& a, TextWithCursor& b) { a.Swap(&b); }
+  inline void Swap(TextWithCursor* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(TextWithCursor* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  TextWithCursor* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<TextWithCursor>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const TextWithCursor& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const TextWithCursor& from) { TextWithCursor::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(TextWithCursor* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "hazkey.commands.TextWithCursor"; }
+
+ protected:
+  explicit TextWithCursor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  TextWithCursor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const TextWithCursor& from);
+  TextWithCursor(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, TextWithCursor&& from) noexcept
+      : TextWithCursor(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kBeforeCursosrFieldNumber = 1,
+    kOnCursorFieldNumber = 2,
+    kAfterCursorFieldNumber = 3,
+  };
+  // string beforeCursosr = 1;
+  void clear_beforecursosr() ;
+  const ::std::string& beforecursosr() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_beforecursosr(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_beforecursosr();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_beforecursosr();
+  void set_allocated_beforecursosr(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_beforecursosr() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_beforecursosr(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_beforecursosr();
+
+  public:
+  // string onCursor = 2;
+  void clear_oncursor() ;
+  const ::std::string& oncursor() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_oncursor(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_oncursor();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_oncursor();
+  void set_allocated_oncursor(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_oncursor() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_oncursor(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_oncursor();
+
+  public:
+  // string afterCursor = 3;
+  void clear_aftercursor() ;
+  const ::std::string& aftercursor() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_aftercursor(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_aftercursor();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_aftercursor();
+  void set_allocated_aftercursor(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_aftercursor() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_aftercursor(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_aftercursor();
+
+  public:
+  // @@protoc_insertion_point(class_scope:hazkey.commands.TextWithCursor)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<2, 3,
+                                   0, 71,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const TextWithCursor& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::internal::ArenaStringPtr beforecursosr_;
+    ::google::protobuf::internal::ArenaStringPtr oncursor_;
+    ::google::protobuf::internal::ArenaStringPtr aftercursor_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_commands_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull TextWithCursor_class_data_;
+// -------------------------------------------------------------------
+
 class Text final : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:hazkey.commands.Text) */ {
  public:
@@ -226,7 +456,7 @@ class Text final : public ::google::protobuf::Message
     return *reinterpret_cast<const Text*>(
         &_Text_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 11;
+  static constexpr int kIndexInFileMessages = 10;
   friend void swap(Text& a, Text& b) { a.Swap(&b); }
   inline void Swap(Text* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -422,7 +652,7 @@ class SetContext final : public ::google::protobuf::Message
     return *reinterpret_cast<const SetContext*>(
         &_SetContext_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 2;
+  static constexpr int kIndexInFileMessages = 1;
   friend void swap(SetContext& a, SetContext& b) { a.Swap(&b); }
   inline void Swap(SetContext* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -575,298 +805,6 @@ class SetContext final : public ::google::protobuf::Message
 extern const ::google::protobuf::internal::ClassDataFull SetContext_class_data_;
 // -------------------------------------------------------------------
 
-class SetConfig final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:hazkey.commands.SetConfig) */ {
- public:
-  inline SetConfig() : SetConfig(nullptr) {}
-  ~SetConfig() PROTOBUF_FINAL;
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(SetConfig* PROTOBUF_NONNULL msg, std::destroying_delete_t) {
-    SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(SetConfig));
-  }
-#endif
-
-  template <typename = void>
-  explicit PROTOBUF_CONSTEXPR SetConfig(::google::protobuf::internal::ConstantInitialized);
-
-  inline SetConfig(const SetConfig& from) : SetConfig(nullptr, from) {}
-  inline SetConfig(SetConfig&& from) noexcept
-      : SetConfig(nullptr, ::std::move(from)) {}
-  inline SetConfig& operator=(const SetConfig& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline SetConfig& operator=(SetConfig&& from) noexcept {
-    if (this == &from) return *this;
-    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const SetConfig& default_instance() {
-    return *reinterpret_cast<const SetConfig*>(
-        &_SetConfig_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages = 0;
-  friend void swap(SetConfig& a, SetConfig& b) { a.Swap(&b); }
-  inline void Swap(SetConfig* PROTOBUF_NONNULL other) {
-    if (other == this) return;
-    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(SetConfig* PROTOBUF_NONNULL other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  SetConfig* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
-    return ::google::protobuf::Message::DefaultConstruct<SetConfig>(arena);
-  }
-  using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const SetConfig& from);
-  using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom(const SetConfig& from) { SetConfig::MergeImpl(*this, from); }
-
-  private:
-  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
-                        const ::google::protobuf::MessageLite& from_msg);
-
-  public:
-  bool IsInitialized() const {
-    return true;
-  }
-  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-  #if defined(PROTOBUF_CUSTOM_VTABLE)
-  private:
-  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
-      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
-      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
-
-  public:
-  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
-      ::uint8_t* PROTOBUF_NONNULL target,
-      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
-    return _InternalSerialize(*this, target, stream);
-  }
-  #else   // PROTOBUF_CUSTOM_VTABLE
-  ::size_t ByteSizeLong() const final;
-  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
-      ::uint8_t* PROTOBUF_NONNULL target,
-      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
-  #endif  // PROTOBUF_CUSTOM_VTABLE
-  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
-
-  private:
-  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  static void SharedDtor(MessageLite& self);
-  void InternalSwap(SetConfig* PROTOBUF_NONNULL other);
- private:
-  template <typename T>
-  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "hazkey.commands.SetConfig"; }
-
- protected:
-  explicit SetConfig(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  SetConfig(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const SetConfig& from);
-  SetConfig(
-      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, SetConfig&& from) noexcept
-      : SetConfig(arena) {
-    *this = ::std::move(from);
-  }
-  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
-  static void* PROTOBUF_NONNULL PlacementNew_(
-      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
-      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  static constexpr auto InternalNewImpl_();
-
- public:
-  static constexpr auto InternalGenerateClassData_();
-
-  ::google::protobuf::Metadata GetMetadata() const;
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-  enum : int {
-    kProfileTextFieldNumber = 9,
-    kZenzaiEnabledFieldNumber = 1,
-    kZenzaiInferLimitFieldNumber = 2,
-    kNumberFullwidthFieldNumber = 3,
-    kSymbolFullwidthFieldNumber = 4,
-    kPeriodStyleFieldNumber = 5,
-    kCommaStyleFieldNumber = 6,
-    kSpaceFullwidthFieldNumber = 7,
-    kTenCombiningFieldNumber = 8,
-  };
-  // string profile_text = 9;
-  void clear_profile_text() ;
-  const ::std::string& profile_text() const;
-  template <typename Arg_ = const ::std::string&, typename... Args_>
-  void set_profile_text(Arg_&& arg, Args_... args);
-  ::std::string* PROTOBUF_NONNULL mutable_profile_text();
-  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_profile_text();
-  void set_allocated_profile_text(::std::string* PROTOBUF_NULLABLE value);
-
-  private:
-  const ::std::string& _internal_profile_text() const;
-  PROTOBUF_ALWAYS_INLINE void _internal_set_profile_text(const ::std::string& value);
-  ::std::string* PROTOBUF_NONNULL _internal_mutable_profile_text();
-
-  public:
-  // bool zenzai_enabled = 1;
-  void clear_zenzai_enabled() ;
-  bool zenzai_enabled() const;
-  void set_zenzai_enabled(bool value);
-
-  private:
-  bool _internal_zenzai_enabled() const;
-  void _internal_set_zenzai_enabled(bool value);
-
-  public:
-  // int32 zenzai_infer_limit = 2;
-  void clear_zenzai_infer_limit() ;
-  ::int32_t zenzai_infer_limit() const;
-  void set_zenzai_infer_limit(::int32_t value);
-
-  private:
-  ::int32_t _internal_zenzai_infer_limit() const;
-  void _internal_set_zenzai_infer_limit(::int32_t value);
-
-  public:
-  // int32 number_fullwidth = 3;
-  void clear_number_fullwidth() ;
-  ::int32_t number_fullwidth() const;
-  void set_number_fullwidth(::int32_t value);
-
-  private:
-  ::int32_t _internal_number_fullwidth() const;
-  void _internal_set_number_fullwidth(::int32_t value);
-
-  public:
-  // int32 symbol_fullwidth = 4;
-  void clear_symbol_fullwidth() ;
-  ::int32_t symbol_fullwidth() const;
-  void set_symbol_fullwidth(::int32_t value);
-
-  private:
-  ::int32_t _internal_symbol_fullwidth() const;
-  void _internal_set_symbol_fullwidth(::int32_t value);
-
-  public:
-  // int32 period_style = 5;
-  void clear_period_style() ;
-  ::int32_t period_style() const;
-  void set_period_style(::int32_t value);
-
-  private:
-  ::int32_t _internal_period_style() const;
-  void _internal_set_period_style(::int32_t value);
-
-  public:
-  // int32 comma_style = 6;
-  void clear_comma_style() ;
-  ::int32_t comma_style() const;
-  void set_comma_style(::int32_t value);
-
-  private:
-  ::int32_t _internal_comma_style() const;
-  void _internal_set_comma_style(::int32_t value);
-
-  public:
-  // int32 space_fullwidth = 7;
-  void clear_space_fullwidth() ;
-  ::int32_t space_fullwidth() const;
-  void set_space_fullwidth(::int32_t value);
-
-  private:
-  ::int32_t _internal_space_fullwidth() const;
-  void _internal_set_space_fullwidth(::int32_t value);
-
-  public:
-  // int32 ten_combining = 8;
-  void clear_ten_combining() ;
-  ::int32_t ten_combining() const;
-  void set_ten_combining(::int32_t value);
-
-  private:
-  ::int32_t _internal_ten_combining() const;
-  void _internal_set_ten_combining(::int32_t value);
-
-  public:
-  // @@protoc_insertion_point(class_scope:hazkey.commands.SetConfig)
- private:
-  class _Internal;
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<4, 9,
-                                   0, 54,
-                                   2>
-      _table_;
-
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-    inline explicit Impl_(
-        ::google::protobuf::internal::InternalVisibility visibility,
-        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-    inline explicit Impl_(
-        ::google::protobuf::internal::InternalVisibility visibility,
-        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
-        const SetConfig& from_msg);
-    ::google::protobuf::internal::HasBits<1> _has_bits_;
-    ::google::protobuf::internal::CachedSize _cached_size_;
-    ::google::protobuf::internal::ArenaStringPtr profile_text_;
-    bool zenzai_enabled_;
-    ::int32_t zenzai_infer_limit_;
-    ::int32_t number_fullwidth_;
-    ::int32_t symbol_fullwidth_;
-    ::int32_t period_style_;
-    ::int32_t comma_style_;
-    ::int32_t space_fullwidth_;
-    ::int32_t ten_combining_;
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_commands_2eproto;
-};
-
-extern const ::google::protobuf::internal::ClassDataFull SetConfig_class_data_;
-// -------------------------------------------------------------------
-
 class PrefixComplete final : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:hazkey.commands.PrefixComplete) */ {
  public:
@@ -922,7 +860,7 @@ class PrefixComplete final : public ::google::protobuf::Message
     return *reinterpret_cast<const PrefixComplete*>(
         &_PrefixComplete_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 5;
+  static constexpr int kIndexInFileMessages = 4;
   friend void swap(PrefixComplete& a, PrefixComplete& b) { a.Swap(&b); }
   inline void Swap(PrefixComplete* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1112,7 +1050,7 @@ class NewComposingText final : public ::google::protobuf::internal::ZeroFieldsBa
     return *reinterpret_cast<const NewComposingText*>(
         &_NewComposingText_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 1;
+  static constexpr int kIndexInFileMessages = 0;
   friend void swap(NewComposingText& a, NewComposingText& b) { a.Swap(&b); }
   inline void Swap(NewComposingText* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1259,7 +1197,7 @@ class MoveCursor final : public ::google::protobuf::Message
     return *reinterpret_cast<const MoveCursor*>(
         &_MoveCursor_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 4;
+  static constexpr int kIndexInFileMessages = 3;
   friend void swap(MoveCursor& a, MoveCursor& b) { a.Swap(&b); }
   inline void Swap(MoveCursor* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1450,7 +1388,7 @@ class InputChar final : public ::google::protobuf::Message
     return *reinterpret_cast<const InputChar*>(
         &_InputChar_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 3;
+  static constexpr int kIndexInFileMessages = 2;
   friend void swap(InputChar& a, InputChar& b) { a.Swap(&b); }
   inline void Swap(InputChar* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1657,7 +1595,7 @@ class GetHiraganaWithCursor final : public ::google::protobuf::internal::ZeroFie
     return *reinterpret_cast<const GetHiraganaWithCursor*>(
         &_GetHiraganaWithCursor_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 9;
+  static constexpr int kIndexInFileMessages = 8;
   friend void swap(GetHiraganaWithCursor& a, GetHiraganaWithCursor& b) { a.Swap(&b); }
   inline void Swap(GetHiraganaWithCursor* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1804,7 +1742,7 @@ class GetComposingString final : public ::google::protobuf::Message
     return *reinterpret_cast<const GetComposingString*>(
         &_GetComposingString_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 8;
+  static constexpr int kIndexInFileMessages = 7;
   friend void swap(GetComposingString& a, GetComposingString& b) { a.Swap(&b); }
   inline void Swap(GetComposingString* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -2035,7 +1973,7 @@ class GetCandidates final : public ::google::protobuf::Message
     return *reinterpret_cast<const GetCandidates*>(
         &_GetCandidates_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 10;
+  static constexpr int kIndexInFileMessages = 9;
   friend void swap(GetCandidates& a, GetCandidates& b) { a.Swap(&b); }
   inline void Swap(GetCandidates* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -2123,34 +2061,23 @@ class GetCandidates final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
-    kIsPredictModeFieldNumber = 1,
-    kNBestFieldNumber = 2,
+    kIsSuggestFieldNumber = 1,
   };
-  // bool is_predict_mode = 1;
-  void clear_is_predict_mode() ;
-  bool is_predict_mode() const;
-  void set_is_predict_mode(bool value);
+  // bool is_suggest = 1;
+  void clear_is_suggest() ;
+  bool is_suggest() const;
+  void set_is_suggest(bool value);
 
   private:
-  bool _internal_is_predict_mode() const;
-  void _internal_set_is_predict_mode(bool value);
-
-  public:
-  // int32 n_best = 2;
-  void clear_n_best() ;
-  ::int32_t n_best() const;
-  void set_n_best(::int32_t value);
-
-  private:
-  ::int32_t _internal_n_best() const;
-  void _internal_set_n_best(::int32_t value);
+  bool _internal_is_suggest() const;
+  void _internal_set_is_suggest(bool value);
 
   public:
   // @@protoc_insertion_point(class_scope:hazkey.commands.GetCandidates)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<1, 2,
+  static const ::google::protobuf::internal::TcParseTable<0, 1,
                                    0, 0,
                                    2>
       _table_;
@@ -2172,8 +2099,7 @@ class GetCandidates final : public ::google::protobuf::Message
         const GetCandidates& from_msg);
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
-    bool is_predict_mode_;
-    ::int32_t n_best_;
+    bool is_suggest_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -2237,7 +2163,7 @@ class DeleteRight final : public ::google::protobuf::internal::ZeroFieldsBase
     return *reinterpret_cast<const DeleteRight*>(
         &_DeleteRight_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 7;
+  static constexpr int kIndexInFileMessages = 6;
   friend void swap(DeleteRight& a, DeleteRight& b) { a.Swap(&b); }
   inline void Swap(DeleteRight* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -2383,7 +2309,7 @@ class DeleteLeft final : public ::google::protobuf::internal::ZeroFieldsBase
     return *reinterpret_cast<const DeleteLeft*>(
         &_DeleteLeft_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 6;
+  static constexpr int kIndexInFileMessages = 5;
   friend void swap(DeleteLeft& a, DeleteLeft& b) { a.Swap(&b); }
   inline void Swap(DeleteLeft* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -2618,9 +2544,51 @@ class CandidatesResult_Candidate final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
+    kWordsFieldNumber = 3,
+    kDiffIndexesFieldNumber = 4,
     kTextFieldNumber = 1,
     kSubHiraganaFieldNumber = 2,
   };
+  // repeated string words = 3;
+  int words_size() const;
+  private:
+  int _internal_words_size() const;
+
+  public:
+  void clear_words() ;
+  const ::std::string& words(int index) const;
+  ::std::string* PROTOBUF_NONNULL mutable_words(int index);
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_words(int index, Arg_&& value, Args_... args);
+  ::std::string* PROTOBUF_NONNULL add_words();
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void add_words(Arg_&& value, Args_... args);
+  const ::google::protobuf::RepeatedPtrField<::std::string>& words() const;
+  ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL mutable_words();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<::std::string>& _internal_words() const;
+  ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL _internal_mutable_words();
+
+  public:
+  // repeated int32 diff_indexes = 4;
+  int diff_indexes_size() const;
+  private:
+  int _internal_diff_indexes_size() const;
+
+  public:
+  void clear_diff_indexes() ;
+  ::int32_t diff_indexes(int index) const;
+  void set_diff_indexes(int index, ::int32_t value);
+  void add_diff_indexes(::int32_t value);
+  const ::google::protobuf::RepeatedField<::int32_t>& diff_indexes() const;
+  ::google::protobuf::RepeatedField<::int32_t>* PROTOBUF_NONNULL mutable_diff_indexes();
+
+  private:
+  const ::google::protobuf::RepeatedField<::int32_t>& _internal_diff_indexes() const;
+  ::google::protobuf::RepeatedField<::int32_t>* PROTOBUF_NONNULL _internal_mutable_diff_indexes();
+
+  public:
   // string text = 1;
   void clear_text() ;
   const ::std::string& text() const;
@@ -2655,8 +2623,8 @@ class CandidatesResult_Candidate final : public ::google::protobuf::Message
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<1, 2,
-                                   0, 67,
+  static const ::google::protobuf::internal::TcParseTable<2, 4,
+                                   0, 72,
                                    2>
       _table_;
 
@@ -2677,6 +2645,9 @@ class CandidatesResult_Candidate final : public ::google::protobuf::Message
         const CandidatesResult_Candidate& from_msg);
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::RepeatedPtrField<::std::string> words_;
+    ::google::protobuf::RepeatedField<::int32_t> diff_indexes_;
+    ::google::protobuf::internal::CachedSize _diff_indexes_cached_byte_size_;
     ::google::protobuf::internal::ArenaStringPtr text_;
     ::google::protobuf::internal::ArenaStringPtr sub_hiragana_;
     PROTOBUF_TSAN_DECLARE_MEMBER
@@ -2834,6 +2805,7 @@ class CandidatesResult final : public ::google::protobuf::Message
   enum : int {
     kCandidatesFieldNumber = 1,
     kLiveTextFieldNumber = 2,
+    kPageSizeFieldNumber = 3,
   };
   // repeated .hazkey.commands.CandidatesResult.Candidate candidates = 1;
   int candidates_size() const;
@@ -2867,11 +2839,21 @@ class CandidatesResult final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_live_text();
 
   public:
+  // int32 page_size = 3;
+  void clear_page_size() ;
+  ::int32_t page_size() const;
+  void set_page_size(::int32_t value);
+
+  private:
+  ::int32_t _internal_page_size() const;
+  void _internal_set_page_size(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:hazkey.commands.CandidatesResult)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<1, 2,
+  static const ::google::protobuf::internal::TcParseTable<2, 3,
                                    1, 50,
                                    2>
       _table_;
@@ -2895,6 +2877,7 @@ class CandidatesResult final : public ::google::protobuf::Message
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::google::protobuf::RepeatedPtrField< ::hazkey::commands::CandidatesResult_Candidate > candidates_;
     ::google::protobuf::internal::ArenaStringPtr live_text_;
+    ::int32_t page_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -2915,267 +2898,6 @@ extern const ::google::protobuf::internal::ClassDataFull CandidatesResult_class_
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
-// -------------------------------------------------------------------
-
-// SetConfig
-
-// bool zenzai_enabled = 1;
-inline void SetConfig::clear_zenzai_enabled() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.zenzai_enabled_ = false;
-  _impl_._has_bits_[0] &= ~0x00000002u;
-}
-inline bool SetConfig::zenzai_enabled() const {
-  // @@protoc_insertion_point(field_get:hazkey.commands.SetConfig.zenzai_enabled)
-  return _internal_zenzai_enabled();
-}
-inline void SetConfig::set_zenzai_enabled(bool value) {
-  _internal_set_zenzai_enabled(value);
-  _impl_._has_bits_[0] |= 0x00000002u;
-  // @@protoc_insertion_point(field_set:hazkey.commands.SetConfig.zenzai_enabled)
-}
-inline bool SetConfig::_internal_zenzai_enabled() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.zenzai_enabled_;
-}
-inline void SetConfig::_internal_set_zenzai_enabled(bool value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.zenzai_enabled_ = value;
-}
-
-// int32 zenzai_infer_limit = 2;
-inline void SetConfig::clear_zenzai_infer_limit() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.zenzai_infer_limit_ = 0;
-  _impl_._has_bits_[0] &= ~0x00000004u;
-}
-inline ::int32_t SetConfig::zenzai_infer_limit() const {
-  // @@protoc_insertion_point(field_get:hazkey.commands.SetConfig.zenzai_infer_limit)
-  return _internal_zenzai_infer_limit();
-}
-inline void SetConfig::set_zenzai_infer_limit(::int32_t value) {
-  _internal_set_zenzai_infer_limit(value);
-  _impl_._has_bits_[0] |= 0x00000004u;
-  // @@protoc_insertion_point(field_set:hazkey.commands.SetConfig.zenzai_infer_limit)
-}
-inline ::int32_t SetConfig::_internal_zenzai_infer_limit() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.zenzai_infer_limit_;
-}
-inline void SetConfig::_internal_set_zenzai_infer_limit(::int32_t value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.zenzai_infer_limit_ = value;
-}
-
-// int32 number_fullwidth = 3;
-inline void SetConfig::clear_number_fullwidth() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.number_fullwidth_ = 0;
-  _impl_._has_bits_[0] &= ~0x00000008u;
-}
-inline ::int32_t SetConfig::number_fullwidth() const {
-  // @@protoc_insertion_point(field_get:hazkey.commands.SetConfig.number_fullwidth)
-  return _internal_number_fullwidth();
-}
-inline void SetConfig::set_number_fullwidth(::int32_t value) {
-  _internal_set_number_fullwidth(value);
-  _impl_._has_bits_[0] |= 0x00000008u;
-  // @@protoc_insertion_point(field_set:hazkey.commands.SetConfig.number_fullwidth)
-}
-inline ::int32_t SetConfig::_internal_number_fullwidth() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.number_fullwidth_;
-}
-inline void SetConfig::_internal_set_number_fullwidth(::int32_t value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.number_fullwidth_ = value;
-}
-
-// int32 symbol_fullwidth = 4;
-inline void SetConfig::clear_symbol_fullwidth() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.symbol_fullwidth_ = 0;
-  _impl_._has_bits_[0] &= ~0x00000010u;
-}
-inline ::int32_t SetConfig::symbol_fullwidth() const {
-  // @@protoc_insertion_point(field_get:hazkey.commands.SetConfig.symbol_fullwidth)
-  return _internal_symbol_fullwidth();
-}
-inline void SetConfig::set_symbol_fullwidth(::int32_t value) {
-  _internal_set_symbol_fullwidth(value);
-  _impl_._has_bits_[0] |= 0x00000010u;
-  // @@protoc_insertion_point(field_set:hazkey.commands.SetConfig.symbol_fullwidth)
-}
-inline ::int32_t SetConfig::_internal_symbol_fullwidth() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.symbol_fullwidth_;
-}
-inline void SetConfig::_internal_set_symbol_fullwidth(::int32_t value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.symbol_fullwidth_ = value;
-}
-
-// int32 period_style = 5;
-inline void SetConfig::clear_period_style() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.period_style_ = 0;
-  _impl_._has_bits_[0] &= ~0x00000020u;
-}
-inline ::int32_t SetConfig::period_style() const {
-  // @@protoc_insertion_point(field_get:hazkey.commands.SetConfig.period_style)
-  return _internal_period_style();
-}
-inline void SetConfig::set_period_style(::int32_t value) {
-  _internal_set_period_style(value);
-  _impl_._has_bits_[0] |= 0x00000020u;
-  // @@protoc_insertion_point(field_set:hazkey.commands.SetConfig.period_style)
-}
-inline ::int32_t SetConfig::_internal_period_style() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.period_style_;
-}
-inline void SetConfig::_internal_set_period_style(::int32_t value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.period_style_ = value;
-}
-
-// int32 comma_style = 6;
-inline void SetConfig::clear_comma_style() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.comma_style_ = 0;
-  _impl_._has_bits_[0] &= ~0x00000040u;
-}
-inline ::int32_t SetConfig::comma_style() const {
-  // @@protoc_insertion_point(field_get:hazkey.commands.SetConfig.comma_style)
-  return _internal_comma_style();
-}
-inline void SetConfig::set_comma_style(::int32_t value) {
-  _internal_set_comma_style(value);
-  _impl_._has_bits_[0] |= 0x00000040u;
-  // @@protoc_insertion_point(field_set:hazkey.commands.SetConfig.comma_style)
-}
-inline ::int32_t SetConfig::_internal_comma_style() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.comma_style_;
-}
-inline void SetConfig::_internal_set_comma_style(::int32_t value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.comma_style_ = value;
-}
-
-// int32 space_fullwidth = 7;
-inline void SetConfig::clear_space_fullwidth() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.space_fullwidth_ = 0;
-  _impl_._has_bits_[0] &= ~0x00000080u;
-}
-inline ::int32_t SetConfig::space_fullwidth() const {
-  // @@protoc_insertion_point(field_get:hazkey.commands.SetConfig.space_fullwidth)
-  return _internal_space_fullwidth();
-}
-inline void SetConfig::set_space_fullwidth(::int32_t value) {
-  _internal_set_space_fullwidth(value);
-  _impl_._has_bits_[0] |= 0x00000080u;
-  // @@protoc_insertion_point(field_set:hazkey.commands.SetConfig.space_fullwidth)
-}
-inline ::int32_t SetConfig::_internal_space_fullwidth() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.space_fullwidth_;
-}
-inline void SetConfig::_internal_set_space_fullwidth(::int32_t value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.space_fullwidth_ = value;
-}
-
-// int32 ten_combining = 8;
-inline void SetConfig::clear_ten_combining() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.ten_combining_ = 0;
-  _impl_._has_bits_[0] &= ~0x00000100u;
-}
-inline ::int32_t SetConfig::ten_combining() const {
-  // @@protoc_insertion_point(field_get:hazkey.commands.SetConfig.ten_combining)
-  return _internal_ten_combining();
-}
-inline void SetConfig::set_ten_combining(::int32_t value) {
-  _internal_set_ten_combining(value);
-  _impl_._has_bits_[0] |= 0x00000100u;
-  // @@protoc_insertion_point(field_set:hazkey.commands.SetConfig.ten_combining)
-}
-inline ::int32_t SetConfig::_internal_ten_combining() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.ten_combining_;
-}
-inline void SetConfig::_internal_set_ten_combining(::int32_t value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.ten_combining_ = value;
-}
-
-// string profile_text = 9;
-inline void SetConfig::clear_profile_text() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.profile_text_.ClearToEmpty();
-  _impl_._has_bits_[0] &= ~0x00000001u;
-}
-inline const ::std::string& SetConfig::profile_text() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:hazkey.commands.SetConfig.profile_text)
-  return _internal_profile_text();
-}
-template <typename Arg_, typename... Args_>
-PROTOBUF_ALWAYS_INLINE void SetConfig::set_profile_text(Arg_&& arg, Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_._has_bits_[0] |= 0x00000001u;
-  _impl_.profile_text_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:hazkey.commands.SetConfig.profile_text)
-}
-inline ::std::string* PROTOBUF_NONNULL SetConfig::mutable_profile_text()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::std::string* _s = _internal_mutable_profile_text();
-  // @@protoc_insertion_point(field_mutable:hazkey.commands.SetConfig.profile_text)
-  return _s;
-}
-inline const ::std::string& SetConfig::_internal_profile_text() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.profile_text_.Get();
-}
-inline void SetConfig::_internal_set_profile_text(const ::std::string& value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_._has_bits_[0] |= 0x00000001u;
-  _impl_.profile_text_.Set(value, GetArena());
-}
-inline ::std::string* PROTOBUF_NONNULL SetConfig::_internal_mutable_profile_text() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_._has_bits_[0] |= 0x00000001u;
-  return _impl_.profile_text_.Mutable( GetArena());
-}
-inline ::std::string* PROTOBUF_NULLABLE SetConfig::release_profile_text() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:hazkey.commands.SetConfig.profile_text)
-  if ((_impl_._has_bits_[0] & 0x00000001u) == 0) {
-    return nullptr;
-  }
-  _impl_._has_bits_[0] &= ~0x00000001u;
-  auto* released = _impl_.profile_text_.Release();
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
-    _impl_.profile_text_.Set("", GetArena());
-  }
-  return released;
-}
-inline void SetConfig::set_allocated_profile_text(::std::string* PROTOBUF_NULLABLE value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (value != nullptr) {
-    _impl_._has_bits_[0] |= 0x00000001u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000001u;
-  }
-  _impl_.profile_text_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.profile_text_.IsDefault()) {
-    _impl_.profile_text_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:hazkey.commands.SetConfig.profile_text)
-}
-
 // -------------------------------------------------------------------
 
 // NewComposingText
@@ -3531,52 +3253,28 @@ inline void GetComposingString::set_allocated_current_preedit(::std::string* PRO
 
 // GetCandidates
 
-// bool is_predict_mode = 1;
-inline void GetCandidates::clear_is_predict_mode() {
+// bool is_suggest = 1;
+inline void GetCandidates::clear_is_suggest() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.is_predict_mode_ = false;
+  _impl_.is_suggest_ = false;
   _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline bool GetCandidates::is_predict_mode() const {
-  // @@protoc_insertion_point(field_get:hazkey.commands.GetCandidates.is_predict_mode)
-  return _internal_is_predict_mode();
+inline bool GetCandidates::is_suggest() const {
+  // @@protoc_insertion_point(field_get:hazkey.commands.GetCandidates.is_suggest)
+  return _internal_is_suggest();
 }
-inline void GetCandidates::set_is_predict_mode(bool value) {
-  _internal_set_is_predict_mode(value);
+inline void GetCandidates::set_is_suggest(bool value) {
+  _internal_set_is_suggest(value);
   _impl_._has_bits_[0] |= 0x00000001u;
-  // @@protoc_insertion_point(field_set:hazkey.commands.GetCandidates.is_predict_mode)
+  // @@protoc_insertion_point(field_set:hazkey.commands.GetCandidates.is_suggest)
 }
-inline bool GetCandidates::_internal_is_predict_mode() const {
+inline bool GetCandidates::_internal_is_suggest() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.is_predict_mode_;
+  return _impl_.is_suggest_;
 }
-inline void GetCandidates::_internal_set_is_predict_mode(bool value) {
+inline void GetCandidates::_internal_set_is_suggest(bool value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.is_predict_mode_ = value;
-}
-
-// int32 n_best = 2;
-inline void GetCandidates::clear_n_best() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.n_best_ = 0;
-  _impl_._has_bits_[0] &= ~0x00000002u;
-}
-inline ::int32_t GetCandidates::n_best() const {
-  // @@protoc_insertion_point(field_get:hazkey.commands.GetCandidates.n_best)
-  return _internal_n_best();
-}
-inline void GetCandidates::set_n_best(::int32_t value) {
-  _internal_set_n_best(value);
-  _impl_._has_bits_[0] |= 0x00000002u;
-  // @@protoc_insertion_point(field_set:hazkey.commands.GetCandidates.n_best)
-}
-inline ::int32_t GetCandidates::_internal_n_best() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.n_best_;
-}
-inline void GetCandidates::_internal_set_n_best(::int32_t value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.n_best_ = value;
+  _impl_.is_suggest_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -3646,6 +3344,205 @@ inline void Text::set_allocated_text(::std::string* PROTOBUF_NULLABLE value) {
     _impl_.text_.Set("", GetArena());
   }
   // @@protoc_insertion_point(field_set_allocated:hazkey.commands.Text.text)
+}
+
+// -------------------------------------------------------------------
+
+// TextWithCursor
+
+// string beforeCursosr = 1;
+inline void TextWithCursor::clear_beforecursosr() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.beforecursosr_.ClearToEmpty();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::std::string& TextWithCursor::beforecursosr() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:hazkey.commands.TextWithCursor.beforeCursosr)
+  return _internal_beforecursosr();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void TextWithCursor::set_beforecursosr(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000001u;
+  _impl_.beforecursosr_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:hazkey.commands.TextWithCursor.beforeCursosr)
+}
+inline ::std::string* PROTOBUF_NONNULL TextWithCursor::mutable_beforecursosr()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::std::string* _s = _internal_mutable_beforecursosr();
+  // @@protoc_insertion_point(field_mutable:hazkey.commands.TextWithCursor.beforeCursosr)
+  return _s;
+}
+inline const ::std::string& TextWithCursor::_internal_beforecursosr() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.beforecursosr_.Get();
+}
+inline void TextWithCursor::_internal_set_beforecursosr(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000001u;
+  _impl_.beforecursosr_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL TextWithCursor::_internal_mutable_beforecursosr() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000001u;
+  return _impl_.beforecursosr_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE TextWithCursor::release_beforecursosr() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:hazkey.commands.TextWithCursor.beforeCursosr)
+  if ((_impl_._has_bits_[0] & 0x00000001u) == 0) {
+    return nullptr;
+  }
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  auto* released = _impl_.beforecursosr_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.beforecursosr_.Set("", GetArena());
+  }
+  return released;
+}
+inline void TextWithCursor::set_allocated_beforecursosr(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  _impl_.beforecursosr_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.beforecursosr_.IsDefault()) {
+    _impl_.beforecursosr_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:hazkey.commands.TextWithCursor.beforeCursosr)
+}
+
+// string onCursor = 2;
+inline void TextWithCursor::clear_oncursor() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.oncursor_.ClearToEmpty();
+  _impl_._has_bits_[0] &= ~0x00000002u;
+}
+inline const ::std::string& TextWithCursor::oncursor() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:hazkey.commands.TextWithCursor.onCursor)
+  return _internal_oncursor();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void TextWithCursor::set_oncursor(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000002u;
+  _impl_.oncursor_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:hazkey.commands.TextWithCursor.onCursor)
+}
+inline ::std::string* PROTOBUF_NONNULL TextWithCursor::mutable_oncursor()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::std::string* _s = _internal_mutable_oncursor();
+  // @@protoc_insertion_point(field_mutable:hazkey.commands.TextWithCursor.onCursor)
+  return _s;
+}
+inline const ::std::string& TextWithCursor::_internal_oncursor() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.oncursor_.Get();
+}
+inline void TextWithCursor::_internal_set_oncursor(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000002u;
+  _impl_.oncursor_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL TextWithCursor::_internal_mutable_oncursor() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000002u;
+  return _impl_.oncursor_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE TextWithCursor::release_oncursor() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:hazkey.commands.TextWithCursor.onCursor)
+  if ((_impl_._has_bits_[0] & 0x00000002u) == 0) {
+    return nullptr;
+  }
+  _impl_._has_bits_[0] &= ~0x00000002u;
+  auto* released = _impl_.oncursor_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.oncursor_.Set("", GetArena());
+  }
+  return released;
+}
+inline void TextWithCursor::set_allocated_oncursor(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000002u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000002u;
+  }
+  _impl_.oncursor_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.oncursor_.IsDefault()) {
+    _impl_.oncursor_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:hazkey.commands.TextWithCursor.onCursor)
+}
+
+// string afterCursor = 3;
+inline void TextWithCursor::clear_aftercursor() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.aftercursor_.ClearToEmpty();
+  _impl_._has_bits_[0] &= ~0x00000004u;
+}
+inline const ::std::string& TextWithCursor::aftercursor() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:hazkey.commands.TextWithCursor.afterCursor)
+  return _internal_aftercursor();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void TextWithCursor::set_aftercursor(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000004u;
+  _impl_.aftercursor_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:hazkey.commands.TextWithCursor.afterCursor)
+}
+inline ::std::string* PROTOBUF_NONNULL TextWithCursor::mutable_aftercursor()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::std::string* _s = _internal_mutable_aftercursor();
+  // @@protoc_insertion_point(field_mutable:hazkey.commands.TextWithCursor.afterCursor)
+  return _s;
+}
+inline const ::std::string& TextWithCursor::_internal_aftercursor() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.aftercursor_.Get();
+}
+inline void TextWithCursor::_internal_set_aftercursor(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000004u;
+  _impl_.aftercursor_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL TextWithCursor::_internal_mutable_aftercursor() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000004u;
+  return _impl_.aftercursor_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE TextWithCursor::release_aftercursor() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:hazkey.commands.TextWithCursor.afterCursor)
+  if ((_impl_._has_bits_[0] & 0x00000004u) == 0) {
+    return nullptr;
+  }
+  _impl_._has_bits_[0] &= ~0x00000004u;
+  auto* released = _impl_.aftercursor_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.aftercursor_.Set("", GetArena());
+  }
+  return released;
+}
+inline void TextWithCursor::set_allocated_aftercursor(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000004u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000004u;
+  }
+  _impl_.aftercursor_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.aftercursor_.IsDefault()) {
+    _impl_.aftercursor_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:hazkey.commands.TextWithCursor.afterCursor)
 }
 
 // -------------------------------------------------------------------
@@ -3782,6 +3679,116 @@ inline void CandidatesResult_Candidate::set_allocated_sub_hiragana(::std::string
   // @@protoc_insertion_point(field_set_allocated:hazkey.commands.CandidatesResult.Candidate.sub_hiragana)
 }
 
+// repeated string words = 3;
+inline int CandidatesResult_Candidate::_internal_words_size() const {
+  return _internal_words().size();
+}
+inline int CandidatesResult_Candidate::words_size() const {
+  return _internal_words_size();
+}
+inline void CandidatesResult_Candidate::clear_words() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.words_.Clear();
+}
+inline ::std::string* PROTOBUF_NONNULL CandidatesResult_Candidate::add_words()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::std::string* _s = _internal_mutable_words()->Add();
+  // @@protoc_insertion_point(field_add_mutable:hazkey.commands.CandidatesResult.Candidate.words)
+  return _s;
+}
+inline const ::std::string& CandidatesResult_Candidate::words(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:hazkey.commands.CandidatesResult.Candidate.words)
+  return _internal_words().Get(index);
+}
+inline ::std::string* PROTOBUF_NONNULL CandidatesResult_Candidate::mutable_words(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:hazkey.commands.CandidatesResult.Candidate.words)
+  return _internal_mutable_words()->Mutable(index);
+}
+template <typename Arg_, typename... Args_>
+inline void CandidatesResult_Candidate::set_words(int index, Arg_&& value, Args_... args) {
+  ::google::protobuf::internal::AssignToString(*_internal_mutable_words()->Mutable(index), ::std::forward<Arg_>(value),
+                        args... );
+  // @@protoc_insertion_point(field_set:hazkey.commands.CandidatesResult.Candidate.words)
+}
+template <typename Arg_, typename... Args_>
+inline void CandidatesResult_Candidate::add_words(Arg_&& value, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::google::protobuf::internal::AddToRepeatedPtrField(*_internal_mutable_words(),
+                               ::std::forward<Arg_>(value),
+                               args... );
+  // @@protoc_insertion_point(field_add:hazkey.commands.CandidatesResult.Candidate.words)
+}
+inline const ::google::protobuf::RepeatedPtrField<::std::string>& CandidatesResult_Candidate::words()
+    const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:hazkey.commands.CandidatesResult.Candidate.words)
+  return _internal_words();
+}
+inline ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL
+CandidatesResult_Candidate::mutable_words() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:hazkey.commands.CandidatesResult.Candidate.words)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_words();
+}
+inline const ::google::protobuf::RepeatedPtrField<::std::string>&
+CandidatesResult_Candidate::_internal_words() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.words_;
+}
+inline ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL
+CandidatesResult_Candidate::_internal_mutable_words() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.words_;
+}
+
+// repeated int32 diff_indexes = 4;
+inline int CandidatesResult_Candidate::_internal_diff_indexes_size() const {
+  return _internal_diff_indexes().size();
+}
+inline int CandidatesResult_Candidate::diff_indexes_size() const {
+  return _internal_diff_indexes_size();
+}
+inline void CandidatesResult_Candidate::clear_diff_indexes() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.diff_indexes_.Clear();
+}
+inline ::int32_t CandidatesResult_Candidate::diff_indexes(int index) const {
+  // @@protoc_insertion_point(field_get:hazkey.commands.CandidatesResult.Candidate.diff_indexes)
+  return _internal_diff_indexes().Get(index);
+}
+inline void CandidatesResult_Candidate::set_diff_indexes(int index, ::int32_t value) {
+  _internal_mutable_diff_indexes()->Set(index, value);
+  // @@protoc_insertion_point(field_set:hazkey.commands.CandidatesResult.Candidate.diff_indexes)
+}
+inline void CandidatesResult_Candidate::add_diff_indexes(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _internal_mutable_diff_indexes()->Add(value);
+  // @@protoc_insertion_point(field_add:hazkey.commands.CandidatesResult.Candidate.diff_indexes)
+}
+inline const ::google::protobuf::RepeatedField<::int32_t>& CandidatesResult_Candidate::diff_indexes() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:hazkey.commands.CandidatesResult.Candidate.diff_indexes)
+  return _internal_diff_indexes();
+}
+inline ::google::protobuf::RepeatedField<::int32_t>* PROTOBUF_NONNULL CandidatesResult_Candidate::mutable_diff_indexes()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:hazkey.commands.CandidatesResult.Candidate.diff_indexes)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_diff_indexes();
+}
+inline const ::google::protobuf::RepeatedField<::int32_t>&
+CandidatesResult_Candidate::_internal_diff_indexes() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.diff_indexes_;
+}
+inline ::google::protobuf::RepeatedField<::int32_t>* PROTOBUF_NONNULL
+CandidatesResult_Candidate::_internal_mutable_diff_indexes() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.diff_indexes_;
+}
+
 // -------------------------------------------------------------------
 
 // CandidatesResult
@@ -3899,6 +3906,30 @@ inline void CandidatesResult::set_allocated_live_text(::std::string* PROTOBUF_NU
     _impl_.live_text_.Set("", GetArena());
   }
   // @@protoc_insertion_point(field_set_allocated:hazkey.commands.CandidatesResult.live_text)
+}
+
+// int32 page_size = 3;
+inline void CandidatesResult::clear_page_size() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.page_size_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000002u;
+}
+inline ::int32_t CandidatesResult::page_size() const {
+  // @@protoc_insertion_point(field_get:hazkey.commands.CandidatesResult.page_size)
+  return _internal_page_size();
+}
+inline void CandidatesResult::set_page_size(::int32_t value) {
+  _internal_set_page_size(value);
+  _impl_._has_bits_[0] |= 0x00000002u;
+  // @@protoc_insertion_point(field_set:hazkey.commands.CandidatesResult.page_size)
+}
+inline ::int32_t CandidatesResult::_internal_page_size() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.page_size_;
+}
+inline void CandidatesResult::_internal_set_page_size(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.page_size_ = value;
 }
 
 #ifdef __GNUC__

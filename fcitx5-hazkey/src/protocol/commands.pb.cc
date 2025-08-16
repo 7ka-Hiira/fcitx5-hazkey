@@ -27,6 +27,39 @@ namespace _fl = ::google::protobuf::internal::field_layout;
 namespace hazkey {
 namespace commands {
 
+inline constexpr TextWithCursor::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        beforecursosr_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        oncursor_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        aftercursor_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()) {}
+
+template <typename>
+PROTOBUF_CONSTEXPR TextWithCursor::TextWithCursor(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(TextWithCursor_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct TextWithCursorDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR TextWithCursorDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~TextWithCursorDefaultTypeInternal() {}
+  union {
+    TextWithCursor _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 TextWithCursorDefaultTypeInternal _TextWithCursor_default_instance_;
+
 inline constexpr Text::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
@@ -81,41 +114,6 @@ struct SetContextDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetContextDefaultTypeInternal _SetContext_default_instance_;
-
-inline constexpr SetConfig::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : _cached_size_{0},
-        profile_text_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        zenzai_enabled_{false},
-        zenzai_infer_limit_{0},
-        number_fullwidth_{0},
-        symbol_fullwidth_{0},
-        period_style_{0},
-        comma_style_{0},
-        space_fullwidth_{0},
-        ten_combining_{0} {}
-
-template <typename>
-PROTOBUF_CONSTEXPR SetConfig::SetConfig(::_pbi::ConstantInitialized)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(SetConfig_class_data_.base()),
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(),
-#endif  // PROTOBUF_CUSTOM_VTABLE
-      _impl_(::_pbi::ConstantInitialized()) {
-}
-struct SetConfigDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR SetConfigDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~SetConfigDefaultTypeInternal() {}
-  union {
-    SetConfig _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetConfigDefaultTypeInternal _SetConfig_default_instance_;
 
 inline constexpr PrefixComplete::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -262,8 +260,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 inline constexpr GetCandidates::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
-        is_predict_mode_{false},
-        n_best_{0} {}
+        is_suggest_{false} {}
 
 template <typename>
 PROTOBUF_CONSTEXPR GetCandidates::GetCandidates(::_pbi::ConstantInitialized)
@@ -324,6 +321,9 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 inline constexpr CandidatesResult_Candidate::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
+        words_{},
+        diff_indexes_{},
+        _diff_indexes_cached_byte_size_{0},
         text_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
@@ -357,7 +357,8 @@ inline constexpr CandidatesResult::Impl_::Impl_(
         candidates_{},
         live_text_(
             &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()) {}
+            ::_pbi::ConstantInitialized()),
+        page_size_{0} {}
 
 template <typename>
 PROTOBUF_CONSTEXPR CandidatesResult::CandidatesResult(::_pbi::ConstantInitialized)
@@ -387,27 +388,6 @@ static constexpr const ::_pb::ServiceDescriptor *PROTOBUF_NONNULL *PROTOBUF_NULL
 const ::uint32_t
     TableStruct_commands_2eproto::offsets[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
         protodesc_cold) = {
-        0x081, // bitmap
-        PROTOBUF_FIELD_OFFSET(::hazkey::commands::SetConfig, _impl_._has_bits_),
-        12, // hasbit index offset
-        PROTOBUF_FIELD_OFFSET(::hazkey::commands::SetConfig, _impl_.zenzai_enabled_),
-        PROTOBUF_FIELD_OFFSET(::hazkey::commands::SetConfig, _impl_.zenzai_infer_limit_),
-        PROTOBUF_FIELD_OFFSET(::hazkey::commands::SetConfig, _impl_.number_fullwidth_),
-        PROTOBUF_FIELD_OFFSET(::hazkey::commands::SetConfig, _impl_.symbol_fullwidth_),
-        PROTOBUF_FIELD_OFFSET(::hazkey::commands::SetConfig, _impl_.period_style_),
-        PROTOBUF_FIELD_OFFSET(::hazkey::commands::SetConfig, _impl_.comma_style_),
-        PROTOBUF_FIELD_OFFSET(::hazkey::commands::SetConfig, _impl_.space_fullwidth_),
-        PROTOBUF_FIELD_OFFSET(::hazkey::commands::SetConfig, _impl_.ten_combining_),
-        PROTOBUF_FIELD_OFFSET(::hazkey::commands::SetConfig, _impl_.profile_text_),
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        0,
         0x000, // bitmap
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::hazkey::commands::SetContext, _impl_._has_bits_),
@@ -445,51 +425,63 @@ const ::uint32_t
         0x000, // bitmap
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::hazkey::commands::GetCandidates, _impl_._has_bits_),
-        5, // hasbit index offset
-        PROTOBUF_FIELD_OFFSET(::hazkey::commands::GetCandidates, _impl_.is_predict_mode_),
-        PROTOBUF_FIELD_OFFSET(::hazkey::commands::GetCandidates, _impl_.n_best_),
+        4, // hasbit index offset
+        PROTOBUF_FIELD_OFFSET(::hazkey::commands::GetCandidates, _impl_.is_suggest_),
         0,
-        1,
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::hazkey::commands::Text, _impl_._has_bits_),
         4, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::hazkey::commands::Text, _impl_.text_),
         0,
         0x081, // bitmap
-        PROTOBUF_FIELD_OFFSET(::hazkey::commands::CandidatesResult_Candidate, _impl_._has_bits_),
-        5, // hasbit index offset
-        PROTOBUF_FIELD_OFFSET(::hazkey::commands::CandidatesResult_Candidate, _impl_.text_),
-        PROTOBUF_FIELD_OFFSET(::hazkey::commands::CandidatesResult_Candidate, _impl_.sub_hiragana_),
+        PROTOBUF_FIELD_OFFSET(::hazkey::commands::TextWithCursor, _impl_._has_bits_),
+        6, // hasbit index offset
+        PROTOBUF_FIELD_OFFSET(::hazkey::commands::TextWithCursor, _impl_.beforecursosr_),
+        PROTOBUF_FIELD_OFFSET(::hazkey::commands::TextWithCursor, _impl_.oncursor_),
+        PROTOBUF_FIELD_OFFSET(::hazkey::commands::TextWithCursor, _impl_.aftercursor_),
         0,
         1,
+        2,
+        0x081, // bitmap
+        PROTOBUF_FIELD_OFFSET(::hazkey::commands::CandidatesResult_Candidate, _impl_._has_bits_),
+        7, // hasbit index offset
+        PROTOBUF_FIELD_OFFSET(::hazkey::commands::CandidatesResult_Candidate, _impl_.text_),
+        PROTOBUF_FIELD_OFFSET(::hazkey::commands::CandidatesResult_Candidate, _impl_.sub_hiragana_),
+        PROTOBUF_FIELD_OFFSET(::hazkey::commands::CandidatesResult_Candidate, _impl_.words_),
+        PROTOBUF_FIELD_OFFSET(::hazkey::commands::CandidatesResult_Candidate, _impl_.diff_indexes_),
+        0,
+        1,
+        ~0u,
+        ~0u,
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::hazkey::commands::CandidatesResult, _impl_._has_bits_),
-        5, // hasbit index offset
+        6, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::hazkey::commands::CandidatesResult, _impl_.candidates_),
         PROTOBUF_FIELD_OFFSET(::hazkey::commands::CandidatesResult, _impl_.live_text_),
+        PROTOBUF_FIELD_OFFSET(::hazkey::commands::CandidatesResult, _impl_.page_size_),
         ~0u,
         0,
+        1,
 };
 
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-        {0, sizeof(::hazkey::commands::SetConfig)},
-        {21, sizeof(::hazkey::commands::NewComposingText)},
-        {22, sizeof(::hazkey::commands::SetContext)},
-        {29, sizeof(::hazkey::commands::InputChar)},
-        {36, sizeof(::hazkey::commands::MoveCursor)},
-        {41, sizeof(::hazkey::commands::PrefixComplete)},
-        {46, sizeof(::hazkey::commands::DeleteLeft)},
-        {47, sizeof(::hazkey::commands::DeleteRight)},
-        {48, sizeof(::hazkey::commands::GetComposingString)},
-        {55, sizeof(::hazkey::commands::GetHiraganaWithCursor)},
-        {56, sizeof(::hazkey::commands::GetCandidates)},
-        {63, sizeof(::hazkey::commands::Text)},
-        {68, sizeof(::hazkey::commands::CandidatesResult_Candidate)},
-        {75, sizeof(::hazkey::commands::CandidatesResult)},
+        {0, sizeof(::hazkey::commands::NewComposingText)},
+        {1, sizeof(::hazkey::commands::SetContext)},
+        {8, sizeof(::hazkey::commands::InputChar)},
+        {15, sizeof(::hazkey::commands::MoveCursor)},
+        {20, sizeof(::hazkey::commands::PrefixComplete)},
+        {25, sizeof(::hazkey::commands::DeleteLeft)},
+        {26, sizeof(::hazkey::commands::DeleteRight)},
+        {27, sizeof(::hazkey::commands::GetComposingString)},
+        {34, sizeof(::hazkey::commands::GetHiraganaWithCursor)},
+        {35, sizeof(::hazkey::commands::GetCandidates)},
+        {40, sizeof(::hazkey::commands::Text)},
+        {45, sizeof(::hazkey::commands::TextWithCursor)},
+        {54, sizeof(::hazkey::commands::CandidatesResult_Candidate)},
+        {65, sizeof(::hazkey::commands::CandidatesResult)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
-    &::hazkey::commands::_SetConfig_default_instance_._instance,
     &::hazkey::commands::_NewComposingText_default_instance_._instance,
     &::hazkey::commands::_SetContext_default_instance_._instance,
     &::hazkey::commands::_InputChar_default_instance_._instance,
@@ -501,41 +493,39 @@ static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::hazkey::commands::_GetHiraganaWithCursor_default_instance_._instance,
     &::hazkey::commands::_GetCandidates_default_instance_._instance,
     &::hazkey::commands::_Text_default_instance_._instance,
+    &::hazkey::commands::_TextWithCursor_default_instance_._instance,
     &::hazkey::commands::_CandidatesResult_Candidate_default_instance_._instance,
     &::hazkey::commands::_CandidatesResult_default_instance_._instance,
 };
 const char descriptor_table_protodef_commands_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
-    "\n\016commands.proto\022\017hazkey.commands\"\344\001\n\tSe"
-    "tConfig\022\026\n\016zenzai_enabled\030\001 \001(\010\022\032\n\022zenza"
-    "i_infer_limit\030\002 \001(\005\022\030\n\020number_fullwidth\030"
-    "\003 \001(\005\022\030\n\020symbol_fullwidth\030\004 \001(\005\022\024\n\014perio"
-    "d_style\030\005 \001(\005\022\023\n\013comma_style\030\006 \001(\005\022\027\n\017sp"
-    "ace_fullwidth\030\007 \001(\005\022\025\n\rten_combining\030\010 \001"
-    "(\005\022\024\n\014profile_text\030\t \001(\t\"\022\n\020NewComposing"
-    "Text\"-\n\nSetContext\022\017\n\007context\030\001 \001(\t\022\016\n\006a"
-    "nchor\030\002 \001(\005\",\n\tInputChar\022\014\n\004text\030\001 \001(\t\022\021"
-    "\n\tis_direct\030\002 \001(\010\"\034\n\nMoveCursor\022\016\n\006offse"
-    "t\030\001 \001(\005\"\037\n\016PrefixComplete\022\r\n\005index\030\001 \001(\005"
-    "\"\014\n\nDeleteLeft\"\r\n\013DeleteRight\"\324\001\n\022GetCom"
-    "posingString\022\?\n\tchar_type\030\001 \001(\0162,.hazkey"
-    ".commands.GetComposingString.CharType\022\027\n"
-    "\017current_preedit\030\002 \001(\t\"d\n\010CharType\022\014\n\010HI"
-    "RAGANA\020\000\022\021\n\rKATAKANA_FULL\020\001\022\021\n\rKATAKANA_"
-    "HALF\020\002\022\021\n\rALPHABET_FULL\020\003\022\021\n\rALPHABET_HA"
-    "LF\020\004\"\027\n\025GetHiraganaWithCursor\"8\n\rGetCand"
-    "idates\022\027\n\017is_predict_mode\030\001 \001(\010\022\016\n\006n_bes"
-    "t\030\002 \001(\005\"\024\n\004Text\022\014\n\004text\030\001 \001(\t\"\227\001\n\020Candid"
-    "atesResult\022\?\n\ncandidates\030\001 \003(\0132+.hazkey."
-    "commands.CandidatesResult.Candidate\022\021\n\tl"
-    "ive_text\030\002 \001(\t\032/\n\tCandidate\022\014\n\004text\030\001 \001("
-    "\t\022\024\n\014sub_hiragana\030\002 \001(\tb\006proto3"
+    "\n\016commands.proto\022\017hazkey.commands\"\022\n\020New"
+    "ComposingText\"-\n\nSetContext\022\017\n\007context\030\001"
+    " \001(\t\022\016\n\006anchor\030\002 \001(\005\",\n\tInputChar\022\014\n\004tex"
+    "t\030\001 \001(\t\022\021\n\tis_direct\030\002 \001(\010\"\034\n\nMoveCursor"
+    "\022\016\n\006offset\030\001 \001(\005\"\037\n\016PrefixComplete\022\r\n\005in"
+    "dex\030\001 \001(\005\"\014\n\nDeleteLeft\"\r\n\013DeleteRight\"\324"
+    "\001\n\022GetComposingString\022\?\n\tchar_type\030\001 \001(\016"
+    "2,.hazkey.commands.GetComposingString.Ch"
+    "arType\022\027\n\017current_preedit\030\002 \001(\t\"d\n\010CharT"
+    "ype\022\014\n\010HIRAGANA\020\000\022\021\n\rKATAKANA_FULL\020\001\022\021\n\r"
+    "KATAKANA_HALF\020\002\022\021\n\rALPHABET_FULL\020\003\022\021\n\rAL"
+    "PHABET_HALF\020\004\"\027\n\025GetHiraganaWithCursor\"#"
+    "\n\rGetCandidates\022\022\n\nis_suggest\030\001 \001(\010\"\024\n\004T"
+    "ext\022\014\n\004text\030\001 \001(\t\"N\n\016TextWithCursor\022\025\n\rb"
+    "eforeCursosr\030\001 \001(\t\022\020\n\010onCursor\030\002 \001(\t\022\023\n\013"
+    "afterCursor\030\003 \001(\t\"\317\001\n\020CandidatesResult\022\?"
+    "\n\ncandidates\030\001 \003(\0132+.hazkey.commands.Can"
+    "didatesResult.Candidate\022\021\n\tlive_text\030\002 \001"
+    "(\t\022\021\n\tpage_size\030\003 \001(\005\032T\n\tCandidate\022\014\n\004te"
+    "xt\030\001 \001(\t\022\024\n\014sub_hiragana\030\002 \001(\t\022\r\n\005words\030"
+    "\003 \003(\t\022\024\n\014diff_indexes\030\004 \003(\005b\006proto3"
 };
 static ::absl::once_flag descriptor_table_commands_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_commands_2eproto = {
     false,
     false,
-    951,
+    835,
     descriptor_table_protodef_commands_2eproto,
     "commands.proto",
     &descriptor_table_commands_2eproto_once,
@@ -556,520 +546,6 @@ const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL GetComposingString_Ch
 }
 PROTOBUF_CONSTINIT const uint32_t GetComposingString_CharType_internal_data_[] = {
     327680u, 0u, };
-// ===================================================================
-
-class SetConfig::_Internal {
- public:
-  using HasBits =
-      decltype(::std::declval<SetConfig>()._impl_._has_bits_);
-  static constexpr ::int32_t kHasBitsOffset =
-      8 * PROTOBUF_FIELD_OFFSET(SetConfig, _impl_._has_bits_);
-};
-
-SetConfig::SetConfig(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, SetConfig_class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:hazkey.commands.SetConfig)
-}
-PROTOBUF_NDEBUG_INLINE SetConfig::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
-    const ::hazkey::commands::SetConfig& from_msg)
-      : _has_bits_{from._has_bits_},
-        _cached_size_{0},
-        profile_text_(arena, from.profile_text_) {}
-
-SetConfig::SetConfig(
-    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
-    const SetConfig& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, SetConfig_class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  SetConfig* const _this = this;
-  (void)_this;
-  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-      from._internal_metadata_);
-  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-  ::memcpy(reinterpret_cast<char *>(&_impl_) +
-               offsetof(Impl_, zenzai_enabled_),
-           reinterpret_cast<const char *>(&from._impl_) +
-               offsetof(Impl_, zenzai_enabled_),
-           offsetof(Impl_, ten_combining_) -
-               offsetof(Impl_, zenzai_enabled_) +
-               sizeof(Impl_::ten_combining_));
-
-  // @@protoc_insertion_point(copy_constructor:hazkey.commands.SetConfig)
-}
-PROTOBUF_NDEBUG_INLINE SetConfig::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
-      : _cached_size_{0},
-        profile_text_(arena) {}
-
-inline void SetConfig::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
-  new (&_impl_) Impl_(internal_visibility(), arena);
-  ::memset(reinterpret_cast<char *>(&_impl_) +
-               offsetof(Impl_, zenzai_enabled_),
-           0,
-           offsetof(Impl_, ten_combining_) -
-               offsetof(Impl_, zenzai_enabled_) +
-               sizeof(Impl_::ten_combining_));
-}
-SetConfig::~SetConfig() {
-  // @@protoc_insertion_point(destructor:hazkey.commands.SetConfig)
-  SharedDtor(*this);
-}
-inline void SetConfig::SharedDtor(MessageLite& self) {
-  SetConfig& this_ = static_cast<SetConfig&>(self);
-  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-  ABSL_DCHECK(this_.GetArena() == nullptr);
-  this_._impl_.profile_text_.Destroy();
-  this_._impl_.~Impl_();
-}
-
-inline void* PROTOBUF_NONNULL SetConfig::PlacementNew_(
-    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
-    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
-  return ::new (mem) SetConfig(arena);
-}
-constexpr auto SetConfig::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(SetConfig),
-                                            alignof(SetConfig));
-}
-constexpr auto SetConfig::InternalGenerateClassData_() {
-  return ::google::protobuf::internal::ClassDataFull{
-      ::google::protobuf::internal::ClassData{
-          &_SetConfig_default_instance_._instance,
-          &_table_.header,
-          nullptr,  // OnDemandRegisterArenaDtor
-          nullptr,  // IsInitialized
-          &SetConfig::MergeImpl,
-          ::google::protobuf::Message::GetNewImpl<SetConfig>(),
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-          &SetConfig::SharedDtor,
-          ::google::protobuf::Message::GetClearImpl<SetConfig>(), &SetConfig::ByteSizeLong,
-              &SetConfig::_InternalSerialize,
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          PROTOBUF_FIELD_OFFSET(SetConfig, _impl_._cached_size_),
-          false,
-      },
-      &SetConfig::kDescriptorMethods,
-      &descriptor_table_commands_2eproto,
-      nullptr,  // tracker
-  };
-}
-
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
-    ::google::protobuf::internal::ClassDataFull SetConfig_class_data_ =
-        SetConfig::InternalGenerateClassData_();
-
-PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
-SetConfig::GetClassData() const {
-  ::google::protobuf::internal::PrefetchToLocalCache(&SetConfig_class_data_);
-  ::google::protobuf::internal::PrefetchToLocalCache(SetConfig_class_data_.tc_table);
-  return SetConfig_class_data_.base();
-}
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<4, 9, 0, 54, 2>
-SetConfig::_table_ = {
-  {
-    PROTOBUF_FIELD_OFFSET(SetConfig, _impl_._has_bits_),
-    0, // no _extensions_
-    9, 120,  // max_field_number, fast_idx_mask
-    offsetof(decltype(_table_), field_lookup_table),
-    4294966784,  // skipmap
-    offsetof(decltype(_table_), field_entries),
-    9,  // num_field_entries
-    0,  // num_aux_entries
-    offsetof(decltype(_table_), field_names),  // no aux_entries
-    SetConfig_class_data_.base(),
-    nullptr,  // post_loop_handler
-    ::_pbi::TcParser::GenericFallback,  // fallback
-    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::hazkey::commands::SetConfig>(),  // to_prefetch
-    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
-  }, {{
-    {::_pbi::TcParser::MiniParse, {}},
-    // bool zenzai_enabled = 1;
-    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(SetConfig, _impl_.zenzai_enabled_), 1>(),
-     {8, 1, 0, PROTOBUF_FIELD_OFFSET(SetConfig, _impl_.zenzai_enabled_)}},
-    // int32 zenzai_infer_limit = 2;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(SetConfig, _impl_.zenzai_infer_limit_), 2>(),
-     {16, 2, 0, PROTOBUF_FIELD_OFFSET(SetConfig, _impl_.zenzai_infer_limit_)}},
-    // int32 number_fullwidth = 3;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(SetConfig, _impl_.number_fullwidth_), 3>(),
-     {24, 3, 0, PROTOBUF_FIELD_OFFSET(SetConfig, _impl_.number_fullwidth_)}},
-    // int32 symbol_fullwidth = 4;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(SetConfig, _impl_.symbol_fullwidth_), 4>(),
-     {32, 4, 0, PROTOBUF_FIELD_OFFSET(SetConfig, _impl_.symbol_fullwidth_)}},
-    // int32 period_style = 5;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(SetConfig, _impl_.period_style_), 5>(),
-     {40, 5, 0, PROTOBUF_FIELD_OFFSET(SetConfig, _impl_.period_style_)}},
-    // int32 comma_style = 6;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(SetConfig, _impl_.comma_style_), 6>(),
-     {48, 6, 0, PROTOBUF_FIELD_OFFSET(SetConfig, _impl_.comma_style_)}},
-    // int32 space_fullwidth = 7;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(SetConfig, _impl_.space_fullwidth_), 7>(),
-     {56, 7, 0, PROTOBUF_FIELD_OFFSET(SetConfig, _impl_.space_fullwidth_)}},
-    // int32 ten_combining = 8;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(SetConfig, _impl_.ten_combining_), 8>(),
-     {64, 8, 0, PROTOBUF_FIELD_OFFSET(SetConfig, _impl_.ten_combining_)}},
-    // string profile_text = 9;
-    {::_pbi::TcParser::FastUS1,
-     {74, 0, 0, PROTOBUF_FIELD_OFFSET(SetConfig, _impl_.profile_text_)}},
-    {::_pbi::TcParser::MiniParse, {}},
-    {::_pbi::TcParser::MiniParse, {}},
-    {::_pbi::TcParser::MiniParse, {}},
-    {::_pbi::TcParser::MiniParse, {}},
-    {::_pbi::TcParser::MiniParse, {}},
-    {::_pbi::TcParser::MiniParse, {}},
-  }}, {{
-    65535, 65535
-  }}, {{
-    // bool zenzai_enabled = 1;
-    {PROTOBUF_FIELD_OFFSET(SetConfig, _impl_.zenzai_enabled_), _Internal::kHasBitsOffset + 1, 0,
-    (0 | ::_fl::kFcOptional | ::_fl::kBool)},
-    // int32 zenzai_infer_limit = 2;
-    {PROTOBUF_FIELD_OFFSET(SetConfig, _impl_.zenzai_infer_limit_), _Internal::kHasBitsOffset + 2, 0,
-    (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
-    // int32 number_fullwidth = 3;
-    {PROTOBUF_FIELD_OFFSET(SetConfig, _impl_.number_fullwidth_), _Internal::kHasBitsOffset + 3, 0,
-    (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
-    // int32 symbol_fullwidth = 4;
-    {PROTOBUF_FIELD_OFFSET(SetConfig, _impl_.symbol_fullwidth_), _Internal::kHasBitsOffset + 4, 0,
-    (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
-    // int32 period_style = 5;
-    {PROTOBUF_FIELD_OFFSET(SetConfig, _impl_.period_style_), _Internal::kHasBitsOffset + 5, 0,
-    (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
-    // int32 comma_style = 6;
-    {PROTOBUF_FIELD_OFFSET(SetConfig, _impl_.comma_style_), _Internal::kHasBitsOffset + 6, 0,
-    (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
-    // int32 space_fullwidth = 7;
-    {PROTOBUF_FIELD_OFFSET(SetConfig, _impl_.space_fullwidth_), _Internal::kHasBitsOffset + 7, 0,
-    (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
-    // int32 ten_combining = 8;
-    {PROTOBUF_FIELD_OFFSET(SetConfig, _impl_.ten_combining_), _Internal::kHasBitsOffset + 8, 0,
-    (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
-    // string profile_text = 9;
-    {PROTOBUF_FIELD_OFFSET(SetConfig, _impl_.profile_text_), _Internal::kHasBitsOffset + 0, 0,
-    (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-  }},
-  // no aux_entries
-  {{
-    "\31\0\0\0\0\0\0\0\0\14\0\0\0\0\0\0"
-    "hazkey.commands.SetConfig"
-    "profile_text"
-  }},
-};
-PROTOBUF_NOINLINE void SetConfig::Clear() {
-// @@protoc_insertion_point(message_clear_start:hazkey.commands.SetConfig)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  cached_has_bits = _impl_._has_bits_[0];
-  if ((cached_has_bits & 0x00000001u) != 0) {
-    _impl_.profile_text_.ClearNonDefaultToEmpty();
-  }
-  if ((cached_has_bits & 0x000000feu) != 0) {
-    ::memset(&_impl_.zenzai_enabled_, 0, static_cast<::size_t>(
-        reinterpret_cast<char*>(&_impl_.space_fullwidth_) -
-        reinterpret_cast<char*>(&_impl_.zenzai_enabled_)) + sizeof(_impl_.space_fullwidth_));
-  }
-  _impl_.ten_combining_ = 0;
-  _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* PROTOBUF_NONNULL SetConfig::_InternalSerialize(
-    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
-    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
-  const SetConfig& this_ = static_cast<const SetConfig&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* PROTOBUF_NONNULL SetConfig::_InternalSerialize(
-    ::uint8_t* PROTOBUF_NONNULL target,
-    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
-  const SetConfig& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  // @@protoc_insertion_point(serialize_to_array_start:hazkey.commands.SetConfig)
-  ::uint32_t cached_has_bits = 0;
-  (void)cached_has_bits;
-
-  // bool zenzai_enabled = 1;
-  if ((this_._impl_._has_bits_[0] & 0x00000002u) != 0) {
-    if (this_._internal_zenzai_enabled() != 0) {
-      target = stream->EnsureSpace(target);
-      target = ::_pbi::WireFormatLite::WriteBoolToArray(
-          1, this_._internal_zenzai_enabled(), target);
-    }
-  }
-
-  // int32 zenzai_infer_limit = 2;
-  if ((this_._impl_._has_bits_[0] & 0x00000004u) != 0) {
-    if (this_._internal_zenzai_infer_limit() != 0) {
-      target =
-          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<2>(
-              stream, this_._internal_zenzai_infer_limit(), target);
-    }
-  }
-
-  // int32 number_fullwidth = 3;
-  if ((this_._impl_._has_bits_[0] & 0x00000008u) != 0) {
-    if (this_._internal_number_fullwidth() != 0) {
-      target =
-          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<3>(
-              stream, this_._internal_number_fullwidth(), target);
-    }
-  }
-
-  // int32 symbol_fullwidth = 4;
-  if ((this_._impl_._has_bits_[0] & 0x00000010u) != 0) {
-    if (this_._internal_symbol_fullwidth() != 0) {
-      target =
-          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<4>(
-              stream, this_._internal_symbol_fullwidth(), target);
-    }
-  }
-
-  // int32 period_style = 5;
-  if ((this_._impl_._has_bits_[0] & 0x00000020u) != 0) {
-    if (this_._internal_period_style() != 0) {
-      target =
-          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<5>(
-              stream, this_._internal_period_style(), target);
-    }
-  }
-
-  // int32 comma_style = 6;
-  if ((this_._impl_._has_bits_[0] & 0x00000040u) != 0) {
-    if (this_._internal_comma_style() != 0) {
-      target =
-          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<6>(
-              stream, this_._internal_comma_style(), target);
-    }
-  }
-
-  // int32 space_fullwidth = 7;
-  if ((this_._impl_._has_bits_[0] & 0x00000080u) != 0) {
-    if (this_._internal_space_fullwidth() != 0) {
-      target =
-          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<7>(
-              stream, this_._internal_space_fullwidth(), target);
-    }
-  }
-
-  // int32 ten_combining = 8;
-  if ((this_._impl_._has_bits_[0] & 0x00000100u) != 0) {
-    if (this_._internal_ten_combining() != 0) {
-      target =
-          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<8>(
-              stream, this_._internal_ten_combining(), target);
-    }
-  }
-
-  // string profile_text = 9;
-  if ((this_._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    if (!this_._internal_profile_text().empty()) {
-      const ::std::string& _s = this_._internal_profile_text();
-      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "hazkey.commands.SetConfig.profile_text");
-      target = stream->WriteStringMaybeAliased(9, _s, target);
-    }
-  }
-
-  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-    target =
-        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:hazkey.commands.SetConfig)
-  return target;
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t SetConfig::ByteSizeLong(const MessageLite& base) {
-  const SetConfig& this_ = static_cast<const SetConfig&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-::size_t SetConfig::ByteSizeLong() const {
-  const SetConfig& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  // @@protoc_insertion_point(message_byte_size_start:hazkey.commands.SetConfig)
-  ::size_t total_size = 0;
-
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void)cached_has_bits;
-
-  ::_pbi::Prefetch5LinesFrom7Lines(&this_);
-  cached_has_bits = this_._impl_._has_bits_[0];
-  if ((cached_has_bits & 0x000000ffu) != 0) {
-    // string profile_text = 9;
-    if ((cached_has_bits & 0x00000001u) != 0) {
-      if (!this_._internal_profile_text().empty()) {
-        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                        this_._internal_profile_text());
-      }
-    }
-    // bool zenzai_enabled = 1;
-    if ((cached_has_bits & 0x00000002u) != 0) {
-      if (this_._internal_zenzai_enabled() != 0) {
-        total_size += 2;
-      }
-    }
-    // int32 zenzai_infer_limit = 2;
-    if ((cached_has_bits & 0x00000004u) != 0) {
-      if (this_._internal_zenzai_infer_limit() != 0) {
-        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
-            this_._internal_zenzai_infer_limit());
-      }
-    }
-    // int32 number_fullwidth = 3;
-    if ((cached_has_bits & 0x00000008u) != 0) {
-      if (this_._internal_number_fullwidth() != 0) {
-        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
-            this_._internal_number_fullwidth());
-      }
-    }
-    // int32 symbol_fullwidth = 4;
-    if ((cached_has_bits & 0x00000010u) != 0) {
-      if (this_._internal_symbol_fullwidth() != 0) {
-        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
-            this_._internal_symbol_fullwidth());
-      }
-    }
-    // int32 period_style = 5;
-    if ((cached_has_bits & 0x00000020u) != 0) {
-      if (this_._internal_period_style() != 0) {
-        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
-            this_._internal_period_style());
-      }
-    }
-    // int32 comma_style = 6;
-    if ((cached_has_bits & 0x00000040u) != 0) {
-      if (this_._internal_comma_style() != 0) {
-        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
-            this_._internal_comma_style());
-      }
-    }
-    // int32 space_fullwidth = 7;
-    if ((cached_has_bits & 0x00000080u) != 0) {
-      if (this_._internal_space_fullwidth() != 0) {
-        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
-            this_._internal_space_fullwidth());
-      }
-    }
-  }
-   {
-    // int32 ten_combining = 8;
-    if ((cached_has_bits & 0x00000100u) != 0) {
-      if (this_._internal_ten_combining() != 0) {
-        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
-            this_._internal_ten_combining());
-      }
-    }
-  }
-  return this_.MaybeComputeUnknownFieldsSize(total_size,
-                                             &this_._impl_._cached_size_);
-}
-
-void SetConfig::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
-  auto* const _this = static_cast<SetConfig*>(&to_msg);
-  auto& from = static_cast<const SetConfig&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:hazkey.commands.SetConfig)
-  ABSL_DCHECK_NE(&from, _this);
-  ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  cached_has_bits = from._impl_._has_bits_[0];
-  if ((cached_has_bits & 0x000000ffu) != 0) {
-    if ((cached_has_bits & 0x00000001u) != 0) {
-      if (!from._internal_profile_text().empty()) {
-        _this->_internal_set_profile_text(from._internal_profile_text());
-      } else {
-        if (_this->_impl_.profile_text_.IsDefault()) {
-          _this->_internal_set_profile_text("");
-        }
-      }
-    }
-    if ((cached_has_bits & 0x00000002u) != 0) {
-      if (from._internal_zenzai_enabled() != 0) {
-        _this->_impl_.zenzai_enabled_ = from._impl_.zenzai_enabled_;
-      }
-    }
-    if ((cached_has_bits & 0x00000004u) != 0) {
-      if (from._internal_zenzai_infer_limit() != 0) {
-        _this->_impl_.zenzai_infer_limit_ = from._impl_.zenzai_infer_limit_;
-      }
-    }
-    if ((cached_has_bits & 0x00000008u) != 0) {
-      if (from._internal_number_fullwidth() != 0) {
-        _this->_impl_.number_fullwidth_ = from._impl_.number_fullwidth_;
-      }
-    }
-    if ((cached_has_bits & 0x00000010u) != 0) {
-      if (from._internal_symbol_fullwidth() != 0) {
-        _this->_impl_.symbol_fullwidth_ = from._impl_.symbol_fullwidth_;
-      }
-    }
-    if ((cached_has_bits & 0x00000020u) != 0) {
-      if (from._internal_period_style() != 0) {
-        _this->_impl_.period_style_ = from._impl_.period_style_;
-      }
-    }
-    if ((cached_has_bits & 0x00000040u) != 0) {
-      if (from._internal_comma_style() != 0) {
-        _this->_impl_.comma_style_ = from._impl_.comma_style_;
-      }
-    }
-    if ((cached_has_bits & 0x00000080u) != 0) {
-      if (from._internal_space_fullwidth() != 0) {
-        _this->_impl_.space_fullwidth_ = from._impl_.space_fullwidth_;
-      }
-    }
-  }
-  if ((cached_has_bits & 0x00000100u) != 0) {
-    if (from._internal_ten_combining() != 0) {
-      _this->_impl_.ten_combining_ = from._impl_.ten_combining_;
-    }
-  }
-  _this->_impl_._has_bits_[0] |= cached_has_bits;
-  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-}
-
-void SetConfig::CopyFrom(const SetConfig& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:hazkey.commands.SetConfig)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-
-void SetConfig::InternalSwap(SetConfig* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
-  using ::std::swap;
-  auto* arena = GetArena();
-  ABSL_DCHECK_EQ(arena, other->GetArena());
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.profile_text_, &other->_impl_.profile_text_, arena);
-  ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(SetConfig, _impl_.ten_combining_)
-      + sizeof(SetConfig::_impl_.ten_combining_)
-      - PROTOBUF_FIELD_OFFSET(SetConfig, _impl_.zenzai_enabled_)>(
-          reinterpret_cast<char*>(&_impl_.zenzai_enabled_),
-          reinterpret_cast<char*>(&other->_impl_.zenzai_enabled_));
-}
-
-::google::protobuf::Metadata SetConfig::GetMetadata() const {
-  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
-}
 // ===================================================================
 
 class NewComposingText::_Internal {
@@ -2900,12 +2376,7 @@ PROTOBUF_NDEBUG_INLINE GetCandidates::Impl_::Impl_(
 
 inline void GetCandidates::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
-  ::memset(reinterpret_cast<char *>(&_impl_) +
-               offsetof(Impl_, is_predict_mode_),
-           0,
-           offsetof(Impl_, n_best_) -
-               offsetof(Impl_, is_predict_mode_) +
-               sizeof(Impl_::n_best_));
+  _impl_.is_suggest_ = {};
 }
 GetCandidates::~GetCandidates() {
   // @@protoc_insertion_point(destructor:hazkey.commands.GetCandidates)
@@ -2961,16 +2432,16 @@ GetCandidates::GetClassData() const {
   return GetCandidates_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 2, 0, 0, 2>
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2>
 GetCandidates::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(GetCandidates, _impl_._has_bits_),
     0, // no _extensions_
-    2, 8,  // max_field_number, fast_idx_mask
+    1, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967292,  // skipmap
+    4294967294,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    2,  // num_field_entries
+    1,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     GetCandidates_class_data_.base(),
@@ -2980,21 +2451,15 @@ GetCandidates::_table_ = {
     ::_pbi::TcParser::GetTable<::hazkey::commands::GetCandidates>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // int32 n_best = 2;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(GetCandidates, _impl_.n_best_), 1>(),
-     {16, 1, 0, PROTOBUF_FIELD_OFFSET(GetCandidates, _impl_.n_best_)}},
-    // bool is_predict_mode = 1;
-    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(GetCandidates, _impl_.is_predict_mode_), 0>(),
-     {8, 0, 0, PROTOBUF_FIELD_OFFSET(GetCandidates, _impl_.is_predict_mode_)}},
+    // bool is_suggest = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(GetCandidates, _impl_.is_suggest_), 0>(),
+     {8, 0, 0, PROTOBUF_FIELD_OFFSET(GetCandidates, _impl_.is_suggest_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // bool is_predict_mode = 1;
-    {PROTOBUF_FIELD_OFFSET(GetCandidates, _impl_.is_predict_mode_), _Internal::kHasBitsOffset + 0, 0,
+    // bool is_suggest = 1;
+    {PROTOBUF_FIELD_OFFSET(GetCandidates, _impl_.is_suggest_), _Internal::kHasBitsOffset + 0, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kBool)},
-    // int32 n_best = 2;
-    {PROTOBUF_FIELD_OFFSET(GetCandidates, _impl_.n_best_), _Internal::kHasBitsOffset + 1, 0,
-    (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
   }},
   // no aux_entries
   {{
@@ -3007,12 +2472,7 @@ PROTOBUF_NOINLINE void GetCandidates::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  cached_has_bits = _impl_._has_bits_[0];
-  if ((cached_has_bits & 0x00000003u) != 0) {
-    ::memset(&_impl_.is_predict_mode_, 0, static_cast<::size_t>(
-        reinterpret_cast<char*>(&_impl_.n_best_) -
-        reinterpret_cast<char*>(&_impl_.is_predict_mode_)) + sizeof(_impl_.n_best_));
-  }
+  _impl_.is_suggest_ = false;
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
@@ -3032,21 +2492,12 @@ PROTOBUF_NOINLINE void GetCandidates::Clear() {
   ::uint32_t cached_has_bits = 0;
   (void)cached_has_bits;
 
-  // bool is_predict_mode = 1;
+  // bool is_suggest = 1;
   if ((this_._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    if (this_._internal_is_predict_mode() != 0) {
+    if (this_._internal_is_suggest() != 0) {
       target = stream->EnsureSpace(target);
       target = ::_pbi::WireFormatLite::WriteBoolToArray(
-          1, this_._internal_is_predict_mode(), target);
-    }
-  }
-
-  // int32 n_best = 2;
-  if ((this_._impl_._has_bits_[0] & 0x00000002u) != 0) {
-    if (this_._internal_n_best() != 0) {
-      target =
-          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<2>(
-              stream, this_._internal_n_best(), target);
+          1, this_._internal_is_suggest(), target);
     }
   }
 
@@ -3073,20 +2524,12 @@ PROTOBUF_NOINLINE void GetCandidates::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void)cached_has_bits;
 
-  ::_pbi::Prefetch5LinesFrom7Lines(&this_);
-  cached_has_bits = this_._impl_._has_bits_[0];
-  if ((cached_has_bits & 0x00000003u) != 0) {
-    // bool is_predict_mode = 1;
+   {
+    // bool is_suggest = 1;
+    cached_has_bits = this_._impl_._has_bits_[0];
     if ((cached_has_bits & 0x00000001u) != 0) {
-      if (this_._internal_is_predict_mode() != 0) {
+      if (this_._internal_is_suggest() != 0) {
         total_size += 2;
-      }
-    }
-    // int32 n_best = 2;
-    if ((cached_has_bits & 0x00000002u) != 0) {
-      if (this_._internal_n_best() != 0) {
-        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
-            this_._internal_n_best());
       }
     }
   }
@@ -3103,16 +2546,9 @@ void GetCandidates::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::g
   (void) cached_has_bits;
 
   cached_has_bits = from._impl_._has_bits_[0];
-  if ((cached_has_bits & 0x00000003u) != 0) {
-    if ((cached_has_bits & 0x00000001u) != 0) {
-      if (from._internal_is_predict_mode() != 0) {
-        _this->_impl_.is_predict_mode_ = from._impl_.is_predict_mode_;
-      }
-    }
-    if ((cached_has_bits & 0x00000002u) != 0) {
-      if (from._internal_n_best() != 0) {
-        _this->_impl_.n_best_ = from._impl_.n_best_;
-      }
+  if ((cached_has_bits & 0x00000001u) != 0) {
+    if (from._internal_is_suggest() != 0) {
+      _this->_impl_.is_suggest_ = from._impl_.is_suggest_;
     }
   }
   _this->_impl_._has_bits_[0] |= cached_has_bits;
@@ -3131,12 +2567,7 @@ void GetCandidates::InternalSwap(GetCandidates* PROTOBUF_RESTRICT PROTOBUF_NONNU
   using ::std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-  ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(GetCandidates, _impl_.n_best_)
-      + sizeof(GetCandidates::_impl_.n_best_)
-      - PROTOBUF_FIELD_OFFSET(GetCandidates, _impl_.is_predict_mode_)>(
-          reinterpret_cast<char*>(&_impl_.is_predict_mode_),
-          reinterpret_cast<char*>(&other->_impl_.is_predict_mode_));
+  swap(_impl_.is_suggest_, other->_impl_.is_suggest_);
 }
 
 ::google::protobuf::Metadata GetCandidates::GetMetadata() const {
@@ -3406,6 +2837,354 @@ void Text::InternalSwap(Text* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
 }
 // ===================================================================
 
+class TextWithCursor::_Internal {
+ public:
+  using HasBits =
+      decltype(::std::declval<TextWithCursor>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(TextWithCursor, _impl_._has_bits_);
+};
+
+TextWithCursor::TextWithCursor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, TextWithCursor_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:hazkey.commands.TextWithCursor)
+}
+PROTOBUF_NDEBUG_INLINE TextWithCursor::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+    const ::hazkey::commands::TextWithCursor& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0},
+        beforecursosr_(arena, from.beforecursosr_),
+        oncursor_(arena, from.oncursor_),
+        aftercursor_(arena, from.aftercursor_) {}
+
+TextWithCursor::TextWithCursor(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
+    const TextWithCursor& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, TextWithCursor_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  TextWithCursor* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+
+  // @@protoc_insertion_point(copy_constructor:hazkey.commands.TextWithCursor)
+}
+PROTOBUF_NDEBUG_INLINE TextWithCursor::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+      : _cached_size_{0},
+        beforecursosr_(arena),
+        oncursor_(arena),
+        aftercursor_(arena) {}
+
+inline void TextWithCursor::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+}
+TextWithCursor::~TextWithCursor() {
+  // @@protoc_insertion_point(destructor:hazkey.commands.TextWithCursor)
+  SharedDtor(*this);
+}
+inline void TextWithCursor::SharedDtor(MessageLite& self) {
+  TextWithCursor& this_ = static_cast<TextWithCursor&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.beforecursosr_.Destroy();
+  this_._impl_.oncursor_.Destroy();
+  this_._impl_.aftercursor_.Destroy();
+  this_._impl_.~Impl_();
+}
+
+inline void* PROTOBUF_NONNULL TextWithCursor::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) TextWithCursor(arena);
+}
+constexpr auto TextWithCursor::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(TextWithCursor),
+                                            alignof(TextWithCursor));
+}
+constexpr auto TextWithCursor::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_TextWithCursor_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &TextWithCursor::MergeImpl,
+          ::google::protobuf::Message::GetNewImpl<TextWithCursor>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &TextWithCursor::SharedDtor,
+          ::google::protobuf::Message::GetClearImpl<TextWithCursor>(), &TextWithCursor::ByteSizeLong,
+              &TextWithCursor::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(TextWithCursor, _impl_._cached_size_),
+          false,
+      },
+      &TextWithCursor::kDescriptorMethods,
+      &descriptor_table_commands_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull TextWithCursor_class_data_ =
+        TextWithCursor::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+TextWithCursor::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&TextWithCursor_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(TextWithCursor_class_data_.tc_table);
+  return TextWithCursor_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 3, 0, 71, 2>
+TextWithCursor::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(TextWithCursor, _impl_._has_bits_),
+    0, // no _extensions_
+    3, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967288,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    3,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    TextWithCursor_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::hazkey::commands::TextWithCursor>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // string beforeCursosr = 1;
+    {::_pbi::TcParser::FastUS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(TextWithCursor, _impl_.beforecursosr_)}},
+    // string onCursor = 2;
+    {::_pbi::TcParser::FastUS1,
+     {18, 1, 0, PROTOBUF_FIELD_OFFSET(TextWithCursor, _impl_.oncursor_)}},
+    // string afterCursor = 3;
+    {::_pbi::TcParser::FastUS1,
+     {26, 2, 0, PROTOBUF_FIELD_OFFSET(TextWithCursor, _impl_.aftercursor_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // string beforeCursosr = 1;
+    {PROTOBUF_FIELD_OFFSET(TextWithCursor, _impl_.beforecursosr_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string onCursor = 2;
+    {PROTOBUF_FIELD_OFFSET(TextWithCursor, _impl_.oncursor_), _Internal::kHasBitsOffset + 1, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string afterCursor = 3;
+    {PROTOBUF_FIELD_OFFSET(TextWithCursor, _impl_.aftercursor_), _Internal::kHasBitsOffset + 2, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+  }},
+  // no aux_entries
+  {{
+    "\36\15\10\13\0\0\0\0"
+    "hazkey.commands.TextWithCursor"
+    "beforeCursosr"
+    "onCursor"
+    "afterCursor"
+  }},
+};
+PROTOBUF_NOINLINE void TextWithCursor::Clear() {
+// @@protoc_insertion_point(message_clear_start:hazkey.commands.TextWithCursor)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if ((cached_has_bits & 0x00000007u) != 0) {
+    if ((cached_has_bits & 0x00000001u) != 0) {
+      _impl_.beforecursosr_.ClearNonDefaultToEmpty();
+    }
+    if ((cached_has_bits & 0x00000002u) != 0) {
+      _impl_.oncursor_.ClearNonDefaultToEmpty();
+    }
+    if ((cached_has_bits & 0x00000004u) != 0) {
+      _impl_.aftercursor_.ClearNonDefaultToEmpty();
+    }
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::uint8_t* PROTOBUF_NONNULL TextWithCursor::_InternalSerialize(
+    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
+  const TextWithCursor& this_ = static_cast<const TextWithCursor&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::uint8_t* PROTOBUF_NONNULL TextWithCursor::_InternalSerialize(
+    ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+  const TextWithCursor& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(serialize_to_array_start:hazkey.commands.TextWithCursor)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  // string beforeCursosr = 1;
+  if ((this_._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    if (!this_._internal_beforecursosr().empty()) {
+      const ::std::string& _s = this_._internal_beforecursosr();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "hazkey.commands.TextWithCursor.beforeCursosr");
+      target = stream->WriteStringMaybeAliased(1, _s, target);
+    }
+  }
+
+  // string onCursor = 2;
+  if ((this_._impl_._has_bits_[0] & 0x00000002u) != 0) {
+    if (!this_._internal_oncursor().empty()) {
+      const ::std::string& _s = this_._internal_oncursor();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "hazkey.commands.TextWithCursor.onCursor");
+      target = stream->WriteStringMaybeAliased(2, _s, target);
+    }
+  }
+
+  // string afterCursor = 3;
+  if ((this_._impl_._has_bits_[0] & 0x00000004u) != 0) {
+    if (!this_._internal_aftercursor().empty()) {
+      const ::std::string& _s = this_._internal_aftercursor();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "hazkey.commands.TextWithCursor.afterCursor");
+      target = stream->WriteStringMaybeAliased(3, _s, target);
+    }
+  }
+
+  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:hazkey.commands.TextWithCursor)
+  return target;
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::size_t TextWithCursor::ByteSizeLong(const MessageLite& base) {
+  const TextWithCursor& this_ = static_cast<const TextWithCursor&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::size_t TextWithCursor::ByteSizeLong() const {
+  const TextWithCursor& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(message_byte_size_start:hazkey.commands.TextWithCursor)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void)cached_has_bits;
+
+  ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+  cached_has_bits = this_._impl_._has_bits_[0];
+  if ((cached_has_bits & 0x00000007u) != 0) {
+    // string beforeCursosr = 1;
+    if ((cached_has_bits & 0x00000001u) != 0) {
+      if (!this_._internal_beforecursosr().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_beforecursosr());
+      }
+    }
+    // string onCursor = 2;
+    if ((cached_has_bits & 0x00000002u) != 0) {
+      if (!this_._internal_oncursor().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_oncursor());
+      }
+    }
+    // string afterCursor = 3;
+    if ((cached_has_bits & 0x00000004u) != 0) {
+      if (!this_._internal_aftercursor().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_aftercursor());
+      }
+    }
+  }
+  return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                             &this_._impl_._cached_size_);
+}
+
+void TextWithCursor::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<TextWithCursor*>(&to_msg);
+  auto& from = static_cast<const TextWithCursor&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:hazkey.commands.TextWithCursor)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if ((cached_has_bits & 0x00000007u) != 0) {
+    if ((cached_has_bits & 0x00000001u) != 0) {
+      if (!from._internal_beforecursosr().empty()) {
+        _this->_internal_set_beforecursosr(from._internal_beforecursosr());
+      } else {
+        if (_this->_impl_.beforecursosr_.IsDefault()) {
+          _this->_internal_set_beforecursosr("");
+        }
+      }
+    }
+    if ((cached_has_bits & 0x00000002u) != 0) {
+      if (!from._internal_oncursor().empty()) {
+        _this->_internal_set_oncursor(from._internal_oncursor());
+      } else {
+        if (_this->_impl_.oncursor_.IsDefault()) {
+          _this->_internal_set_oncursor("");
+        }
+      }
+    }
+    if ((cached_has_bits & 0x00000004u) != 0) {
+      if (!from._internal_aftercursor().empty()) {
+        _this->_internal_set_aftercursor(from._internal_aftercursor());
+      } else {
+        if (_this->_impl_.aftercursor_.IsDefault()) {
+          _this->_internal_set_aftercursor("");
+        }
+      }
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void TextWithCursor::CopyFrom(const TextWithCursor& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:hazkey.commands.TextWithCursor)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void TextWithCursor::InternalSwap(TextWithCursor* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+  using ::std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.beforecursosr_, &other->_impl_.beforecursosr_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.oncursor_, &other->_impl_.oncursor_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.aftercursor_, &other->_impl_.aftercursor_, arena);
+}
+
+::google::protobuf::Metadata TextWithCursor::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
 class CandidatesResult_Candidate::_Internal {
  public:
   using HasBits =
@@ -3429,6 +3208,9 @@ PROTOBUF_NDEBUG_INLINE CandidatesResult_Candidate::Impl_::Impl_(
     const ::hazkey::commands::CandidatesResult_Candidate& from_msg)
       : _has_bits_{from._has_bits_},
         _cached_size_{0},
+        words_{visibility, arena, from.words_},
+        diff_indexes_{visibility, arena, from.diff_indexes_},
+        _diff_indexes_cached_byte_size_{0},
         text_(arena, from.text_),
         sub_hiragana_(arena, from.sub_hiragana_) {}
 
@@ -3452,6 +3234,9 @@ PROTOBUF_NDEBUG_INLINE CandidatesResult_Candidate::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
       : _cached_size_{0},
+        words_{visibility, arena},
+        diff_indexes_{visibility, arena},
+        _diff_indexes_cached_byte_size_{0},
         text_(arena),
         sub_hiragana_(arena) {}
 
@@ -3477,8 +3262,24 @@ inline void* PROTOBUF_NONNULL CandidatesResult_Candidate::PlacementNew_(
   return ::new (mem) CandidatesResult_Candidate(arena);
 }
 constexpr auto CandidatesResult_Candidate::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(CandidatesResult_Candidate),
-                                            alignof(CandidatesResult_Candidate));
+  constexpr auto arena_bits = ::google::protobuf::internal::EncodePlacementArenaOffsets({
+      PROTOBUF_FIELD_OFFSET(CandidatesResult_Candidate, _impl_.words_) +
+          decltype(CandidatesResult_Candidate::_impl_.words_)::
+              InternalGetArenaOffset(
+                  ::google::protobuf::Message::internal_visibility()),
+      PROTOBUF_FIELD_OFFSET(CandidatesResult_Candidate, _impl_.diff_indexes_) +
+          decltype(CandidatesResult_Candidate::_impl_.diff_indexes_)::
+              InternalGetArenaOffset(
+                  ::google::protobuf::Message::internal_visibility()),
+  });
+  if (arena_bits.has_value()) {
+    return ::google::protobuf::internal::MessageCreator::CopyInit(
+        sizeof(CandidatesResult_Candidate), alignof(CandidatesResult_Candidate), *arena_bits);
+  } else {
+    return ::google::protobuf::internal::MessageCreator(&CandidatesResult_Candidate::PlacementNew_,
+                                 sizeof(CandidatesResult_Candidate),
+                                 alignof(CandidatesResult_Candidate));
+  }
 }
 constexpr auto CandidatesResult_Candidate::InternalGenerateClassData_() {
   return ::google::protobuf::internal::ClassDataFull{
@@ -3514,16 +3315,16 @@ CandidatesResult_Candidate::GetClassData() const {
   return CandidatesResult_Candidate_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 2, 0, 67, 2>
+const ::_pbi::TcParseTable<2, 4, 0, 72, 2>
 CandidatesResult_Candidate::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(CandidatesResult_Candidate, _impl_._has_bits_),
     0, // no _extensions_
-    2, 8,  // max_field_number, fast_idx_mask
+    4, 24,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967292,  // skipmap
+    4294967280,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    2,  // num_field_entries
+    4,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     CandidatesResult_Candidate_class_data_.base(),
@@ -3533,12 +3334,18 @@ CandidatesResult_Candidate::_table_ = {
     ::_pbi::TcParser::GetTable<::hazkey::commands::CandidatesResult_Candidate>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string sub_hiragana = 2;
-    {::_pbi::TcParser::FastUS1,
-     {18, 1, 0, PROTOBUF_FIELD_OFFSET(CandidatesResult_Candidate, _impl_.sub_hiragana_)}},
+    // repeated int32 diff_indexes = 4;
+    {::_pbi::TcParser::FastV32P1,
+     {34, 63, 0, PROTOBUF_FIELD_OFFSET(CandidatesResult_Candidate, _impl_.diff_indexes_)}},
     // string text = 1;
     {::_pbi::TcParser::FastUS1,
      {10, 0, 0, PROTOBUF_FIELD_OFFSET(CandidatesResult_Candidate, _impl_.text_)}},
+    // string sub_hiragana = 2;
+    {::_pbi::TcParser::FastUS1,
+     {18, 1, 0, PROTOBUF_FIELD_OFFSET(CandidatesResult_Candidate, _impl_.sub_hiragana_)}},
+    // repeated string words = 3;
+    {::_pbi::TcParser::FastUR1,
+     {26, 63, 0, PROTOBUF_FIELD_OFFSET(CandidatesResult_Candidate, _impl_.words_)}},
   }}, {{
     65535, 65535
   }}, {{
@@ -3548,13 +3355,20 @@ CandidatesResult_Candidate::_table_ = {
     // string sub_hiragana = 2;
     {PROTOBUF_FIELD_OFFSET(CandidatesResult_Candidate, _impl_.sub_hiragana_), _Internal::kHasBitsOffset + 1, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // repeated string words = 3;
+    {PROTOBUF_FIELD_OFFSET(CandidatesResult_Candidate, _impl_.words_), -1, 0,
+    (0 | ::_fl::kFcRepeated | ::_fl::kUtf8String | ::_fl::kRepSString)},
+    // repeated int32 diff_indexes = 4;
+    {PROTOBUF_FIELD_OFFSET(CandidatesResult_Candidate, _impl_.diff_indexes_), -1, 0,
+    (0 | ::_fl::kFcRepeated | ::_fl::kPackedInt32)},
   }},
   // no aux_entries
   {{
-    "\52\4\14\0\0\0\0\0"
+    "\52\4\14\5\0\0\0\0"
     "hazkey.commands.CandidatesResult.Candidate"
     "text"
     "sub_hiragana"
+    "words"
   }},
 };
 PROTOBUF_NOINLINE void CandidatesResult_Candidate::Clear() {
@@ -3564,6 +3378,8 @@ PROTOBUF_NOINLINE void CandidatesResult_Candidate::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  _impl_.words_.Clear();
+  _impl_.diff_indexes_.Clear();
   cached_has_bits = _impl_._has_bits_[0];
   if ((cached_has_bits & 0x00000003u) != 0) {
     if ((cached_has_bits & 0x00000001u) != 0) {
@@ -3612,6 +3428,23 @@ PROTOBUF_NOINLINE void CandidatesResult_Candidate::Clear() {
     }
   }
 
+  // repeated string words = 3;
+  for (int i = 0, n = this_._internal_words_size(); i < n; ++i) {
+    const auto& s = this_._internal_words().Get(i);
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        s.data(), static_cast<int>(s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "hazkey.commands.CandidatesResult.Candidate.words");
+    target = stream->WriteString(3, s, target);
+  }
+
+  // repeated int32 diff_indexes = 4;
+  {
+    int byte_size = this_._impl_._diff_indexes_cached_byte_size_.Get();
+    if (byte_size > 0) {
+      target = stream->WriteInt32Packed(
+          4, this_._internal_diff_indexes(), byte_size, target);
+    }
+  }
+
   if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
     target =
         ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
@@ -3636,6 +3469,24 @@ PROTOBUF_NOINLINE void CandidatesResult_Candidate::Clear() {
   (void)cached_has_bits;
 
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+   {
+    // repeated string words = 3;
+    {
+      total_size +=
+          1 * ::google::protobuf::internal::FromIntSize(this_._internal_words().size());
+      for (int i = 0, n = this_._internal_words().size(); i < n; ++i) {
+        total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
+            this_._internal_words().Get(i));
+      }
+    }
+    // repeated int32 diff_indexes = 4;
+    {
+      total_size +=
+          ::_pbi::WireFormatLite::Int32SizeWithPackedTagSize(
+              this_._internal_diff_indexes(), 1,
+              this_._impl_._diff_indexes_cached_byte_size_);
+    }
+  }
   cached_has_bits = this_._impl_._has_bits_[0];
   if ((cached_has_bits & 0x00000003u) != 0) {
     // string text = 1;
@@ -3665,6 +3516,8 @@ void CandidatesResult_Candidate::MergeImpl(::google::protobuf::MessageLite& to_m
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  _this->_internal_mutable_words()->MergeFrom(from._internal_words());
+  _this->_internal_mutable_diff_indexes()->MergeFrom(from._internal_diff_indexes());
   cached_has_bits = from._impl_._has_bits_[0];
   if ((cached_has_bits & 0x00000003u) != 0) {
     if ((cached_has_bits & 0x00000001u) != 0) {
@@ -3704,6 +3557,8 @@ void CandidatesResult_Candidate::InternalSwap(CandidatesResult_Candidate* PROTOB
   ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  _impl_.words_.InternalSwap(&other->_impl_.words_);
+  _impl_.diff_indexes_.InternalSwap(&other->_impl_.diff_indexes_);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.text_, &other->_impl_.text_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.sub_hiragana_, &other->_impl_.sub_hiragana_, arena);
 }
@@ -3752,6 +3607,7 @@ CandidatesResult::CandidatesResult(
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  _impl_.page_size_ = from._impl_.page_size_;
 
   // @@protoc_insertion_point(copy_constructor:hazkey.commands.CandidatesResult)
 }
@@ -3764,6 +3620,7 @@ PROTOBUF_NDEBUG_INLINE CandidatesResult::Impl_::Impl_(
 
 inline void CandidatesResult::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.page_size_ = {};
 }
 CandidatesResult::~CandidatesResult() {
   // @@protoc_insertion_point(destructor:hazkey.commands.CandidatesResult)
@@ -3832,16 +3689,16 @@ CandidatesResult::GetClassData() const {
   return CandidatesResult_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 2, 1, 50, 2>
+const ::_pbi::TcParseTable<2, 3, 1, 50, 2>
 CandidatesResult::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(CandidatesResult, _impl_._has_bits_),
     0, // no _extensions_
-    2, 8,  // max_field_number, fast_idx_mask
+    3, 24,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967292,  // skipmap
+    4294967288,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    2,  // num_field_entries
+    3,  // num_field_entries
     1,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     CandidatesResult_class_data_.base(),
@@ -3851,12 +3708,16 @@ CandidatesResult::_table_ = {
     ::_pbi::TcParser::GetTable<::hazkey::commands::CandidatesResult>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string live_text = 2;
-    {::_pbi::TcParser::FastUS1,
-     {18, 0, 0, PROTOBUF_FIELD_OFFSET(CandidatesResult, _impl_.live_text_)}},
+    {::_pbi::TcParser::MiniParse, {}},
     // repeated .hazkey.commands.CandidatesResult.Candidate candidates = 1;
     {::_pbi::TcParser::FastMtR1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(CandidatesResult, _impl_.candidates_)}},
+    // string live_text = 2;
+    {::_pbi::TcParser::FastUS1,
+     {18, 0, 0, PROTOBUF_FIELD_OFFSET(CandidatesResult, _impl_.live_text_)}},
+    // int32 page_size = 3;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(CandidatesResult, _impl_.page_size_), 1>(),
+     {24, 1, 0, PROTOBUF_FIELD_OFFSET(CandidatesResult, _impl_.page_size_)}},
   }}, {{
     65535, 65535
   }}, {{
@@ -3866,6 +3727,9 @@ CandidatesResult::_table_ = {
     // string live_text = 2;
     {PROTOBUF_FIELD_OFFSET(CandidatesResult, _impl_.live_text_), _Internal::kHasBitsOffset + 0, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // int32 page_size = 3;
+    {PROTOBUF_FIELD_OFFSET(CandidatesResult, _impl_.page_size_), _Internal::kHasBitsOffset + 1, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
   }},
   {{
       {::_pbi::TcParser::GetTable<::hazkey::commands::CandidatesResult_Candidate>()},
@@ -3888,6 +3752,7 @@ PROTOBUF_NOINLINE void CandidatesResult::Clear() {
   if ((cached_has_bits & 0x00000001u) != 0) {
     _impl_.live_text_.ClearNonDefaultToEmpty();
   }
+  _impl_.page_size_ = 0;
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
@@ -3928,6 +3793,15 @@ PROTOBUF_NOINLINE void CandidatesResult::Clear() {
     }
   }
 
+  // int32 page_size = 3;
+  if ((this_._impl_._has_bits_[0] & 0x00000002u) != 0) {
+    if (this_._internal_page_size() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<3>(
+              stream, this_._internal_page_size(), target);
+    }
+  }
+
   if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
     target =
         ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
@@ -3961,13 +3835,20 @@ PROTOBUF_NOINLINE void CandidatesResult::Clear() {
       }
     }
   }
-   {
+  cached_has_bits = this_._impl_._has_bits_[0];
+  if ((cached_has_bits & 0x00000003u) != 0) {
     // string live_text = 2;
-    cached_has_bits = this_._impl_._has_bits_[0];
     if ((cached_has_bits & 0x00000001u) != 0) {
       if (!this_._internal_live_text().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                         this_._internal_live_text());
+      }
+    }
+    // int32 page_size = 3;
+    if ((cached_has_bits & 0x00000002u) != 0) {
+      if (this_._internal_page_size() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_page_size());
       }
     }
   }
@@ -3986,12 +3867,19 @@ void CandidatesResult::MergeImpl(::google::protobuf::MessageLite& to_msg, const 
   _this->_internal_mutable_candidates()->MergeFrom(
       from._internal_candidates());
   cached_has_bits = from._impl_._has_bits_[0];
-  if ((cached_has_bits & 0x00000001u) != 0) {
-    if (!from._internal_live_text().empty()) {
-      _this->_internal_set_live_text(from._internal_live_text());
-    } else {
-      if (_this->_impl_.live_text_.IsDefault()) {
-        _this->_internal_set_live_text("");
+  if ((cached_has_bits & 0x00000003u) != 0) {
+    if ((cached_has_bits & 0x00000001u) != 0) {
+      if (!from._internal_live_text().empty()) {
+        _this->_internal_set_live_text(from._internal_live_text());
+      } else {
+        if (_this->_impl_.live_text_.IsDefault()) {
+          _this->_internal_set_live_text("");
+        }
+      }
+    }
+    if ((cached_has_bits & 0x00000002u) != 0) {
+      if (from._internal_page_size() != 0) {
+        _this->_impl_.page_size_ = from._impl_.page_size_;
       }
     }
   }
@@ -4015,6 +3903,7 @@ void CandidatesResult::InternalSwap(CandidatesResult* PROTOBUF_RESTRICT PROTOBUF
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   _impl_.candidates_.InternalSwap(&other->_impl_.candidates_);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.live_text_, &other->_impl_.live_text_, arena);
+  swap(_impl_.page_size_, other->_impl_.page_size_);
 }
 
 ::google::protobuf::Metadata CandidatesResult::GetMetadata() const {

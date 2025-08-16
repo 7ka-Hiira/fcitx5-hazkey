@@ -2,6 +2,7 @@
 #define HAZKEY_SERVER_CONNECTOR_H
 
 #include <fcitx-utils/log.h>
+#include <fcitx/text.h>
 #include <sys/socket.h>
 #include <sys/un.h>
 
@@ -33,7 +34,7 @@ class HazkeyServerConnector {
         hazkey::commands::GetComposingString::CharType type,
         std::string currentPreedit);
 
-    std::string getComposingHiraganaWithCursor();
+    fcitx::Text getComposingHiraganaWithCursor();
 
     void inputChar(std::string text, bool isDirect);
 
@@ -60,8 +61,7 @@ class HazkeyServerConnector {
         std::string subHiragana;
     };
 
-    hazkey::commands::CandidatesResult getCandidates(bool isPredictMode,
-                                                     int n_best);
+    hazkey::commands::CandidatesResult getCandidates(bool isSuggest);
 
    private:
     bool retry_connect();

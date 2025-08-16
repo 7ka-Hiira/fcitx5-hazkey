@@ -1,6 +1,7 @@
 #include "hazkey_state.h"
 
 #include <fcitx-utils/log.h>
+#include <fcitx/candidatelist.h>
 
 #include <optional>
 #include <string>
@@ -71,8 +72,9 @@ void HazkeyState::keyEvent(KeyEvent &event) {
     } else if (!event.isRelease()) {
         noPreeditKeyEvent(event);
     } else if (composingText != "" && candidateList != nullptr &&
-               !candidateList->focused()) {
-        setAuxDownText(std::string(_("[Alt+Number to Select]")));
+               !candidateList->focused() &&
+               engine_->config().showTabToSelect.value()) {
+        setAuxDownText(std::string(_("[Press Tab to Select]")));
     } else {
         setAuxDownText(std::nullopt);
     }
@@ -98,9 +100,14 @@ void HazkeyState::noPreeditKeyEvent(KeyEvent &event) {
 
     switch (keysym) {
         case FcitxKey_space:
-            if (*engine_->config().spaceStyle == SpaceStyle::Fullwidth &&
-                !isDirectInputMode_ && key.states() != KeyState::Shift) {
-                ic_->commitString("　");
+            if (!isDirectInputMode_ && key.states() != KeyState::Shift) {
+                engine_->server().inputChar(" ", true);
+                preedit_.setSimplePreedit(engine_->server().getComposingText(
+                    hazkey::commands::GetComposingString_CharType::
+                        GetComposingString_CharType_HIRAGANA,
+                    ""));
+                preedit_.commitPreedit();
+                reset();
             } else {
                 ic_->commitString(" ");
             }
@@ -181,7 +188,7 @@ void HazkeyState::preeditKeyEvent(
             if (isAltDigitKeyEvent(event)) {
                 if (PredictCandidateList != nullptr) {
                     auto localIndex = keysym - FcitxKey_1;
-                    if (localIndex < PredictCandidateListSize) {
+                    if (localIndex < PredictCandidateList->pageSize()) {
                         PredictCandidateList->setCursorIndex(localIndex);
                         candidateCompleteHandler(PredictCandidateList);
                     }
@@ -295,8 +302,7 @@ void HazkeyState::candidateCompleteHandler(
 }
 
 void HazkeyState::updateSurroundingText() {
-    if (engine_->config().zenzaiSurroundingTextEnabled.value() &&
-        ic_->capabilityFlags().test(CapabilityFlag::SurroundingText) &&
+    if (ic_->capabilityFlags().test(CapabilityFlag::SurroundingText) &&
         ic_->surroundingText().isValid()) {
         auto &surroundingText = ic_->surroundingText();
         engine_->server().setContext(surroundingText.text(),
@@ -372,18 +378,15 @@ void HazkeyState::directCharactorConversion(ConversionMode mode) {
 
 /// Show Candidate List
 
-void HazkeyState::showCandidateList(showCandidateMode mode, int nBest) {
+bool HazkeyState::showCandidateList(bool isSuggest) {
     FCITX_DEBUG() << "HazkeyState showCandidateList";
 
-    bool enabledPredictMode = mode == showCandidateMode::PredictWithLivePreedit;
+    auto response = engine_->server().getCandidates(isSuggest);
 
-    auto response =
-        engine_->server().getCandidates(enabledPredictMode, nBest);
-
-    auto candidateList =
+    auto candidateResult =
         std::make_unique<HazkeyCandidateList>(std::move(response.candidates()));
 
-    candidateList->setSelectionKey(defaultSelectionKeys);
+    candidateResult->setSelectionKey(defaultSelectionKeys);
 
     ic_->inputPanel().reset();
 
@@ -401,12 +404,19 @@ void HazkeyState::showCandidateList(showCandidateMode mode, int nBest) {
         preedit_.setSimplePreedit(hiragana);
     }
 
-    ic_->inputPanel().setCandidateList(std::move(candidateList));
+    if (response.page_size() > 0) {
+        ic_->inputPanel().setCandidateList(std::move(candidateResult));
+        auto newFcitxCandidateList =
+            std::dynamic_pointer_cast<HazkeyCandidateList>(
+                ic_->inputPanel().candidateList());
+        newFcitxCandidateList->setPageSize(response.page_size());
+    }
+
+    return response.page_size() > 0;
 }
 
 void HazkeyState::showNonPredictCandidateList() {
-    showCandidateList(showCandidateMode::NonPredictWithFirstPreedit,
-                      NormalCandidateListSize);
+    showCandidateList(false);
 
     // highlight all preedit text
     // because the first candidate is the result of all preedit text.
@@ -416,30 +426,17 @@ void HazkeyState::showNonPredictCandidateList() {
     auto newCandidateList = std::dynamic_pointer_cast<HazkeyCandidateList>(
         ic_->inputPanel().candidateList());
     newCandidateList->focus();
-
+    updateCandidateCursor(newCandidateList);
     setCandidateCursorAUX(
         std::static_pointer_cast<HazkeyCandidateList>(newCandidateList));
 }
 
 void HazkeyState::showPreeditCandidateList() {
-    auto hiragana = engine_->server().getComposingText(
-        hazkey::commands::GetComposingString_CharType_HIRAGANA,
-        preedit_.text());
-    if (hiragana == "" || hiragana.length() == 0) {
-        reset();
-        return;
+    if (showCandidateList(true) && engine_->config().showTabToSelect.value()) {
+        setAuxDownText(std::string(_("[Press Tab to Select]")));
+    } else {
+        setAuxDownText(std::nullopt);
     }
-
-    auto mode = *engine_->config().enablePrediction
-                    ? showCandidateMode::PredictWithLivePreedit
-                    : showCandidateMode::NonPredictWithFirstPreedit;
-
-    showCandidateList(mode, PredictCandidateListSize);
-
-    auto newCandidateList = std::dynamic_pointer_cast<HazkeyCandidateList>(
-        ic_->inputPanel().candidateList());
-    newCandidateList->setPageSize(PredictCandidateListSize);
-    setAuxDownText(std::string(_("[Alt+Number to Select]")));
 }
 
 /// Candidate Cursor
@@ -478,7 +475,7 @@ void HazkeyState::setAuxDownText(std::optional<std::string> optText) {
     auto aux = Text();
     if (isDirectInputMode_) {
         // appending fcitx::Text is supported only >= 5.1.9
-        aux.append(std::string("[直接入力]"));
+        aux.append(std::string(_("[Direct Input]")));
     } else if (optText != std::nullopt) {
         aux.append(optText.value());
     }
@@ -486,10 +483,8 @@ void HazkeyState::setAuxDownText(std::optional<std::string> optText) {
 }
 
 void HazkeyState::setHiraganaAUX() {
-    auto hiragana = engine_->server().getComposingHiraganaWithCursor();
-    auto newAuxText = Text(hiragana);
-    // newAuxText.setCursor(1); // not working
-    ic_->inputPanel().setAuxUp(newAuxText);
+    ic_->inputPanel().setAuxUp(
+        engine_->server().getComposingHiraganaWithCursor());
 }
 
 /// Reset

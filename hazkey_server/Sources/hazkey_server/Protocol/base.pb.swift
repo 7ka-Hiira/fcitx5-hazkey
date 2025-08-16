@@ -227,11 +227,20 @@ struct Hazkey_ResponseEnvelope: Sendable {
     set {payload = .candidates(newValue)}
   }
 
+  var textWithCursor: Hazkey_Commands_TextWithCursor {
+    get {
+      if case .textWithCursor(let v)? = payload {return v}
+      return Hazkey_Commands_TextWithCursor()
+    }
+    set {payload = .textWithCursor(newValue)}
+  }
+
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   enum OneOf_Payload: Equatable, Sendable {
     case text(String)
     case candidates(Hazkey_Commands_CandidatesResult)
+    case textWithCursor(Hazkey_Commands_TextWithCursor)
 
   }
 
@@ -543,6 +552,7 @@ extension Hazkey_ResponseEnvelope: SwiftProtobuf.Message, SwiftProtobuf._Message
     2: .standard(proto: "error_message"),
     3: .same(proto: "text"),
     4: .same(proto: "candidates"),
+    5: .standard(proto: "text_with_cursor"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -574,6 +584,19 @@ extension Hazkey_ResponseEnvelope: SwiftProtobuf.Message, SwiftProtobuf._Message
           self.payload = .candidates(v)
         }
       }()
+      case 5: try {
+        var v: Hazkey_Commands_TextWithCursor?
+        var hadOneofValue = false
+        if let current = self.payload {
+          hadOneofValue = true
+          if case .textWithCursor(let m) = current {v = m}
+        }
+        try decoder.decodeSingularMessageField(value: &v)
+        if let v = v {
+          if hadOneofValue {try decoder.handleConflictingOneOf()}
+          self.payload = .textWithCursor(v)
+        }
+      }()
       default: break
       }
     }
@@ -598,6 +621,10 @@ extension Hazkey_ResponseEnvelope: SwiftProtobuf.Message, SwiftProtobuf._Message
     case .candidates?: try {
       guard case .candidates(let v)? = self.payload else { preconditionFailure() }
       try visitor.visitSingularMessageField(value: v, fieldNumber: 4)
+    }()
+    case .textWithCursor?: try {
+      guard case .textWithCursor(let v)? = self.payload else { preconditionFailure() }
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 5)
     }()
     case nil: break
     }

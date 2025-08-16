@@ -20,35 +20,6 @@ fileprivate struct _GeneratedWithProtocGenSwiftVersion: SwiftProtobuf.ProtobufAP
   typealias Version = _2
 }
 
-/// TODO: remove this, read directly from config file.
-struct Hazkey_Commands_SetConfig: Sendable {
-  // SwiftProtobuf.Message conformance is added in an extension below. See the
-  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-  // methods supported on all messages.
-
-  var zenzaiEnabled: Bool = false
-
-  var zenzaiInferLimit: Int32 = 0
-
-  var numberFullwidth: Int32 = 0
-
-  var symbolFullwidth: Int32 = 0
-
-  var periodStyle: Int32 = 0
-
-  var commaStyle: Int32 = 0
-
-  var spaceFullwidth: Int32 = 0
-
-  var tenCombining: Int32 = 0
-
-  var profileText: String = String()
-
-  var unknownFields = SwiftProtobuf.UnknownStorage()
-
-  init() {}
-}
-
 struct Hazkey_Commands_NewComposingText: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
@@ -206,9 +177,7 @@ struct Hazkey_Commands_GetCandidates: Sendable {
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  var isPredictMode: Bool = false
-
-  var nBest: Int32 = 0
+  var isSuggest: Bool = false
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -227,6 +196,22 @@ struct Hazkey_Commands_Text: Sendable {
   init() {}
 }
 
+struct Hazkey_Commands_TextWithCursor: Sendable {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var beforeCursosr: String = String()
+
+  var onCursor: String = String()
+
+  var afterCursor: String = String()
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
 struct Hazkey_Commands_CandidatesResult: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
@@ -235,6 +220,8 @@ struct Hazkey_Commands_CandidatesResult: Sendable {
   var candidates: [Hazkey_Commands_CandidatesResult.Candidate] = []
 
   var liveText: String = String()
+
+  var pageSize: Int32 = 0
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -247,6 +234,10 @@ struct Hazkey_Commands_CandidatesResult: Sendable {
 
     var subHiragana: String = String()
 
+    var words: [String] = []
+
+    var diffIndexes: [Int32] = []
+
     var unknownFields = SwiftProtobuf.UnknownStorage()
 
     init() {}
@@ -258,86 +249,6 @@ struct Hazkey_Commands_CandidatesResult: Sendable {
 // MARK: - Code below here is support for the SwiftProtobuf runtime.
 
 fileprivate let _protobuf_package = "hazkey.commands"
-
-extension Hazkey_Commands_SetConfig: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = _protobuf_package + ".SetConfig"
-  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .standard(proto: "zenzai_enabled"),
-    2: .standard(proto: "zenzai_infer_limit"),
-    3: .standard(proto: "number_fullwidth"),
-    4: .standard(proto: "symbol_fullwidth"),
-    5: .standard(proto: "period_style"),
-    6: .standard(proto: "comma_style"),
-    7: .standard(proto: "space_fullwidth"),
-    8: .standard(proto: "ten_combining"),
-    9: .standard(proto: "profile_text"),
-  ]
-
-  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let fieldNumber = try decoder.nextFieldNumber() {
-      // The use of inline closures is to circumvent an issue where the compiler
-      // allocates stack space for every case branch when no optimizations are
-      // enabled. https://github.com/apple/swift-protobuf/issues/1034
-      switch fieldNumber {
-      case 1: try { try decoder.decodeSingularBoolField(value: &self.zenzaiEnabled) }()
-      case 2: try { try decoder.decodeSingularInt32Field(value: &self.zenzaiInferLimit) }()
-      case 3: try { try decoder.decodeSingularInt32Field(value: &self.numberFullwidth) }()
-      case 4: try { try decoder.decodeSingularInt32Field(value: &self.symbolFullwidth) }()
-      case 5: try { try decoder.decodeSingularInt32Field(value: &self.periodStyle) }()
-      case 6: try { try decoder.decodeSingularInt32Field(value: &self.commaStyle) }()
-      case 7: try { try decoder.decodeSingularInt32Field(value: &self.spaceFullwidth) }()
-      case 8: try { try decoder.decodeSingularInt32Field(value: &self.tenCombining) }()
-      case 9: try { try decoder.decodeSingularStringField(value: &self.profileText) }()
-      default: break
-      }
-    }
-  }
-
-  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if self.zenzaiEnabled != false {
-      try visitor.visitSingularBoolField(value: self.zenzaiEnabled, fieldNumber: 1)
-    }
-    if self.zenzaiInferLimit != 0 {
-      try visitor.visitSingularInt32Field(value: self.zenzaiInferLimit, fieldNumber: 2)
-    }
-    if self.numberFullwidth != 0 {
-      try visitor.visitSingularInt32Field(value: self.numberFullwidth, fieldNumber: 3)
-    }
-    if self.symbolFullwidth != 0 {
-      try visitor.visitSingularInt32Field(value: self.symbolFullwidth, fieldNumber: 4)
-    }
-    if self.periodStyle != 0 {
-      try visitor.visitSingularInt32Field(value: self.periodStyle, fieldNumber: 5)
-    }
-    if self.commaStyle != 0 {
-      try visitor.visitSingularInt32Field(value: self.commaStyle, fieldNumber: 6)
-    }
-    if self.spaceFullwidth != 0 {
-      try visitor.visitSingularInt32Field(value: self.spaceFullwidth, fieldNumber: 7)
-    }
-    if self.tenCombining != 0 {
-      try visitor.visitSingularInt32Field(value: self.tenCombining, fieldNumber: 8)
-    }
-    if !self.profileText.isEmpty {
-      try visitor.visitSingularStringField(value: self.profileText, fieldNumber: 9)
-    }
-    try unknownFields.traverse(visitor: &visitor)
-  }
-
-  static func ==(lhs: Hazkey_Commands_SetConfig, rhs: Hazkey_Commands_SetConfig) -> Bool {
-    if lhs.zenzaiEnabled != rhs.zenzaiEnabled {return false}
-    if lhs.zenzaiInferLimit != rhs.zenzaiInferLimit {return false}
-    if lhs.numberFullwidth != rhs.numberFullwidth {return false}
-    if lhs.symbolFullwidth != rhs.symbolFullwidth {return false}
-    if lhs.periodStyle != rhs.periodStyle {return false}
-    if lhs.commaStyle != rhs.commaStyle {return false}
-    if lhs.spaceFullwidth != rhs.spaceFullwidth {return false}
-    if lhs.tenCombining != rhs.tenCombining {return false}
-    if lhs.profileText != rhs.profileText {return false}
-    if lhs.unknownFields != rhs.unknownFields {return false}
-    return true
-  }
-}
 
 extension Hazkey_Commands_NewComposingText: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   static let protoMessageName: String = _protobuf_package + ".NewComposingText"
@@ -606,8 +517,7 @@ extension Hazkey_Commands_GetHiraganaWithCursor: SwiftProtobuf.Message, SwiftPro
 extension Hazkey_Commands_GetCandidates: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   static let protoMessageName: String = _protobuf_package + ".GetCandidates"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .standard(proto: "is_predict_mode"),
-    2: .standard(proto: "n_best"),
+    1: .standard(proto: "is_suggest"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -616,26 +526,21 @@ extension Hazkey_Commands_GetCandidates: SwiftProtobuf.Message, SwiftProtobuf._M
       // allocates stack space for every case branch when no optimizations are
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
-      case 1: try { try decoder.decodeSingularBoolField(value: &self.isPredictMode) }()
-      case 2: try { try decoder.decodeSingularInt32Field(value: &self.nBest) }()
+      case 1: try { try decoder.decodeSingularBoolField(value: &self.isSuggest) }()
       default: break
       }
     }
   }
 
   func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if self.isPredictMode != false {
-      try visitor.visitSingularBoolField(value: self.isPredictMode, fieldNumber: 1)
-    }
-    if self.nBest != 0 {
-      try visitor.visitSingularInt32Field(value: self.nBest, fieldNumber: 2)
+    if self.isSuggest != false {
+      try visitor.visitSingularBoolField(value: self.isSuggest, fieldNumber: 1)
     }
     try unknownFields.traverse(visitor: &visitor)
   }
 
   static func ==(lhs: Hazkey_Commands_GetCandidates, rhs: Hazkey_Commands_GetCandidates) -> Bool {
-    if lhs.isPredictMode != rhs.isPredictMode {return false}
-    if lhs.nBest != rhs.nBest {return false}
+    if lhs.isSuggest != rhs.isSuggest {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -673,11 +578,56 @@ extension Hazkey_Commands_Text: SwiftProtobuf.Message, SwiftProtobuf._MessageImp
   }
 }
 
+extension Hazkey_Commands_TextWithCursor: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".TextWithCursor"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "beforeCursosr"),
+    2: .same(proto: "onCursor"),
+    3: .same(proto: "afterCursor"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularStringField(value: &self.beforeCursosr) }()
+      case 2: try { try decoder.decodeSingularStringField(value: &self.onCursor) }()
+      case 3: try { try decoder.decodeSingularStringField(value: &self.afterCursor) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.beforeCursosr.isEmpty {
+      try visitor.visitSingularStringField(value: self.beforeCursosr, fieldNumber: 1)
+    }
+    if !self.onCursor.isEmpty {
+      try visitor.visitSingularStringField(value: self.onCursor, fieldNumber: 2)
+    }
+    if !self.afterCursor.isEmpty {
+      try visitor.visitSingularStringField(value: self.afterCursor, fieldNumber: 3)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Hazkey_Commands_TextWithCursor, rhs: Hazkey_Commands_TextWithCursor) -> Bool {
+    if lhs.beforeCursosr != rhs.beforeCursosr {return false}
+    if lhs.onCursor != rhs.onCursor {return false}
+    if lhs.afterCursor != rhs.afterCursor {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
 extension Hazkey_Commands_CandidatesResult: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   static let protoMessageName: String = _protobuf_package + ".CandidatesResult"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "candidates"),
     2: .standard(proto: "live_text"),
+    3: .standard(proto: "page_size"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -688,6 +638,7 @@ extension Hazkey_Commands_CandidatesResult: SwiftProtobuf.Message, SwiftProtobuf
       switch fieldNumber {
       case 1: try { try decoder.decodeRepeatedMessageField(value: &self.candidates) }()
       case 2: try { try decoder.decodeSingularStringField(value: &self.liveText) }()
+      case 3: try { try decoder.decodeSingularInt32Field(value: &self.pageSize) }()
       default: break
       }
     }
@@ -700,12 +651,16 @@ extension Hazkey_Commands_CandidatesResult: SwiftProtobuf.Message, SwiftProtobuf
     if !self.liveText.isEmpty {
       try visitor.visitSingularStringField(value: self.liveText, fieldNumber: 2)
     }
+    if self.pageSize != 0 {
+      try visitor.visitSingularInt32Field(value: self.pageSize, fieldNumber: 3)
+    }
     try unknownFields.traverse(visitor: &visitor)
   }
 
   static func ==(lhs: Hazkey_Commands_CandidatesResult, rhs: Hazkey_Commands_CandidatesResult) -> Bool {
     if lhs.candidates != rhs.candidates {return false}
     if lhs.liveText != rhs.liveText {return false}
+    if lhs.pageSize != rhs.pageSize {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -716,6 +671,8 @@ extension Hazkey_Commands_CandidatesResult.Candidate: SwiftProtobuf.Message, Swi
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "text"),
     2: .standard(proto: "sub_hiragana"),
+    3: .same(proto: "words"),
+    4: .standard(proto: "diff_indexes"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -726,6 +683,8 @@ extension Hazkey_Commands_CandidatesResult.Candidate: SwiftProtobuf.Message, Swi
       switch fieldNumber {
       case 1: try { try decoder.decodeSingularStringField(value: &self.text) }()
       case 2: try { try decoder.decodeSingularStringField(value: &self.subHiragana) }()
+      case 3: try { try decoder.decodeRepeatedStringField(value: &self.words) }()
+      case 4: try { try decoder.decodeRepeatedInt32Field(value: &self.diffIndexes) }()
       default: break
       }
     }
@@ -738,12 +697,20 @@ extension Hazkey_Commands_CandidatesResult.Candidate: SwiftProtobuf.Message, Swi
     if !self.subHiragana.isEmpty {
       try visitor.visitSingularStringField(value: self.subHiragana, fieldNumber: 2)
     }
+    if !self.words.isEmpty {
+      try visitor.visitRepeatedStringField(value: self.words, fieldNumber: 3)
+    }
+    if !self.diffIndexes.isEmpty {
+      try visitor.visitPackedInt32Field(value: self.diffIndexes, fieldNumber: 4)
+    }
     try unknownFields.traverse(visitor: &visitor)
   }
 
   static func ==(lhs: Hazkey_Commands_CandidatesResult.Candidate, rhs: Hazkey_Commands_CandidatesResult.Candidate) -> Bool {
     if lhs.text != rhs.text {return false}
     if lhs.subHiragana != rhs.subHiragana {return false}
+    if lhs.words != rhs.words {return false}
+    if lhs.diffIndexes != rhs.diffIndexes {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }

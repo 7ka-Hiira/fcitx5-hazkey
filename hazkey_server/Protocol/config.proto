@@ -4,13 +4,9 @@ package hazkey.config;
 
 import "table.proto";
 
-message ConfigFileHashes {
-    message FileHash {
-        string path = 1;
-        string sha256sum = 2;
-    }
-
-    repeated FileHash file_hashes = 1;
+message FileHash {
+    string path = 1;
+    string sha256sum = 2;
 }
 
 message ConfigProfile {
@@ -18,7 +14,7 @@ message ConfigProfile {
         AUTO_CONVERT_MODE_UNSPECIFIED = 0;
         AUTO_CONVERT_NEVER = 1;
         AUTO_CONVERT_ALWAYS = 2;
-        AUTO_CONVERT_AFTER_SECOND_CHARACTER = 3;
+        AUTO_CONVERT_SKIP_SINGLE_CHAR = 3;
     }
 
     enum AuxTextMode {
@@ -84,10 +80,10 @@ message ConfigProfile {
     AutoConvertMode auto_convert_mode = 10;
     AuxTextMode aux_text_mode = 11;
     SuggestionListMode suggestion_list_mode = 12;
-    bool use_wise_suggestion = 13;
+    bool use_rich_suggestion = 13;
     int32 num_suggestions = 14;
     int32 num_candidates_per_page = 15;
-    bool use_wise_candidates = 16;
+    bool use_rich_candidates = 16;
 
     bool use_input_history = 20;
     bool stop_store_new_history = 21;
@@ -107,7 +103,7 @@ message ConfigProfile {
 message getCurrentConfig {}
 
 message setConfig {
-    ConfigFileHashes hash = 1;
+    repeated FileHash file_hashes = 1;
     repeated hazkey.config.table.EditOperation table_operations = 2;
     repeated ConfigProfile config = 3;
 }
@@ -119,7 +115,7 @@ message clearAllHistory {}
 // Response messages
 
 message CurrentConfig {
-    ConfigFileHashes hash = 1;
+    repeated FileHash file_hashes = 1;
     repeated hazkey.config.table.InputTable input_tables = 2;
     repeated ConfigProfile configs = 3;
 }

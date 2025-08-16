@@ -58,7 +58,7 @@ class HazkeyState : public InputContextProperty {
         std::shared_ptr<HazkeyCandidateList> PreeditCandidateList);
     // base function to prepare candidate list
     // make sure composingText_ is not nullptr
-    void showCandidateList(showCandidateMode mode, int nBest);
+    bool showCandidateList(bool isSuggest);
     std::unique_ptr<HazkeyCandidateList> createCandidateList(
         std::vector<std::vector<std::string>> candidates,
         std::shared_ptr<std::vector<std::string>> preeditSegments);
@@ -91,7 +91,7 @@ class HazkeyState : public InputContextProperty {
     void setCandidateCursorAUX(
         std::shared_ptr<HazkeyCandidateList> candidateList);
     // set AuxDown
-    // like "[Alt+数字で選択]" or "[直接入力モード]"
+    // like "[Tabキーで選択]" or "[直接入力]"
     void setAuxDownText(std::optional<std::string>);
     // UpAUX that shows unconverted text
     void setHiraganaAUX();

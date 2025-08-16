@@ -14,11 +14,13 @@ std::vector<std::string> HazkeyCandidateWord::getPreedit() const {
 }
 
 void HazkeyCandidateWord::select(InputContext* ic) const {
-    KeyEvent keyEvent(ic, Key(FcitxKey_Return));
-    keyEvent = KeyEvent(
-        ic, Key(KeySym(FcitxKey_1 + (index_ % NormalCandidateListSize)),
-                KeyState::Alt));
-    ic->keyEvent(keyEvent);
+    FCITX_UNUSED(ic);
+    // TODO: reinplement in cleaner way
+    // KeyEvent keyEvent(ic, Key(FcitxKey_Return));
+    // keyEvent = KeyEvent(
+    //     ic, Key(KeySym(FcitxKey_1 + (index_ % ic->inputPanel() )),
+    //             KeyState::Alt));
+    // ic->keyEvent(keyEvent);
 }
 
 /// CandidateList
@@ -30,7 +32,7 @@ HazkeyCandidateList::HazkeyCandidateList(
     : CommonCandidateList() {
     // CandidateWord needs to know their own index
     int i = 0;
-    for (const auto &candidate: candidates) {
+    for (const auto& candidate : candidates) {
         append(std::make_unique<HazkeyCandidateWord>(i, candidate));
         i++;
     }
