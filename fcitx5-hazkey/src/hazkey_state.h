@@ -108,6 +108,7 @@ class HazkeyState : public InputContextProperty {
     bool isDirectConversionMode_ = false;
     bool isDirectInputMode_ = false;
     bool isShiftPressedAlone_ = false;
+    int livePreeditIndex_ = -1;
     // engine
     HazkeyEngine *engine_;
     // fcitx input context

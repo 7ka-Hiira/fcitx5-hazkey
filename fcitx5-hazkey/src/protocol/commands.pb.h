@@ -2805,7 +2805,8 @@ class CandidatesResult final : public ::google::protobuf::Message
   enum : int {
     kCandidatesFieldNumber = 1,
     kLiveTextFieldNumber = 2,
-    kPageSizeFieldNumber = 3,
+    kLiveTextIndexFieldNumber = 3,
+    kPageSizeFieldNumber = 4,
   };
   // repeated .hazkey.commands.CandidatesResult.Candidate candidates = 1;
   int candidates_size() const;
@@ -2839,7 +2840,17 @@ class CandidatesResult final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_live_text();
 
   public:
-  // int32 page_size = 3;
+  // int32 live_text_index = 3;
+  void clear_live_text_index() ;
+  ::int32_t live_text_index() const;
+  void set_live_text_index(::int32_t value);
+
+  private:
+  ::int32_t _internal_live_text_index() const;
+  void _internal_set_live_text_index(::int32_t value);
+
+  public:
+  // int32 page_size = 4;
   void clear_page_size() ;
   ::int32_t page_size() const;
   void set_page_size(::int32_t value);
@@ -2853,7 +2864,7 @@ class CandidatesResult final : public ::google::protobuf::Message
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<2, 3,
+  static const ::google::protobuf::internal::TcParseTable<2, 4,
                                    1, 50,
                                    2>
       _table_;
@@ -2877,6 +2888,7 @@ class CandidatesResult final : public ::google::protobuf::Message
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::google::protobuf::RepeatedPtrField< ::hazkey::commands::CandidatesResult_Candidate > candidates_;
     ::google::protobuf::internal::ArenaStringPtr live_text_;
+    ::int32_t live_text_index_;
     ::int32_t page_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -3908,11 +3920,35 @@ inline void CandidatesResult::set_allocated_live_text(::std::string* PROTOBUF_NU
   // @@protoc_insertion_point(field_set_allocated:hazkey.commands.CandidatesResult.live_text)
 }
 
-// int32 page_size = 3;
+// int32 live_text_index = 3;
+inline void CandidatesResult::clear_live_text_index() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.live_text_index_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000002u;
+}
+inline ::int32_t CandidatesResult::live_text_index() const {
+  // @@protoc_insertion_point(field_get:hazkey.commands.CandidatesResult.live_text_index)
+  return _internal_live_text_index();
+}
+inline void CandidatesResult::set_live_text_index(::int32_t value) {
+  _internal_set_live_text_index(value);
+  _impl_._has_bits_[0] |= 0x00000002u;
+  // @@protoc_insertion_point(field_set:hazkey.commands.CandidatesResult.live_text_index)
+}
+inline ::int32_t CandidatesResult::_internal_live_text_index() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.live_text_index_;
+}
+inline void CandidatesResult::_internal_set_live_text_index(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.live_text_index_ = value;
+}
+
+// int32 page_size = 4;
 inline void CandidatesResult::clear_page_size() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.page_size_ = 0;
-  _impl_._has_bits_[0] &= ~0x00000002u;
+  _impl_._has_bits_[0] &= ~0x00000004u;
 }
 inline ::int32_t CandidatesResult::page_size() const {
   // @@protoc_insertion_point(field_get:hazkey.commands.CandidatesResult.page_size)
@@ -3920,7 +3956,7 @@ inline ::int32_t CandidatesResult::page_size() const {
 }
 inline void CandidatesResult::set_page_size(::int32_t value) {
   _internal_set_page_size(value);
-  _impl_._has_bits_[0] |= 0x00000002u;
+  _impl_._has_bits_[0] |= 0x00000004u;
   // @@protoc_insertion_point(field_set:hazkey.commands.CandidatesResult.page_size)
 }
 inline ::int32_t CandidatesResult::_internal_page_size() const {

@@ -221,6 +221,8 @@ struct Hazkey_Commands_CandidatesResult: Sendable {
 
   var liveText: String = String()
 
+  var liveTextIndex: Int32 = 0
+
   var pageSize: Int32 = 0
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
@@ -627,7 +629,8 @@ extension Hazkey_Commands_CandidatesResult: SwiftProtobuf.Message, SwiftProtobuf
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "candidates"),
     2: .standard(proto: "live_text"),
-    3: .standard(proto: "page_size"),
+    3: .standard(proto: "live_text_index"),
+    4: .standard(proto: "page_size"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -638,7 +641,8 @@ extension Hazkey_Commands_CandidatesResult: SwiftProtobuf.Message, SwiftProtobuf
       switch fieldNumber {
       case 1: try { try decoder.decodeRepeatedMessageField(value: &self.candidates) }()
       case 2: try { try decoder.decodeSingularStringField(value: &self.liveText) }()
-      case 3: try { try decoder.decodeSingularInt32Field(value: &self.pageSize) }()
+      case 3: try { try decoder.decodeSingularInt32Field(value: &self.liveTextIndex) }()
+      case 4: try { try decoder.decodeSingularInt32Field(value: &self.pageSize) }()
       default: break
       }
     }
@@ -651,8 +655,11 @@ extension Hazkey_Commands_CandidatesResult: SwiftProtobuf.Message, SwiftProtobuf
     if !self.liveText.isEmpty {
       try visitor.visitSingularStringField(value: self.liveText, fieldNumber: 2)
     }
+    if self.liveTextIndex != 0 {
+      try visitor.visitSingularInt32Field(value: self.liveTextIndex, fieldNumber: 3)
+    }
     if self.pageSize != 0 {
-      try visitor.visitSingularInt32Field(value: self.pageSize, fieldNumber: 3)
+      try visitor.visitSingularInt32Field(value: self.pageSize, fieldNumber: 4)
     }
     try unknownFields.traverse(visitor: &visitor)
   }
@@ -660,6 +667,7 @@ extension Hazkey_Commands_CandidatesResult: SwiftProtobuf.Message, SwiftProtobuf
   static func ==(lhs: Hazkey_Commands_CandidatesResult, rhs: Hazkey_Commands_CandidatesResult) -> Bool {
     if lhs.candidates != rhs.candidates {return false}
     if lhs.liveText != rhs.liveText {return false}
+    if lhs.liveTextIndex != rhs.liveTextIndex {return false}
     if lhs.pageSize != rhs.pageSize {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true

@@ -170,21 +170,18 @@ func getCandidates(is_suggest: Bool) -> Hazkey_ResponseEnvelope {
   let hiraganaPreedit = composingText.value.toHiragana()
 
   var candidatesResult = Hazkey_Commands_CandidatesResult()
-  candidatesResult.candidates = converted.mainResults.map { c in
+  candidatesResult.liveTextIndex = -1
+  candidatesResult.candidates = converted.mainResults.enumerated().map { index, c in
     var candidate = Hazkey_Commands_CandidatesResult.Candidate()
-
     candidate.text = c.text
 
-    if let idx = hiraganaPreedit.index(
-      hiraganaPreedit.startIndex, offsetBy: c.rubyCount, limitedBy: hiraganaPreedit.endIndex)
-    {
-      candidate.subHiragana = String(hiraganaPreedit[idx...])
-    } else {
-      candidate.subHiragana = ""
-    }
+    let endIndex = min(c.rubyCount, hiraganaPreedit.count)
+    candidate.subHiragana = String(hiraganaPreedit.dropFirst(endIndex))
 
+    // Set liveText if conditions are met
     if candidatesResult.liveText.isEmpty && c.rubyCount == hiraganaPreedit.count {
       candidatesResult.liveText = c.text
+      candidatesResult.liveTextIndex = Int32(index)
     }
 
     return candidate
@@ -196,6 +193,7 @@ func getCandidates(is_suggest: Bool) -> Hazkey_ResponseEnvelope {
     && hiraganaPreedit.count == 1
   {
     candidatesResult.liveText = ""
+    candidatesResult.liveTextIndex = -1
   }
 
   candidatesResult.pageSize = {

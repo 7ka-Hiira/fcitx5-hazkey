@@ -140,6 +140,9 @@ void HazkeyState::preeditKeyEvent(
     switch (keysym) {
         case FcitxKey_Return:
             preedit_.commitPreedit();
+            if (livePreeditIndex_ >= 0) {
+                engine_->server().completePrefix(livePreeditIndex_);
+            }
             reset();
             break;
         case FcitxKey_BackSpace:
@@ -290,11 +293,11 @@ void HazkeyState::candidateCompleteHandler(
     auto preedit =
         candidateList->getCandidate(candidateList->cursorIndex()).getPreedit();
     ic_->commitString(preedit[0]);
+    engine_->server().completePrefix(candidateList->globalCursorIndex());
     if (preedit.size() > 1) {
         // auto correspondingCount =
         //     candidateList->getCandidate(candidateList->cursorIndex())
         //         .correspondingCount();
-        engine_->server().completePrefix(candidateList->globalCursorIndex());
         showNonPredictCandidateList();
     } else {
         reset();
@@ -369,6 +372,7 @@ void HazkeyState::directCharactorConversion(ConversionMode mode) {
             break;
     }
     preedit_.setSimplePreeditHighlighted(converted);
+    livePreeditIndex_ = -1;
     auto candidateList = ic_->inputPanel().candidateList();
     if (candidateList) {
         ic_->inputPanel().setCandidateList(nullptr);
@@ -404,6 +408,8 @@ bool HazkeyState::showCandidateList(bool isSuggest) {
         preedit_.setSimplePreedit(hiragana);
     }
 
+    livePreeditIndex_ = response.live_text_index();
+
     if (response.page_size() > 0) {
         ic_->inputPanel().setCandidateList(std::move(candidateResult));
         auto newFcitxCandidateList =
@@ -417,6 +423,8 @@ bool HazkeyState::showCandidateList(bool isSuggest) {
 
 void HazkeyState::showNonPredictCandidateList() {
     showCandidateList(false);
+
+    livePreeditIndex_ = -1;
 
     // highlight all preedit text
     // because the first candidate is the result of all preedit text.
@@ -492,6 +500,7 @@ void HazkeyState::setHiraganaAUX() {
 void HazkeyState::reset() {
     FCITX_DEBUG() << "HazkeyState reset";
     isDirectConversionMode_ = false;
+    livePreeditIndex_ = -1;
     // do not reset isShiftPressedAlone_ because shift may still be pressed
     isDirectInputMode_ = false;
     isCursorMoving_ = false;
