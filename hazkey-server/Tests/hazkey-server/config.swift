@@ -1,7 +1,7 @@
 import Foundation
 import XCTest
 
-@testable import hazkey_server
+@testable import hazkeyServer
 
 final class ConfigurationTests: BaseHazkeyServerTestCase {
   func testSetCustomConfiguration() throws {

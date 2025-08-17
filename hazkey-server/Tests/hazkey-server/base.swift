@@ -1,7 +1,7 @@
 import Foundation
 import XCTest
 
-@testable import hazkey_server
+@testable import hazkey-server
 
 class BaseHazkeyServerTestCase: XCTestCase {
   var client: HazkeyServerClient!
@@ -12,7 +12,7 @@ class BaseHazkeyServerTestCase: XCTestCase {
     // Ensure server is running
     XCTAssertTrue(
       TestUtilities.waitForServer(),
-      "Server socket did not appear within timeout. Make sure the hazkey_server is running."
+      "Server socket did not appear within timeout. Make sure the hazkey-server is running."
     )
 
     // Create and connect client

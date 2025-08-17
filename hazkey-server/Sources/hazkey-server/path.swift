@@ -1,0 +1,1 @@
+let systemResourcePath: String = "/usr/share/hazkey"

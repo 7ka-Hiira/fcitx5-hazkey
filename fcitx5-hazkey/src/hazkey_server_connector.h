@@ -18,7 +18,7 @@ class HazkeyServerConnector {
     // ~HazkeyServerConnector();
 
     HazkeyServerConnector() {
-        // start_hazkey_server();
+        // start_hazkey-server();
         connect_server();
         FCITX_DEBUG() << "Connector initialized";
     };

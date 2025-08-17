@@ -4,12 +4,12 @@
 import PackageDescription
 
 let package = Package(
-  name: "hazkey_server",
+  name: "hazkey-server",
   products: [
     // Products define the executables and libraries a package produces, making them visible to other packages.
     .executable(
-      name: "hazkey_server",
-      targets: ["hazkey_server"])
+      name: "hazkey-server",
+      targets: ["hazkey-server"])
   ],
   dependencies: [
     .package(
@@ -22,7 +22,7 @@ let package = Package(
     // Targets are the basic building blocks of a package, defining a module or a test suite.
     // Targets can depend on other targets in this package and products from dependencies.
     .executableTarget(
-      name: "hazkey_server",
+      name: "hazkey-server",
       dependencies: [
         .product(
           name: "KanaKanjiConverterModule",
@@ -49,9 +49,9 @@ let package = Package(
       ],
     ),
     .testTarget(
-      name: "hazkey_server_tests",
+      name: "hazkey-server-tests",
       dependencies: [
-        "hazkey_server",
+        "hazkey-server",
         .product(name: "SwiftProtobuf", package: "swift-protobuf"),
       ],
       swiftSettings: [.interoperabilityMode(.Cxx)],

@@ -2,7 +2,7 @@ import Foundation
 import SwiftGlibc
 import XCTest
 
-@testable import hazkey_server
+@testable import hazkeyServer
 
 // MARK: - Test Configuration
 struct TestConfig {
@@ -88,7 +88,7 @@ class HazkeyServerClient {
   init() {
     let runtimeDir = ProcessInfo.processInfo.environment["XDG_RUNTIME_DIR"] ?? "/tmp"
     let uid = getuid()
-    self.socketPath = "\(runtimeDir)/hazkey_server.\(uid).sock"
+    self.socketPath = "\(runtimeDir)/hazkey-server.\(uid).sock"
   }
 
   func connect() throws {
@@ -239,7 +239,7 @@ class TestUtilities {
   static func waitForServer(timeout: TimeInterval = TestConfig.defaultTimeout) -> Bool {
     let runtimeDir = ProcessInfo.processInfo.environment["XDG_RUNTIME_DIR"] ?? "/tmp"
     let uid = getuid()
-    let socketPath = "\(runtimeDir)/hazkey_server.\(uid).sock"
+    let socketPath = "\(runtimeDir)/hazkey-server.\(uid).sock"
 
     let start = Date()
     while !FileManager.default.fileExists(atPath: socketPath) {

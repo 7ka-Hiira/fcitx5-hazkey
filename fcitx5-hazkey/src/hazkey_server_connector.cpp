@@ -29,7 +29,7 @@ static std::mutex transact_mutex;
 std::string HazkeyServerConnector::get_socket_path() {
     const char* xdg_runtime_dir = std::getenv("XDG_RUNTIME_DIR");
     uid_t uid = getuid();
-    std::string sockname = "hazkey_server." + std::to_string(uid) + ".sock";
+    std::string sockname = "hazkey-server." + std::to_string(uid) + ".sock";
     if (xdg_runtime_dir && xdg_runtime_dir[0] != '\0') {
         return std::string(xdg_runtime_dir) + "/" + sockname;
     } else {
@@ -47,9 +47,9 @@ void HazkeyServerConnector::start_hazkey_server() {
 
         if (second_pid == 0) {
             // Grandchild process - this will run the actual server
-            execl(INSTALL_LIBDIR "/hazkey/hazkey_server", "hazkey_server",
+            execl(INSTALL_LIBDIR "/hazkey/hazkey-server", "hazkey-server",
                   (char*)NULL);
-            FCITX_ERROR() << "Failed to start hazkey_server\n";
+            FCITX_ERROR() << "Failed to start hazkey-server\n";
             exit(1);
         } else if (second_pid < 0) {
             FCITX_ERROR() << "Failed to create second fork\n";
@@ -58,7 +58,7 @@ void HazkeyServerConnector::start_hazkey_server() {
             exit(0);
         }
     } else if (pid < 0) {
-        FCITX_ERROR() << "Failed to start hazkey_server (first fork failed)\n";
+        FCITX_ERROR() << "Failed to start hazkey-server (first fork failed)\n";
     } else {
         int status;
         waitpid(pid, &status, 0);
@@ -165,7 +165,7 @@ void HazkeyServerConnector::connect_server() {
                 }
             }
         }
-        FCITX_INFO() << "Failed to connect hazkey_server, retry "
+        FCITX_INFO() << "Failed to connect hazkey-server, retry "
                      << (attempt + 1);
         close(sock_);
         sock_ = -1;
@@ -173,7 +173,7 @@ void HazkeyServerConnector::connect_server() {
         std::this_thread::sleep_for(
             std::chrono::milliseconds(RETRY_INTERVAL_MS));
     }
-    FCITX_INFO() << "Failed to connect hazkey_server after " << MAX_RETRIES
+    FCITX_INFO() << "Failed to connect hazkey-server after " << MAX_RETRIES
                  << " attempts";
 }
 
@@ -185,7 +185,7 @@ std::optional<hazkey::ResponseEnvelope> HazkeyServerConnector::transact(
         FCITX_INFO() << "Socket not connected, attempting to connect...";
         connect_server();
         if (sock_ == -1) {
-            FCITX_ERROR() << "Failed to establish connection to hazkey_server";
+            FCITX_ERROR() << "Failed to establish connection to hazkey-server";
             return std::nullopt;
         }
     }
@@ -203,7 +203,7 @@ std::optional<hazkey::ResponseEnvelope> HazkeyServerConnector::transact(
     if (!writeAll(sock_, &writeLen, 4)) {
         FCITX_INFO()
             << "Failed to communicate with server while writing data length. "
-               "restarting hazkey_server...";
+               "restarting hazkey-server...";
         close(sock_);
         sock_ = -1;
         connect_server();
@@ -213,7 +213,7 @@ std::optional<hazkey::ResponseEnvelope> HazkeyServerConnector::transact(
     // write data
     if (!writeAll(sock_, msg.c_str(), msg.size())) {
         FCITX_INFO() << "Failed to communicate with server while writing data. "
-                        "restarting hazkey_server...";
+                        "restarting hazkey-server...";
         close(sock_);
         sock_ = -1;
         connect_server();
