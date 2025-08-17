@@ -38,5 +38,7 @@ message ResponseEnvelope {
         string text = 3;
         hazkey.commands.CandidatesResult candidates = 4;
         hazkey.commands.TextWithCursor text_with_cursor = 5;
+
+        hazkey.config.CurrentConfig current_config = 100;
     }
 }

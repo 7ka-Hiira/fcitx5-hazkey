@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QWidget>
+#include "serverconnector.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -17,6 +18,10 @@ class MainWindow : public QWidget {
     ~MainWindow();
 
    private:
-    Ui::MainWindow *ui;
+    void loadCurrentConfig();
+    Ui::MainWindow *ui_;
+    ServerConnector server_;
+    hazkey::config::CurrentConfig currentConfig_;
+    hazkey::config::ConfigProfile configProfile_;
 };
 #endif  // MAINWINDOW_H

@@ -178,6 +178,7 @@ class ResponseEnvelope final : public ::google::protobuf::Message
     kText = 3,
     kCandidates = 4,
     kTextWithCursor = 5,
+    kCurrentConfig = 100,
     PAYLOAD_NOT_SET = 0,
   };
   static constexpr int kIndexInFileMessages = 1;
@@ -273,6 +274,7 @@ class ResponseEnvelope final : public ::google::protobuf::Message
     kTextFieldNumber = 3,
     kCandidatesFieldNumber = 4,
     kTextWithCursorFieldNumber = 5,
+    kCurrentConfigFieldNumber = 100,
   };
   // string error_message = 2;
   void clear_error_message() ;
@@ -353,6 +355,25 @@ class ResponseEnvelope final : public ::google::protobuf::Message
   ::hazkey::commands::TextWithCursor* PROTOBUF_NONNULL _internal_mutable_text_with_cursor();
 
   public:
+  // .hazkey.config.CurrentConfig current_config = 100;
+  bool has_current_config() const;
+  private:
+  bool _internal_has_current_config() const;
+
+  public:
+  void clear_current_config() ;
+  const ::hazkey::config::CurrentConfig& current_config() const;
+  [[nodiscard]] ::hazkey::config::CurrentConfig* PROTOBUF_NULLABLE release_current_config();
+  ::hazkey::config::CurrentConfig* PROTOBUF_NONNULL mutable_current_config();
+  void set_allocated_current_config(::hazkey::config::CurrentConfig* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_current_config(::hazkey::config::CurrentConfig* PROTOBUF_NULLABLE value);
+  ::hazkey::config::CurrentConfig* PROTOBUF_NULLABLE unsafe_arena_release_current_config();
+
+  private:
+  const ::hazkey::config::CurrentConfig& _internal_current_config() const;
+  ::hazkey::config::CurrentConfig* PROTOBUF_NONNULL _internal_mutable_current_config();
+
+  public:
   void clear_payload();
   PayloadCase payload_case() const;
   // @@protoc_insertion_point(class_scope:hazkey.ResponseEnvelope)
@@ -361,12 +382,13 @@ class ResponseEnvelope final : public ::google::protobuf::Message
   void set_has_text();
   void set_has_candidates();
   void set_has_text_with_cursor();
+  void set_has_current_config();
   inline bool has_payload() const;
   inline void clear_has_payload();
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<1, 5,
-                                   2, 49,
-                                   2>
+  static const ::google::protobuf::internal::TcParseTable<1, 6,
+                                   3, 49,
+                                   7>
       _table_;
 
   friend class ::google::protobuf::MessageLite;
@@ -392,8 +414,9 @@ class ResponseEnvelope final : public ::google::protobuf::Message
       constexpr PayloadUnion() : _constinit_{} {}
       ::google::protobuf::internal::ConstantInitialized _constinit_;
       ::google::protobuf::internal::ArenaStringPtr text_;
-      ::hazkey::commands::CandidatesResult* PROTOBUF_NULLABLE candidates_;
-      ::hazkey::commands::TextWithCursor* PROTOBUF_NULLABLE text_with_cursor_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE candidates_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE text_with_cursor_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE current_config_;
     } payload_;
     ::uint32_t _oneof_case_[1];
     PROTOBUF_TSAN_DECLARE_MEMBER
@@ -2113,7 +2136,7 @@ inline ::hazkey::commands::CandidatesResult* PROTOBUF_NULLABLE ResponseEnvelope:
   // @@protoc_insertion_point(field_release:hazkey.ResponseEnvelope.candidates)
   if (payload_case() == kCandidates) {
     clear_has_payload();
-    auto* temp = _impl_.payload_.candidates_;
+    auto* temp = reinterpret_cast<::hazkey::commands::CandidatesResult*>(_impl_.payload_.candidates_);
     if (GetArena() != nullptr) {
       temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
     }
@@ -2124,7 +2147,7 @@ inline ::hazkey::commands::CandidatesResult* PROTOBUF_NULLABLE ResponseEnvelope:
   }
 }
 inline const ::hazkey::commands::CandidatesResult& ResponseEnvelope::_internal_candidates() const {
-  return payload_case() == kCandidates ? *_impl_.payload_.candidates_ : reinterpret_cast<::hazkey::commands::CandidatesResult&>(::hazkey::commands::_CandidatesResult_default_instance_);
+  return payload_case() == kCandidates ? *reinterpret_cast<::hazkey::commands::CandidatesResult*>(_impl_.payload_.candidates_) : reinterpret_cast<::hazkey::commands::CandidatesResult&>(::hazkey::commands::_CandidatesResult_default_instance_);
 }
 inline const ::hazkey::commands::CandidatesResult& ResponseEnvelope::candidates() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
   // @@protoc_insertion_point(field_get:hazkey.ResponseEnvelope.candidates)
@@ -2134,7 +2157,7 @@ inline ::hazkey::commands::CandidatesResult* PROTOBUF_NULLABLE ResponseEnvelope:
   // @@protoc_insertion_point(field_unsafe_arena_release:hazkey.ResponseEnvelope.candidates)
   if (payload_case() == kCandidates) {
     clear_has_payload();
-    auto* temp = _impl_.payload_.candidates_;
+    auto* temp = reinterpret_cast<::hazkey::commands::CandidatesResult*>(_impl_.payload_.candidates_);
     _impl_.payload_.candidates_ = nullptr;
     return temp;
   } else {
@@ -2149,7 +2172,7 @@ inline void ResponseEnvelope::unsafe_arena_set_allocated_candidates(
   clear_payload();
   if (value) {
     set_has_candidates();
-    _impl_.payload_.candidates_ = value;
+    _impl_.payload_.candidates_ = reinterpret_cast<::google::protobuf::Message*>(value);
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:hazkey.ResponseEnvelope.candidates)
 }
@@ -2157,10 +2180,10 @@ inline ::hazkey::commands::CandidatesResult* PROTOBUF_NONNULL ResponseEnvelope::
   if (payload_case() != kCandidates) {
     clear_payload();
     set_has_candidates();
-    _impl_.payload_.candidates_ = 
-        ::google::protobuf::Message::DefaultConstruct<::hazkey::commands::CandidatesResult>(GetArena());
+    _impl_.payload_.candidates_ = reinterpret_cast<::google::protobuf::Message*>(
+        ::google::protobuf::Message::DefaultConstruct<::hazkey::commands::CandidatesResult>(GetArena()));
   }
-  return _impl_.payload_.candidates_;
+  return reinterpret_cast<::hazkey::commands::CandidatesResult*>(_impl_.payload_.candidates_);
 }
 inline ::hazkey::commands::CandidatesResult* PROTOBUF_NONNULL ResponseEnvelope::mutable_candidates()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
@@ -2183,7 +2206,7 @@ inline ::hazkey::commands::TextWithCursor* PROTOBUF_NULLABLE ResponseEnvelope::r
   // @@protoc_insertion_point(field_release:hazkey.ResponseEnvelope.text_with_cursor)
   if (payload_case() == kTextWithCursor) {
     clear_has_payload();
-    auto* temp = _impl_.payload_.text_with_cursor_;
+    auto* temp = reinterpret_cast<::hazkey::commands::TextWithCursor*>(_impl_.payload_.text_with_cursor_);
     if (GetArena() != nullptr) {
       temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
     }
@@ -2194,7 +2217,7 @@ inline ::hazkey::commands::TextWithCursor* PROTOBUF_NULLABLE ResponseEnvelope::r
   }
 }
 inline const ::hazkey::commands::TextWithCursor& ResponseEnvelope::_internal_text_with_cursor() const {
-  return payload_case() == kTextWithCursor ? *_impl_.payload_.text_with_cursor_ : reinterpret_cast<::hazkey::commands::TextWithCursor&>(::hazkey::commands::_TextWithCursor_default_instance_);
+  return payload_case() == kTextWithCursor ? *reinterpret_cast<::hazkey::commands::TextWithCursor*>(_impl_.payload_.text_with_cursor_) : reinterpret_cast<::hazkey::commands::TextWithCursor&>(::hazkey::commands::_TextWithCursor_default_instance_);
 }
 inline const ::hazkey::commands::TextWithCursor& ResponseEnvelope::text_with_cursor() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
   // @@protoc_insertion_point(field_get:hazkey.ResponseEnvelope.text_with_cursor)
@@ -2204,7 +2227,7 @@ inline ::hazkey::commands::TextWithCursor* PROTOBUF_NULLABLE ResponseEnvelope::u
   // @@protoc_insertion_point(field_unsafe_arena_release:hazkey.ResponseEnvelope.text_with_cursor)
   if (payload_case() == kTextWithCursor) {
     clear_has_payload();
-    auto* temp = _impl_.payload_.text_with_cursor_;
+    auto* temp = reinterpret_cast<::hazkey::commands::TextWithCursor*>(_impl_.payload_.text_with_cursor_);
     _impl_.payload_.text_with_cursor_ = nullptr;
     return temp;
   } else {
@@ -2219,7 +2242,7 @@ inline void ResponseEnvelope::unsafe_arena_set_allocated_text_with_cursor(
   clear_payload();
   if (value) {
     set_has_text_with_cursor();
-    _impl_.payload_.text_with_cursor_ = value;
+    _impl_.payload_.text_with_cursor_ = reinterpret_cast<::google::protobuf::Message*>(value);
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:hazkey.ResponseEnvelope.text_with_cursor)
 }
@@ -2227,15 +2250,85 @@ inline ::hazkey::commands::TextWithCursor* PROTOBUF_NONNULL ResponseEnvelope::_i
   if (payload_case() != kTextWithCursor) {
     clear_payload();
     set_has_text_with_cursor();
-    _impl_.payload_.text_with_cursor_ = 
-        ::google::protobuf::Message::DefaultConstruct<::hazkey::commands::TextWithCursor>(GetArena());
+    _impl_.payload_.text_with_cursor_ = reinterpret_cast<::google::protobuf::Message*>(
+        ::google::protobuf::Message::DefaultConstruct<::hazkey::commands::TextWithCursor>(GetArena()));
   }
-  return _impl_.payload_.text_with_cursor_;
+  return reinterpret_cast<::hazkey::commands::TextWithCursor*>(_impl_.payload_.text_with_cursor_);
 }
 inline ::hazkey::commands::TextWithCursor* PROTOBUF_NONNULL ResponseEnvelope::mutable_text_with_cursor()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::hazkey::commands::TextWithCursor* _msg = _internal_mutable_text_with_cursor();
   // @@protoc_insertion_point(field_mutable:hazkey.ResponseEnvelope.text_with_cursor)
+  return _msg;
+}
+
+// .hazkey.config.CurrentConfig current_config = 100;
+inline bool ResponseEnvelope::has_current_config() const {
+  return payload_case() == kCurrentConfig;
+}
+inline bool ResponseEnvelope::_internal_has_current_config() const {
+  return payload_case() == kCurrentConfig;
+}
+inline void ResponseEnvelope::set_has_current_config() {
+  _impl_._oneof_case_[0] = kCurrentConfig;
+}
+inline ::hazkey::config::CurrentConfig* PROTOBUF_NULLABLE ResponseEnvelope::release_current_config() {
+  // @@protoc_insertion_point(field_release:hazkey.ResponseEnvelope.current_config)
+  if (payload_case() == kCurrentConfig) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::hazkey::config::CurrentConfig*>(_impl_.payload_.current_config_);
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.payload_.current_config_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::hazkey::config::CurrentConfig& ResponseEnvelope::_internal_current_config() const {
+  return payload_case() == kCurrentConfig ? *reinterpret_cast<::hazkey::config::CurrentConfig*>(_impl_.payload_.current_config_) : reinterpret_cast<::hazkey::config::CurrentConfig&>(::hazkey::config::_CurrentConfig_default_instance_);
+}
+inline const ::hazkey::config::CurrentConfig& ResponseEnvelope::current_config() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:hazkey.ResponseEnvelope.current_config)
+  return _internal_current_config();
+}
+inline ::hazkey::config::CurrentConfig* PROTOBUF_NULLABLE ResponseEnvelope::unsafe_arena_release_current_config() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:hazkey.ResponseEnvelope.current_config)
+  if (payload_case() == kCurrentConfig) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::hazkey::config::CurrentConfig*>(_impl_.payload_.current_config_);
+    _impl_.payload_.current_config_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void ResponseEnvelope::unsafe_arena_set_allocated_current_config(
+    ::hazkey::config::CurrentConfig* PROTOBUF_NULLABLE value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_payload();
+  if (value) {
+    set_has_current_config();
+    _impl_.payload_.current_config_ = reinterpret_cast<::google::protobuf::Message*>(value);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:hazkey.ResponseEnvelope.current_config)
+}
+inline ::hazkey::config::CurrentConfig* PROTOBUF_NONNULL ResponseEnvelope::_internal_mutable_current_config() {
+  if (payload_case() != kCurrentConfig) {
+    clear_payload();
+    set_has_current_config();
+    _impl_.payload_.current_config_ = reinterpret_cast<::google::protobuf::Message*>(
+        ::google::protobuf::Message::DefaultConstruct<::hazkey::config::CurrentConfig>(GetArena()));
+  }
+  return reinterpret_cast<::hazkey::config::CurrentConfig*>(_impl_.payload_.current_config_);
+}
+inline ::hazkey::config::CurrentConfig* PROTOBUF_NONNULL ResponseEnvelope::mutable_current_config()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::hazkey::config::CurrentConfig* _msg = _internal_mutable_current_config();
+  // @@protoc_insertion_point(field_mutable:hazkey.ResponseEnvelope.current_config)
   return _msg;
 }
 

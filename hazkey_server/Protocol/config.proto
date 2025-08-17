@@ -12,21 +12,21 @@ message FileHash {
 message ConfigProfile {
     enum AutoConvertMode {
         AUTO_CONVERT_MODE_UNSPECIFIED = 0;
-        AUTO_CONVERT_NEVER = 1;
+        AUTO_CONVERT_DISABLED = 1;
         AUTO_CONVERT_ALWAYS = 2;
-        AUTO_CONVERT_SKIP_SINGLE_CHAR = 3;
+        AUTO_CONVERT_FOR_MULTIPLE_CHARS = 3;
     }
 
     enum AuxTextMode {
         AUX_TEXT_MODE_UNSPECIFIED = 0;
-        AUX_TEXT_SHOW_NEVER = 1;
+        AUX_TEXT_DISABLED = 1;
         AUX_TEXT_SHOW_ALWAYS = 2;
         AUX_TEXT_SHOW_WHEN_CURSOR_NOT_AT_END = 3;
     }
 
     enum SuggestionListMode {
         SUGGESTION_LIST_MODE_UNSPECIFIED = 0;
-        SUGGESTION_LIST_SHOW_NEVER = 1;
+        SUGGESTION_LIST_DISABLED = 1;
         SUGGESTION_LIST_SHOW_NORMAL_RESULTS = 2;
         SUGGESTION_LIST_SHOW_PREDICTIVE_RESULTS = 3;
     }
@@ -96,6 +96,8 @@ message ConfigProfile {
     int32 zenzai_infer_limit = 101;
     bool zenzai_contextual_mode = 102;
     ZenzaiVersionConfig zenzai_version_config = 103;
+    bool use_zenzai_custom_weight = 104;
+    string zenzai_weight_path = 105;
 }
 
 // Request messages

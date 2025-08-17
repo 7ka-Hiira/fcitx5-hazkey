@@ -37,6 +37,8 @@ func processProto(data: Data) -> Data {
     response = getComposingString(charType: req.charType, currentPreedit: req.currentPreedit)
   case .getCandidates(let req):
     response = getCandidates(is_suggest: req.isSuggest)
+  case .getCurrentConfig(_):
+    response = getCurrentConfig()
   case .setConfig(let req):
     response = setConfig(req.fileHashes, req.tableOperations, req.config)
   default:

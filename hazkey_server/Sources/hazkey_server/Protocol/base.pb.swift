@@ -235,12 +235,21 @@ struct Hazkey_ResponseEnvelope: Sendable {
     set {payload = .textWithCursor(newValue)}
   }
 
+  var currentConfig: Hazkey_Config_CurrentConfig {
+    get {
+      if case .currentConfig(let v)? = payload {return v}
+      return Hazkey_Config_CurrentConfig()
+    }
+    set {payload = .currentConfig(newValue)}
+  }
+
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   enum OneOf_Payload: Equatable, Sendable {
     case text(String)
     case candidates(Hazkey_Commands_CandidatesResult)
     case textWithCursor(Hazkey_Commands_TextWithCursor)
+    case currentConfig(Hazkey_Config_CurrentConfig)
 
   }
 
@@ -553,6 +562,7 @@ extension Hazkey_ResponseEnvelope: SwiftProtobuf.Message, SwiftProtobuf._Message
     3: .same(proto: "text"),
     4: .same(proto: "candidates"),
     5: .standard(proto: "text_with_cursor"),
+    100: .standard(proto: "current_config"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -597,6 +607,19 @@ extension Hazkey_ResponseEnvelope: SwiftProtobuf.Message, SwiftProtobuf._Message
           self.payload = .textWithCursor(v)
         }
       }()
+      case 100: try {
+        var v: Hazkey_Config_CurrentConfig?
+        var hadOneofValue = false
+        if let current = self.payload {
+          hadOneofValue = true
+          if case .currentConfig(let m) = current {v = m}
+        }
+        try decoder.decodeSingularMessageField(value: &v)
+        if let v = v {
+          if hadOneofValue {try decoder.handleConflictingOneOf()}
+          self.payload = .currentConfig(v)
+        }
+      }()
       default: break
       }
     }
@@ -625,6 +648,10 @@ extension Hazkey_ResponseEnvelope: SwiftProtobuf.Message, SwiftProtobuf._Message
     case .textWithCursor?: try {
       guard case .textWithCursor(let v)? = self.payload else { preconditionFailure() }
       try visitor.visitSingularMessageField(value: v, fieldNumber: 5)
+    }()
+    case .currentConfig?: try {
+      guard case .currentConfig(let v)? = self.payload else { preconditionFailure() }
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 100)
     }()
     case nil: break
     }

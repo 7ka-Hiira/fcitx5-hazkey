@@ -2,6 +2,15 @@ import Foundation
 import KanaKanjiConverterModule
 import SwiftProtobuf
 
+func getCurrentConfig() -> Hazkey_ResponseEnvelope {
+  let profiles = loadConfig()
+
+  return Hazkey_ResponseEnvelope.with {
+    $0.status = .success
+    $0.currentConfig.configs = profiles
+  }
+}
+
 func setConfig(
   _ hashes: [Hazkey_Config_FileHash],
   _ inputTableOperations: [Hazkey_Config_Table_EditOperation],
@@ -18,10 +27,10 @@ func setConfig(
 func genDefaultConfig() -> Hazkey_Config_ConfigProfile {
   var newConf = Hazkey_Config_ConfigProfile.init()
   newConf.profileName = "Default"
-  newConf.autoConvertMode = Hazkey_Config_ConfigProfile.AutoConvertMode.autoConvertSkipSingleChar
+  newConf.autoConvertMode = Hazkey_Config_ConfigProfile.AutoConvertMode.autoConvertForMultipleChars
   newConf.auxTextMode = Hazkey_Config_ConfigProfile.AuxTextMode.auxTextShowAlways
   newConf.suggestionListMode =
-    Hazkey_Config_ConfigProfile.SuggestionListMode.suggestionListShowNever
+    Hazkey_Config_ConfigProfile.SuggestionListMode.suggestionListDisabled
   newConf.numSuggestions = 4
   newConf.useRichSuggestion = false
   newConf.numCandidatesPerPage = 9

@@ -127,14 +127,24 @@ struct Hazkey_Config_ConfigProfile: @unchecked Sendable {
   /// Clears the value of `zenzaiVersionConfig`. Subsequent reads from it will return its default value.
   mutating func clearZenzaiVersionConfig() {_uniqueStorage()._zenzaiVersionConfig = nil}
 
+  var useZenzaiCustomWeight: Bool {
+    get {return _storage._useZenzaiCustomWeight}
+    set {_uniqueStorage()._useZenzaiCustomWeight = newValue}
+  }
+
+  var zenzaiWeightPath: String {
+    get {return _storage._zenzaiWeightPath}
+    set {_uniqueStorage()._zenzaiWeightPath = newValue}
+  }
+
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   enum AutoConvertMode: SwiftProtobuf.Enum, Swift.CaseIterable {
     typealias RawValue = Int
     case unspecified // = 0
-    case autoConvertNever // = 1
+    case autoConvertDisabled // = 1
     case autoConvertAlways // = 2
-    case autoConvertSkipSingleChar // = 3
+    case autoConvertForMultipleChars // = 3
     case UNRECOGNIZED(Int)
 
     init() {
@@ -144,9 +154,9 @@ struct Hazkey_Config_ConfigProfile: @unchecked Sendable {
     init?(rawValue: Int) {
       switch rawValue {
       case 0: self = .unspecified
-      case 1: self = .autoConvertNever
+      case 1: self = .autoConvertDisabled
       case 2: self = .autoConvertAlways
-      case 3: self = .autoConvertSkipSingleChar
+      case 3: self = .autoConvertForMultipleChars
       default: self = .UNRECOGNIZED(rawValue)
       }
     }
@@ -154,9 +164,9 @@ struct Hazkey_Config_ConfigProfile: @unchecked Sendable {
     var rawValue: Int {
       switch self {
       case .unspecified: return 0
-      case .autoConvertNever: return 1
+      case .autoConvertDisabled: return 1
       case .autoConvertAlways: return 2
-      case .autoConvertSkipSingleChar: return 3
+      case .autoConvertForMultipleChars: return 3
       case .UNRECOGNIZED(let i): return i
       }
     }
@@ -164,9 +174,9 @@ struct Hazkey_Config_ConfigProfile: @unchecked Sendable {
     // The compiler won't synthesize support with the UNRECOGNIZED case.
     static let allCases: [Hazkey_Config_ConfigProfile.AutoConvertMode] = [
       .unspecified,
-      .autoConvertNever,
+      .autoConvertDisabled,
       .autoConvertAlways,
-      .autoConvertSkipSingleChar,
+      .autoConvertForMultipleChars,
     ]
 
   }
@@ -174,7 +184,7 @@ struct Hazkey_Config_ConfigProfile: @unchecked Sendable {
   enum AuxTextMode: SwiftProtobuf.Enum, Swift.CaseIterable {
     typealias RawValue = Int
     case unspecified // = 0
-    case auxTextShowNever // = 1
+    case auxTextDisabled // = 1
     case auxTextShowAlways // = 2
     case auxTextShowWhenCursorNotAtEnd // = 3
     case UNRECOGNIZED(Int)
@@ -186,7 +196,7 @@ struct Hazkey_Config_ConfigProfile: @unchecked Sendable {
     init?(rawValue: Int) {
       switch rawValue {
       case 0: self = .unspecified
-      case 1: self = .auxTextShowNever
+      case 1: self = .auxTextDisabled
       case 2: self = .auxTextShowAlways
       case 3: self = .auxTextShowWhenCursorNotAtEnd
       default: self = .UNRECOGNIZED(rawValue)
@@ -196,7 +206,7 @@ struct Hazkey_Config_ConfigProfile: @unchecked Sendable {
     var rawValue: Int {
       switch self {
       case .unspecified: return 0
-      case .auxTextShowNever: return 1
+      case .auxTextDisabled: return 1
       case .auxTextShowAlways: return 2
       case .auxTextShowWhenCursorNotAtEnd: return 3
       case .UNRECOGNIZED(let i): return i
@@ -206,7 +216,7 @@ struct Hazkey_Config_ConfigProfile: @unchecked Sendable {
     // The compiler won't synthesize support with the UNRECOGNIZED case.
     static let allCases: [Hazkey_Config_ConfigProfile.AuxTextMode] = [
       .unspecified,
-      .auxTextShowNever,
+      .auxTextDisabled,
       .auxTextShowAlways,
       .auxTextShowWhenCursorNotAtEnd,
     ]
@@ -216,7 +226,7 @@ struct Hazkey_Config_ConfigProfile: @unchecked Sendable {
   enum SuggestionListMode: SwiftProtobuf.Enum, Swift.CaseIterable {
     typealias RawValue = Int
     case unspecified // = 0
-    case suggestionListShowNever // = 1
+    case suggestionListDisabled // = 1
     case suggestionListShowNormalResults // = 2
     case suggestionListShowPredictiveResults // = 3
     case UNRECOGNIZED(Int)
@@ -228,7 +238,7 @@ struct Hazkey_Config_ConfigProfile: @unchecked Sendable {
     init?(rawValue: Int) {
       switch rawValue {
       case 0: self = .unspecified
-      case 1: self = .suggestionListShowNever
+      case 1: self = .suggestionListDisabled
       case 2: self = .suggestionListShowNormalResults
       case 3: self = .suggestionListShowPredictiveResults
       default: self = .UNRECOGNIZED(rawValue)
@@ -238,7 +248,7 @@ struct Hazkey_Config_ConfigProfile: @unchecked Sendable {
     var rawValue: Int {
       switch self {
       case .unspecified: return 0
-      case .suggestionListShowNever: return 1
+      case .suggestionListDisabled: return 1
       case .suggestionListShowNormalResults: return 2
       case .suggestionListShowPredictiveResults: return 3
       case .UNRECOGNIZED(let i): return i
@@ -248,7 +258,7 @@ struct Hazkey_Config_ConfigProfile: @unchecked Sendable {
     // The compiler won't synthesize support with the UNRECOGNIZED case.
     static let allCases: [Hazkey_Config_ConfigProfile.SuggestionListMode] = [
       .unspecified,
-      .suggestionListShowNever,
+      .suggestionListDisabled,
       .suggestionListShowNormalResults,
       .suggestionListShowPredictiveResults,
     ]
@@ -524,6 +534,8 @@ extension Hazkey_Config_ConfigProfile: SwiftProtobuf.Message, SwiftProtobuf._Mes
     101: .standard(proto: "zenzai_infer_limit"),
     102: .standard(proto: "zenzai_contextual_mode"),
     103: .standard(proto: "zenzai_version_config"),
+    104: .standard(proto: "use_zenzai_custom_weight"),
+    105: .standard(proto: "zenzai_weight_path"),
   ]
 
   fileprivate class _StorageClass {
@@ -543,6 +555,8 @@ extension Hazkey_Config_ConfigProfile: SwiftProtobuf.Message, SwiftProtobuf._Mes
     var _zenzaiInferLimit: Int32 = 0
     var _zenzaiContextualMode: Bool = false
     var _zenzaiVersionConfig: Hazkey_Config_ConfigProfile.ZenzaiVersionConfig? = nil
+    var _useZenzaiCustomWeight: Bool = false
+    var _zenzaiWeightPath: String = String()
 
       // This property is used as the initial default value for new instances of the type.
       // The type itself is protecting the reference to its storage via CoW semantics.
@@ -569,6 +583,8 @@ extension Hazkey_Config_ConfigProfile: SwiftProtobuf.Message, SwiftProtobuf._Mes
       _zenzaiInferLimit = source._zenzaiInferLimit
       _zenzaiContextualMode = source._zenzaiContextualMode
       _zenzaiVersionConfig = source._zenzaiVersionConfig
+      _useZenzaiCustomWeight = source._useZenzaiCustomWeight
+      _zenzaiWeightPath = source._zenzaiWeightPath
     }
   }
 
@@ -603,6 +619,8 @@ extension Hazkey_Config_ConfigProfile: SwiftProtobuf.Message, SwiftProtobuf._Mes
         case 101: try { try decoder.decodeSingularInt32Field(value: &_storage._zenzaiInferLimit) }()
         case 102: try { try decoder.decodeSingularBoolField(value: &_storage._zenzaiContextualMode) }()
         case 103: try { try decoder.decodeSingularMessageField(value: &_storage._zenzaiVersionConfig) }()
+        case 104: try { try decoder.decodeSingularBoolField(value: &_storage._useZenzaiCustomWeight) }()
+        case 105: try { try decoder.decodeSingularStringField(value: &_storage._zenzaiWeightPath) }()
         default: break
         }
       }
@@ -663,6 +681,12 @@ extension Hazkey_Config_ConfigProfile: SwiftProtobuf.Message, SwiftProtobuf._Mes
       try { if let v = _storage._zenzaiVersionConfig {
         try visitor.visitSingularMessageField(value: v, fieldNumber: 103)
       } }()
+      if _storage._useZenzaiCustomWeight != false {
+        try visitor.visitSingularBoolField(value: _storage._useZenzaiCustomWeight, fieldNumber: 104)
+      }
+      if !_storage._zenzaiWeightPath.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._zenzaiWeightPath, fieldNumber: 105)
+      }
     }
     try unknownFields.traverse(visitor: &visitor)
   }
@@ -688,6 +712,8 @@ extension Hazkey_Config_ConfigProfile: SwiftProtobuf.Message, SwiftProtobuf._Mes
         if _storage._zenzaiInferLimit != rhs_storage._zenzaiInferLimit {return false}
         if _storage._zenzaiContextualMode != rhs_storage._zenzaiContextualMode {return false}
         if _storage._zenzaiVersionConfig != rhs_storage._zenzaiVersionConfig {return false}
+        if _storage._useZenzaiCustomWeight != rhs_storage._useZenzaiCustomWeight {return false}
+        if _storage._zenzaiWeightPath != rhs_storage._zenzaiWeightPath {return false}
         return true
       }
       if !storagesAreEqual {return false}
@@ -700,16 +726,16 @@ extension Hazkey_Config_ConfigProfile: SwiftProtobuf.Message, SwiftProtobuf._Mes
 extension Hazkey_Config_ConfigProfile.AutoConvertMode: SwiftProtobuf._ProtoNameProviding {
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     0: .same(proto: "AUTO_CONVERT_MODE_UNSPECIFIED"),
-    1: .same(proto: "AUTO_CONVERT_NEVER"),
+    1: .same(proto: "AUTO_CONVERT_DISABLED"),
     2: .same(proto: "AUTO_CONVERT_ALWAYS"),
-    3: .same(proto: "AUTO_CONVERT_SKIP_SINGLE_CHAR"),
+    3: .same(proto: "AUTO_CONVERT_FOR_MULTIPLE_CHARS"),
   ]
 }
 
 extension Hazkey_Config_ConfigProfile.AuxTextMode: SwiftProtobuf._ProtoNameProviding {
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     0: .same(proto: "AUX_TEXT_MODE_UNSPECIFIED"),
-    1: .same(proto: "AUX_TEXT_SHOW_NEVER"),
+    1: .same(proto: "AUX_TEXT_DISABLED"),
     2: .same(proto: "AUX_TEXT_SHOW_ALWAYS"),
     3: .same(proto: "AUX_TEXT_SHOW_WHEN_CURSOR_NOT_AT_END"),
   ]
@@ -718,7 +744,7 @@ extension Hazkey_Config_ConfigProfile.AuxTextMode: SwiftProtobuf._ProtoNameProvi
 extension Hazkey_Config_ConfigProfile.SuggestionListMode: SwiftProtobuf._ProtoNameProviding {
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     0: .same(proto: "SUGGESTION_LIST_MODE_UNSPECIFIED"),
-    1: .same(proto: "SUGGESTION_LIST_SHOW_NEVER"),
+    1: .same(proto: "SUGGESTION_LIST_DISABLED"),
     2: .same(proto: "SUGGESTION_LIST_SHOW_NORMAL_RESULTS"),
     3: .same(proto: "SUGGESTION_LIST_SHOW_PREDICTIVE_RESULTS"),
   ]
