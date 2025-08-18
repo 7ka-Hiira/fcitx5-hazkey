@@ -27,7 +27,8 @@ func setConfig(
 func genDefaultConfig() -> Hazkey_Config_ConfigProfile {
     var newConf = Hazkey_Config_ConfigProfile.init()
     newConf.profileName = "Default"
-    newConf.autoConvertMode = Hazkey_Config_ConfigProfile.AutoConvertMode.autoConvertForMultipleChars
+    newConf.autoConvertMode =
+        Hazkey_Config_ConfigProfile.AutoConvertMode.autoConvertForMultipleChars
     newConf.auxTextMode = Hazkey_Config_ConfigProfile.AuxTextMode.auxTextShowAlways
     newConf.suggestionListMode =
         Hazkey_Config_ConfigProfile.SuggestionListMode.suggestionListDisabled
@@ -37,9 +38,9 @@ func genDefaultConfig() -> Hazkey_Config_ConfigProfile {
     newConf.useRichCandidates = false
     newConf.useInputHistory = true
     newConf.stopStoreNewHistory = false
-    newConf.zenzaiEnable = false
-    newConf.zenzaiInferLimit = 5
-    newConf.zenzaiContextualMode = false
+    newConf.zenzaiEnable = true
+    newConf.zenzaiInferLimit = 1
+    newConf.zenzaiContextualMode = true
     return newConf
 }
 
@@ -118,7 +119,8 @@ func getConfigDirectory() -> URL {
 
     // Check for XDG_CONFIG_HOME environment variable
     if let xdgConfigHome = ProcessInfo.processInfo.environment["XDG_CONFIG_HOME"],
-       !xdgConfigHome.isEmpty {
+        !xdgConfigHome.isEmpty
+    {
         return URL(fileURLWithPath: xdgConfigHome).appendingPathComponent("hazkey")
     }
 
@@ -134,7 +136,7 @@ func genZenzaiMode(leftContext: String) -> ConvertRequestOptions.ZenzaiMode {
 
     if currentProfile.zenzaiEnable {
         return ConvertRequestOptions.ZenzaiMode.on(
-            weight: systemResourceDir.appendingPathComponent("zenzai.gguf", isDirectory: false),
+            weight: systemResourceDir.appendingPathComponent("zenz-v3.gguf", isDirectory: false),
             inferenceLimit: Int(currentProfile.zenzaiInferLimit),
             requestRichCandidates: currentProfile.useRichCandidates,
             personalizationMode: nil,
@@ -146,7 +148,8 @@ func genZenzaiMode(leftContext: String) -> ConvertRequestOptions.ZenzaiMode {
                     .v2(
                         ConvertRequestOptions.ZenzaiV2DependentMode.init(
                             profile: versionConfig.profile,
-                            leftSideContext: nil))
+                            leftSideContext: currentProfile.zenzaiContextualMode ? leftContext : nil
+                        ))
                 case .v3(let versionConfig):
                     .v3(
                         ConvertRequestOptions.ZenzaiV3DependentMode.init(
@@ -154,7 +157,8 @@ func genZenzaiMode(leftContext: String) -> ConvertRequestOptions.ZenzaiMode {
                             topic: versionConfig.topic,
                             style: versionConfig.style,
                             preference: versionConfig.style,
-                            leftSideContext: nil))
+                            leftSideContext: currentProfile.zenzaiContextualMode ? leftContext : nil
+                        ))
                 default:
                     .v1
                 }
@@ -195,7 +199,7 @@ func genBaseConvertRequestOptions() -> ConvertRequestOptions {
             mode.mailDomain ? EmailAddressSpecialCandidateProvider() : nil,
             mode.romanTypography ? TypographySpecialCandidateProvider() : nil,
             mode.time ? TimeExpressionSpecialCandidateProvider() : nil,
-            mode.unicodeCodepoint ? UnicodeSpecialCandidateProvider() : nil
+            mode.unicodeCodepoint ? UnicodeSpecialCandidateProvider() : nil,
         ]
         return providers.compactMap { $0 }
     }()
@@ -214,8 +218,6 @@ func genBaseConvertRequestOptions() -> ConvertRequestOptions {
         learningType: learningType,
         maxMemoryCount: 65536,
         shouldResetMemory: false,
-        dictionaryResourceURL: systemResourceDir.appendingPathComponent(
-            "Dictionary", isDirectory: true),
         memoryDirectoryURL: userDataDir.appendingPathComponent(
             "memory", isDirectory: true),
         sharedContainerURL: userDataDir.appendingPathComponent(

@@ -19,37 +19,25 @@ add_definitions(-DFCITX_GETTEXT_DOMAIN=\"fcitx5-hazkey\")
 set(FILE_URL "https://huggingface.co/Miwa-Keita/zenz-v3-small-gguf/resolve/main/ggml-model-Q5_K_M.gguf")
 
 if(NOT SKIP_ZENZAI_INSTALL)
-  file(DOWNLOAD ${FILE_URL}
+    file(DOWNLOAD ${FILE_URL}
         ${CMAKE_CURRENT_SOURCE_DIR}/zenz-v3.gguf
         EXPECTED_HASH SHA256=501f605d088f5b988791a00ae19ed46985ed7c48144f364b2f3f1f951c9b2083
         SHOW_PROGRESS)
 endif()
 
-# ---- llama.cpp ---- #
-
-execute_process(
-    COMMAND cmake -B build -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DBUILD_SHARED_LIBS=off -DCMAKE_POSITION_INDEPENDENT_CODE=on -DGGML_VULKAN=on -DLLAMA_BUILD_TESTS=OFF -DLLAMA_USE_SYSTEM_GGML=OFF -DGGML_BUILD_EXAMPLES=OFF
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/hazkey-server/llama.cpp
-)
-
-execute_process(
-    COMMAND cmake --build build --config ${CMAKE_BUILD_TYPE}
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/hazkey-server/llama.cpp
-)
-
 # -- hazkey-server -- #
 
 # build hazkey-server
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-  set(SWIFT_BUILD_TYPE "debug")
+    set(SWIFT_BUILD_TYPE "debug")
 else()
-  set(SWIFT_BUILD_TYPE "release")
+    set(SWIFT_BUILD_TYPE "release")
 endif()
 
 if(NOT SKIP_KKC_PATH_UPDATE)
-  message(STATUS "Updating path.swift")
-  # write path.swift
-  file(WRITE ${CMAKE_CURRENT_SOURCE_DIR}/hazkey-server/Sources/hazkey-server/path.swift "let systemResourcePath: String = \"${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATADIR}/hazkey\"")
+    message(STATUS "Updating path.swift")
+    # write path.swift
+    file(WRITE ${CMAKE_CURRENT_SOURCE_DIR}/hazkey-server/Sources/hazkey-server/path.swift "let systemResourcePath: String = \"${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATADIR}/hazkey\"")
 endif()
 
 execute_process(
@@ -60,7 +48,7 @@ execute_process(
 
 # check if server binary exists
 if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/hazkey-server/.build/${SWIFT_BUILD_TYPE}/hazkey-server)
-  message(FATAL_ERROR "Failed to build hazkey-server")
+    message(FATAL_ERROR "Failed to build hazkey-server")
 endif()
 
 # ---- install ---- #
@@ -70,8 +58,8 @@ install(PROGRAMS ${CMAKE_CURRENT_SOURCE_DIR}/hazkey-server/.build/${SWIFT_BUILD_
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/hazkey)
 
 if(NOT SKIP_ZENZAI_INSTALL)
-  # install zenz-v3.gguf
-  install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/zenz-v3.gguf
+    # install zenz-v3.gguf
+    install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/zenz-v3.gguf
             DESTINATION ${CMAKE_INSTALL_DATADIR}/hazkey)
 endif()
 
