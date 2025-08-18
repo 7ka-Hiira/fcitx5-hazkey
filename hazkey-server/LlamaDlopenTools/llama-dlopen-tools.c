@@ -182,6 +182,16 @@ void llama_dlopen_tools_batch_set_logits(struct llama_batch* batch,
     }
 }
 
+float* llama_dlopen_tools_batch_get_embd(struct llama_batch* batch) {
+    return batch ? batch->embd : NULL;
+}
+
+void llama_dlopen_tools_batch_set_embd(struct llama_batch* batch, float* embd) {
+    if (batch) {
+        batch->embd = embd;
+    }
+}
+
 // Decode wrapper function that dereferences batch pointer
 int32_t llama_dlopen_tools_decode(struct llama_context* ctx,
                                   struct llama_batch* batch) {

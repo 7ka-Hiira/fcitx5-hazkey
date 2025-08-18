@@ -62,6 +62,8 @@ void llama_dlopen_tools_batch_set_seq_id(struct llama_batch* batch,
 int8_t* llama_dlopen_tools_batch_get_logits(struct llama_batch* batch);
 void llama_dlopen_tools_batch_set_logits(struct llama_batch* batch,
                                          int8_t* logits);
+float* llama_dlopen_tools_batch_get_embd(struct llama_batch* batch);
+void llama_dlopen_tools_batch_set_embd(struct llama_batch* batch, float* embd);
 
 // Decode wrapper function that dereferences batch pointer
 int32_t llama_dlopen_tools_decode(struct llama_context* ctx,
