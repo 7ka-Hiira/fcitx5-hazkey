@@ -130,15 +130,15 @@ var composingText: ComposingTextBox = ComposingTextBox()
 var currentCandidateList: [Candidate]?
 
 // FIXME: configurable path
-tryLoadLlamaLibrary(
-    libllamaPath: "/usr/lib/libllama-zenzai.so",
-    libllamaDlopenToolsPath: "/usr/lib/libllama-zenzai-dlopen-tools.so")
+// tryLoadLlamaLibrary(
+//     libllamaPath: "/usr/lib/libllama-zenzai.so",
+//     libllamaDlopenToolsPath: "/usr/lib/libllama-zenzai-dlopen-tools.so")
 
-if isLlamaLibrariesLoaded() {
-    print("Llama.cpp loaded")
-} else {
-    print("Failed to find llama.cpp")
-}
+// if isLlamaLibrariesLoaded() {
+//     print("Llama.cpp loaded")
+// } else {
+//     print("Failed to find llama.cpp")
+// }
 
 PublicAzkkcApi.shared.setGpuLayers(13)
 

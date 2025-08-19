@@ -15,7 +15,7 @@ let package = Package(
         .package(
             url: "https://github.com/7ka-hiira/AzooKeyKanaKanjiConverter",
             branch: "4f8e158",
-            traits: [.trait(name: "ZenzaiDlopen")]),
+            traits: [.trait(name: "Zenzai")]),
         .package(url: "https://github.com/apple/swift-protobuf.git", from: "1.27.0"),
     ],
     targets: [
@@ -33,6 +33,9 @@ let package = Package(
                 .product(name: "SwiftProtobuf", package: "swift-protobuf"),
             ],
             swiftSettings: [.interoperabilityMode(.Cxx)],
+            linkerSettings: [
+                .linkedLibrary("llama-zenzai")
+            ],
         ),
         .testTarget(
             name: "hazkey-server-tests",
