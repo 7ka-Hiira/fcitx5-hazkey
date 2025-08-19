@@ -41,6 +41,7 @@ func genDefaultConfig() -> Hazkey_Config_ConfigProfile {
     newConf.zenzaiEnable = true
     newConf.zenzaiInferLimit = 1
     newConf.zenzaiContextualMode = true
+    newConf.zenzaiVersionConfig.v3 = Hazkey_Config_ConfigProfile.ZenzaiVersionConfig.V3.init()
     return newConf
 }
 
