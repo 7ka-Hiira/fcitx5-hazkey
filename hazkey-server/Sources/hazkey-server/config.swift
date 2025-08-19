@@ -222,10 +222,7 @@ func genBaseConvertRequestOptions() -> ConvertRequestOptions {
             "memory", isDirectory: true),
         sharedContainerURL: userDataDir.appendingPathComponent(
             "shared", isDirectory: true),
-        textReplacer: .init(emojiDataProvider: {
-            systemResourceDir.appendingPathComponent(
-                "emoji_all_E16.0.txt", isDirectory: false)
-        }),
+        textReplacer: .empty,
         specialCandidateProviders: specialCandidateProviders,
         zenzaiMode: zenzaiMode,
         preloadDictionary: false,
