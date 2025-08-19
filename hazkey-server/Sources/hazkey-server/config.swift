@@ -29,7 +29,7 @@ func genDefaultConfig() -> Hazkey_Config_ConfigProfile {
     newConf.profileName = "Default"
     newConf.autoConvertMode =
         Hazkey_Config_ConfigProfile.AutoConvertMode.autoConvertForMultipleChars
-    newConf.auxTextMode = Hazkey_Config_ConfigProfile.AuxTextMode.auxTextShowAlways
+    newConf.auxTextMode = Hazkey_Config_ConfigProfile.AuxTextMode.auxTextShowWhenCursorNotAtEnd
     newConf.suggestionListMode =
         Hazkey_Config_ConfigProfile.SuggestionListMode.suggestionListDisabled
     newConf.numSuggestions = 4

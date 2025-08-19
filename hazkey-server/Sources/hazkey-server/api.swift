@@ -97,6 +97,17 @@ import SwiftUtils
     let hiragana = composingText.value.toHiragana()
     let cursorPos = composingText.value.convertTargetCursorPosition
 
+    if hiragana.count == cursorPos {
+        return Hazkey_ResponseEnvelope.with {
+            $0.status = .success
+            $0.textWithCursor = Hazkey_Commands_TextWithCursor.with {
+                $0.beforeCursosr = ""
+                $0.onCursor = ""
+                $0.afterCursor = ""
+            }
+        }
+    }
+
     return Hazkey_ResponseEnvelope.with {
         $0.status = .success
         $0.textWithCursor = Hazkey_Commands_TextWithCursor.with {
@@ -191,6 +202,11 @@ func getCandidates(is_suggest: Bool) -> Hazkey_ResponseEnvelope {
     if currentProfile.autoConvertMode
         == Hazkey_Config_ConfigProfile.AutoConvertMode.autoConvertForMultipleChars
         && hiraganaPreedit.count == 1
+    {
+        candidatesResult.liveText = ""
+        candidatesResult.liveTextIndex = -1
+    } else if currentProfile.autoConvertMode
+        == Hazkey_Config_ConfigProfile.AutoConvertMode.autoConvertDisabled
     {
         candidatesResult.liveText = ""
         candidatesResult.liveTextIndex = -1
