@@ -41,7 +41,7 @@ class HazkeyState : public InputContextProperty {
     };
 
     // update surrounding text
-    void updateSurroundingText();
+    void updateSurroundingText(std::string appendText = "");
 
     // f6-f10 key handler
     void functionKeyHandler(KeyEvent &keyEvent);

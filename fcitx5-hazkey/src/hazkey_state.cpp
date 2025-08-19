@@ -292,24 +292,25 @@ void HazkeyState::candidateCompleteHandler(
     std::shared_ptr<HazkeyCandidateList> candidateList) {
     auto preedit =
         candidateList->getCandidate(candidateList->cursorIndex()).getPreedit();
-    ic_->commitString(preedit[0]);
+    // hazkey cannot get surroundingText correctly immediately after committing
+    // so call it with appendText before committing.
+    updateSurroundingText(preedit[0]);
     engine_->server().completePrefix(candidateList->globalCursorIndex());
+    ic_->commitString(preedit[0]);
     if (preedit.size() > 1) {
-        // auto correspondingCount =
-        //     candidateList->getCandidate(candidateList->cursorIndex())
-        //         .correspondingCount();
         showNonPredictCandidateList();
     } else {
         reset();
     }
 }
 
-void HazkeyState::updateSurroundingText() {
+void HazkeyState::updateSurroundingText(std::string appendText) {
     if (ic_->capabilityFlags().test(CapabilityFlag::SurroundingText) &&
         ic_->surroundingText().isValid()) {
         auto &surroundingText = ic_->surroundingText();
-        engine_->server().setContext(surroundingText.text(),
-                                     surroundingText.anchor());
+        engine_->server().setContext(
+            surroundingText.text() + appendText,
+            surroundingText.anchor() + appendText.length());
     } else {
         engine_->server().setContext("", 0);
     }
