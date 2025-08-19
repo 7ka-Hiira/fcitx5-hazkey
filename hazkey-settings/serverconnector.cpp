@@ -221,7 +221,7 @@ std::optional<hazkey::ResponseEnvelope> ServerConnector::transact(
 std::optional<hazkey::config::CurrentConfig>
 ServerConnector::getCurrentConfig() {
     hazkey::RequestEnvelope request;
-    auto props = request.mutable_get_current_config();
+    auto _ = request.mutable_get_current_config();
     auto response = transact(request);
     if (response == std::nullopt) {
         return std::nullopt;

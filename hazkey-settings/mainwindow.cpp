@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+
 #include <QMenu>
 
 #include "./ui_mainwindow.h"
@@ -12,23 +13,27 @@ MainWindow::MainWindow(QWidget *parent)
     QMenu *manageSettingsMenu = new QMenu(this);
     QAction *importAction = manageSettingsMenu->addAction("Import");
     QAction *exportAction = manageSettingsMenu->addAction("Export");
-    QAction *restoreDefaultAction = manageSettingsMenu->addAction("Restore Default");
-    QPushButton* manageSettingsButton = new QPushButton("Manage Settings");
+    QAction *restoreDefaultAction =
+        manageSettingsMenu->addAction("Restore Default");
+    QPushButton *manageSettingsButton = new QPushButton("Manage Settings");
     manageSettingsButton->setMenu(manageSettingsMenu);
-    ui_->dialogButtonBox->addButton(manageSettingsButton, QDialogButtonBox::ResetRole);
+    ui_->dialogButtonBox->addButton(manageSettingsButton,
+                                    QDialogButtonBox::ResetRole);
 
     // Advanced layout list action button
     QMenu *manageTableMenu = new QMenu(this);
-    QAction *importTableAction = manageTableMenu->addAction("Import selected table");
-    QAction *exportTableAction = manageTableMenu->addAction("Export selected table");
+    QAction *importTableAction =
+        manageTableMenu->addAction("Import selected table");
+    QAction *exportTableAction =
+        manageTableMenu->addAction("Export selected table");
     ui_->tableMoreActions->setMenu(manageTableMenu);
 
     // Expand table settings mode change tab
     ui_->inputTableConfigModeTabWidget->tabBar()->setExpanding(true);
 
     // Expand table editor
-    ui_->keymapEditorTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-
+    ui_->keymapEditorTable->horizontalHeader()->setSectionResizeMode(
+        QHeaderView::Stretch);
 
     // Connect to server
     server_.connect_server();
@@ -47,10 +52,12 @@ void MainWindow::loadCurrentConfig() {
         case hazkey::config::ConfigProfile_AutoConvertMode_AUTO_CONVERT_ALWAYS:
             autoConvertModeCurrentIndex = 0;
             break;
-        case hazkey::config::ConfigProfile_AutoConvertMode_AUTO_CONVERT_DISABLED:
+        case hazkey::config::
+            ConfigProfile_AutoConvertMode_AUTO_CONVERT_DISABLED:
             autoConvertModeCurrentIndex = 2;
             break;
-        case hazkey::config::ConfigProfile_AutoConvertMode_AUTO_CONVERT_FOR_MULTIPLE_CHARS:
+        case hazkey::config::
+            ConfigProfile_AutoConvertMode_AUTO_CONVERT_FOR_MULTIPLE_CHARS:
         default:
             autoConvertModeCurrentIndex = 1;
     }
@@ -64,7 +71,8 @@ void MainWindow::loadCurrentConfig() {
         case hazkey::config::ConfigProfile_AuxTextMode_AUX_TEXT_DISABLED:
             auxTextModeCurrentIndex = 2;
             break;
-        case hazkey::config::ConfigProfile_AuxTextMode_AUX_TEXT_SHOW_WHEN_CURSOR_NOT_AT_END:
+        case hazkey::config::
+            ConfigProfile_AuxTextMode_AUX_TEXT_SHOW_WHEN_CURSOR_NOT_AT_END:
         default:
             auxTextModeCurrentIndex = 1;
     }
@@ -72,53 +80,82 @@ void MainWindow::loadCurrentConfig() {
 
     int suggestionListModeCurrentIndex;
     switch (currentProfile.suggestion_list_mode()) {
-        case hazkey::config::ConfigProfile_SuggestionListMode_SUGGESTION_LIST_SHOW_NORMAL_RESULTS:
+        case hazkey::config::
+            ConfigProfile_SuggestionListMode_SUGGESTION_LIST_SHOW_NORMAL_RESULTS:
             suggestionListModeCurrentIndex = 0;
             break;
-        case hazkey::config::ConfigProfile_SuggestionListMode_SUGGESTION_LIST_SHOW_PREDICTIVE_RESULTS:
+        case hazkey::config::
+            ConfigProfile_SuggestionListMode_SUGGESTION_LIST_SHOW_PREDICTIVE_RESULTS:
             suggestionListModeCurrentIndex = 1;
             break;
-        case hazkey::config::ConfigProfile_SuggestionListMode_SUGGESTION_LIST_DISABLED:
+        case hazkey::config::
+            ConfigProfile_SuggestionListMode_SUGGESTION_LIST_DISABLED:
         default:
             suggestionListModeCurrentIndex = 2;
     }
     ui_->suggestionList->setCurrentIndex(suggestionListModeCurrentIndex);
 
     ui_->numSuggestion->setValue(currentProfile.num_suggestions());
-    ui_->numCandidatesPerPage->setValue(currentProfile.num_candidates_per_page());
+    ui_->numCandidatesPerPage->setValue(
+        currentProfile.num_candidates_per_page());
 
-    auto useHistoryState = currentProfile.use_input_history() ? Qt::Checked : Qt::CheckState::Unchecked;
+    auto useHistoryState = currentProfile.use_input_history()
+                               ? Qt::Checked
+                               : Qt::CheckState::Unchecked;
     ui_->useHistory->setCheckState(useHistoryState);
 
     ui_->stopStoreNewHistory->setEnabled(currentProfile.use_input_history());
 
-    auto stopStoreHistoryState = currentProfile.stop_store_new_history() ? Qt::Checked : Qt::CheckState::Unchecked;
+    auto stopStoreHistoryState = currentProfile.stop_store_new_history()
+                                     ? Qt::Checked
+                                     : Qt::CheckState::Unchecked;
     ui_->stopStoreNewHistory->setCheckState(stopStoreHistoryState);
 
     auto specialConversions = &currentProfile.special_conversion_mode();
-    auto halfwidthKatakana = specialConversions->halfwidth_katakana() ? Qt::Checked : Qt::CheckState::Unchecked;
+    auto halfwidthKatakana = specialConversions->halfwidth_katakana()
+                                 ? Qt::Checked
+                                 : Qt::CheckState::Unchecked;
     ui_->halfwidthKatakanaConversion->setCheckState(halfwidthKatakana);
-    auto extendedEmoji = specialConversions->extended_emoji() ? Qt::Checked : Qt::CheckState::Unchecked;
+    auto extendedEmoji = specialConversions->extended_emoji()
+                             ? Qt::Checked
+                             : Qt::CheckState::Unchecked;
     ui_->extendedEmojiConversion->setCheckState(extendedEmoji);
-    auto commaSeparatedNumber = specialConversions->comma_separated_number() ? Qt::Checked : Qt::CheckState::Unchecked;
+    auto commaSeparatedNumber = specialConversions->comma_separated_number()
+                                    ? Qt::Checked
+                                    : Qt::CheckState::Unchecked;
     ui_->commaSeparatedNumCoversion->setCheckState(commaSeparatedNumber);
-    auto calenderConversion = specialConversions->calender() ? Qt::Checked : Qt::CheckState::Unchecked;
+    auto calenderConversion = specialConversions->calender()
+                                  ? Qt::Checked
+                                  : Qt::CheckState::Unchecked;
     ui_->calenderConversion->setCheckState(calenderConversion);
-    auto timeConversion = specialConversions->time() ? Qt::Checked : Qt::CheckState::Unchecked;
+    auto timeConversion =
+        specialConversions->time() ? Qt::Checked : Qt::CheckState::Unchecked;
     ui_->timeConversion->setCheckState(timeConversion);
-    auto mailDomainConversion = specialConversions->mail_domain() ? Qt::Checked : Qt::CheckState::Unchecked;
+    auto mailDomainConversion = specialConversions->mail_domain()
+                                    ? Qt::Checked
+                                    : Qt::CheckState::Unchecked;
     ui_->mailDomainConversion->setCheckState(mailDomainConversion);
-    auto unicodeConversion = specialConversions->unicode_codepoint() ? Qt::Checked : Qt::CheckState::Unchecked;
+    auto unicodeConversion = specialConversions->unicode_codepoint()
+                                 ? Qt::Checked
+                                 : Qt::CheckState::Unchecked;
     ui_->unicodeCodePointConversion->setCheckState(unicodeConversion);
-    auto romanTypographyConversion = specialConversions->roman_typography() ? Qt::Checked : Qt::CheckState::Unchecked;
+    auto romanTypographyConversion = specialConversions->roman_typography()
+                                         ? Qt::Checked
+                                         : Qt::CheckState::Unchecked;
     ui_->romanTypographyConversion->setCheckState(romanTypographyConversion);
-    auto versionConversion = specialConversions->hazkey_version() ? Qt::Checked : Qt::CheckState::Unchecked;
+    auto versionConversion = specialConversions->hazkey_version()
+                                 ? Qt::Checked
+                                 : Qt::CheckState::Unchecked;
     ui_->hazkeyVersionConversion->setCheckState(versionConversion);
 
-    auto enableZenzai = currentProfile.zenzai_enable() ? Qt::Checked : Qt::CheckState::Unchecked;
+    auto enableZenzai = currentProfile.zenzai_enable()
+                            ? Qt::Checked
+                            : Qt::CheckState::Unchecked;
     ui_->enableZenzai->setCheckState(enableZenzai);
 
-    auto enableZenzaiContextual = currentProfile.zenzai_contextual_mode() ? Qt::Checked : Qt::CheckState::Unchecked;
+    auto enableZenzaiContextual = currentProfile.zenzai_contextual_mode()
+                                      ? Qt::Checked
+                                      : Qt::CheckState::Unchecked;
     ui_->zenzaiContextualConversion->setCheckState(enableZenzaiContextual);
 
     ui_->zenzaiInferenceLimit->setValue(currentProfile.zenzai_infer_limit());
@@ -131,14 +168,19 @@ void MainWindow::loadCurrentConfig() {
         zenzaiProfile = zenzaiVersionConfig.v3().profile();
     }
 
-    auto enableRichSuggestion = currentProfile.use_rich_suggestion() ? Qt::Checked : Qt::CheckState::Unchecked;
+    auto enableRichSuggestion = currentProfile.use_rich_suggestion()
+                                    ? Qt::Checked
+                                    : Qt::CheckState::Unchecked;
     ui_->richSuggestionCheckBox->setCheckState(enableRichSuggestion);
 
-    auto useZenzaiCustomModel = currentProfile.use_zenzai_custom_weight() ? Qt::Checked : Qt::CheckState::Unchecked;
+    auto useZenzaiCustomModel = currentProfile.use_zenzai_custom_weight()
+                                    ? Qt::Checked
+                                    : Qt::CheckState::Unchecked;
     ui_->useCustomZenzaiModel->setCheckState(useZenzaiCustomModel);
 
     auto zenzaiCustomModelPath = currentProfile.zenzai_weight_path();
-    ui_->customZenzaiModelPath->setText(QString::fromStdString(zenzaiCustomModelPath));
+    ui_->customZenzaiModelPath->setText(
+        QString::fromStdString(zenzaiCustomModelPath));
 }
 
 MainWindow::~MainWindow() { delete ui_; }
