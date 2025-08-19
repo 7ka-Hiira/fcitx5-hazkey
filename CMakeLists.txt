@@ -56,6 +56,8 @@ endif()
 # install hazkey-server
 install(PROGRAMS ${CMAKE_CURRENT_SOURCE_DIR}/hazkey-server/.build/${SWIFT_BUILD_TYPE}/hazkey-server
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/hazkey)
+install(PROGRAMS ${CMAKE_CURRENT_SOURCE_DIR}/hazkey-server/llama-stub/libllama.so
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/hazkey/llama-stub)
 
 if(NOT SKIP_ZENZAI_INSTALL)
     # install zenz-v3.gguf

@@ -34,7 +34,9 @@ let package = Package(
             ],
             swiftSettings: [.interoperabilityMode(.Cxx)],
             linkerSettings: [
-                .linkedLibrary("llama-zenzai")
+                .unsafeFlags(["-L", "llama-stub"]),
+                .unsafeFlags(["-Xlinker", "-rpath", "-Xlinker", "$ORIGIN/llama"]),
+                .unsafeFlags(["-Xlinker", "-rpath", "-Xlinker", "$ORIGIN/llama-stub"]),
             ],
         ),
         .testTarget(
