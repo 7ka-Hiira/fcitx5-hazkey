@@ -19,11 +19,9 @@ set(PROJECT_SOURCES
         protocol/base.pb.cc
         protocol/commands.pb.cc
         protocol/config.pb.cc
-        protocol/table.pb.cc
         protocol/base.pb.h
         protocol/commands.pb.h
         protocol/config.pb.h
-        protocol/table.pb.h
         main.cpp
         mainwindow.cpp
         serverconnector.cpp
@@ -34,23 +32,23 @@ set(PROJECT_SOURCES
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-  qt_add_executable(hazkey-settings
+    qt_add_executable(hazkey-settings
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
         serverconnector.h serverconnector.cpp
     )
-  # Define target properties for Android with Qt 6 as:
-  #    set_property(TARGET hazkey-settings APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
-  #                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
-  # For more information, see https://doc.qt.io/qt-6/qt-add-executable.html#target-creation
+    # Define target properties for Android with Qt 6 as:
+    #    set_property(TARGET hazkey-settings APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
+    #                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
+    # For more information, see https://doc.qt.io/qt-6/qt-add-executable.html#target-creation
 
-  qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
+    qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 else()
-  add_executable(hazkey-settings
+    add_executable(hazkey-settings
         ${PROJECT_SOURCES}
     )
 
-  qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
+    qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 endif()
 
 find_package(absl REQUIRED)
@@ -63,7 +61,7 @@ target_link_libraries(hazkey-settings PRIVATE Qt${QT_VERSION_MAJOR}::Widgets ${P
 # If you are developing for iOS or macOS you should consider setting an
 # explicit, fixed bundle identifier manually though.
 if(${QT_VERSION} VERSION_LESS 6.1.0)
-  set(BUNDLE_ID_OPTION MACOSX_BUNDLE_GUI_IDENTIFIER com.example.hazkey-settings)
+    set(BUNDLE_ID_OPTION MACOSX_BUNDLE_GUI_IDENTIFIER com.example.hazkey-settings)
 endif()
 set_target_properties(hazkey-settings PROPERTIES
     ${BUNDLE_ID_OPTION}
@@ -81,5 +79,5 @@ install(TARGETS hazkey-settings
 )
 
 if(QT_VERSION_MAJOR EQUAL 6)
-  qt_finalize_executable(hazkey-settings)
+    qt_finalize_executable(hazkey-settings)
 endif()

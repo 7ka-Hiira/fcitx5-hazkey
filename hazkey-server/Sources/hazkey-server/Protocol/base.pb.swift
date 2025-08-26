@@ -153,12 +153,12 @@ struct Hazkey_RequestEnvelope: Sendable {
     set {payload = .getCurrentConfig(newValue)}
   }
 
-  var setConfig: Hazkey_Config_setConfig {
+  var setCurrentConfig: Hazkey_Config_setCurrentConfig {
     get {
-      if case .setConfig(let v)? = payload {return v}
-      return Hazkey_Config_setConfig()
+      if case .setCurrentConfig(let v)? = payload {return v}
+      return Hazkey_Config_setCurrentConfig()
     }
-    set {payload = .setConfig(newValue)}
+    set {payload = .setCurrentConfig(newValue)}
   }
 
   var getDefaultConfig: Hazkey_Config_getDefaultConfig {
@@ -191,7 +191,7 @@ struct Hazkey_RequestEnvelope: Sendable {
     case getHiraganaWithCursor(Hazkey_Commands_GetHiraganaWithCursor)
     case getCandidates(Hazkey_Commands_GetCandidates)
     case getCurrentConfig(Hazkey_Config_getCurrentConfig)
-    case setConfig(Hazkey_Config_setConfig)
+    case setCurrentConfig(Hazkey_Config_setCurrentConfig)
     case getDefaultConfig(Hazkey_Config_getDefaultConfig)
     case clearAllHistory_p(Hazkey_Config_clearAllHistory)
 
@@ -282,7 +282,7 @@ extension Hazkey_RequestEnvelope: SwiftProtobuf.Message, SwiftProtobuf._MessageI
     9: .standard(proto: "get_hiragana_with_cursor"),
     10: .standard(proto: "get_candidates"),
     100: .standard(proto: "get_current_config"),
-    101: .standard(proto: "set_config"),
+    101: .standard(proto: "set_current_config"),
     102: .standard(proto: "get_default_config"),
     103: .standard(proto: "clear_all_history"),
   ]
@@ -437,16 +437,16 @@ extension Hazkey_RequestEnvelope: SwiftProtobuf.Message, SwiftProtobuf._MessageI
         }
       }()
       case 101: try {
-        var v: Hazkey_Config_setConfig?
+        var v: Hazkey_Config_setCurrentConfig?
         var hadOneofValue = false
         if let current = self.payload {
           hadOneofValue = true
-          if case .setConfig(let m) = current {v = m}
+          if case .setCurrentConfig(let m) = current {v = m}
         }
         try decoder.decodeSingularMessageField(value: &v)
         if let v = v {
           if hadOneofValue {try decoder.handleConflictingOneOf()}
-          self.payload = .setConfig(v)
+          self.payload = .setCurrentConfig(v)
         }
       }()
       case 102: try {
@@ -530,8 +530,8 @@ extension Hazkey_RequestEnvelope: SwiftProtobuf.Message, SwiftProtobuf._MessageI
       guard case .getCurrentConfig(let v)? = self.payload else { preconditionFailure() }
       try visitor.visitSingularMessageField(value: v, fieldNumber: 100)
     }()
-    case .setConfig?: try {
-      guard case .setConfig(let v)? = self.payload else { preconditionFailure() }
+    case .setCurrentConfig?: try {
+      guard case .setCurrentConfig(let v)? = self.payload else { preconditionFailure() }
       try visitor.visitSingularMessageField(value: v, fieldNumber: 101)
     }()
     case .getDefaultConfig?: try {

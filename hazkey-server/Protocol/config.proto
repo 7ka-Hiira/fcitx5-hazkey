@@ -2,11 +2,21 @@ syntax = "proto3";
 
 package hazkey.config;
 
-import "table.proto";
-
 message FileHash {
-    string path = 1;
+    enum ConfigFileType {
+        CONFIG_MAIN = 0;
+        INPUT_TABLE = 1;
+    }
+
+    string name = 1;
     string sha256sum = 2;
+    ConfigFileType type = 3;
+}
+
+message InputTable {
+    string name = 1;
+    bool is_built_in = 2;
+    string filename = 3;
 }
 
 message ConfigProfile {
@@ -43,9 +53,10 @@ message ConfigProfile {
         bool extended_emoji = 51;
     }
 
-    message InputTable {
+    message EnabledInputTable {
         string name = 1;
-        bool is_default = 2;
+        bool is_built_in = 2;
+        string filename = 3;
     }
 
     message ZenzaiVersionConfig {
@@ -104,10 +115,9 @@ message ConfigProfile {
 
 message getCurrentConfig {}
 
-message setConfig {
+message setCurrentConfig {
     repeated FileHash file_hashes = 1;
-    repeated hazkey.config.table.EditOperation table_operations = 2;
-    repeated ConfigProfile config = 3;
+    repeated ConfigProfile config = 2;
 }
 
 message getDefaultConfig {}
@@ -118,6 +128,6 @@ message clearAllHistory {}
 
 message CurrentConfig {
     repeated FileHash file_hashes = 1;
-    repeated hazkey.config.table.InputTable input_tables = 2;
+    repeated InputTable available_tables = 2;
     repeated ConfigProfile configs = 3;
 }

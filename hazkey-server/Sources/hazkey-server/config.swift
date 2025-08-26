@@ -11,9 +11,8 @@ func getCurrentConfig() -> Hazkey_ResponseEnvelope {
     }
 }
 
-func setConfig(
+func setCurrentConfig(
     _ hashes: [Hazkey_Config_FileHash],
-    _ inputTableOperations: [Hazkey_Config_Table_EditOperation],
     _ config: [Hazkey_Config_ConfigProfile]
 ) -> Hazkey_ResponseEnvelope {
 

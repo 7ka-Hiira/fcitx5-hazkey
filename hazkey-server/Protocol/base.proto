@@ -19,7 +19,7 @@ message RequestEnvelope {
         hazkey.commands.GetCandidates get_candidates = 10;
 
         hazkey.config.getCurrentConfig get_current_config = 100;
-        hazkey.config.setConfig set_config = 101;
+        hazkey.config.setCurrentConfig set_current_config = 101;
         hazkey.config.getDefaultConfig get_default_config = 102;
         hazkey.config.clearAllHistory clear_all_history = 103;
     }

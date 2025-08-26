@@ -137,7 +137,7 @@ static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
 const char descriptor_table_protodef_base_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\nbase.proto\022\006hazkey\032\016commands.proto\032\014co"
-    "nfig.proto\"\323\006\n\017RequestEnvelope\022\?\n\022new_co"
+    "nfig.proto\"\342\006\n\017RequestEnvelope\022\?\n\022new_co"
     "mposing_text\030\001 \001(\0132!.hazkey.commands.New"
     "ComposingTextH\000\0222\n\013set_context\030\002 \001(\0132\033.h"
     "azkey.commands.SetContextH\000\0220\n\ninput_cha"
@@ -154,20 +154,20 @@ const char descriptor_table_protodef_base_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIA
     "\0228\n\016get_candidates\030\n \001(\0132\036.hazkey.comman"
     "ds.GetCandidatesH\000\022=\n\022get_current_config"
     "\030d \001(\0132\037.hazkey.config.getCurrentConfigH"
-    "\000\022.\n\nset_config\030e \001(\0132\030.hazkey.config.se"
-    "tConfigH\000\022=\n\022get_default_config\030f \001(\0132\037."
-    "hazkey.config.getDefaultConfigH\000\022;\n\021clea"
-    "r_all_history\030g \001(\0132\036.hazkey.config.clea"
-    "rAllHistoryH\000B\t\n\007payload\"\226\002\n\020ResponseEnv"
-    "elope\022\"\n\006status\030\001 \001(\0162\022.hazkey.StatusCod"
-    "e\022\025\n\rerror_message\030\002 \001(\t\022\016\n\004text\030\003 \001(\tH\000"
-    "\0227\n\ncandidates\030\004 \001(\0132!.hazkey.commands.C"
-    "andidatesResultH\000\022;\n\020text_with_cursor\030\005 "
-    "\001(\0132\037.hazkey.commands.TextWithCursorH\000\0226"
-    "\n\016current_config\030d \001(\0132\034.hazkey.config.C"
-    "urrentConfigH\000B\t\n\007payload*6\n\nStatusCode\022"
-    "\017\n\013UNSPECIFIED\020\000\022\013\n\007SUCCESS\020\001\022\n\n\006FAILED\020"
-    "\002b\006proto3"
+    "\000\022=\n\022set_current_config\030e \001(\0132\037.hazkey.c"
+    "onfig.setCurrentConfigH\000\022=\n\022get_default_"
+    "config\030f \001(\0132\037.hazkey.config.getDefaultC"
+    "onfigH\000\022;\n\021clear_all_history\030g \001(\0132\036.haz"
+    "key.config.clearAllHistoryH\000B\t\n\007payload\""
+    "\226\002\n\020ResponseEnvelope\022\"\n\006status\030\001 \001(\0162\022.h"
+    "azkey.StatusCode\022\025\n\rerror_message\030\002 \001(\t\022"
+    "\016\n\004text\030\003 \001(\tH\000\0227\n\ncandidates\030\004 \001(\0132!.ha"
+    "zkey.commands.CandidatesResultH\000\022;\n\020text"
+    "_with_cursor\030\005 \001(\0132\037.hazkey.commands.Tex"
+    "tWithCursorH\000\0226\n\016current_config\030d \001(\0132\034."
+    "hazkey.config.CurrentConfigH\000B\t\n\007payload"
+    "*6\n\nStatusCode\022\017\n\013UNSPECIFIED\020\000\022\013\n\007SUCCE"
+    "SS\020\001\022\n\n\006FAILED\020\002b\006proto3"
 };
 static const ::_pbi::DescriptorTable* PROTOBUF_NONNULL const
     descriptor_table_base_2eproto_deps[2] = {
@@ -178,7 +178,7 @@ static ::absl::once_flag descriptor_table_base_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_base_2eproto = {
     false,
     false,
-    1249,
+    1264,
     descriptor_table_protodef_base_2eproto,
     "base.proto",
     &descriptor_table_base_2eproto_once,
@@ -470,26 +470,26 @@ void RequestEnvelope::clear_get_current_config() {
     clear_has_payload();
   }
 }
-void RequestEnvelope::set_allocated_set_config(::hazkey::config::setConfig* PROTOBUF_NULLABLE set_config) {
+void RequestEnvelope::set_allocated_set_current_config(::hazkey::config::setCurrentConfig* PROTOBUF_NULLABLE set_current_config) {
   ::google::protobuf::Arena* message_arena = GetArena();
   clear_payload();
-  if (set_config) {
-    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::google::protobuf::Message*>(set_config)->GetArena();
+  if (set_current_config) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::google::protobuf::Message*>(set_current_config)->GetArena();
     if (message_arena != submessage_arena) {
-      set_config = ::google::protobuf::internal::GetOwnedMessage(message_arena, set_config, submessage_arena);
+      set_current_config = ::google::protobuf::internal::GetOwnedMessage(message_arena, set_current_config, submessage_arena);
     }
-    set_has_set_config();
-    _impl_.payload_.set_config_ = set_config;
+    set_has_set_current_config();
+    _impl_.payload_.set_current_config_ = set_current_config;
   }
-  // @@protoc_insertion_point(field_set_allocated:hazkey.RequestEnvelope.set_config)
+  // @@protoc_insertion_point(field_set_allocated:hazkey.RequestEnvelope.set_current_config)
 }
-void RequestEnvelope::clear_set_config() {
+void RequestEnvelope::clear_set_current_config() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (payload_case() == kSetConfig) {
+  if (payload_case() == kSetCurrentConfig) {
     if (GetArena() == nullptr) {
-      delete _impl_.payload_.set_config_;
+      delete _impl_.payload_.set_current_config_;
     } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
-      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.set_config_);
+      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.set_current_config_);
     }
     clear_has_payload();
   }
@@ -608,8 +608,8 @@ RequestEnvelope::RequestEnvelope(
       case kGetCurrentConfig:
         _impl_.payload_.get_current_config_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.get_current_config_);
         break;
-      case kSetConfig:
-        _impl_.payload_.set_config_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.set_config_);
+      case kSetCurrentConfig:
+        _impl_.payload_.set_current_config_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.set_current_config_);
         break;
       case kGetDefaultConfig:
         _impl_.payload_.get_default_config_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.get_default_config_);
@@ -737,11 +737,11 @@ void RequestEnvelope::clear_payload() {
       }
       break;
     }
-    case kSetConfig: {
+    case kSetCurrentConfig: {
       if (GetArena() == nullptr) {
-        delete _impl_.payload_.set_config_;
+        delete _impl_.payload_.set_current_config_;
       } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
-        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.set_config_);
+        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.set_current_config_);
       }
       break;
     }
@@ -870,8 +870,8 @@ RequestEnvelope::_table_ = {
     // .hazkey.config.getCurrentConfig get_current_config = 100;
     {PROTOBUF_FIELD_OFFSET(RequestEnvelope, _impl_.payload_.get_current_config_), _Internal::kOneofCaseOffset + 0, 10,
     (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .hazkey.config.setConfig set_config = 101;
-    {PROTOBUF_FIELD_OFFSET(RequestEnvelope, _impl_.payload_.set_config_), _Internal::kOneofCaseOffset + 0, 11,
+    // .hazkey.config.setCurrentConfig set_current_config = 101;
+    {PROTOBUF_FIELD_OFFSET(RequestEnvelope, _impl_.payload_.set_current_config_), _Internal::kOneofCaseOffset + 0, 11,
     (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
     // .hazkey.config.getDefaultConfig get_default_config = 102;
     {PROTOBUF_FIELD_OFFSET(RequestEnvelope, _impl_.payload_.get_default_config_), _Internal::kOneofCaseOffset + 0, 12,
@@ -892,7 +892,7 @@ RequestEnvelope::_table_ = {
       {::_pbi::TcParser::GetTable<::hazkey::commands::GetHiraganaWithCursor>()},
       {::_pbi::TcParser::GetTable<::hazkey::commands::GetCandidates>()},
       {::_pbi::TcParser::GetTable<::hazkey::config::getCurrentConfig>()},
-      {::_pbi::TcParser::GetTable<::hazkey::config::setConfig>()},
+      {::_pbi::TcParser::GetTable<::hazkey::config::setCurrentConfig>()},
       {::_pbi::TcParser::GetTable<::hazkey::config::getDefaultConfig>()},
       {::_pbi::TcParser::GetTable<::hazkey::config::clearAllHistory>()},
   }},
@@ -992,9 +992,9 @@ PROTOBUF_NOINLINE void RequestEnvelope::Clear() {
           stream);
       break;
     }
-    case kSetConfig: {
+    case kSetCurrentConfig: {
       target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-          101, *this_._impl_.payload_.set_config_, this_._impl_.payload_.set_config_->GetCachedSize(), target,
+          101, *this_._impl_.payload_.set_current_config_, this_._impl_.payload_.set_current_config_->GetCachedSize(), target,
           stream);
       break;
     }
@@ -1103,10 +1103,10 @@ PROTOBUF_NOINLINE void RequestEnvelope::Clear() {
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.get_current_config_);
       break;
     }
-    // .hazkey.config.setConfig set_config = 101;
-    case kSetConfig: {
+    // .hazkey.config.setCurrentConfig set_current_config = 101;
+    case kSetCurrentConfig: {
       total_size += 2 +
-                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.set_config_);
+                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.set_current_config_);
       break;
     }
     // .hazkey.config.getDefaultConfig get_default_config = 102;
@@ -1237,11 +1237,11 @@ void RequestEnvelope::MergeImpl(::google::protobuf::MessageLite& to_msg, const :
         }
         break;
       }
-      case kSetConfig: {
+      case kSetCurrentConfig: {
         if (oneof_needs_init) {
-          _this->_impl_.payload_.set_config_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.set_config_);
+          _this->_impl_.payload_.set_current_config_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.set_current_config_);
         } else {
-          _this->_impl_.payload_.set_config_->MergeFrom(*from._impl_.payload_.set_config_);
+          _this->_impl_.payload_.set_current_config_->MergeFrom(*from._impl_.payload_.set_current_config_);
         }
         break;
       }
