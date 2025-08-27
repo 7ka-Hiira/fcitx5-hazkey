@@ -129,8 +129,13 @@ var profiles: [Hazkey_Config_Profile] = []
 var composingText: ComposingTextBox = ComposingTextBox()
 var currentCandidateList: [Candidate]?
 
-// FIXME: read config file
-profiles = loadConfig()
+do {
+    profiles = try loadConfig()
+} catch {
+    NSLog("Failed to load config: \(error)")
+    NSLog("Loading default config...")
+    profiles = [genDefaultConfig()]
+}
 
 // TODO: add [0] out of range handling
 var currentProfile = profiles[0]

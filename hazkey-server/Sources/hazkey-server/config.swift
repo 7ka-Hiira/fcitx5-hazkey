@@ -29,8 +29,14 @@ func setCurrentConfig(
     _ hashes: [Hazkey_Config_FileHash],
     _ profiles: [Hazkey_Config_Profile]
 ) -> Hazkey_ResponseEnvelope {
-
-    saveConfig(profiles)
+    do {
+        try saveConfig(profiles)
+    } catch {
+        return Hazkey_ResponseEnvelope.with {
+            $0.status = .failed
+            $0.errorMessage = "\(error)"
+        }
+    }
 
     return Hazkey_ResponseEnvelope.with {
         $0.status = .success
@@ -58,35 +64,31 @@ func genDefaultConfig() -> Hazkey_Config_Profile {
     return newConf
 }
 
-func saveConfig(_ profiles: [Hazkey_Config_Profile]) {
-    do {
-        let configDir = getConfigDirectory()
-        let configPath = configDir.appendingPathComponent("config.json")
+func saveConfig(_ profiles: [Hazkey_Config_Profile]) throws {
+    let configDir = getConfigDirectory()
+    let configPath = configDir.appendingPathComponent("config.json")
 
-        // Create directory if it doesn't exist
-        try FileManager.default.createDirectory(
-            at: configDir, withIntermediateDirectories: true, attributes: nil)
+    // Create directory if it doesn't exist
+    try FileManager.default.createDirectory(
+        at: configDir, withIntermediateDirectories: true, attributes: nil)
 
-        // Convert each protobuf to JSON string and then combine into array
-        var jsonObjects: [Any] = []
-        for profile in profiles {
-            let jsonString = try profile.jsonString()
-            let jsonData = jsonString.data(using: .utf8)!
-            let jsonObject = try JSONSerialization.jsonObject(with: jsonData, options: [])
-            jsonObjects.append(jsonObject)
-        }
-
-        // Convert array to JSON data
-        let jsonData = try JSONSerialization.data(
-            withJSONObject: jsonObjects, options: [.prettyPrinted])
-
-        // Write to file
-        try jsonData.write(to: configPath)
-
-        NSLog("Config saved to: \(configPath.path)")
-    } catch {
-        NSLog("Failed to save config: \(error)")
+    // Convert each protobuf to JSON string and then combine into array
+    var jsonObjects: [Any] = []
+    for profile in profiles {
+        let jsonString = try profile.jsonString()
+        let jsonData = jsonString.data(using: .utf8)!
+        let jsonObject = try JSONSerialization.jsonObject(with: jsonData, options: [])
+        jsonObjects.append(jsonObject)
     }
+
+    // Convert array to JSON data
+    let jsonData = try JSONSerialization.data(
+        withJSONObject: jsonObjects, options: [.prettyPrinted])
+
+    // Write to file
+    try jsonData.write(to: configPath)
+
+    NSLog("Config saved to: \(configPath.path)")
 }
 
 func loadConfig() throws -> [Hazkey_Config_Profile] {
@@ -107,9 +109,11 @@ func loadConfig() throws -> [Hazkey_Config_Profile] {
         try JSONSerialization.jsonObject(with: jsonData, options: []) as! [[String: Any]]
 
     var configs: [Hazkey_Config_Profile] = []
+    var decodeOptions = JSONDecodingOptions()
+    decodeOptions.ignoreUnknownFields = true
     for jsonObject in jsonArray {
         let jsonObjectData = try JSONSerialization.data(withJSONObject: jsonObject, options: [])
-        let config = try Hazkey_Config_Profile(jsonUTF8Data: jsonObjectData)
+        let config = try Hazkey_Config_Profile(jsonUTF8Data: jsonObjectData, options: decodeOptions)
         configs.append(config)
     }
 
@@ -125,8 +129,6 @@ func loadConfig() throws -> [Hazkey_Config_Profile] {
 // replace with FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!?
 func getConfigDirectory() -> URL {
     let homeDir = FileManager.default.homeDirectoryForCurrentUser
-
-    // Check for XDG_CONFIG_HOME environment variable
     if let xdgConfigHome = ProcessInfo.processInfo.environment["XDG_CONFIG_HOME"],
         !xdgConfigHome.isEmpty
     {
