@@ -123,8 +123,9 @@ guard listen(fd, 10) != -1 else {
 }
 
 // FIXME: unglobalize these vars
+let systemResourceDir = URL(fileURLWithPath: systemResourcePath, isDirectory: true)
 var converter = KanaKanjiConverter.init(
-    dictionaryURL: URL(filePath: "/usr/share/hazkey/Dictionary"))
+    dictionaryURL: systemResourceDir.appendingPathComponent("Dictionary", isDirectory: true))
 var profiles: [Hazkey_Config_Profile] = []
 var composingText: ComposingTextBox = ComposingTextBox()
 var currentCandidateList: [Candidate]?

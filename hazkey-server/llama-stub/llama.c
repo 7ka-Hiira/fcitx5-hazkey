@@ -12,6 +12,8 @@
         abort();                                                            \
     } while (0)
 
+void llama_lib_is_stub() {}
+
 // Model parameters functions
 LLAMA_API struct llama_model_params llama_model_default_params(void) {
     PANIC();

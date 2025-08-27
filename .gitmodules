@@ -1,9 +1,9 @@
-[submodule "azooKey_dictionary_storage"]
-	path = azooKey_dictionary_storage
-	url = https://github.com/ensan-hcl/azooKey_dictionary_storage
-[submodule "azooKey_emoji_dictionary_storage"]
-	path = azooKey_emoji_dictionary_storage
-	url = https://github.com/azooKey/azooKey_emoji_dictionary_storage
 [submodule "hazkey-server/llama.cpp"]
 	path = hazkey-server/llama.cpp
 	url = https://github.com/azooKey/llama.cpp.git
+[submodule "hazkey-server/azooKey_emoji_dictionary_storage"]
+	path = hazkey-server/azooKey_emoji_dictionary_storage
+	url = https://github.com/azooKey/azooKey_emoji_dictionary_storage
+[submodule "hazkey-server/azooKey_dictionary_storage"]
+	path = hazkey-server/azooKey_dictionary_storage
+	url = https://github.com/azooKey/azooKey_dictionary_storage

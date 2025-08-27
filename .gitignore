@@ -6,3 +6,6 @@
 /.idea
 
 /zenz-v3.gguf
+
+/CMakeFiles
+/CMakeCache.txt

@@ -129,7 +129,6 @@ func loadConfig() throws -> [Hazkey_Config_Profile] {
 }
 
 func getConfigDirectory() -> URL {
-    let homeDir = FileManager.default.homeDirectoryForCurrentUser
     if let xdgConfigHome = ProcessInfo.processInfo.environment["XDG_CONFIG_HOME"],
         !xdgConfigHome.isEmpty
     {
@@ -137,15 +136,12 @@ func getConfigDirectory() -> URL {
     }
 
     // Fallback to ~/.config/hazkey
+    let homeDir = FileManager.default.homeDirectoryForCurrentUser
     return homeDir.appendingPathComponent(".config").appendingPathComponent("hazkey")
 }
 
 @MainActor
 func genZenzaiMode(leftContext: String) -> ConvertRequestOptions.ZenzaiMode {
-    var systemResourceDir: URL {
-        URL(fileURLWithPath: systemResourcePath, isDirectory: true)
-    }
-
     if currentProfile.zenzaiEnable {
         return ConvertRequestOptions.ZenzaiMode.on(
             weight: systemResourceDir.appendingPathComponent("zenz-v3.gguf", isDirectory: false),
@@ -186,10 +182,6 @@ func genBaseConvertRequestOptions() -> ConvertRequestOptions {
     var userDataDir: URL {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
             .appendingPathComponent("hazkey", isDirectory: true)
-    }
-
-    var systemResourceDir: URL {
-        URL(fileURLWithPath: systemResourcePath, isDirectory: true)
     }
 
     let learningType =

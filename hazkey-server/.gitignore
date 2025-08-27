@@ -1,4 +1,7 @@
+/.cache
 /.build
+/build
 /Sources/hazkey-server/path.swift
-/llama-stub/*.so
-/llama-stub/*.o
+
+/CMakeFiles
+/CMakeCache.txt
