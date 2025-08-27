@@ -23,11 +23,11 @@ func removePidFile() {
 }
 
 func terminateExistingServer(pid: pid_t) -> Bool {
-    print("Terminating existing server with PID \(pid)...")
+    NSLog("Terminating existing server with PID \(pid)...")
 
     // Send SIGTERM to gracefully terminate
     if kill(pid, SIGTERM) != 0 {
-        print("Failed to send SIGTERM to existing server")
+        NSLog("Failed to send SIGTERM to existing server")
         return false
     }
 
@@ -36,23 +36,23 @@ func terminateExistingServer(pid: pid_t) -> Bool {
 
         // Check if process is still running
         if kill(pid, 0) != 0 {
-            print("Existing server terminated successfully")
+            NSLog("Existing server terminated successfully")
             return true
         }
 
         if attempt == 20 {  // try SIGKILL
-            print("Server didn't respond to SIGTERM, sending SIGKILL...")
+            NSLog("Server didn't respond to SIGTERM, sending SIGKILL...")
             kill(pid, SIGKILL)
         }
     }
 
     // Final check
     if kill(pid, 0) == 0 {
-        print("Failed to terminate existing server")
+        NSLog("Failed to terminate existing server")
         return false
     }
 
-    print("Existing server terminated")
+    NSLog("Existing server terminated")
     return true
 }
 
@@ -66,7 +66,7 @@ signal(SIGINT) { _ in
 }
 signal(SIGPIPE) { _ in
     // Ignore SIGPIPE
-    print("SIGPIPE received - client disconnected")
+    NSLog("SIGPIPE received - client disconnected")
 }
 
 if FileManager.default.fileExists(atPath: pidFilePath) {
@@ -76,13 +76,13 @@ if FileManager.default.fileExists(atPath: pidFilePath) {
         if kill(pid, 0) == 0 {
             if replaceExisting {
                 if !terminateExistingServer(pid: pid) {
-                    print("Failed to terminate existing server. Exiting.")
+                    NSLog("Failed to terminate existing server. Exiting.")
                     exit(1)
                 }
                 try? FileManager.default.removeItem(atPath: pidFilePath)
             } else {
-                print("Another hazkey-server is already running.")
-                print("Use -r or --replace option to replace the existing server.")
+                NSLog("Another hazkey-server is already running.")
+                NSLog("Use -r or --replace option to replace the existing server.")
                 exit(0)
             }
         }
@@ -145,9 +145,9 @@ var baseConvertRequestOptions = genBaseConvertRequestOptions()
 var flags = fcntl(fd, F_GETFL, 0)
 let fcntlRes = fcntl(fd, F_SETFL, flags | O_NONBLOCK)
 if fcntlRes != 0 {
-    print("fcntl() failed")
+    NSLog("fcntl() failed")
 }
 
-print("start listening...")
+NSLog("start listening...")
 
 listenSocket()

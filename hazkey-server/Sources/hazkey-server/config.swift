@@ -126,7 +126,6 @@ func loadConfig() throws -> [Hazkey_Config_Profile] {
     return configs
 }
 
-// replace with FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!?
 func getConfigDirectory() -> URL {
     let homeDir = FileManager.default.homeDirectoryForCurrentUser
     if let xdgConfigHome = ProcessInfo.processInfo.environment["XDG_CONFIG_HOME"],

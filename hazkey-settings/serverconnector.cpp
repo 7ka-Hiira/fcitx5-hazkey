@@ -38,7 +38,7 @@ void ServerConnector::restart_hazkey_server() {
             execl(
                 "/usr/lib"
                 "/hazkey/hazkey-server",
-                "-r", "hazkey-server", (char*)NULL);
+                "hazkey-server", (char*)NULL);
             exit(1);
         } else if (second_pid < 0) {
             exit(1);

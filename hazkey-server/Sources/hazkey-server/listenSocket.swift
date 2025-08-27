@@ -87,7 +87,7 @@ func listenSocket() {
         let pollRes = poll(&pollFds, nfds_t(pollFds.count), 1000)  // 1 second timeout
 
         if pollRes < 0 {
-            print("Poll failed: \(errno)")
+            NSLog("Poll failed: \(errno)")
             break
         }
 
@@ -105,18 +105,18 @@ func listenSocket() {
             if newClientFd != -1 {
                 // If we already have a client, close it
                 if let existingClientFd = currentClientFd {
-                    print("New client connecting, closing existing client: \(existingClientFd)")
+                    NSLog("New client connecting, closing existing client: \(existingClientFd)")
                     close(existingClientFd)
                 }
 
                 // Set up the new client
-                print("Client connected: \(newClientFd)")
+                NSLog("Client connected: \(newClientFd)")
 
                 // Make client non-blocking
                 let clientFlags = fcntl(newClientFd, F_GETFL, 0)
                 let fcntlRes = fcntl(newClientFd, F_SETFL, clientFlags | O_NONBLOCK)
                 if fcntlRes != 0 {
-                    print("fcntl() failed for client")
+                    NSLog("fcntl() failed for client")
                     close(newClientFd)
                     currentClientFd = nil
                 } else {
@@ -130,7 +130,7 @@ func listenSocket() {
             let clientEvents = Int32(pollFds[1].revents)
 
             if clientEvents & POLLHUP != 0 || clientEvents & POLLERR != 0 {
-                print("Client disconnected or error: \(clientFd)")
+                NSLog("Client disconnected or error: \(clientFd)")
                 close(clientFd)
                 currentClientFd = nil
                 continue
@@ -142,10 +142,10 @@ func listenSocket() {
                     let maxMessageSize: UInt32 = 1024 * 1024  // 1MB limit
 
                     // Read message length header (4 bytes, big-endian)
-                    print("Reading data from client \(clientFd)...")
+                    debugLog("Reading data from client \(clientFd)...")
                     let lengthData = try readData(from: clientFd, count: 4)
                     let readLen = lengthData.withUnsafeBytes { $0.load(as: UInt32.self).bigEndian }
-                    print("Message length: \(readLen)")
+                    debugLog("Message length: \(readLen)")
 
                     // Sanity check
                     guard readLen <= maxMessageSize else {
@@ -154,11 +154,11 @@ func listenSocket() {
 
                     // Read message body
                     let query = try readData(from: clientFd, count: Int(readLen))
-                    print("Successfully read \(query.count) bytes")
+                    debugLog("Successfully read \(query.count) bytes")
 
                     // Process and respond
                     let response = processProto(data: query)
-                    print("Processed request, response size: \(response.count)")
+                    debugLog("Processed request, response size: \(response.count)")
 
                     // Write response length
                     var writeLen = UInt32(response.count).bigEndian
@@ -169,29 +169,29 @@ func listenSocket() {
                     try writeData(to: clientFd, data: response)
 
                     fsync(clientFd)
-                    print("Successfully wrote response")
+                    debugLog("Successfully wrote response")
 
                 } catch let error as SocketError {
                     switch error {
                     case .clientDisconnected(let msg):
-                        print(msg)
+                        NSLog(msg)
                     case .readFailed(let msg, let err):
-                        print("Read failed: \(msg), errno: \(err)")
+                        NSLog("Read failed: \(msg), errno: \(err)")
                     case .incompleteRead(let msg), .incompleteWrite(let msg):
-                        print(msg)
+                        NSLog(msg)
                     case .messageTooLarge(let len):
-                        print("Message too large: \(len)")
+                        NSLog("Message too large: \(len)")
                     case .writeFailed(let msg, let err):
-                        print("Write failed: \(msg), errno: \(err)")
+                        NSLog("Write failed: \(msg), errno: \(err)")
                     default:
-                        print("Socket error: \(error)")
+                        NSLog("Socket error: \(error)")
                     }
-                    print("Closing client connection due to error: \(clientFd)")
+                    NSLog("Closing client connection due to error: \(clientFd)")
                     close(clientFd)
                     currentClientFd = nil
                 } catch {
-                    print("An unexpected error occurred: \(error)")
-                    print("Closing client connection: \(clientFd)")
+                    NSLog("An unexpected error occurred: \(error)")
+                    NSLog("Closing client connection: \(clientFd)")
                     close(clientFd)
                     currentClientFd = nil
                 }
