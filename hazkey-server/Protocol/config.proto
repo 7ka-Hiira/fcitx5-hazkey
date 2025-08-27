@@ -19,7 +19,7 @@ message InputTable {
     string filename = 3;
 }
 
-message ConfigProfile {
+message Profile {
     enum AutoConvertMode {
         AUTO_CONVERT_MODE_UNSPECIFIED = 0;
         AUTO_CONVERT_DISABLED = 1;
@@ -80,54 +80,61 @@ message ConfigProfile {
         }
     }
 
-    message ZenzaiModel {
-        string name = 1;
-        string filename = 2;
-        bool is_system = 3;
-    }
-
     string profile_name = 5;
+    string profile_id = 6;
 
-    AutoConvertMode auto_convert_mode = 10;
-    AuxTextMode aux_text_mode = 11;
-    SuggestionListMode suggestion_list_mode = 12;
-    bool use_rich_suggestion = 13;
-    int32 num_suggestions = 14;
-    int32 num_candidates_per_page = 15;
-    bool use_rich_candidates = 16;
+    bool use_default_input_ui_settings = 10;
+    AutoConvertMode auto_convert_mode = 11;
+    AuxTextMode aux_text_mode = 12;
+    SuggestionListMode suggestion_list_mode = 13;
+    bool use_rich_suggestion = 14;
+    int32 num_suggestions = 15;
 
-    bool use_input_history = 20;
-    bool stop_store_new_history = 21;
+    bool use_default_conversion_ui_settings = 20;
+    int32 num_candidates_per_page = 21;
+    bool use_rich_candidates = 22;
 
-    SpecialConversionMode special_conversion_mode = 30;
+    bool use_default_history_settings = 30;
+    bool use_profile_independent_history = 31;
+    bool use_input_history = 32;
+    bool stop_store_new_history = 23;
 
-    repeated InputTable enabled_tables = 40;
+    bool use_default_special_conversion_settings = 40;
+    SpecialConversionMode special_conversion_mode = 41;
 
-    bool zenzai_enable = 100;
-    int32 zenzai_infer_limit = 101;
-    bool zenzai_contextual_mode = 102;
-    ZenzaiVersionConfig zenzai_version_config = 103;
-    bool use_zenzai_custom_weight = 104;
-    string zenzai_weight_path = 105;
+    bool use_default_table_settings = 50;
+    repeated InputTable enabled_tables = 51;
+
+    bool use_default_zenzai_settings = 100;
+    bool zenzai_enable = 101;
+    int32 zenzai_infer_limit = 102;
+    bool zenzai_contextual_mode = 103;
+    ZenzaiVersionConfig zenzai_version_config = 104;
+    bool use_zenzai_custom_weight = 105;
+    string zenzai_weight_path = 106;
 }
 
 // Request messages
 
-message getCurrentConfig {}
+message GetConfig {}
 
-message setCurrentConfig {
+message SetConfig {
     repeated FileHash file_hashes = 1;
-    repeated ConfigProfile config = 2;
+    repeated Profile profiles = 2;
 }
 
-message getDefaultConfig {}
+message GetDefaultProfile {}
 
-message clearAllHistory {}
+message ClearAllHistory {
+    string profile_id = 1;
+}
 
 // Response messages
 
 message CurrentConfig {
     repeated FileHash file_hashes = 1;
-    repeated InputTable available_tables = 2;
-    repeated ConfigProfile configs = 3;
+    repeated Profile profiles = 2;
+    repeated InputTable available_tables = 3;
+    bool is_zenzai_available = 4;
+    string xdg_config_home_path = 5;
 }

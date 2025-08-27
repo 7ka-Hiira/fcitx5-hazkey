@@ -26,7 +26,7 @@ std::string ServerConnector::get_socket_path() {
     }
 }
 
-void ServerConnector::start_hazkey_server() {
+void ServerConnector::restart_hazkey_server() {
     pid_t pid = fork();
     if (pid == 0) {
         // First child process
@@ -37,7 +37,7 @@ void ServerConnector::start_hazkey_server() {
             execl(
                 "/usr/lib"
                 "/hazkey/hazkey-server",
-                "hazkey-server", (char*)NULL);
+                "-r", "hazkey-server", (char*)NULL);
             exit(1);
         } else if (second_pid < 0) {
             exit(1);
@@ -148,7 +148,7 @@ void ServerConnector::connect_server() {
         }
         close(sock_);
         sock_ = -1;
-        start_hazkey_server();
+        restart_hazkey_server();
         std::this_thread::sleep_for(
             std::chrono::milliseconds(RETRY_INTERVAL_MS));
     }
@@ -218,10 +218,9 @@ std::optional<hazkey::ResponseEnvelope> ServerConnector::transact(
     return resp;
 }
 
-std::optional<hazkey::config::CurrentConfig>
-ServerConnector::getCurrentConfig() {
+std::optional<hazkey::config::CurrentConfig> ServerConnector::getConfig() {
     hazkey::RequestEnvelope request;
-    auto _ = request.mutable_get_current_config();
+    auto _ = request.mutable_get_config();
     auto response = transact(request);
     if (response == std::nullopt) {
         return std::nullopt;
@@ -234,4 +233,19 @@ ServerConnector::getCurrentConfig() {
         return std::nullopt;
     }
     return responseVal.current_config();
+}
+
+void ServerConnector::setCurrentConfig(
+    hazkey::config::CurrentConfig currentConfig) {
+    hazkey::RequestEnvelope request;
+    auto props = request.mutable_set_config();
+    *props->mutable_profiles() = currentConfig.profiles();
+    auto response = transact(request);
+    if (response == std::nullopt) {
+        return;
+    }
+    auto responseVal = response.value();
+    if (responseVal.status() != hazkey::SUCCESS) {
+        return;
+    }
 }

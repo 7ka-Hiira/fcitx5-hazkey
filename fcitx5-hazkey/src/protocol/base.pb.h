@@ -494,9 +494,9 @@ class RequestEnvelope final : public ::google::protobuf::Message
     kGetComposingString = 8,
     kGetHiraganaWithCursor = 9,
     kGetCandidates = 10,
-    kGetCurrentConfig = 100,
-    kSetCurrentConfig = 101,
-    kGetDefaultConfig = 102,
+    kGetConfig = 100,
+    kSetConfig = 101,
+    kGetDefaultProfile = 102,
     kClearAllHistory = 103,
     PAYLOAD_NOT_SET = 0,
   };
@@ -598,9 +598,9 @@ class RequestEnvelope final : public ::google::protobuf::Message
     kGetComposingStringFieldNumber = 8,
     kGetHiraganaWithCursorFieldNumber = 9,
     kGetCandidatesFieldNumber = 10,
-    kGetCurrentConfigFieldNumber = 100,
-    kSetCurrentConfigFieldNumber = 101,
-    kGetDefaultConfigFieldNumber = 102,
+    kGetConfigFieldNumber = 100,
+    kSetConfigFieldNumber = 101,
+    kGetDefaultProfileFieldNumber = 102,
     kClearAllHistoryFieldNumber = 103,
   };
   // .hazkey.commands.NewComposingText new_composing_text = 1;
@@ -793,80 +793,80 @@ class RequestEnvelope final : public ::google::protobuf::Message
   ::hazkey::commands::GetCandidates* PROTOBUF_NONNULL _internal_mutable_get_candidates();
 
   public:
-  // .hazkey.config.getCurrentConfig get_current_config = 100;
-  bool has_get_current_config() const;
+  // .hazkey.config.GetConfig get_config = 100;
+  bool has_get_config() const;
   private:
-  bool _internal_has_get_current_config() const;
+  bool _internal_has_get_config() const;
 
   public:
-  void clear_get_current_config() ;
-  const ::hazkey::config::getCurrentConfig& get_current_config() const;
-  [[nodiscard]] ::hazkey::config::getCurrentConfig* PROTOBUF_NULLABLE release_get_current_config();
-  ::hazkey::config::getCurrentConfig* PROTOBUF_NONNULL mutable_get_current_config();
-  void set_allocated_get_current_config(::hazkey::config::getCurrentConfig* PROTOBUF_NULLABLE value);
-  void unsafe_arena_set_allocated_get_current_config(::hazkey::config::getCurrentConfig* PROTOBUF_NULLABLE value);
-  ::hazkey::config::getCurrentConfig* PROTOBUF_NULLABLE unsafe_arena_release_get_current_config();
+  void clear_get_config() ;
+  const ::hazkey::config::GetConfig& get_config() const;
+  [[nodiscard]] ::hazkey::config::GetConfig* PROTOBUF_NULLABLE release_get_config();
+  ::hazkey::config::GetConfig* PROTOBUF_NONNULL mutable_get_config();
+  void set_allocated_get_config(::hazkey::config::GetConfig* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_get_config(::hazkey::config::GetConfig* PROTOBUF_NULLABLE value);
+  ::hazkey::config::GetConfig* PROTOBUF_NULLABLE unsafe_arena_release_get_config();
 
   private:
-  const ::hazkey::config::getCurrentConfig& _internal_get_current_config() const;
-  ::hazkey::config::getCurrentConfig* PROTOBUF_NONNULL _internal_mutable_get_current_config();
+  const ::hazkey::config::GetConfig& _internal_get_config() const;
+  ::hazkey::config::GetConfig* PROTOBUF_NONNULL _internal_mutable_get_config();
 
   public:
-  // .hazkey.config.setCurrentConfig set_current_config = 101;
-  bool has_set_current_config() const;
+  // .hazkey.config.SetConfig set_config = 101;
+  bool has_set_config() const;
   private:
-  bool _internal_has_set_current_config() const;
+  bool _internal_has_set_config() const;
 
   public:
-  void clear_set_current_config() ;
-  const ::hazkey::config::setCurrentConfig& set_current_config() const;
-  [[nodiscard]] ::hazkey::config::setCurrentConfig* PROTOBUF_NULLABLE release_set_current_config();
-  ::hazkey::config::setCurrentConfig* PROTOBUF_NONNULL mutable_set_current_config();
-  void set_allocated_set_current_config(::hazkey::config::setCurrentConfig* PROTOBUF_NULLABLE value);
-  void unsafe_arena_set_allocated_set_current_config(::hazkey::config::setCurrentConfig* PROTOBUF_NULLABLE value);
-  ::hazkey::config::setCurrentConfig* PROTOBUF_NULLABLE unsafe_arena_release_set_current_config();
-
-  private:
-  const ::hazkey::config::setCurrentConfig& _internal_set_current_config() const;
-  ::hazkey::config::setCurrentConfig* PROTOBUF_NONNULL _internal_mutable_set_current_config();
-
-  public:
-  // .hazkey.config.getDefaultConfig get_default_config = 102;
-  bool has_get_default_config() const;
-  private:
-  bool _internal_has_get_default_config() const;
-
-  public:
-  void clear_get_default_config() ;
-  const ::hazkey::config::getDefaultConfig& get_default_config() const;
-  [[nodiscard]] ::hazkey::config::getDefaultConfig* PROTOBUF_NULLABLE release_get_default_config();
-  ::hazkey::config::getDefaultConfig* PROTOBUF_NONNULL mutable_get_default_config();
-  void set_allocated_get_default_config(::hazkey::config::getDefaultConfig* PROTOBUF_NULLABLE value);
-  void unsafe_arena_set_allocated_get_default_config(::hazkey::config::getDefaultConfig* PROTOBUF_NULLABLE value);
-  ::hazkey::config::getDefaultConfig* PROTOBUF_NULLABLE unsafe_arena_release_get_default_config();
+  void clear_set_config() ;
+  const ::hazkey::config::SetConfig& set_config() const;
+  [[nodiscard]] ::hazkey::config::SetConfig* PROTOBUF_NULLABLE release_set_config();
+  ::hazkey::config::SetConfig* PROTOBUF_NONNULL mutable_set_config();
+  void set_allocated_set_config(::hazkey::config::SetConfig* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_set_config(::hazkey::config::SetConfig* PROTOBUF_NULLABLE value);
+  ::hazkey::config::SetConfig* PROTOBUF_NULLABLE unsafe_arena_release_set_config();
 
   private:
-  const ::hazkey::config::getDefaultConfig& _internal_get_default_config() const;
-  ::hazkey::config::getDefaultConfig* PROTOBUF_NONNULL _internal_mutable_get_default_config();
+  const ::hazkey::config::SetConfig& _internal_set_config() const;
+  ::hazkey::config::SetConfig* PROTOBUF_NONNULL _internal_mutable_set_config();
 
   public:
-  // .hazkey.config.clearAllHistory clear_all_history = 103;
+  // .hazkey.config.GetDefaultProfile get_default_profile = 102;
+  bool has_get_default_profile() const;
+  private:
+  bool _internal_has_get_default_profile() const;
+
+  public:
+  void clear_get_default_profile() ;
+  const ::hazkey::config::GetDefaultProfile& get_default_profile() const;
+  [[nodiscard]] ::hazkey::config::GetDefaultProfile* PROTOBUF_NULLABLE release_get_default_profile();
+  ::hazkey::config::GetDefaultProfile* PROTOBUF_NONNULL mutable_get_default_profile();
+  void set_allocated_get_default_profile(::hazkey::config::GetDefaultProfile* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_get_default_profile(::hazkey::config::GetDefaultProfile* PROTOBUF_NULLABLE value);
+  ::hazkey::config::GetDefaultProfile* PROTOBUF_NULLABLE unsafe_arena_release_get_default_profile();
+
+  private:
+  const ::hazkey::config::GetDefaultProfile& _internal_get_default_profile() const;
+  ::hazkey::config::GetDefaultProfile* PROTOBUF_NONNULL _internal_mutable_get_default_profile();
+
+  public:
+  // .hazkey.config.ClearAllHistory clear_all_history = 103;
   bool has_clear_all_history() const;
   private:
   bool _internal_has_clear_all_history() const;
 
   public:
   void clear_clear_all_history() ;
-  const ::hazkey::config::clearAllHistory& clear_all_history() const;
-  [[nodiscard]] ::hazkey::config::clearAllHistory* PROTOBUF_NULLABLE release_clear_all_history();
-  ::hazkey::config::clearAllHistory* PROTOBUF_NONNULL mutable_clear_all_history();
-  void set_allocated_clear_all_history(::hazkey::config::clearAllHistory* PROTOBUF_NULLABLE value);
-  void unsafe_arena_set_allocated_clear_all_history(::hazkey::config::clearAllHistory* PROTOBUF_NULLABLE value);
-  ::hazkey::config::clearAllHistory* PROTOBUF_NULLABLE unsafe_arena_release_clear_all_history();
+  const ::hazkey::config::ClearAllHistory& clear_all_history() const;
+  [[nodiscard]] ::hazkey::config::ClearAllHistory* PROTOBUF_NULLABLE release_clear_all_history();
+  ::hazkey::config::ClearAllHistory* PROTOBUF_NONNULL mutable_clear_all_history();
+  void set_allocated_clear_all_history(::hazkey::config::ClearAllHistory* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_clear_all_history(::hazkey::config::ClearAllHistory* PROTOBUF_NULLABLE value);
+  ::hazkey::config::ClearAllHistory* PROTOBUF_NULLABLE unsafe_arena_release_clear_all_history();
 
   private:
-  const ::hazkey::config::clearAllHistory& _internal_clear_all_history() const;
-  ::hazkey::config::clearAllHistory* PROTOBUF_NONNULL _internal_mutable_clear_all_history();
+  const ::hazkey::config::ClearAllHistory& _internal_clear_all_history() const;
+  ::hazkey::config::ClearAllHistory* PROTOBUF_NONNULL _internal_mutable_clear_all_history();
 
   public:
   void clear_payload();
@@ -884,9 +884,9 @@ class RequestEnvelope final : public ::google::protobuf::Message
   void set_has_get_composing_string();
   void set_has_get_hiragana_with_cursor();
   void set_has_get_candidates();
-  void set_has_get_current_config();
-  void set_has_set_current_config();
-  void set_has_get_default_config();
+  void set_has_get_config();
+  void set_has_set_config();
+  void set_has_get_default_profile();
   void set_has_clear_all_history();
   inline bool has_payload() const;
   inline void clear_has_payload();
@@ -924,9 +924,9 @@ class RequestEnvelope final : public ::google::protobuf::Message
       ::google::protobuf::Message* PROTOBUF_NULLABLE get_composing_string_;
       ::google::protobuf::Message* PROTOBUF_NULLABLE get_hiragana_with_cursor_;
       ::google::protobuf::Message* PROTOBUF_NULLABLE get_candidates_;
-      ::google::protobuf::Message* PROTOBUF_NULLABLE get_current_config_;
-      ::google::protobuf::Message* PROTOBUF_NULLABLE set_current_config_;
-      ::google::protobuf::Message* PROTOBUF_NULLABLE get_default_config_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE get_config_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE set_config_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE get_default_profile_;
       ::google::protobuf::Message* PROTOBUF_NULLABLE clear_all_history_;
     } payload_;
     ::google::protobuf::internal::CachedSize _cached_size_;
@@ -1655,217 +1655,217 @@ inline ::hazkey::commands::GetCandidates* PROTOBUF_NONNULL RequestEnvelope::muta
   return _msg;
 }
 
-// .hazkey.config.getCurrentConfig get_current_config = 100;
-inline bool RequestEnvelope::has_get_current_config() const {
-  return payload_case() == kGetCurrentConfig;
+// .hazkey.config.GetConfig get_config = 100;
+inline bool RequestEnvelope::has_get_config() const {
+  return payload_case() == kGetConfig;
 }
-inline bool RequestEnvelope::_internal_has_get_current_config() const {
-  return payload_case() == kGetCurrentConfig;
+inline bool RequestEnvelope::_internal_has_get_config() const {
+  return payload_case() == kGetConfig;
 }
-inline void RequestEnvelope::set_has_get_current_config() {
-  _impl_._oneof_case_[0] = kGetCurrentConfig;
+inline void RequestEnvelope::set_has_get_config() {
+  _impl_._oneof_case_[0] = kGetConfig;
 }
-inline ::hazkey::config::getCurrentConfig* PROTOBUF_NULLABLE RequestEnvelope::release_get_current_config() {
-  // @@protoc_insertion_point(field_release:hazkey.RequestEnvelope.get_current_config)
-  if (payload_case() == kGetCurrentConfig) {
+inline ::hazkey::config::GetConfig* PROTOBUF_NULLABLE RequestEnvelope::release_get_config() {
+  // @@protoc_insertion_point(field_release:hazkey.RequestEnvelope.get_config)
+  if (payload_case() == kGetConfig) {
     clear_has_payload();
-    auto* temp = reinterpret_cast<::hazkey::config::getCurrentConfig*>(_impl_.payload_.get_current_config_);
+    auto* temp = reinterpret_cast<::hazkey::config::GetConfig*>(_impl_.payload_.get_config_);
     if (GetArena() != nullptr) {
       temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
     }
-    _impl_.payload_.get_current_config_ = nullptr;
+    _impl_.payload_.get_config_ = nullptr;
     return temp;
   } else {
     return nullptr;
   }
 }
-inline const ::hazkey::config::getCurrentConfig& RequestEnvelope::_internal_get_current_config() const {
-  return payload_case() == kGetCurrentConfig ? *reinterpret_cast<::hazkey::config::getCurrentConfig*>(_impl_.payload_.get_current_config_) : reinterpret_cast<::hazkey::config::getCurrentConfig&>(::hazkey::config::_getCurrentConfig_default_instance_);
+inline const ::hazkey::config::GetConfig& RequestEnvelope::_internal_get_config() const {
+  return payload_case() == kGetConfig ? *reinterpret_cast<::hazkey::config::GetConfig*>(_impl_.payload_.get_config_) : reinterpret_cast<::hazkey::config::GetConfig&>(::hazkey::config::_GetConfig_default_instance_);
 }
-inline const ::hazkey::config::getCurrentConfig& RequestEnvelope::get_current_config() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:hazkey.RequestEnvelope.get_current_config)
-  return _internal_get_current_config();
+inline const ::hazkey::config::GetConfig& RequestEnvelope::get_config() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:hazkey.RequestEnvelope.get_config)
+  return _internal_get_config();
 }
-inline ::hazkey::config::getCurrentConfig* PROTOBUF_NULLABLE RequestEnvelope::unsafe_arena_release_get_current_config() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:hazkey.RequestEnvelope.get_current_config)
-  if (payload_case() == kGetCurrentConfig) {
+inline ::hazkey::config::GetConfig* PROTOBUF_NULLABLE RequestEnvelope::unsafe_arena_release_get_config() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:hazkey.RequestEnvelope.get_config)
+  if (payload_case() == kGetConfig) {
     clear_has_payload();
-    auto* temp = reinterpret_cast<::hazkey::config::getCurrentConfig*>(_impl_.payload_.get_current_config_);
-    _impl_.payload_.get_current_config_ = nullptr;
+    auto* temp = reinterpret_cast<::hazkey::config::GetConfig*>(_impl_.payload_.get_config_);
+    _impl_.payload_.get_config_ = nullptr;
     return temp;
   } else {
     return nullptr;
   }
 }
-inline void RequestEnvelope::unsafe_arena_set_allocated_get_current_config(
-    ::hazkey::config::getCurrentConfig* PROTOBUF_NULLABLE value) {
+inline void RequestEnvelope::unsafe_arena_set_allocated_get_config(
+    ::hazkey::config::GetConfig* PROTOBUF_NULLABLE value) {
   // We rely on the oneof clear method to free the earlier contents
   // of this oneof. We can directly use the pointer we're given to
   // set the new value.
   clear_payload();
   if (value) {
-    set_has_get_current_config();
-    _impl_.payload_.get_current_config_ = reinterpret_cast<::google::protobuf::Message*>(value);
+    set_has_get_config();
+    _impl_.payload_.get_config_ = reinterpret_cast<::google::protobuf::Message*>(value);
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:hazkey.RequestEnvelope.get_current_config)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:hazkey.RequestEnvelope.get_config)
 }
-inline ::hazkey::config::getCurrentConfig* PROTOBUF_NONNULL RequestEnvelope::_internal_mutable_get_current_config() {
-  if (payload_case() != kGetCurrentConfig) {
+inline ::hazkey::config::GetConfig* PROTOBUF_NONNULL RequestEnvelope::_internal_mutable_get_config() {
+  if (payload_case() != kGetConfig) {
     clear_payload();
-    set_has_get_current_config();
-    _impl_.payload_.get_current_config_ = reinterpret_cast<::google::protobuf::Message*>(
-        ::google::protobuf::Message::DefaultConstruct<::hazkey::config::getCurrentConfig>(GetArena()));
+    set_has_get_config();
+    _impl_.payload_.get_config_ = reinterpret_cast<::google::protobuf::Message*>(
+        ::google::protobuf::Message::DefaultConstruct<::hazkey::config::GetConfig>(GetArena()));
   }
-  return reinterpret_cast<::hazkey::config::getCurrentConfig*>(_impl_.payload_.get_current_config_);
+  return reinterpret_cast<::hazkey::config::GetConfig*>(_impl_.payload_.get_config_);
 }
-inline ::hazkey::config::getCurrentConfig* PROTOBUF_NONNULL RequestEnvelope::mutable_get_current_config()
+inline ::hazkey::config::GetConfig* PROTOBUF_NONNULL RequestEnvelope::mutable_get_config()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::hazkey::config::getCurrentConfig* _msg = _internal_mutable_get_current_config();
-  // @@protoc_insertion_point(field_mutable:hazkey.RequestEnvelope.get_current_config)
+  ::hazkey::config::GetConfig* _msg = _internal_mutable_get_config();
+  // @@protoc_insertion_point(field_mutable:hazkey.RequestEnvelope.get_config)
   return _msg;
 }
 
-// .hazkey.config.setCurrentConfig set_current_config = 101;
-inline bool RequestEnvelope::has_set_current_config() const {
-  return payload_case() == kSetCurrentConfig;
+// .hazkey.config.SetConfig set_config = 101;
+inline bool RequestEnvelope::has_set_config() const {
+  return payload_case() == kSetConfig;
 }
-inline bool RequestEnvelope::_internal_has_set_current_config() const {
-  return payload_case() == kSetCurrentConfig;
+inline bool RequestEnvelope::_internal_has_set_config() const {
+  return payload_case() == kSetConfig;
 }
-inline void RequestEnvelope::set_has_set_current_config() {
-  _impl_._oneof_case_[0] = kSetCurrentConfig;
+inline void RequestEnvelope::set_has_set_config() {
+  _impl_._oneof_case_[0] = kSetConfig;
 }
-inline ::hazkey::config::setCurrentConfig* PROTOBUF_NULLABLE RequestEnvelope::release_set_current_config() {
-  // @@protoc_insertion_point(field_release:hazkey.RequestEnvelope.set_current_config)
-  if (payload_case() == kSetCurrentConfig) {
+inline ::hazkey::config::SetConfig* PROTOBUF_NULLABLE RequestEnvelope::release_set_config() {
+  // @@protoc_insertion_point(field_release:hazkey.RequestEnvelope.set_config)
+  if (payload_case() == kSetConfig) {
     clear_has_payload();
-    auto* temp = reinterpret_cast<::hazkey::config::setCurrentConfig*>(_impl_.payload_.set_current_config_);
+    auto* temp = reinterpret_cast<::hazkey::config::SetConfig*>(_impl_.payload_.set_config_);
     if (GetArena() != nullptr) {
       temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
     }
-    _impl_.payload_.set_current_config_ = nullptr;
+    _impl_.payload_.set_config_ = nullptr;
     return temp;
   } else {
     return nullptr;
   }
 }
-inline const ::hazkey::config::setCurrentConfig& RequestEnvelope::_internal_set_current_config() const {
-  return payload_case() == kSetCurrentConfig ? *reinterpret_cast<::hazkey::config::setCurrentConfig*>(_impl_.payload_.set_current_config_) : reinterpret_cast<::hazkey::config::setCurrentConfig&>(::hazkey::config::_setCurrentConfig_default_instance_);
+inline const ::hazkey::config::SetConfig& RequestEnvelope::_internal_set_config() const {
+  return payload_case() == kSetConfig ? *reinterpret_cast<::hazkey::config::SetConfig*>(_impl_.payload_.set_config_) : reinterpret_cast<::hazkey::config::SetConfig&>(::hazkey::config::_SetConfig_default_instance_);
 }
-inline const ::hazkey::config::setCurrentConfig& RequestEnvelope::set_current_config() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:hazkey.RequestEnvelope.set_current_config)
-  return _internal_set_current_config();
+inline const ::hazkey::config::SetConfig& RequestEnvelope::set_config() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:hazkey.RequestEnvelope.set_config)
+  return _internal_set_config();
 }
-inline ::hazkey::config::setCurrentConfig* PROTOBUF_NULLABLE RequestEnvelope::unsafe_arena_release_set_current_config() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:hazkey.RequestEnvelope.set_current_config)
-  if (payload_case() == kSetCurrentConfig) {
+inline ::hazkey::config::SetConfig* PROTOBUF_NULLABLE RequestEnvelope::unsafe_arena_release_set_config() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:hazkey.RequestEnvelope.set_config)
+  if (payload_case() == kSetConfig) {
     clear_has_payload();
-    auto* temp = reinterpret_cast<::hazkey::config::setCurrentConfig*>(_impl_.payload_.set_current_config_);
-    _impl_.payload_.set_current_config_ = nullptr;
+    auto* temp = reinterpret_cast<::hazkey::config::SetConfig*>(_impl_.payload_.set_config_);
+    _impl_.payload_.set_config_ = nullptr;
     return temp;
   } else {
     return nullptr;
   }
 }
-inline void RequestEnvelope::unsafe_arena_set_allocated_set_current_config(
-    ::hazkey::config::setCurrentConfig* PROTOBUF_NULLABLE value) {
+inline void RequestEnvelope::unsafe_arena_set_allocated_set_config(
+    ::hazkey::config::SetConfig* PROTOBUF_NULLABLE value) {
   // We rely on the oneof clear method to free the earlier contents
   // of this oneof. We can directly use the pointer we're given to
   // set the new value.
   clear_payload();
   if (value) {
-    set_has_set_current_config();
-    _impl_.payload_.set_current_config_ = reinterpret_cast<::google::protobuf::Message*>(value);
+    set_has_set_config();
+    _impl_.payload_.set_config_ = reinterpret_cast<::google::protobuf::Message*>(value);
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:hazkey.RequestEnvelope.set_current_config)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:hazkey.RequestEnvelope.set_config)
 }
-inline ::hazkey::config::setCurrentConfig* PROTOBUF_NONNULL RequestEnvelope::_internal_mutable_set_current_config() {
-  if (payload_case() != kSetCurrentConfig) {
+inline ::hazkey::config::SetConfig* PROTOBUF_NONNULL RequestEnvelope::_internal_mutable_set_config() {
+  if (payload_case() != kSetConfig) {
     clear_payload();
-    set_has_set_current_config();
-    _impl_.payload_.set_current_config_ = reinterpret_cast<::google::protobuf::Message*>(
-        ::google::protobuf::Message::DefaultConstruct<::hazkey::config::setCurrentConfig>(GetArena()));
+    set_has_set_config();
+    _impl_.payload_.set_config_ = reinterpret_cast<::google::protobuf::Message*>(
+        ::google::protobuf::Message::DefaultConstruct<::hazkey::config::SetConfig>(GetArena()));
   }
-  return reinterpret_cast<::hazkey::config::setCurrentConfig*>(_impl_.payload_.set_current_config_);
+  return reinterpret_cast<::hazkey::config::SetConfig*>(_impl_.payload_.set_config_);
 }
-inline ::hazkey::config::setCurrentConfig* PROTOBUF_NONNULL RequestEnvelope::mutable_set_current_config()
+inline ::hazkey::config::SetConfig* PROTOBUF_NONNULL RequestEnvelope::mutable_set_config()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::hazkey::config::setCurrentConfig* _msg = _internal_mutable_set_current_config();
-  // @@protoc_insertion_point(field_mutable:hazkey.RequestEnvelope.set_current_config)
+  ::hazkey::config::SetConfig* _msg = _internal_mutable_set_config();
+  // @@protoc_insertion_point(field_mutable:hazkey.RequestEnvelope.set_config)
   return _msg;
 }
 
-// .hazkey.config.getDefaultConfig get_default_config = 102;
-inline bool RequestEnvelope::has_get_default_config() const {
-  return payload_case() == kGetDefaultConfig;
+// .hazkey.config.GetDefaultProfile get_default_profile = 102;
+inline bool RequestEnvelope::has_get_default_profile() const {
+  return payload_case() == kGetDefaultProfile;
 }
-inline bool RequestEnvelope::_internal_has_get_default_config() const {
-  return payload_case() == kGetDefaultConfig;
+inline bool RequestEnvelope::_internal_has_get_default_profile() const {
+  return payload_case() == kGetDefaultProfile;
 }
-inline void RequestEnvelope::set_has_get_default_config() {
-  _impl_._oneof_case_[0] = kGetDefaultConfig;
+inline void RequestEnvelope::set_has_get_default_profile() {
+  _impl_._oneof_case_[0] = kGetDefaultProfile;
 }
-inline ::hazkey::config::getDefaultConfig* PROTOBUF_NULLABLE RequestEnvelope::release_get_default_config() {
-  // @@protoc_insertion_point(field_release:hazkey.RequestEnvelope.get_default_config)
-  if (payload_case() == kGetDefaultConfig) {
+inline ::hazkey::config::GetDefaultProfile* PROTOBUF_NULLABLE RequestEnvelope::release_get_default_profile() {
+  // @@protoc_insertion_point(field_release:hazkey.RequestEnvelope.get_default_profile)
+  if (payload_case() == kGetDefaultProfile) {
     clear_has_payload();
-    auto* temp = reinterpret_cast<::hazkey::config::getDefaultConfig*>(_impl_.payload_.get_default_config_);
+    auto* temp = reinterpret_cast<::hazkey::config::GetDefaultProfile*>(_impl_.payload_.get_default_profile_);
     if (GetArena() != nullptr) {
       temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
     }
-    _impl_.payload_.get_default_config_ = nullptr;
+    _impl_.payload_.get_default_profile_ = nullptr;
     return temp;
   } else {
     return nullptr;
   }
 }
-inline const ::hazkey::config::getDefaultConfig& RequestEnvelope::_internal_get_default_config() const {
-  return payload_case() == kGetDefaultConfig ? *reinterpret_cast<::hazkey::config::getDefaultConfig*>(_impl_.payload_.get_default_config_) : reinterpret_cast<::hazkey::config::getDefaultConfig&>(::hazkey::config::_getDefaultConfig_default_instance_);
+inline const ::hazkey::config::GetDefaultProfile& RequestEnvelope::_internal_get_default_profile() const {
+  return payload_case() == kGetDefaultProfile ? *reinterpret_cast<::hazkey::config::GetDefaultProfile*>(_impl_.payload_.get_default_profile_) : reinterpret_cast<::hazkey::config::GetDefaultProfile&>(::hazkey::config::_GetDefaultProfile_default_instance_);
 }
-inline const ::hazkey::config::getDefaultConfig& RequestEnvelope::get_default_config() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:hazkey.RequestEnvelope.get_default_config)
-  return _internal_get_default_config();
+inline const ::hazkey::config::GetDefaultProfile& RequestEnvelope::get_default_profile() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:hazkey.RequestEnvelope.get_default_profile)
+  return _internal_get_default_profile();
 }
-inline ::hazkey::config::getDefaultConfig* PROTOBUF_NULLABLE RequestEnvelope::unsafe_arena_release_get_default_config() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:hazkey.RequestEnvelope.get_default_config)
-  if (payload_case() == kGetDefaultConfig) {
+inline ::hazkey::config::GetDefaultProfile* PROTOBUF_NULLABLE RequestEnvelope::unsafe_arena_release_get_default_profile() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:hazkey.RequestEnvelope.get_default_profile)
+  if (payload_case() == kGetDefaultProfile) {
     clear_has_payload();
-    auto* temp = reinterpret_cast<::hazkey::config::getDefaultConfig*>(_impl_.payload_.get_default_config_);
-    _impl_.payload_.get_default_config_ = nullptr;
+    auto* temp = reinterpret_cast<::hazkey::config::GetDefaultProfile*>(_impl_.payload_.get_default_profile_);
+    _impl_.payload_.get_default_profile_ = nullptr;
     return temp;
   } else {
     return nullptr;
   }
 }
-inline void RequestEnvelope::unsafe_arena_set_allocated_get_default_config(
-    ::hazkey::config::getDefaultConfig* PROTOBUF_NULLABLE value) {
+inline void RequestEnvelope::unsafe_arena_set_allocated_get_default_profile(
+    ::hazkey::config::GetDefaultProfile* PROTOBUF_NULLABLE value) {
   // We rely on the oneof clear method to free the earlier contents
   // of this oneof. We can directly use the pointer we're given to
   // set the new value.
   clear_payload();
   if (value) {
-    set_has_get_default_config();
-    _impl_.payload_.get_default_config_ = reinterpret_cast<::google::protobuf::Message*>(value);
+    set_has_get_default_profile();
+    _impl_.payload_.get_default_profile_ = reinterpret_cast<::google::protobuf::Message*>(value);
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:hazkey.RequestEnvelope.get_default_config)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:hazkey.RequestEnvelope.get_default_profile)
 }
-inline ::hazkey::config::getDefaultConfig* PROTOBUF_NONNULL RequestEnvelope::_internal_mutable_get_default_config() {
-  if (payload_case() != kGetDefaultConfig) {
+inline ::hazkey::config::GetDefaultProfile* PROTOBUF_NONNULL RequestEnvelope::_internal_mutable_get_default_profile() {
+  if (payload_case() != kGetDefaultProfile) {
     clear_payload();
-    set_has_get_default_config();
-    _impl_.payload_.get_default_config_ = reinterpret_cast<::google::protobuf::Message*>(
-        ::google::protobuf::Message::DefaultConstruct<::hazkey::config::getDefaultConfig>(GetArena()));
+    set_has_get_default_profile();
+    _impl_.payload_.get_default_profile_ = reinterpret_cast<::google::protobuf::Message*>(
+        ::google::protobuf::Message::DefaultConstruct<::hazkey::config::GetDefaultProfile>(GetArena()));
   }
-  return reinterpret_cast<::hazkey::config::getDefaultConfig*>(_impl_.payload_.get_default_config_);
+  return reinterpret_cast<::hazkey::config::GetDefaultProfile*>(_impl_.payload_.get_default_profile_);
 }
-inline ::hazkey::config::getDefaultConfig* PROTOBUF_NONNULL RequestEnvelope::mutable_get_default_config()
+inline ::hazkey::config::GetDefaultProfile* PROTOBUF_NONNULL RequestEnvelope::mutable_get_default_profile()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::hazkey::config::getDefaultConfig* _msg = _internal_mutable_get_default_config();
-  // @@protoc_insertion_point(field_mutable:hazkey.RequestEnvelope.get_default_config)
+  ::hazkey::config::GetDefaultProfile* _msg = _internal_mutable_get_default_profile();
+  // @@protoc_insertion_point(field_mutable:hazkey.RequestEnvelope.get_default_profile)
   return _msg;
 }
 
-// .hazkey.config.clearAllHistory clear_all_history = 103;
+// .hazkey.config.ClearAllHistory clear_all_history = 103;
 inline bool RequestEnvelope::has_clear_all_history() const {
   return payload_case() == kClearAllHistory;
 }
@@ -1875,11 +1875,11 @@ inline bool RequestEnvelope::_internal_has_clear_all_history() const {
 inline void RequestEnvelope::set_has_clear_all_history() {
   _impl_._oneof_case_[0] = kClearAllHistory;
 }
-inline ::hazkey::config::clearAllHistory* PROTOBUF_NULLABLE RequestEnvelope::release_clear_all_history() {
+inline ::hazkey::config::ClearAllHistory* PROTOBUF_NULLABLE RequestEnvelope::release_clear_all_history() {
   // @@protoc_insertion_point(field_release:hazkey.RequestEnvelope.clear_all_history)
   if (payload_case() == kClearAllHistory) {
     clear_has_payload();
-    auto* temp = reinterpret_cast<::hazkey::config::clearAllHistory*>(_impl_.payload_.clear_all_history_);
+    auto* temp = reinterpret_cast<::hazkey::config::ClearAllHistory*>(_impl_.payload_.clear_all_history_);
     if (GetArena() != nullptr) {
       temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
     }
@@ -1889,18 +1889,18 @@ inline ::hazkey::config::clearAllHistory* PROTOBUF_NULLABLE RequestEnvelope::rel
     return nullptr;
   }
 }
-inline const ::hazkey::config::clearAllHistory& RequestEnvelope::_internal_clear_all_history() const {
-  return payload_case() == kClearAllHistory ? *reinterpret_cast<::hazkey::config::clearAllHistory*>(_impl_.payload_.clear_all_history_) : reinterpret_cast<::hazkey::config::clearAllHistory&>(::hazkey::config::_clearAllHistory_default_instance_);
+inline const ::hazkey::config::ClearAllHistory& RequestEnvelope::_internal_clear_all_history() const {
+  return payload_case() == kClearAllHistory ? *reinterpret_cast<::hazkey::config::ClearAllHistory*>(_impl_.payload_.clear_all_history_) : reinterpret_cast<::hazkey::config::ClearAllHistory&>(::hazkey::config::_ClearAllHistory_default_instance_);
 }
-inline const ::hazkey::config::clearAllHistory& RequestEnvelope::clear_all_history() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+inline const ::hazkey::config::ClearAllHistory& RequestEnvelope::clear_all_history() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
   // @@protoc_insertion_point(field_get:hazkey.RequestEnvelope.clear_all_history)
   return _internal_clear_all_history();
 }
-inline ::hazkey::config::clearAllHistory* PROTOBUF_NULLABLE RequestEnvelope::unsafe_arena_release_clear_all_history() {
+inline ::hazkey::config::ClearAllHistory* PROTOBUF_NULLABLE RequestEnvelope::unsafe_arena_release_clear_all_history() {
   // @@protoc_insertion_point(field_unsafe_arena_release:hazkey.RequestEnvelope.clear_all_history)
   if (payload_case() == kClearAllHistory) {
     clear_has_payload();
-    auto* temp = reinterpret_cast<::hazkey::config::clearAllHistory*>(_impl_.payload_.clear_all_history_);
+    auto* temp = reinterpret_cast<::hazkey::config::ClearAllHistory*>(_impl_.payload_.clear_all_history_);
     _impl_.payload_.clear_all_history_ = nullptr;
     return temp;
   } else {
@@ -1908,7 +1908,7 @@ inline ::hazkey::config::clearAllHistory* PROTOBUF_NULLABLE RequestEnvelope::uns
   }
 }
 inline void RequestEnvelope::unsafe_arena_set_allocated_clear_all_history(
-    ::hazkey::config::clearAllHistory* PROTOBUF_NULLABLE value) {
+    ::hazkey::config::ClearAllHistory* PROTOBUF_NULLABLE value) {
   // We rely on the oneof clear method to free the earlier contents
   // of this oneof. We can directly use the pointer we're given to
   // set the new value.
@@ -1919,18 +1919,18 @@ inline void RequestEnvelope::unsafe_arena_set_allocated_clear_all_history(
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:hazkey.RequestEnvelope.clear_all_history)
 }
-inline ::hazkey::config::clearAllHistory* PROTOBUF_NONNULL RequestEnvelope::_internal_mutable_clear_all_history() {
+inline ::hazkey::config::ClearAllHistory* PROTOBUF_NONNULL RequestEnvelope::_internal_mutable_clear_all_history() {
   if (payload_case() != kClearAllHistory) {
     clear_payload();
     set_has_clear_all_history();
     _impl_.payload_.clear_all_history_ = reinterpret_cast<::google::protobuf::Message*>(
-        ::google::protobuf::Message::DefaultConstruct<::hazkey::config::clearAllHistory>(GetArena()));
+        ::google::protobuf::Message::DefaultConstruct<::hazkey::config::ClearAllHistory>(GetArena()));
   }
-  return reinterpret_cast<::hazkey::config::clearAllHistory*>(_impl_.payload_.clear_all_history_);
+  return reinterpret_cast<::hazkey::config::ClearAllHistory*>(_impl_.payload_.clear_all_history_);
 }
-inline ::hazkey::config::clearAllHistory* PROTOBUF_NONNULL RequestEnvelope::mutable_clear_all_history()
+inline ::hazkey::config::ClearAllHistory* PROTOBUF_NONNULL RequestEnvelope::mutable_clear_all_history()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::hazkey::config::clearAllHistory* _msg = _internal_mutable_clear_all_history();
+  ::hazkey::config::ClearAllHistory* _msg = _internal_mutable_clear_all_history();
   // @@protoc_insertion_point(field_mutable:hazkey.RequestEnvelope.clear_all_history)
   return _msg;
 }

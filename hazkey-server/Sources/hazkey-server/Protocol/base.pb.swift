@@ -145,34 +145,34 @@ struct Hazkey_RequestEnvelope: Sendable {
     set {payload = .getCandidates(newValue)}
   }
 
-  var getCurrentConfig: Hazkey_Config_getCurrentConfig {
+  var getConfig: Hazkey_Config_GetConfig {
     get {
-      if case .getCurrentConfig(let v)? = payload {return v}
-      return Hazkey_Config_getCurrentConfig()
+      if case .getConfig(let v)? = payload {return v}
+      return Hazkey_Config_GetConfig()
     }
-    set {payload = .getCurrentConfig(newValue)}
+    set {payload = .getConfig(newValue)}
   }
 
-  var setCurrentConfig: Hazkey_Config_setCurrentConfig {
+  var setConfig: Hazkey_Config_SetConfig {
     get {
-      if case .setCurrentConfig(let v)? = payload {return v}
-      return Hazkey_Config_setCurrentConfig()
+      if case .setConfig(let v)? = payload {return v}
+      return Hazkey_Config_SetConfig()
     }
-    set {payload = .setCurrentConfig(newValue)}
+    set {payload = .setConfig(newValue)}
   }
 
-  var getDefaultConfig: Hazkey_Config_getDefaultConfig {
+  var getDefaultProfile: Hazkey_Config_GetDefaultProfile {
     get {
-      if case .getDefaultConfig(let v)? = payload {return v}
-      return Hazkey_Config_getDefaultConfig()
+      if case .getDefaultProfile(let v)? = payload {return v}
+      return Hazkey_Config_GetDefaultProfile()
     }
-    set {payload = .getDefaultConfig(newValue)}
+    set {payload = .getDefaultProfile(newValue)}
   }
 
-  var clearAllHistory_p: Hazkey_Config_clearAllHistory {
+  var clearAllHistory_p: Hazkey_Config_ClearAllHistory {
     get {
       if case .clearAllHistory_p(let v)? = payload {return v}
-      return Hazkey_Config_clearAllHistory()
+      return Hazkey_Config_ClearAllHistory()
     }
     set {payload = .clearAllHistory_p(newValue)}
   }
@@ -190,10 +190,10 @@ struct Hazkey_RequestEnvelope: Sendable {
     case getComposingString(Hazkey_Commands_GetComposingString)
     case getHiraganaWithCursor(Hazkey_Commands_GetHiraganaWithCursor)
     case getCandidates(Hazkey_Commands_GetCandidates)
-    case getCurrentConfig(Hazkey_Config_getCurrentConfig)
-    case setCurrentConfig(Hazkey_Config_setCurrentConfig)
-    case getDefaultConfig(Hazkey_Config_getDefaultConfig)
-    case clearAllHistory_p(Hazkey_Config_clearAllHistory)
+    case getConfig(Hazkey_Config_GetConfig)
+    case setConfig(Hazkey_Config_SetConfig)
+    case getDefaultProfile(Hazkey_Config_GetDefaultProfile)
+    case clearAllHistory_p(Hazkey_Config_ClearAllHistory)
 
   }
 
@@ -281,9 +281,9 @@ extension Hazkey_RequestEnvelope: SwiftProtobuf.Message, SwiftProtobuf._MessageI
     8: .standard(proto: "get_composing_string"),
     9: .standard(proto: "get_hiragana_with_cursor"),
     10: .standard(proto: "get_candidates"),
-    100: .standard(proto: "get_current_config"),
-    101: .standard(proto: "set_current_config"),
-    102: .standard(proto: "get_default_config"),
+    100: .standard(proto: "get_config"),
+    101: .standard(proto: "set_config"),
+    102: .standard(proto: "get_default_profile"),
     103: .standard(proto: "clear_all_history"),
   ]
 
@@ -424,46 +424,46 @@ extension Hazkey_RequestEnvelope: SwiftProtobuf.Message, SwiftProtobuf._MessageI
         }
       }()
       case 100: try {
-        var v: Hazkey_Config_getCurrentConfig?
+        var v: Hazkey_Config_GetConfig?
         var hadOneofValue = false
         if let current = self.payload {
           hadOneofValue = true
-          if case .getCurrentConfig(let m) = current {v = m}
+          if case .getConfig(let m) = current {v = m}
         }
         try decoder.decodeSingularMessageField(value: &v)
         if let v = v {
           if hadOneofValue {try decoder.handleConflictingOneOf()}
-          self.payload = .getCurrentConfig(v)
+          self.payload = .getConfig(v)
         }
       }()
       case 101: try {
-        var v: Hazkey_Config_setCurrentConfig?
+        var v: Hazkey_Config_SetConfig?
         var hadOneofValue = false
         if let current = self.payload {
           hadOneofValue = true
-          if case .setCurrentConfig(let m) = current {v = m}
+          if case .setConfig(let m) = current {v = m}
         }
         try decoder.decodeSingularMessageField(value: &v)
         if let v = v {
           if hadOneofValue {try decoder.handleConflictingOneOf()}
-          self.payload = .setCurrentConfig(v)
+          self.payload = .setConfig(v)
         }
       }()
       case 102: try {
-        var v: Hazkey_Config_getDefaultConfig?
+        var v: Hazkey_Config_GetDefaultProfile?
         var hadOneofValue = false
         if let current = self.payload {
           hadOneofValue = true
-          if case .getDefaultConfig(let m) = current {v = m}
+          if case .getDefaultProfile(let m) = current {v = m}
         }
         try decoder.decodeSingularMessageField(value: &v)
         if let v = v {
           if hadOneofValue {try decoder.handleConflictingOneOf()}
-          self.payload = .getDefaultConfig(v)
+          self.payload = .getDefaultProfile(v)
         }
       }()
       case 103: try {
-        var v: Hazkey_Config_clearAllHistory?
+        var v: Hazkey_Config_ClearAllHistory?
         var hadOneofValue = false
         if let current = self.payload {
           hadOneofValue = true
@@ -526,16 +526,16 @@ extension Hazkey_RequestEnvelope: SwiftProtobuf.Message, SwiftProtobuf._MessageI
       guard case .getCandidates(let v)? = self.payload else { preconditionFailure() }
       try visitor.visitSingularMessageField(value: v, fieldNumber: 10)
     }()
-    case .getCurrentConfig?: try {
-      guard case .getCurrentConfig(let v)? = self.payload else { preconditionFailure() }
+    case .getConfig?: try {
+      guard case .getConfig(let v)? = self.payload else { preconditionFailure() }
       try visitor.visitSingularMessageField(value: v, fieldNumber: 100)
     }()
-    case .setCurrentConfig?: try {
-      guard case .setCurrentConfig(let v)? = self.payload else { preconditionFailure() }
+    case .setConfig?: try {
+      guard case .setConfig(let v)? = self.payload else { preconditionFailure() }
       try visitor.visitSingularMessageField(value: v, fieldNumber: 101)
     }()
-    case .getDefaultConfig?: try {
-      guard case .getDefaultConfig(let v)? = self.payload else { preconditionFailure() }
+    case .getDefaultProfile?: try {
+      guard case .getDefaultProfile(let v)? = self.payload else { preconditionFailure() }
       try visitor.visitSingularMessageField(value: v, fieldNumber: 102)
     }()
     case .clearAllHistory_p?: try {

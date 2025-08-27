@@ -1,8 +1,14 @@
 #include "mainwindow.h"
 
+#include <QAbstractButton>
+#include <QCheckBox>
+#include <QDialogButtonBox>
 #include <QMenu>
+#include <QMessageBox>
+#include <QPushButton>
 
 #include "./ui_mainwindow.h"
+#include "config_definitions.h"
 #include "serverconnector.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -20,167 +26,219 @@ MainWindow::MainWindow(QWidget *parent)
     ui_->dialogButtonBox->addButton(manageSettingsButton,
                                     QDialogButtonBox::ResetRole);
 
-    // Advanced layout list action button
-    QMenu *manageTableMenu = new QMenu(this);
-    QAction *importTableAction =
-        manageTableMenu->addAction("Import selected table");
-    QAction *exportTableAction =
-        manageTableMenu->addAction("Export selected table");
-    ui_->tableMoreActions->setMenu(manageTableMenu);
+    // Connect menu actions (placeholder implementations)
+    connect(importAction, &QAction::triggered, this, [this]() {
+        QMessageBox::information(this, "Import",
+                                 "Import functionality not yet implemented.");
+    });
+    connect(exportAction, &QAction::triggered, this, [this]() {
+        QMessageBox::information(this, "Export",
+                                 "Export functionality not yet implemented.");
+    });
+    connect(restoreDefaultAction, &QAction::triggered, this, [this]() {
+        QMessageBox::information(
+            this, "Restore Default",
+            "Restore Default functionality not yet implemented.");
+    });
 
     // Expand table settings mode change tab
     ui_->inputTableConfigModeTabWidget->tabBar()->setExpanding(true);
 
-    // Expand table editor
-    ui_->keymapEditorTable->horizontalHeader()->setSectionResizeMode(
-        QHeaderView::Stretch);
-
     // Connect to server
     server_.connect_server();
 
-    loadCurrentConfig();
+    // Connect UI signals
+    connectSignals();
+
+    // Load configuration
+    if (!loadCurrentConfig()) {
+        // If config loading fails, disable UI elements
+        setEnabled(false);
+        QMessageBox::critical(this, "Configuration Error",
+                              "Failed to load configuration. Please check your "
+                              "connection to the hazkey server.");
+    }
 }
 
-void MainWindow::loadCurrentConfig() {
-    auto currentConfig = server_.getCurrentConfig().value();
+void MainWindow::connectSignals() {
+    // Connect dialog buttons
+    connect(ui_->dialogButtonBox, &QDialogButtonBox::accepted, this,
+            &MainWindow::onApply);
+    connect(ui_->dialogButtonBox, &QDialogButtonBox::clicked, this,
+            &MainWindow::onButtonClicked);
 
-    auto currentProfile = currentConfig.configs().Get(0);
+    // Connect history checkbox to enable/disable dependent controls
+    connect(ui_->useHistory, &QCheckBox::toggled, this,
+            &MainWindow::onUseHistoryToggled);
+}
 
-    int autoConvertModeCurrentIndex;
-    switch (currentProfile.auto_convert_mode()) {
-        // FIXME: wrong index
-        case hazkey::config::ConfigProfile_AutoConvertMode_AUTO_CONVERT_ALWAYS:
-            autoConvertModeCurrentIndex = 0;
+void MainWindow::onButtonClicked(QAbstractButton *button) {
+    QDialogButtonBox::StandardButton standardButton =
+        ui_->dialogButtonBox->standardButton(button);
+
+    switch (standardButton) {
+        case QDialogButtonBox::Ok:
+            if (saveCurrentConfig()) {
+                close();
+            }
             break;
-        case hazkey::config::
-            ConfigProfile_AutoConvertMode_AUTO_CONVERT_DISABLED:
-            autoConvertModeCurrentIndex = 2;
+        case QDialogButtonBox::Apply:
+            saveCurrentConfig();
             break;
-        case hazkey::config::
-            ConfigProfile_AutoConvertMode_AUTO_CONVERT_FOR_MULTIPLE_CHARS:
+        case QDialogButtonBox::Cancel:
+            close();
+            break;
         default:
-            autoConvertModeCurrentIndex = 1;
+            break;
     }
-    ui_->autoConvertion->setCurrentIndex(autoConvertModeCurrentIndex);
+}
 
-    int auxTextModeCurrentIndex;
-    switch (currentProfile.aux_text_mode()) {
-        case hazkey::config::ConfigProfile_AuxTextMode_AUX_TEXT_SHOW_ALWAYS:
-            auxTextModeCurrentIndex = 0;
-            break;
-        case hazkey::config::ConfigProfile_AuxTextMode_AUX_TEXT_DISABLED:
-            auxTextModeCurrentIndex = 2;
-            break;
-        case hazkey::config::
-            ConfigProfile_AuxTextMode_AUX_TEXT_SHOW_WHEN_CURSOR_NOT_AT_END:
-        default:
-            auxTextModeCurrentIndex = 1;
-    }
-    ui_->auxiliaryText->setCurrentIndex(auxTextModeCurrentIndex);
+void MainWindow::onApply() { saveCurrentConfig(); }
 
-    int suggestionListModeCurrentIndex;
-    switch (currentProfile.suggestion_list_mode()) {
-        case hazkey::config::
-            ConfigProfile_SuggestionListMode_SUGGESTION_LIST_SHOW_NORMAL_RESULTS:
-            suggestionListModeCurrentIndex = 0;
-            break;
-        case hazkey::config::
-            ConfigProfile_SuggestionListMode_SUGGESTION_LIST_SHOW_PREDICTIVE_RESULTS:
-            suggestionListModeCurrentIndex = 1;
-            break;
-        case hazkey::config::
-            ConfigProfile_SuggestionListMode_SUGGESTION_LIST_DISABLED:
-        default:
-            suggestionListModeCurrentIndex = 2;
-    }
-    ui_->suggestionList->setCurrentIndex(suggestionListModeCurrentIndex);
+void MainWindow::onUseHistoryToggled(bool enabled) {
+    ui_->stopStoreNewHistory->setEnabled(enabled);
+}
 
-    ui_->numSuggestion->setValue(currentProfile.num_suggestions());
-    ui_->numCandidatesPerPage->setValue(
-        currentProfile.num_candidates_per_page());
-
-    auto useHistoryState = currentProfile.use_input_history()
-                               ? Qt::Checked
-                               : Qt::CheckState::Unchecked;
-    ui_->useHistory->setCheckState(useHistoryState);
-
-    ui_->stopStoreNewHistory->setEnabled(currentProfile.use_input_history());
-
-    auto stopStoreHistoryState = currentProfile.stop_store_new_history()
-                                     ? Qt::Checked
-                                     : Qt::CheckState::Unchecked;
-    ui_->stopStoreNewHistory->setCheckState(stopStoreHistoryState);
-
-    auto specialConversions = &currentProfile.special_conversion_mode();
-    auto halfwidthKatakana = specialConversions->halfwidth_katakana()
-                                 ? Qt::Checked
-                                 : Qt::CheckState::Unchecked;
-    ui_->halfwidthKatakanaConversion->setCheckState(halfwidthKatakana);
-    auto extendedEmoji = specialConversions->extended_emoji()
-                             ? Qt::Checked
-                             : Qt::CheckState::Unchecked;
-    ui_->extendedEmojiConversion->setCheckState(extendedEmoji);
-    auto commaSeparatedNumber = specialConversions->comma_separated_number()
-                                    ? Qt::Checked
-                                    : Qt::CheckState::Unchecked;
-    ui_->commaSeparatedNumCoversion->setCheckState(commaSeparatedNumber);
-    auto calenderConversion = specialConversions->calender()
-                                  ? Qt::Checked
-                                  : Qt::CheckState::Unchecked;
-    ui_->calenderConversion->setCheckState(calenderConversion);
-    auto timeConversion =
-        specialConversions->time() ? Qt::Checked : Qt::CheckState::Unchecked;
-    ui_->timeConversion->setCheckState(timeConversion);
-    auto mailDomainConversion = specialConversions->mail_domain()
-                                    ? Qt::Checked
-                                    : Qt::CheckState::Unchecked;
-    ui_->mailDomainConversion->setCheckState(mailDomainConversion);
-    auto unicodeConversion = specialConversions->unicode_codepoint()
-                                 ? Qt::Checked
-                                 : Qt::CheckState::Unchecked;
-    ui_->unicodeCodePointConversion->setCheckState(unicodeConversion);
-    auto romanTypographyConversion = specialConversions->roman_typography()
-                                         ? Qt::Checked
-                                         : Qt::CheckState::Unchecked;
-    ui_->romanTypographyConversion->setCheckState(romanTypographyConversion);
-    auto versionConversion = specialConversions->hazkey_version()
-                                 ? Qt::Checked
-                                 : Qt::CheckState::Unchecked;
-    ui_->hazkeyVersionConversion->setCheckState(versionConversion);
-
-    auto enableZenzai = currentProfile.zenzai_enable()
-                            ? Qt::Checked
-                            : Qt::CheckState::Unchecked;
-    ui_->enableZenzai->setCheckState(enableZenzai);
-
-    auto enableZenzaiContextual = currentProfile.zenzai_contextual_mode()
-                                      ? Qt::Checked
-                                      : Qt::CheckState::Unchecked;
-    ui_->zenzaiContextualConversion->setCheckState(enableZenzaiContextual);
-
-    ui_->zenzaiInferenceLimit->setValue(currentProfile.zenzai_infer_limit());
-
-    auto zenzaiProfile = std::string();
-    auto zenzaiVersionConfig = currentProfile.zenzai_version_config();
-    if (zenzaiVersionConfig.has_v2()) {
-        zenzaiProfile = zenzaiVersionConfig.v2().profile();
-    } else if (zenzaiVersionConfig.has_v3()) {
-        zenzaiProfile = zenzaiVersionConfig.v3().profile();
+bool MainWindow::loadCurrentConfig() {
+    auto configOpt = server_.getConfig();
+    if (!configOpt.has_value()) {
+        return false;
     }
 
-    auto enableRichSuggestion = currentProfile.use_rich_suggestion()
-                                    ? Qt::Checked
-                                    : Qt::CheckState::Unchecked;
-    ui_->richSuggestionCheckBox->setCheckState(enableRichSuggestion);
+    currentConfig_ = configOpt.value();
+    if (currentConfig_.profiles_size() == 0) {
+        return false;
+    }
 
-    auto useZenzaiCustomModel = currentProfile.use_zenzai_custom_weight()
-                                    ? Qt::Checked
-                                    : Qt::CheckState::Unchecked;
-    ui_->useCustomZenzaiModel->setCheckState(useZenzaiCustomModel);
+    currentProfile_ = currentConfig_.mutable_profiles(0);
+    if (!currentProfile_) {
+        return false;
+    }
 
-    auto zenzaiCustomModelPath = currentProfile.zenzai_weight_path();
-    ui_->customZenzaiModelPath->setText(
-        QString::fromStdString(zenzaiCustomModelPath));
+    SET_COMBO_FROM_CONFIG(ConfigDefs::AutoConvertMode, ui_->autoConvertion,
+                          currentProfile_->auto_convert_mode());
+    SET_COMBO_FROM_CONFIG(ConfigDefs::AuxTextMode, ui_->auxiliaryText,
+                          currentProfile_->aux_text_mode());
+    SET_COMBO_FROM_CONFIG(ConfigDefs::SuggestionListMode, ui_->suggestionList,
+                          currentProfile_->suggestion_list_mode());
+
+    SET_SPINBOX(ui_->numSuggestion, currentProfile_->num_suggestions(),
+                ConfigDefs::SpinboxDefaults::NUM_SUGGESTIONS);
+    SET_SPINBOX(ui_->numCandidatesPerPage,
+                currentProfile_->num_candidates_per_page(),
+                ConfigDefs::SpinboxDefaults::NUM_CANDIDATES_PER_PAGE);
+    SET_SPINBOX(ui_->zenzaiInferenceLimit,
+                currentProfile_->zenzai_infer_limit(),
+                ConfigDefs::SpinboxDefaults::ZENZAI_INFERENCE_LIMIT);
+
+    SET_CHECKBOX(ui_->useHistory, currentProfile_->use_input_history(),
+                 ConfigDefs::CheckboxDefaults::USE_HISTORY);
+    SET_CHECKBOX(ui_->stopStoreNewHistory,
+                 currentProfile_->stop_store_new_history(),
+                 ConfigDefs::CheckboxDefaults::STOP_STORE_NEW_HISTORY);
+    SET_CHECKBOX(ui_->enableZenzai, currentProfile_->zenzai_enable(),
+                 ConfigDefs::CheckboxDefaults::ENABLE_ZENZAI);
+    SET_CHECKBOX(ui_->zenzaiContextualConversion,
+                 currentProfile_->zenzai_contextual_mode(),
+                 ConfigDefs::CheckboxDefaults::ZENZAI_CONTEXTUAL);
+
+    auto specialConversions = &currentProfile_->special_conversion_mode();
+    SET_CHECKBOX(ui_->halfwidthKatakanaConversion,
+                 specialConversions->halfwidth_katakana(),
+                 ConfigDefs::CheckboxDefaults::HALFWIDTH_KATAKANA);
+    SET_CHECKBOX(ui_->extendedEmojiConversion,
+                 specialConversions->extended_emoji(),
+                 ConfigDefs::CheckboxDefaults::EXTENDED_EMOJI);
+    SET_CHECKBOX(ui_->commaSeparatedNumCoversion,
+                 specialConversions->comma_separated_number(),
+                 ConfigDefs::CheckboxDefaults::COMMA_SEPARATED_NUMBER);
+    SET_CHECKBOX(ui_->calenderConversion, specialConversions->calender(),
+                 ConfigDefs::CheckboxDefaults::CALENDER);
+    SET_CHECKBOX(ui_->timeConversion, specialConversions->time(),
+                 ConfigDefs::CheckboxDefaults::TIME);
+    SET_CHECKBOX(ui_->mailDomainConversion, specialConversions->mail_domain(),
+                 ConfigDefs::CheckboxDefaults::MAIL_DOMAIN);
+    SET_CHECKBOX(ui_->unicodeCodePointConversion,
+                 specialConversions->unicode_codepoint(),
+                 ConfigDefs::CheckboxDefaults::UNICODE_CODEPOINT);
+    SET_CHECKBOX(ui_->romanTypographyConversion,
+                 specialConversions->roman_typography(),
+                 ConfigDefs::CheckboxDefaults::ROMAN_TYPOGRAPHY);
+    SET_CHECKBOX(ui_->hazkeyVersionConversion,
+                 specialConversions->hazkey_version(),
+                 ConfigDefs::CheckboxDefaults::HAZKEY_VERSION);
+
+    ui_->stopStoreNewHistory->setEnabled(currentProfile_->use_input_history());
+
+    return true;
+}
+
+bool MainWindow::saveCurrentConfig() {
+    if (!currentProfile_) {
+        QMessageBox::warning(this, "Error", "No configuration profile loaded.");
+        return false;
+    }
+    // コンボボックス -> enum変換（定義から自動的に変換）
+    currentProfile_->set_auto_convert_mode(
+        GET_COMBO_TO_CONFIG(ConfigDefs::AutoConvertMode, ui_->autoConvertion));
+    currentProfile_->set_aux_text_mode(
+        GET_COMBO_TO_CONFIG(ConfigDefs::AuxTextMode, ui_->auxiliaryText));
+    currentProfile_->set_suggestion_list_mode(GET_COMBO_TO_CONFIG(
+        ConfigDefs::SuggestionListMode, ui_->suggestionList));
+
+    // スピンボックス -> int
+    currentProfile_->set_num_suggestions(GET_SPINBOX_INT(ui_->numSuggestion));
+    currentProfile_->set_num_candidates_per_page(
+        GET_SPINBOX_INT(ui_->numCandidatesPerPage));
+    currentProfile_->set_zenzai_infer_limit(
+        GET_SPINBOX_INT(ui_->zenzaiInferenceLimit));
+
+    // チェックボックス -> bool
+    currentProfile_->set_use_input_history(GET_CHECKBOX_BOOL(ui_->useHistory));
+    currentProfile_->set_stop_store_new_history(
+        GET_CHECKBOX_BOOL(ui_->stopStoreNewHistory));
+    currentProfile_->set_zenzai_enable(GET_CHECKBOX_BOOL(ui_->enableZenzai));
+    currentProfile_->set_zenzai_contextual_mode(
+        GET_CHECKBOX_BOOL(ui_->zenzaiContextualConversion));
+
+    // Special Conversion設定
+    auto *specialConversions =
+        currentProfile_->mutable_special_conversion_mode();
+    specialConversions->set_halfwidth_katakana(
+        GET_CHECKBOX_BOOL(ui_->halfwidthKatakanaConversion));
+    specialConversions->set_extended_emoji(
+        GET_CHECKBOX_BOOL(ui_->extendedEmojiConversion));
+    specialConversions->set_comma_separated_number(
+        GET_CHECKBOX_BOOL(ui_->commaSeparatedNumCoversion));
+    specialConversions->set_calender(
+        GET_CHECKBOX_BOOL(ui_->calenderConversion));
+    specialConversions->set_time(GET_CHECKBOX_BOOL(ui_->timeConversion));
+    specialConversions->set_mail_domain(
+        GET_CHECKBOX_BOOL(ui_->mailDomainConversion));
+    specialConversions->set_unicode_codepoint(
+        GET_CHECKBOX_BOOL(ui_->unicodeCodePointConversion));
+    specialConversions->set_roman_typography(
+        GET_CHECKBOX_BOOL(ui_->romanTypographyConversion));
+    specialConversions->set_hazkey_version(
+        GET_CHECKBOX_BOOL(ui_->hazkeyVersionConversion));
+
+    // Save to server
+    try {
+        server_.setCurrentConfig(currentConfig_);
+        QMessageBox::information(this, "Success",
+                                 "Configuration saved successfully.");
+        return true;
+    } catch (const std::exception &e) {
+        QMessageBox::critical(
+            this, "Save Error",
+            QString("Failed to save configuration: %1").arg(e.what()));
+        return false;
+    } catch (...) {
+        QMessageBox::critical(
+            this, "Save Error",
+            "An unknown error occurred while saving configuration.");
+        return false;
+    }
 }
 
 MainWindow::~MainWindow() { delete ui_; }

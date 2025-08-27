@@ -37,10 +37,10 @@ func processProto(data: Data) -> Data {
         response = getComposingString(charType: req.charType, currentPreedit: req.currentPreedit)
     case .getCandidates(let req):
         response = getCandidates(is_suggest: req.isSuggest)
-    case .getCurrentConfig:
+    case .getConfig:
         response = getCurrentConfig()
-    case .setCurrentConfig(let req):
-        response = setCurrentConfig(req.fileHashes, req.config)
+    case .setConfig(let req):
+        response = setCurrentConfig(req.fileHashes, req.profiles)
     default:
         NSLog("Unimplemented command")
         response = Hazkey_ResponseEnvelope.with {

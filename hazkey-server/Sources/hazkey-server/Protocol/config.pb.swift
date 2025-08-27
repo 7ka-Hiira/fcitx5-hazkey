@@ -86,7 +86,7 @@ struct Hazkey_Config_InputTable: Sendable {
   init() {}
 }
 
-struct Hazkey_Config_ConfigProfile: @unchecked Sendable {
+struct Hazkey_Config_Profile: @unchecked Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -96,17 +96,27 @@ struct Hazkey_Config_ConfigProfile: @unchecked Sendable {
     set {_uniqueStorage()._profileName = newValue}
   }
 
-  var autoConvertMode: Hazkey_Config_ConfigProfile.AutoConvertMode {
+  var profileID: String {
+    get {return _storage._profileID}
+    set {_uniqueStorage()._profileID = newValue}
+  }
+
+  var useDefaultInputUiSettings: Bool {
+    get {return _storage._useDefaultInputUiSettings}
+    set {_uniqueStorage()._useDefaultInputUiSettings = newValue}
+  }
+
+  var autoConvertMode: Hazkey_Config_Profile.AutoConvertMode {
     get {return _storage._autoConvertMode}
     set {_uniqueStorage()._autoConvertMode = newValue}
   }
 
-  var auxTextMode: Hazkey_Config_ConfigProfile.AuxTextMode {
+  var auxTextMode: Hazkey_Config_Profile.AuxTextMode {
     get {return _storage._auxTextMode}
     set {_uniqueStorage()._auxTextMode = newValue}
   }
 
-  var suggestionListMode: Hazkey_Config_ConfigProfile.SuggestionListMode {
+  var suggestionListMode: Hazkey_Config_Profile.SuggestionListMode {
     get {return _storage._suggestionListMode}
     set {_uniqueStorage()._suggestionListMode = newValue}
   }
@@ -121,6 +131,11 @@ struct Hazkey_Config_ConfigProfile: @unchecked Sendable {
     set {_uniqueStorage()._numSuggestions = newValue}
   }
 
+  var useDefaultConversionUiSettings: Bool {
+    get {return _storage._useDefaultConversionUiSettings}
+    set {_uniqueStorage()._useDefaultConversionUiSettings = newValue}
+  }
+
   var numCandidatesPerPage: Int32 {
     get {return _storage._numCandidatesPerPage}
     set {_uniqueStorage()._numCandidatesPerPage = newValue}
@@ -129,6 +144,16 @@ struct Hazkey_Config_ConfigProfile: @unchecked Sendable {
   var useRichCandidates: Bool {
     get {return _storage._useRichCandidates}
     set {_uniqueStorage()._useRichCandidates = newValue}
+  }
+
+  var useDefaultHistorySettings: Bool {
+    get {return _storage._useDefaultHistorySettings}
+    set {_uniqueStorage()._useDefaultHistorySettings = newValue}
+  }
+
+  var useProfileIndependentHistory: Bool {
+    get {return _storage._useProfileIndependentHistory}
+    set {_uniqueStorage()._useProfileIndependentHistory = newValue}
   }
 
   var useInputHistory: Bool {
@@ -141,8 +166,13 @@ struct Hazkey_Config_ConfigProfile: @unchecked Sendable {
     set {_uniqueStorage()._stopStoreNewHistory = newValue}
   }
 
-  var specialConversionMode: Hazkey_Config_ConfigProfile.SpecialConversionMode {
-    get {return _storage._specialConversionMode ?? Hazkey_Config_ConfigProfile.SpecialConversionMode()}
+  var useDefaultSpecialConversionSettings: Bool {
+    get {return _storage._useDefaultSpecialConversionSettings}
+    set {_uniqueStorage()._useDefaultSpecialConversionSettings = newValue}
+  }
+
+  var specialConversionMode: Hazkey_Config_Profile.SpecialConversionMode {
+    get {return _storage._specialConversionMode ?? Hazkey_Config_Profile.SpecialConversionMode()}
     set {_uniqueStorage()._specialConversionMode = newValue}
   }
   /// Returns true if `specialConversionMode` has been explicitly set.
@@ -150,9 +180,19 @@ struct Hazkey_Config_ConfigProfile: @unchecked Sendable {
   /// Clears the value of `specialConversionMode`. Subsequent reads from it will return its default value.
   mutating func clearSpecialConversionMode() {_uniqueStorage()._specialConversionMode = nil}
 
+  var useDefaultTableSettings: Bool {
+    get {return _storage._useDefaultTableSettings}
+    set {_uniqueStorage()._useDefaultTableSettings = newValue}
+  }
+
   var enabledTables: [Hazkey_Config_InputTable] {
     get {return _storage._enabledTables}
     set {_uniqueStorage()._enabledTables = newValue}
+  }
+
+  var useDefaultZenzaiSettings: Bool {
+    get {return _storage._useDefaultZenzaiSettings}
+    set {_uniqueStorage()._useDefaultZenzaiSettings = newValue}
   }
 
   var zenzaiEnable: Bool {
@@ -170,8 +210,8 @@ struct Hazkey_Config_ConfigProfile: @unchecked Sendable {
     set {_uniqueStorage()._zenzaiContextualMode = newValue}
   }
 
-  var zenzaiVersionConfig: Hazkey_Config_ConfigProfile.ZenzaiVersionConfig {
-    get {return _storage._zenzaiVersionConfig ?? Hazkey_Config_ConfigProfile.ZenzaiVersionConfig()}
+  var zenzaiVersionConfig: Hazkey_Config_Profile.ZenzaiVersionConfig {
+    get {return _storage._zenzaiVersionConfig ?? Hazkey_Config_Profile.ZenzaiVersionConfig()}
     set {_uniqueStorage()._zenzaiVersionConfig = newValue}
   }
   /// Returns true if `zenzaiVersionConfig` has been explicitly set.
@@ -224,7 +264,7 @@ struct Hazkey_Config_ConfigProfile: @unchecked Sendable {
     }
 
     // The compiler won't synthesize support with the UNRECOGNIZED case.
-    static let allCases: [Hazkey_Config_ConfigProfile.AutoConvertMode] = [
+    static let allCases: [Hazkey_Config_Profile.AutoConvertMode] = [
       .unspecified,
       .autoConvertDisabled,
       .autoConvertAlways,
@@ -266,7 +306,7 @@ struct Hazkey_Config_ConfigProfile: @unchecked Sendable {
     }
 
     // The compiler won't synthesize support with the UNRECOGNIZED case.
-    static let allCases: [Hazkey_Config_ConfigProfile.AuxTextMode] = [
+    static let allCases: [Hazkey_Config_Profile.AuxTextMode] = [
       .unspecified,
       .auxTextDisabled,
       .auxTextShowAlways,
@@ -308,7 +348,7 @@ struct Hazkey_Config_ConfigProfile: @unchecked Sendable {
     }
 
     // The compiler won't synthesize support with the UNRECOGNIZED case.
-    static let allCases: [Hazkey_Config_ConfigProfile.SuggestionListMode] = [
+    static let allCases: [Hazkey_Config_Profile.SuggestionListMode] = [
       .unspecified,
       .suggestionListDisabled,
       .suggestionListShowNormalResults,
@@ -366,28 +406,28 @@ struct Hazkey_Config_ConfigProfile: @unchecked Sendable {
     // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
     // methods supported on all messages.
 
-    var version: Hazkey_Config_ConfigProfile.ZenzaiVersionConfig.OneOf_Version? = nil
+    var version: Hazkey_Config_Profile.ZenzaiVersionConfig.OneOf_Version? = nil
 
-    var v1: Hazkey_Config_ConfigProfile.ZenzaiVersionConfig.V1 {
+    var v1: Hazkey_Config_Profile.ZenzaiVersionConfig.V1 {
       get {
         if case .v1(let v)? = version {return v}
-        return Hazkey_Config_ConfigProfile.ZenzaiVersionConfig.V1()
+        return Hazkey_Config_Profile.ZenzaiVersionConfig.V1()
       }
       set {version = .v1(newValue)}
     }
 
-    var v2: Hazkey_Config_ConfigProfile.ZenzaiVersionConfig.V2 {
+    var v2: Hazkey_Config_Profile.ZenzaiVersionConfig.V2 {
       get {
         if case .v2(let v)? = version {return v}
-        return Hazkey_Config_ConfigProfile.ZenzaiVersionConfig.V2()
+        return Hazkey_Config_Profile.ZenzaiVersionConfig.V2()
       }
       set {version = .v2(newValue)}
     }
 
-    var v3: Hazkey_Config_ConfigProfile.ZenzaiVersionConfig.V3 {
+    var v3: Hazkey_Config_Profile.ZenzaiVersionConfig.V3 {
       get {
         if case .v3(let v)? = version {return v}
-        return Hazkey_Config_ConfigProfile.ZenzaiVersionConfig.V3()
+        return Hazkey_Config_Profile.ZenzaiVersionConfig.V3()
       }
       set {version = .v3(newValue)}
     }
@@ -395,9 +435,9 @@ struct Hazkey_Config_ConfigProfile: @unchecked Sendable {
     var unknownFields = SwiftProtobuf.UnknownStorage()
 
     enum OneOf_Version: Equatable, Sendable {
-      case v1(Hazkey_Config_ConfigProfile.ZenzaiVersionConfig.V1)
-      case v2(Hazkey_Config_ConfigProfile.ZenzaiVersionConfig.V2)
-      case v3(Hazkey_Config_ConfigProfile.ZenzaiVersionConfig.V3)
+      case v1(Hazkey_Config_Profile.ZenzaiVersionConfig.V1)
+      case v2(Hazkey_Config_Profile.ZenzaiVersionConfig.V2)
+      case v3(Hazkey_Config_Profile.ZenzaiVersionConfig.V3)
 
     }
 
@@ -444,28 +484,12 @@ struct Hazkey_Config_ConfigProfile: @unchecked Sendable {
     init() {}
   }
 
-  struct ZenzaiModel: Sendable {
-    // SwiftProtobuf.Message conformance is added in an extension below. See the
-    // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-    // methods supported on all messages.
-
-    var name: String = String()
-
-    var filename: String = String()
-
-    var isSystem: Bool = false
-
-    var unknownFields = SwiftProtobuf.UnknownStorage()
-
-    init() {}
-  }
-
   init() {}
 
   fileprivate var _storage = _StorageClass.defaultInstance
 }
 
-struct Hazkey_Config_getCurrentConfig: Sendable {
+struct Hazkey_Config_GetConfig: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -475,21 +499,21 @@ struct Hazkey_Config_getCurrentConfig: Sendable {
   init() {}
 }
 
-struct Hazkey_Config_setCurrentConfig: Sendable {
+struct Hazkey_Config_SetConfig: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
   var fileHashes: [Hazkey_Config_FileHash] = []
 
-  var config: [Hazkey_Config_ConfigProfile] = []
+  var profiles: [Hazkey_Config_Profile] = []
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   init() {}
 }
 
-struct Hazkey_Config_getDefaultConfig: Sendable {
+struct Hazkey_Config_GetDefaultProfile: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -499,10 +523,12 @@ struct Hazkey_Config_getDefaultConfig: Sendable {
   init() {}
 }
 
-struct Hazkey_Config_clearAllHistory: Sendable {
+struct Hazkey_Config_ClearAllHistory: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
+
+  var profileID: String = String()
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -516,9 +542,13 @@ struct Hazkey_Config_CurrentConfig: Sendable {
 
   var fileHashes: [Hazkey_Config_FileHash] = []
 
+  var profiles: [Hazkey_Config_Profile] = []
+
   var availableTables: [Hazkey_Config_InputTable] = []
 
-  var configs: [Hazkey_Config_ConfigProfile] = []
+  var isZenzaiAvailable: Bool = false
+
+  var xdgConfigHomePath: String = String()
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -624,46 +654,62 @@ extension Hazkey_Config_InputTable: SwiftProtobuf.Message, SwiftProtobuf._Messag
   }
 }
 
-extension Hazkey_Config_ConfigProfile: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = _protobuf_package + ".ConfigProfile"
+extension Hazkey_Config_Profile: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".Profile"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     5: .standard(proto: "profile_name"),
-    10: .standard(proto: "auto_convert_mode"),
-    11: .standard(proto: "aux_text_mode"),
-    12: .standard(proto: "suggestion_list_mode"),
-    13: .standard(proto: "use_rich_suggestion"),
-    14: .standard(proto: "num_suggestions"),
-    15: .standard(proto: "num_candidates_per_page"),
-    16: .standard(proto: "use_rich_candidates"),
-    20: .standard(proto: "use_input_history"),
-    21: .standard(proto: "stop_store_new_history"),
-    30: .standard(proto: "special_conversion_mode"),
-    40: .standard(proto: "enabled_tables"),
-    100: .standard(proto: "zenzai_enable"),
-    101: .standard(proto: "zenzai_infer_limit"),
-    102: .standard(proto: "zenzai_contextual_mode"),
-    103: .standard(proto: "zenzai_version_config"),
-    104: .standard(proto: "use_zenzai_custom_weight"),
-    105: .standard(proto: "zenzai_weight_path"),
+    6: .standard(proto: "profile_id"),
+    10: .standard(proto: "use_default_input_ui_settings"),
+    11: .standard(proto: "auto_convert_mode"),
+    12: .standard(proto: "aux_text_mode"),
+    13: .standard(proto: "suggestion_list_mode"),
+    14: .standard(proto: "use_rich_suggestion"),
+    15: .standard(proto: "num_suggestions"),
+    20: .standard(proto: "use_default_conversion_ui_settings"),
+    21: .standard(proto: "num_candidates_per_page"),
+    22: .standard(proto: "use_rich_candidates"),
+    30: .standard(proto: "use_default_history_settings"),
+    31: .standard(proto: "use_profile_independent_history"),
+    32: .standard(proto: "use_input_history"),
+    23: .standard(proto: "stop_store_new_history"),
+    40: .standard(proto: "use_default_special_conversion_settings"),
+    41: .standard(proto: "special_conversion_mode"),
+    50: .standard(proto: "use_default_table_settings"),
+    51: .standard(proto: "enabled_tables"),
+    100: .standard(proto: "use_default_zenzai_settings"),
+    101: .standard(proto: "zenzai_enable"),
+    102: .standard(proto: "zenzai_infer_limit"),
+    103: .standard(proto: "zenzai_contextual_mode"),
+    104: .standard(proto: "zenzai_version_config"),
+    105: .standard(proto: "use_zenzai_custom_weight"),
+    106: .standard(proto: "zenzai_weight_path"),
   ]
 
   fileprivate class _StorageClass {
     var _profileName: String = String()
-    var _autoConvertMode: Hazkey_Config_ConfigProfile.AutoConvertMode = .unspecified
-    var _auxTextMode: Hazkey_Config_ConfigProfile.AuxTextMode = .unspecified
-    var _suggestionListMode: Hazkey_Config_ConfigProfile.SuggestionListMode = .unspecified
+    var _profileID: String = String()
+    var _useDefaultInputUiSettings: Bool = false
+    var _autoConvertMode: Hazkey_Config_Profile.AutoConvertMode = .unspecified
+    var _auxTextMode: Hazkey_Config_Profile.AuxTextMode = .unspecified
+    var _suggestionListMode: Hazkey_Config_Profile.SuggestionListMode = .unspecified
     var _useRichSuggestion: Bool = false
     var _numSuggestions: Int32 = 0
+    var _useDefaultConversionUiSettings: Bool = false
     var _numCandidatesPerPage: Int32 = 0
     var _useRichCandidates: Bool = false
+    var _useDefaultHistorySettings: Bool = false
+    var _useProfileIndependentHistory: Bool = false
     var _useInputHistory: Bool = false
     var _stopStoreNewHistory: Bool = false
-    var _specialConversionMode: Hazkey_Config_ConfigProfile.SpecialConversionMode? = nil
+    var _useDefaultSpecialConversionSettings: Bool = false
+    var _specialConversionMode: Hazkey_Config_Profile.SpecialConversionMode? = nil
+    var _useDefaultTableSettings: Bool = false
     var _enabledTables: [Hazkey_Config_InputTable] = []
+    var _useDefaultZenzaiSettings: Bool = false
     var _zenzaiEnable: Bool = false
     var _zenzaiInferLimit: Int32 = 0
     var _zenzaiContextualMode: Bool = false
-    var _zenzaiVersionConfig: Hazkey_Config_ConfigProfile.ZenzaiVersionConfig? = nil
+    var _zenzaiVersionConfig: Hazkey_Config_Profile.ZenzaiVersionConfig? = nil
     var _useZenzaiCustomWeight: Bool = false
     var _zenzaiWeightPath: String = String()
 
@@ -677,17 +723,25 @@ extension Hazkey_Config_ConfigProfile: SwiftProtobuf.Message, SwiftProtobuf._Mes
 
     init(copying source: _StorageClass) {
       _profileName = source._profileName
+      _profileID = source._profileID
+      _useDefaultInputUiSettings = source._useDefaultInputUiSettings
       _autoConvertMode = source._autoConvertMode
       _auxTextMode = source._auxTextMode
       _suggestionListMode = source._suggestionListMode
       _useRichSuggestion = source._useRichSuggestion
       _numSuggestions = source._numSuggestions
+      _useDefaultConversionUiSettings = source._useDefaultConversionUiSettings
       _numCandidatesPerPage = source._numCandidatesPerPage
       _useRichCandidates = source._useRichCandidates
+      _useDefaultHistorySettings = source._useDefaultHistorySettings
+      _useProfileIndependentHistory = source._useProfileIndependentHistory
       _useInputHistory = source._useInputHistory
       _stopStoreNewHistory = source._stopStoreNewHistory
+      _useDefaultSpecialConversionSettings = source._useDefaultSpecialConversionSettings
       _specialConversionMode = source._specialConversionMode
+      _useDefaultTableSettings = source._useDefaultTableSettings
       _enabledTables = source._enabledTables
+      _useDefaultZenzaiSettings = source._useDefaultZenzaiSettings
       _zenzaiEnable = source._zenzaiEnable
       _zenzaiInferLimit = source._zenzaiInferLimit
       _zenzaiContextualMode = source._zenzaiContextualMode
@@ -713,23 +767,31 @@ extension Hazkey_Config_ConfigProfile: SwiftProtobuf.Message, SwiftProtobuf._Mes
         // enabled. https://github.com/apple/swift-protobuf/issues/1034
         switch fieldNumber {
         case 5: try { try decoder.decodeSingularStringField(value: &_storage._profileName) }()
-        case 10: try { try decoder.decodeSingularEnumField(value: &_storage._autoConvertMode) }()
-        case 11: try { try decoder.decodeSingularEnumField(value: &_storage._auxTextMode) }()
-        case 12: try { try decoder.decodeSingularEnumField(value: &_storage._suggestionListMode) }()
-        case 13: try { try decoder.decodeSingularBoolField(value: &_storage._useRichSuggestion) }()
-        case 14: try { try decoder.decodeSingularInt32Field(value: &_storage._numSuggestions) }()
-        case 15: try { try decoder.decodeSingularInt32Field(value: &_storage._numCandidatesPerPage) }()
-        case 16: try { try decoder.decodeSingularBoolField(value: &_storage._useRichCandidates) }()
-        case 20: try { try decoder.decodeSingularBoolField(value: &_storage._useInputHistory) }()
-        case 21: try { try decoder.decodeSingularBoolField(value: &_storage._stopStoreNewHistory) }()
-        case 30: try { try decoder.decodeSingularMessageField(value: &_storage._specialConversionMode) }()
-        case 40: try { try decoder.decodeRepeatedMessageField(value: &_storage._enabledTables) }()
-        case 100: try { try decoder.decodeSingularBoolField(value: &_storage._zenzaiEnable) }()
-        case 101: try { try decoder.decodeSingularInt32Field(value: &_storage._zenzaiInferLimit) }()
-        case 102: try { try decoder.decodeSingularBoolField(value: &_storage._zenzaiContextualMode) }()
-        case 103: try { try decoder.decodeSingularMessageField(value: &_storage._zenzaiVersionConfig) }()
-        case 104: try { try decoder.decodeSingularBoolField(value: &_storage._useZenzaiCustomWeight) }()
-        case 105: try { try decoder.decodeSingularStringField(value: &_storage._zenzaiWeightPath) }()
+        case 6: try { try decoder.decodeSingularStringField(value: &_storage._profileID) }()
+        case 10: try { try decoder.decodeSingularBoolField(value: &_storage._useDefaultInputUiSettings) }()
+        case 11: try { try decoder.decodeSingularEnumField(value: &_storage._autoConvertMode) }()
+        case 12: try { try decoder.decodeSingularEnumField(value: &_storage._auxTextMode) }()
+        case 13: try { try decoder.decodeSingularEnumField(value: &_storage._suggestionListMode) }()
+        case 14: try { try decoder.decodeSingularBoolField(value: &_storage._useRichSuggestion) }()
+        case 15: try { try decoder.decodeSingularInt32Field(value: &_storage._numSuggestions) }()
+        case 20: try { try decoder.decodeSingularBoolField(value: &_storage._useDefaultConversionUiSettings) }()
+        case 21: try { try decoder.decodeSingularInt32Field(value: &_storage._numCandidatesPerPage) }()
+        case 22: try { try decoder.decodeSingularBoolField(value: &_storage._useRichCandidates) }()
+        case 23: try { try decoder.decodeSingularBoolField(value: &_storage._stopStoreNewHistory) }()
+        case 30: try { try decoder.decodeSingularBoolField(value: &_storage._useDefaultHistorySettings) }()
+        case 31: try { try decoder.decodeSingularBoolField(value: &_storage._useProfileIndependentHistory) }()
+        case 32: try { try decoder.decodeSingularBoolField(value: &_storage._useInputHistory) }()
+        case 40: try { try decoder.decodeSingularBoolField(value: &_storage._useDefaultSpecialConversionSettings) }()
+        case 41: try { try decoder.decodeSingularMessageField(value: &_storage._specialConversionMode) }()
+        case 50: try { try decoder.decodeSingularBoolField(value: &_storage._useDefaultTableSettings) }()
+        case 51: try { try decoder.decodeRepeatedMessageField(value: &_storage._enabledTables) }()
+        case 100: try { try decoder.decodeSingularBoolField(value: &_storage._useDefaultZenzaiSettings) }()
+        case 101: try { try decoder.decodeSingularBoolField(value: &_storage._zenzaiEnable) }()
+        case 102: try { try decoder.decodeSingularInt32Field(value: &_storage._zenzaiInferLimit) }()
+        case 103: try { try decoder.decodeSingularBoolField(value: &_storage._zenzaiContextualMode) }()
+        case 104: try { try decoder.decodeSingularMessageField(value: &_storage._zenzaiVersionConfig) }()
+        case 105: try { try decoder.decodeSingularBoolField(value: &_storage._useZenzaiCustomWeight) }()
+        case 106: try { try decoder.decodeSingularStringField(value: &_storage._zenzaiWeightPath) }()
         default: break
         }
       }
@@ -745,78 +807,110 @@ extension Hazkey_Config_ConfigProfile: SwiftProtobuf.Message, SwiftProtobuf._Mes
       if !_storage._profileName.isEmpty {
         try visitor.visitSingularStringField(value: _storage._profileName, fieldNumber: 5)
       }
+      if !_storage._profileID.isEmpty {
+        try visitor.visitSingularStringField(value: _storage._profileID, fieldNumber: 6)
+      }
+      if _storage._useDefaultInputUiSettings != false {
+        try visitor.visitSingularBoolField(value: _storage._useDefaultInputUiSettings, fieldNumber: 10)
+      }
       if _storage._autoConvertMode != .unspecified {
-        try visitor.visitSingularEnumField(value: _storage._autoConvertMode, fieldNumber: 10)
+        try visitor.visitSingularEnumField(value: _storage._autoConvertMode, fieldNumber: 11)
       }
       if _storage._auxTextMode != .unspecified {
-        try visitor.visitSingularEnumField(value: _storage._auxTextMode, fieldNumber: 11)
+        try visitor.visitSingularEnumField(value: _storage._auxTextMode, fieldNumber: 12)
       }
       if _storage._suggestionListMode != .unspecified {
-        try visitor.visitSingularEnumField(value: _storage._suggestionListMode, fieldNumber: 12)
+        try visitor.visitSingularEnumField(value: _storage._suggestionListMode, fieldNumber: 13)
       }
       if _storage._useRichSuggestion != false {
-        try visitor.visitSingularBoolField(value: _storage._useRichSuggestion, fieldNumber: 13)
+        try visitor.visitSingularBoolField(value: _storage._useRichSuggestion, fieldNumber: 14)
       }
       if _storage._numSuggestions != 0 {
-        try visitor.visitSingularInt32Field(value: _storage._numSuggestions, fieldNumber: 14)
+        try visitor.visitSingularInt32Field(value: _storage._numSuggestions, fieldNumber: 15)
+      }
+      if _storage._useDefaultConversionUiSettings != false {
+        try visitor.visitSingularBoolField(value: _storage._useDefaultConversionUiSettings, fieldNumber: 20)
       }
       if _storage._numCandidatesPerPage != 0 {
-        try visitor.visitSingularInt32Field(value: _storage._numCandidatesPerPage, fieldNumber: 15)
+        try visitor.visitSingularInt32Field(value: _storage._numCandidatesPerPage, fieldNumber: 21)
       }
       if _storage._useRichCandidates != false {
-        try visitor.visitSingularBoolField(value: _storage._useRichCandidates, fieldNumber: 16)
-      }
-      if _storage._useInputHistory != false {
-        try visitor.visitSingularBoolField(value: _storage._useInputHistory, fieldNumber: 20)
+        try visitor.visitSingularBoolField(value: _storage._useRichCandidates, fieldNumber: 22)
       }
       if _storage._stopStoreNewHistory != false {
-        try visitor.visitSingularBoolField(value: _storage._stopStoreNewHistory, fieldNumber: 21)
+        try visitor.visitSingularBoolField(value: _storage._stopStoreNewHistory, fieldNumber: 23)
+      }
+      if _storage._useDefaultHistorySettings != false {
+        try visitor.visitSingularBoolField(value: _storage._useDefaultHistorySettings, fieldNumber: 30)
+      }
+      if _storage._useProfileIndependentHistory != false {
+        try visitor.visitSingularBoolField(value: _storage._useProfileIndependentHistory, fieldNumber: 31)
+      }
+      if _storage._useInputHistory != false {
+        try visitor.visitSingularBoolField(value: _storage._useInputHistory, fieldNumber: 32)
+      }
+      if _storage._useDefaultSpecialConversionSettings != false {
+        try visitor.visitSingularBoolField(value: _storage._useDefaultSpecialConversionSettings, fieldNumber: 40)
       }
       try { if let v = _storage._specialConversionMode {
-        try visitor.visitSingularMessageField(value: v, fieldNumber: 30)
+        try visitor.visitSingularMessageField(value: v, fieldNumber: 41)
       } }()
+      if _storage._useDefaultTableSettings != false {
+        try visitor.visitSingularBoolField(value: _storage._useDefaultTableSettings, fieldNumber: 50)
+      }
       if !_storage._enabledTables.isEmpty {
-        try visitor.visitRepeatedMessageField(value: _storage._enabledTables, fieldNumber: 40)
+        try visitor.visitRepeatedMessageField(value: _storage._enabledTables, fieldNumber: 51)
+      }
+      if _storage._useDefaultZenzaiSettings != false {
+        try visitor.visitSingularBoolField(value: _storage._useDefaultZenzaiSettings, fieldNumber: 100)
       }
       if _storage._zenzaiEnable != false {
-        try visitor.visitSingularBoolField(value: _storage._zenzaiEnable, fieldNumber: 100)
+        try visitor.visitSingularBoolField(value: _storage._zenzaiEnable, fieldNumber: 101)
       }
       if _storage._zenzaiInferLimit != 0 {
-        try visitor.visitSingularInt32Field(value: _storage._zenzaiInferLimit, fieldNumber: 101)
+        try visitor.visitSingularInt32Field(value: _storage._zenzaiInferLimit, fieldNumber: 102)
       }
       if _storage._zenzaiContextualMode != false {
-        try visitor.visitSingularBoolField(value: _storage._zenzaiContextualMode, fieldNumber: 102)
+        try visitor.visitSingularBoolField(value: _storage._zenzaiContextualMode, fieldNumber: 103)
       }
       try { if let v = _storage._zenzaiVersionConfig {
-        try visitor.visitSingularMessageField(value: v, fieldNumber: 103)
+        try visitor.visitSingularMessageField(value: v, fieldNumber: 104)
       } }()
       if _storage._useZenzaiCustomWeight != false {
-        try visitor.visitSingularBoolField(value: _storage._useZenzaiCustomWeight, fieldNumber: 104)
+        try visitor.visitSingularBoolField(value: _storage._useZenzaiCustomWeight, fieldNumber: 105)
       }
       if !_storage._zenzaiWeightPath.isEmpty {
-        try visitor.visitSingularStringField(value: _storage._zenzaiWeightPath, fieldNumber: 105)
+        try visitor.visitSingularStringField(value: _storage._zenzaiWeightPath, fieldNumber: 106)
       }
     }
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: Hazkey_Config_ConfigProfile, rhs: Hazkey_Config_ConfigProfile) -> Bool {
+  static func ==(lhs: Hazkey_Config_Profile, rhs: Hazkey_Config_Profile) -> Bool {
     if lhs._storage !== rhs._storage {
       let storagesAreEqual: Bool = withExtendedLifetime((lhs._storage, rhs._storage)) { (_args: (_StorageClass, _StorageClass)) in
         let _storage = _args.0
         let rhs_storage = _args.1
         if _storage._profileName != rhs_storage._profileName {return false}
+        if _storage._profileID != rhs_storage._profileID {return false}
+        if _storage._useDefaultInputUiSettings != rhs_storage._useDefaultInputUiSettings {return false}
         if _storage._autoConvertMode != rhs_storage._autoConvertMode {return false}
         if _storage._auxTextMode != rhs_storage._auxTextMode {return false}
         if _storage._suggestionListMode != rhs_storage._suggestionListMode {return false}
         if _storage._useRichSuggestion != rhs_storage._useRichSuggestion {return false}
         if _storage._numSuggestions != rhs_storage._numSuggestions {return false}
+        if _storage._useDefaultConversionUiSettings != rhs_storage._useDefaultConversionUiSettings {return false}
         if _storage._numCandidatesPerPage != rhs_storage._numCandidatesPerPage {return false}
         if _storage._useRichCandidates != rhs_storage._useRichCandidates {return false}
+        if _storage._useDefaultHistorySettings != rhs_storage._useDefaultHistorySettings {return false}
+        if _storage._useProfileIndependentHistory != rhs_storage._useProfileIndependentHistory {return false}
         if _storage._useInputHistory != rhs_storage._useInputHistory {return false}
         if _storage._stopStoreNewHistory != rhs_storage._stopStoreNewHistory {return false}
+        if _storage._useDefaultSpecialConversionSettings != rhs_storage._useDefaultSpecialConversionSettings {return false}
         if _storage._specialConversionMode != rhs_storage._specialConversionMode {return false}
+        if _storage._useDefaultTableSettings != rhs_storage._useDefaultTableSettings {return false}
         if _storage._enabledTables != rhs_storage._enabledTables {return false}
+        if _storage._useDefaultZenzaiSettings != rhs_storage._useDefaultZenzaiSettings {return false}
         if _storage._zenzaiEnable != rhs_storage._zenzaiEnable {return false}
         if _storage._zenzaiInferLimit != rhs_storage._zenzaiInferLimit {return false}
         if _storage._zenzaiContextualMode != rhs_storage._zenzaiContextualMode {return false}
@@ -832,7 +926,7 @@ extension Hazkey_Config_ConfigProfile: SwiftProtobuf.Message, SwiftProtobuf._Mes
   }
 }
 
-extension Hazkey_Config_ConfigProfile.AutoConvertMode: SwiftProtobuf._ProtoNameProviding {
+extension Hazkey_Config_Profile.AutoConvertMode: SwiftProtobuf._ProtoNameProviding {
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     0: .same(proto: "AUTO_CONVERT_MODE_UNSPECIFIED"),
     1: .same(proto: "AUTO_CONVERT_DISABLED"),
@@ -841,7 +935,7 @@ extension Hazkey_Config_ConfigProfile.AutoConvertMode: SwiftProtobuf._ProtoNameP
   ]
 }
 
-extension Hazkey_Config_ConfigProfile.AuxTextMode: SwiftProtobuf._ProtoNameProviding {
+extension Hazkey_Config_Profile.AuxTextMode: SwiftProtobuf._ProtoNameProviding {
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     0: .same(proto: "AUX_TEXT_MODE_UNSPECIFIED"),
     1: .same(proto: "AUX_TEXT_DISABLED"),
@@ -850,7 +944,7 @@ extension Hazkey_Config_ConfigProfile.AuxTextMode: SwiftProtobuf._ProtoNameProvi
   ]
 }
 
-extension Hazkey_Config_ConfigProfile.SuggestionListMode: SwiftProtobuf._ProtoNameProviding {
+extension Hazkey_Config_Profile.SuggestionListMode: SwiftProtobuf._ProtoNameProviding {
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     0: .same(proto: "SUGGESTION_LIST_MODE_UNSPECIFIED"),
     1: .same(proto: "SUGGESTION_LIST_DISABLED"),
@@ -859,8 +953,8 @@ extension Hazkey_Config_ConfigProfile.SuggestionListMode: SwiftProtobuf._ProtoNa
   ]
 }
 
-extension Hazkey_Config_ConfigProfile.SpecialConversionMode: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = Hazkey_Config_ConfigProfile.protoMessageName + ".SpecialConversionMode"
+extension Hazkey_Config_Profile.SpecialConversionMode: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = Hazkey_Config_Profile.protoMessageName + ".SpecialConversionMode"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .standard(proto: "comma_separated_number"),
     2: .standard(proto: "mail_domain"),
@@ -924,7 +1018,7 @@ extension Hazkey_Config_ConfigProfile.SpecialConversionMode: SwiftProtobuf.Messa
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: Hazkey_Config_ConfigProfile.SpecialConversionMode, rhs: Hazkey_Config_ConfigProfile.SpecialConversionMode) -> Bool {
+  static func ==(lhs: Hazkey_Config_Profile.SpecialConversionMode, rhs: Hazkey_Config_Profile.SpecialConversionMode) -> Bool {
     if lhs.commaSeparatedNumber != rhs.commaSeparatedNumber {return false}
     if lhs.mailDomain != rhs.mailDomain {return false}
     if lhs.calender != rhs.calender {return false}
@@ -939,8 +1033,8 @@ extension Hazkey_Config_ConfigProfile.SpecialConversionMode: SwiftProtobuf.Messa
   }
 }
 
-extension Hazkey_Config_ConfigProfile.EnabledInputTable: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = Hazkey_Config_ConfigProfile.protoMessageName + ".EnabledInputTable"
+extension Hazkey_Config_Profile.EnabledInputTable: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = Hazkey_Config_Profile.protoMessageName + ".EnabledInputTable"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "name"),
     2: .standard(proto: "is_built_in"),
@@ -974,7 +1068,7 @@ extension Hazkey_Config_ConfigProfile.EnabledInputTable: SwiftProtobuf.Message, 
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: Hazkey_Config_ConfigProfile.EnabledInputTable, rhs: Hazkey_Config_ConfigProfile.EnabledInputTable) -> Bool {
+  static func ==(lhs: Hazkey_Config_Profile.EnabledInputTable, rhs: Hazkey_Config_Profile.EnabledInputTable) -> Bool {
     if lhs.name != rhs.name {return false}
     if lhs.isBuiltIn != rhs.isBuiltIn {return false}
     if lhs.filename != rhs.filename {return false}
@@ -983,8 +1077,8 @@ extension Hazkey_Config_ConfigProfile.EnabledInputTable: SwiftProtobuf.Message, 
   }
 }
 
-extension Hazkey_Config_ConfigProfile.ZenzaiVersionConfig: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = Hazkey_Config_ConfigProfile.protoMessageName + ".ZenzaiVersionConfig"
+extension Hazkey_Config_Profile.ZenzaiVersionConfig: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = Hazkey_Config_Profile.protoMessageName + ".ZenzaiVersionConfig"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "v1"),
     2: .same(proto: "v2"),
@@ -998,7 +1092,7 @@ extension Hazkey_Config_ConfigProfile.ZenzaiVersionConfig: SwiftProtobuf.Message
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
       case 1: try {
-        var v: Hazkey_Config_ConfigProfile.ZenzaiVersionConfig.V1?
+        var v: Hazkey_Config_Profile.ZenzaiVersionConfig.V1?
         var hadOneofValue = false
         if let current = self.version {
           hadOneofValue = true
@@ -1011,7 +1105,7 @@ extension Hazkey_Config_ConfigProfile.ZenzaiVersionConfig: SwiftProtobuf.Message
         }
       }()
       case 2: try {
-        var v: Hazkey_Config_ConfigProfile.ZenzaiVersionConfig.V2?
+        var v: Hazkey_Config_Profile.ZenzaiVersionConfig.V2?
         var hadOneofValue = false
         if let current = self.version {
           hadOneofValue = true
@@ -1024,7 +1118,7 @@ extension Hazkey_Config_ConfigProfile.ZenzaiVersionConfig: SwiftProtobuf.Message
         }
       }()
       case 3: try {
-        var v: Hazkey_Config_ConfigProfile.ZenzaiVersionConfig.V3?
+        var v: Hazkey_Config_Profile.ZenzaiVersionConfig.V3?
         var hadOneofValue = false
         if let current = self.version {
           hadOneofValue = true
@@ -1064,15 +1158,15 @@ extension Hazkey_Config_ConfigProfile.ZenzaiVersionConfig: SwiftProtobuf.Message
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: Hazkey_Config_ConfigProfile.ZenzaiVersionConfig, rhs: Hazkey_Config_ConfigProfile.ZenzaiVersionConfig) -> Bool {
+  static func ==(lhs: Hazkey_Config_Profile.ZenzaiVersionConfig, rhs: Hazkey_Config_Profile.ZenzaiVersionConfig) -> Bool {
     if lhs.version != rhs.version {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
 }
 
-extension Hazkey_Config_ConfigProfile.ZenzaiVersionConfig.V1: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = Hazkey_Config_ConfigProfile.ZenzaiVersionConfig.protoMessageName + ".V1"
+extension Hazkey_Config_Profile.ZenzaiVersionConfig.V1: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = Hazkey_Config_Profile.ZenzaiVersionConfig.protoMessageName + ".V1"
   static let _protobuf_nameMap = SwiftProtobuf._NameMap()
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -1084,14 +1178,14 @@ extension Hazkey_Config_ConfigProfile.ZenzaiVersionConfig.V1: SwiftProtobuf.Mess
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: Hazkey_Config_ConfigProfile.ZenzaiVersionConfig.V1, rhs: Hazkey_Config_ConfigProfile.ZenzaiVersionConfig.V1) -> Bool {
+  static func ==(lhs: Hazkey_Config_Profile.ZenzaiVersionConfig.V1, rhs: Hazkey_Config_Profile.ZenzaiVersionConfig.V1) -> Bool {
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
 }
 
-extension Hazkey_Config_ConfigProfile.ZenzaiVersionConfig.V2: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = Hazkey_Config_ConfigProfile.ZenzaiVersionConfig.protoMessageName + ".V2"
+extension Hazkey_Config_Profile.ZenzaiVersionConfig.V2: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = Hazkey_Config_Profile.ZenzaiVersionConfig.protoMessageName + ".V2"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "profile"),
   ]
@@ -1115,15 +1209,15 @@ extension Hazkey_Config_ConfigProfile.ZenzaiVersionConfig.V2: SwiftProtobuf.Mess
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: Hazkey_Config_ConfigProfile.ZenzaiVersionConfig.V2, rhs: Hazkey_Config_ConfigProfile.ZenzaiVersionConfig.V2) -> Bool {
+  static func ==(lhs: Hazkey_Config_Profile.ZenzaiVersionConfig.V2, rhs: Hazkey_Config_Profile.ZenzaiVersionConfig.V2) -> Bool {
     if lhs.profile != rhs.profile {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
 }
 
-extension Hazkey_Config_ConfigProfile.ZenzaiVersionConfig.V3: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = Hazkey_Config_ConfigProfile.ZenzaiVersionConfig.protoMessageName + ".V3"
+extension Hazkey_Config_Profile.ZenzaiVersionConfig.V3: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = Hazkey_Config_Profile.ZenzaiVersionConfig.protoMessageName + ".V3"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "profile"),
     2: .same(proto: "topic"),
@@ -1162,7 +1256,7 @@ extension Hazkey_Config_ConfigProfile.ZenzaiVersionConfig.V3: SwiftProtobuf.Mess
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: Hazkey_Config_ConfigProfile.ZenzaiVersionConfig.V3, rhs: Hazkey_Config_ConfigProfile.ZenzaiVersionConfig.V3) -> Bool {
+  static func ==(lhs: Hazkey_Config_Profile.ZenzaiVersionConfig.V3, rhs: Hazkey_Config_Profile.ZenzaiVersionConfig.V3) -> Bool {
     if lhs.profile != rhs.profile {return false}
     if lhs.topic != rhs.topic {return false}
     if lhs.style != rhs.style {return false}
@@ -1172,52 +1266,8 @@ extension Hazkey_Config_ConfigProfile.ZenzaiVersionConfig.V3: SwiftProtobuf.Mess
   }
 }
 
-extension Hazkey_Config_ConfigProfile.ZenzaiModel: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = Hazkey_Config_ConfigProfile.protoMessageName + ".ZenzaiModel"
-  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "name"),
-    2: .same(proto: "filename"),
-    3: .standard(proto: "is_system"),
-  ]
-
-  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let fieldNumber = try decoder.nextFieldNumber() {
-      // The use of inline closures is to circumvent an issue where the compiler
-      // allocates stack space for every case branch when no optimizations are
-      // enabled. https://github.com/apple/swift-protobuf/issues/1034
-      switch fieldNumber {
-      case 1: try { try decoder.decodeSingularStringField(value: &self.name) }()
-      case 2: try { try decoder.decodeSingularStringField(value: &self.filename) }()
-      case 3: try { try decoder.decodeSingularBoolField(value: &self.isSystem) }()
-      default: break
-      }
-    }
-  }
-
-  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if !self.name.isEmpty {
-      try visitor.visitSingularStringField(value: self.name, fieldNumber: 1)
-    }
-    if !self.filename.isEmpty {
-      try visitor.visitSingularStringField(value: self.filename, fieldNumber: 2)
-    }
-    if self.isSystem != false {
-      try visitor.visitSingularBoolField(value: self.isSystem, fieldNumber: 3)
-    }
-    try unknownFields.traverse(visitor: &visitor)
-  }
-
-  static func ==(lhs: Hazkey_Config_ConfigProfile.ZenzaiModel, rhs: Hazkey_Config_ConfigProfile.ZenzaiModel) -> Bool {
-    if lhs.name != rhs.name {return false}
-    if lhs.filename != rhs.filename {return false}
-    if lhs.isSystem != rhs.isSystem {return false}
-    if lhs.unknownFields != rhs.unknownFields {return false}
-    return true
-  }
-}
-
-extension Hazkey_Config_getCurrentConfig: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = _protobuf_package + ".getCurrentConfig"
+extension Hazkey_Config_GetConfig: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".GetConfig"
   static let _protobuf_nameMap = SwiftProtobuf._NameMap()
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -1229,17 +1279,17 @@ extension Hazkey_Config_getCurrentConfig: SwiftProtobuf.Message, SwiftProtobuf._
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: Hazkey_Config_getCurrentConfig, rhs: Hazkey_Config_getCurrentConfig) -> Bool {
+  static func ==(lhs: Hazkey_Config_GetConfig, rhs: Hazkey_Config_GetConfig) -> Bool {
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
 }
 
-extension Hazkey_Config_setCurrentConfig: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = _protobuf_package + ".setCurrentConfig"
+extension Hazkey_Config_SetConfig: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".SetConfig"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .standard(proto: "file_hashes"),
-    2: .same(proto: "config"),
+    2: .same(proto: "profiles"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -1249,7 +1299,7 @@ extension Hazkey_Config_setCurrentConfig: SwiftProtobuf.Message, SwiftProtobuf._
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
       case 1: try { try decoder.decodeRepeatedMessageField(value: &self.fileHashes) }()
-      case 2: try { try decoder.decodeRepeatedMessageField(value: &self.config) }()
+      case 2: try { try decoder.decodeRepeatedMessageField(value: &self.profiles) }()
       default: break
       }
     }
@@ -1259,22 +1309,22 @@ extension Hazkey_Config_setCurrentConfig: SwiftProtobuf.Message, SwiftProtobuf._
     if !self.fileHashes.isEmpty {
       try visitor.visitRepeatedMessageField(value: self.fileHashes, fieldNumber: 1)
     }
-    if !self.config.isEmpty {
-      try visitor.visitRepeatedMessageField(value: self.config, fieldNumber: 2)
+    if !self.profiles.isEmpty {
+      try visitor.visitRepeatedMessageField(value: self.profiles, fieldNumber: 2)
     }
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: Hazkey_Config_setCurrentConfig, rhs: Hazkey_Config_setCurrentConfig) -> Bool {
+  static func ==(lhs: Hazkey_Config_SetConfig, rhs: Hazkey_Config_SetConfig) -> Bool {
     if lhs.fileHashes != rhs.fileHashes {return false}
-    if lhs.config != rhs.config {return false}
+    if lhs.profiles != rhs.profiles {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
 }
 
-extension Hazkey_Config_getDefaultConfig: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = _protobuf_package + ".getDefaultConfig"
+extension Hazkey_Config_GetDefaultProfile: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".GetDefaultProfile"
   static let _protobuf_nameMap = SwiftProtobuf._NameMap()
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -1286,26 +1336,39 @@ extension Hazkey_Config_getDefaultConfig: SwiftProtobuf.Message, SwiftProtobuf._
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: Hazkey_Config_getDefaultConfig, rhs: Hazkey_Config_getDefaultConfig) -> Bool {
+  static func ==(lhs: Hazkey_Config_GetDefaultProfile, rhs: Hazkey_Config_GetDefaultProfile) -> Bool {
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
 }
 
-extension Hazkey_Config_clearAllHistory: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = _protobuf_package + ".clearAllHistory"
-  static let _protobuf_nameMap = SwiftProtobuf._NameMap()
+extension Hazkey_Config_ClearAllHistory: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".ClearAllHistory"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .standard(proto: "profile_id"),
+  ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    // Load everything into unknown fields
-    while try decoder.nextFieldNumber() != nil {}
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularStringField(value: &self.profileID) }()
+      default: break
+      }
+    }
   }
 
   func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.profileID.isEmpty {
+      try visitor.visitSingularStringField(value: self.profileID, fieldNumber: 1)
+    }
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: Hazkey_Config_clearAllHistory, rhs: Hazkey_Config_clearAllHistory) -> Bool {
+  static func ==(lhs: Hazkey_Config_ClearAllHistory, rhs: Hazkey_Config_ClearAllHistory) -> Bool {
+    if lhs.profileID != rhs.profileID {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -1315,8 +1378,10 @@ extension Hazkey_Config_CurrentConfig: SwiftProtobuf.Message, SwiftProtobuf._Mes
   static let protoMessageName: String = _protobuf_package + ".CurrentConfig"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .standard(proto: "file_hashes"),
-    2: .standard(proto: "available_tables"),
-    3: .same(proto: "configs"),
+    2: .same(proto: "profiles"),
+    3: .standard(proto: "available_tables"),
+    4: .standard(proto: "is_zenzai_available"),
+    5: .standard(proto: "xdg_config_home_path"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -1326,8 +1391,10 @@ extension Hazkey_Config_CurrentConfig: SwiftProtobuf.Message, SwiftProtobuf._Mes
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
       case 1: try { try decoder.decodeRepeatedMessageField(value: &self.fileHashes) }()
-      case 2: try { try decoder.decodeRepeatedMessageField(value: &self.availableTables) }()
-      case 3: try { try decoder.decodeRepeatedMessageField(value: &self.configs) }()
+      case 2: try { try decoder.decodeRepeatedMessageField(value: &self.profiles) }()
+      case 3: try { try decoder.decodeRepeatedMessageField(value: &self.availableTables) }()
+      case 4: try { try decoder.decodeSingularBoolField(value: &self.isZenzaiAvailable) }()
+      case 5: try { try decoder.decodeSingularStringField(value: &self.xdgConfigHomePath) }()
       default: break
       }
     }
@@ -1337,19 +1404,27 @@ extension Hazkey_Config_CurrentConfig: SwiftProtobuf.Message, SwiftProtobuf._Mes
     if !self.fileHashes.isEmpty {
       try visitor.visitRepeatedMessageField(value: self.fileHashes, fieldNumber: 1)
     }
-    if !self.availableTables.isEmpty {
-      try visitor.visitRepeatedMessageField(value: self.availableTables, fieldNumber: 2)
+    if !self.profiles.isEmpty {
+      try visitor.visitRepeatedMessageField(value: self.profiles, fieldNumber: 2)
     }
-    if !self.configs.isEmpty {
-      try visitor.visitRepeatedMessageField(value: self.configs, fieldNumber: 3)
+    if !self.availableTables.isEmpty {
+      try visitor.visitRepeatedMessageField(value: self.availableTables, fieldNumber: 3)
+    }
+    if self.isZenzaiAvailable != false {
+      try visitor.visitSingularBoolField(value: self.isZenzaiAvailable, fieldNumber: 4)
+    }
+    if !self.xdgConfigHomePath.isEmpty {
+      try visitor.visitSingularStringField(value: self.xdgConfigHomePath, fieldNumber: 5)
     }
     try unknownFields.traverse(visitor: &visitor)
   }
 
   static func ==(lhs: Hazkey_Config_CurrentConfig, rhs: Hazkey_Config_CurrentConfig) -> Bool {
     if lhs.fileHashes != rhs.fileHashes {return false}
+    if lhs.profiles != rhs.profiles {return false}
     if lhs.availableTables != rhs.availableTables {return false}
-    if lhs.configs != rhs.configs {return false}
+    if lhs.isZenzaiAvailable != rhs.isZenzaiAvailable {return false}
+    if lhs.xdgConfigHomePath != rhs.xdgConfigHomePath {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }

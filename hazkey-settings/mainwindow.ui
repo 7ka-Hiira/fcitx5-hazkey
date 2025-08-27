@@ -42,56 +42,6 @@
     <number>10</number>
    </property>
    <item>
-    <layout class="QHBoxLayout" name="profileGrid">
-     <item>
-      <widget class="QLabel" name="profileLabel">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>Profile:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QComboBox" name="profileComboBox">
-       <property name="editable">
-        <bool>true</bool>
-       </property>
-       <item>
-        <property name="text">
-         <string>Default</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-     <item>
-      <widget class="QToolButton" name="profileNew">
-       <property name="icon">
-        <iconset theme="QIcon::ThemeIcon::ListAdd"/>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QToolButton" name="profileDupicate">
-       <property name="icon">
-        <iconset theme="QIcon::ThemeIcon::EditCopy"/>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QToolButton" name="profileDelete">
-       <property name="icon">
-        <iconset theme="QIcon::ThemeIcon::EditDelete"/>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
       <number>0</number>
@@ -124,7 +74,7 @@
             <x>0</x>
             <y>0</y>
             <width>624</width>
-            <height>459</height>
+            <height>503</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="userInterfaceTabScrollContentsLayout">
@@ -429,8 +379,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>620</width>
-            <height>455</height>
+            <width>624</width>
+            <height>503</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="conversionTabScrollContentsLayout">
@@ -746,7 +696,7 @@
             <x>0</x>
             <y>0</y>
             <width>624</width>
-            <height>459</height>
+            <height>503</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="inputTabScrollContentsLayout">
@@ -885,7 +835,7 @@
                    </item>
                    <item>
                     <property name="text">
-                     <string>Kana</string>
+                     <string>Kana (JIS)</string>
                     </property>
                    </item>
                    <item>
@@ -983,204 +933,7 @@
                <property name="bottomMargin">
                 <number>0</number>
                </property>
-               <property name="horizontalSpacing">
-                <number>16</number>
-               </property>
-               <item row="1" column="0">
-                <layout class="QVBoxLayout" name="availableTablesGrid">
-                 <item>
-                  <widget class="QLabel" name="availableTablesLabel">
-                   <property name="text">
-                    <string>Available tables:</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QListWidget" name="availableTablesList">
-                   <property name="dragEnabled">
-                    <bool>true</bool>
-                   </property>
-                   <property name="dragDropMode">
-                    <enum>QAbstractItemView::DragDropMode::InternalMove</enum>
-                   </property>
-                   <property name="defaultDropAction">
-                    <enum>Qt::DropAction::MoveAction</enum>
-                   </property>
-                   <property name="alternatingRowColors">
-                    <bool>true</bool>
-                   </property>
-                   <property name="selectionMode">
-                    <enum>QAbstractItemView::SelectionMode::ExtendedSelection</enum>
-                   </property>
-                   <property name="selectionBehavior">
-                    <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
-                   </property>
-                   <property name="wordWrap">
-                    <bool>true</bool>
-                   </property>
-                   <item>
-                    <property name="text">
-                     <string>Romaji [Built-in]</string>
-                    </property>
-                    <property name="font">
-                     <font>
-                      <italic>true</italic>
-                     </font>
-                    </property>
-                    <property name="checkState">
-                     <enum>Checked</enum>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string>Kana [Built-in]</string>
-                    </property>
-                    <property name="font">
-                     <font>
-                      <italic>true</italic>
-                     </font>
-                    </property>
-                    <property name="checkState">
-                     <enum>Unchecked</enum>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string>AZIK [Built-in]</string>
-                    </property>
-                    <property name="font">
-                     <font>
-                      <italic>true</italic>
-                     </font>
-                    </property>
-                    <property name="checkState">
-                     <enum>Unchecked</enum>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string>Fullwidth Symbols [Built-in]</string>
-                    </property>
-                    <property name="font">
-                     <font>
-                      <italic>true</italic>
-                     </font>
-                    </property>
-                    <property name="checkState">
-                     <enum>Checked</enum>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string>Halfwidth Symbols [Built-in]</string>
-                    </property>
-                    <property name="checkState">
-                     <enum>Unchecked</enum>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string>Kuten-Toten [Built-in]</string>
-                    </property>
-                    <property name="font">
-                     <font>
-                      <italic>true</italic>
-                     </font>
-                    </property>
-                    <property name="checkState">
-                     <enum>Checked</enum>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string>Kuten-Comma [Built-in]</string>
-                    </property>
-                    <property name="font">
-                     <font>
-                      <italic>true</italic>
-                     </font>
-                    </property>
-                    <property name="checkState">
-                     <enum>Unchecked</enum>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string>Period-Comma [Built-in]</string>
-                    </property>
-                    <property name="font">
-                     <font>
-                      <italic>true</italic>
-                     </font>
-                    </property>
-                    <property name="checkState">
-                     <enum>Unchecked</enum>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string>Fullwidth Number [Built-in]</string>
-                    </property>
-                    <property name="font">
-                     <font>
-                      <italic>true</italic>
-                     </font>
-                    </property>
-                    <property name="checkState">
-                     <enum>Checked</enum>
-                    </property>
-                   </item>
-                  </widget>
-                 </item>
-                 <item>
-                  <layout class="QHBoxLayout" name="availableTablesActions">
-                   <item>
-                    <widget class="QToolButton" name="tableMoveUp">
-                     <property name="icon">
-                      <iconset theme="QIcon::ThemeIcon::GoUp"/>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QToolButton" name="tableMoveDown">
-                     <property name="icon">
-                      <iconset theme="QIcon::ThemeIcon::GoDown"/>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QToolButton" name="tableNew">
-                     <property name="icon">
-                      <iconset theme="QIcon::ThemeIcon::ListAdd"/>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QToolButton" name="dupicateTable">
-                     <property name="icon">
-                      <iconset theme="QIcon::ThemeIcon::EditCopy"/>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QToolButton" name="deleteTable">
-                     <property name="icon">
-                      <iconset theme="QIcon::ThemeIcon::EditDelete"/>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QPushButton" name="tableMoreActions">
-                     <property name="text">
-                      <string>More Actions...</string>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </item>
-                </layout>
-               </item>
-               <item row="2" column="0" colspan="2">
+               <item row="3" column="0" colspan="3">
                 <widget class="QLabel" name="inputTableAdvancedNote">
                  <property name="font">
                   <font>
@@ -1188,7 +941,7 @@
                   </font>
                  </property>
                  <property name="text">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Note:&lt;/span&gt; The table list is shared across profiles, while the enabled/disabled settings are stored separately for each profile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Note:&lt;/span&gt; You can use custom input tables in TSV format, located in &lt;span style=&quot; font-weight:700;&quot;&gt;$XDG_CONFIG_HOME/hazkey/table&lt;/span&gt;. &lt;a href=&quot;https://hazkey.hiira.dev/docs/input-tables&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;More info...&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                  <property name="wordWrap">
                   <bool>true</bool>
@@ -1196,80 +949,92 @@
                 </widget>
                </item>
                <item row="1" column="1">
-                <layout class="QVBoxLayout" name="tableEditorGrid">
+                <layout class="QVBoxLayout" name="tableManageGrid">
                  <item>
-                  <widget class="QLabel" name="keymapEditorLabel">
-                   <property name="text">
-                    <string>Selected table: Fullwidth Symbols</string>
+                  <spacer name="tableManageTopSpacer">
+                   <property name="orientation">
+                    <enum>Qt::Orientation::Vertical</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>20</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item>
+                  <widget class="QToolButton" name="tableMoveUp">
+                   <property name="icon">
+                    <iconset theme="QIcon::ThemeIcon::GoUp"/>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QTableWidget" name="keymapEditorTable">
-                   <property name="locale">
-                    <locale language="Japanese" country="Japan"/>
+                  <widget class="QToolButton" name="enableTable">
+                   <property name="icon">
+                    <iconset theme="QIcon::ThemeIcon::GoPrevious"/>
                    </property>
-                   <property name="frameShape">
-                    <enum>QFrame::Shape::StyledPanel</enum>
-                   </property>
-                   <property name="alternatingRowColors">
-                    <bool>true</bool>
-                   </property>
-                   <property name="selectionBehavior">
-                    <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
-                   </property>
-                   <property name="gridStyle">
-                    <enum>Qt::PenStyle::NoPen</enum>
-                   </property>
-                   <property name="sortingEnabled">
-                    <bool>true</bool>
-                   </property>
-                   <attribute name="verticalHeaderVisible">
-                    <bool>false</bool>
-                   </attribute>
-                   <attribute name="verticalHeaderMinimumSectionSize">
-                    <number>24</number>
-                   </attribute>
-                   <attribute name="verticalHeaderDefaultSectionSize">
-                    <number>25</number>
-                   </attribute>
-                   <column>
-                    <property name="text">
-                     <string>Input</string>
-                    </property>
-                   </column>
-                   <column>
-                    <property name="text">
-                     <string>Output</string>
-                    </property>
-                   </column>
                   </widget>
                  </item>
                  <item>
-                  <layout class="QHBoxLayout" name="tableEditorActions">
-                   <item>
-                    <widget class="QPushButton" name="newRuleEntry">
-                     <property name="text">
-                      <string>New entry</string>
-                     </property>
-                     <property name="icon">
-                      <iconset theme="QIcon::ThemeIcon::ListAdd"/>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QPushButton" name="deleteRuleEntry">
-                     <property name="text">
-                      <string>Delete entry</string>
-                     </property>
-                     <property name="icon">
-                      <iconset theme="QIcon::ThemeIcon::EditDelete"/>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
+                  <widget class="QToolButton" name="disableTable">
+                   <property name="icon">
+                    <iconset theme="QIcon::ThemeIcon::GoNext"/>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QToolButton" name="tableMoveDown">
+                   <property name="icon">
+                    <iconset theme="QIcon::ThemeIcon::GoDown"/>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <spacer name="tableManageBottomSpacer">
+                   <property name="orientation">
+                    <enum>Qt::Orientation::Vertical</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>20</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                  </spacer>
                  </item>
                 </layout>
+               </item>
+               <item row="0" column="2">
+                <widget class="QLabel" name="availableTableLabel">
+                 <property name="text">
+                  <string>Available tables:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="0">
+                <widget class="QLabel" name="enabledTableLabel">
+                 <property name="text">
+                  <string>Enabled tables:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="2">
+                <widget class="QListWidget" name="availableTableList"/>
+               </item>
+               <item row="1" column="0">
+                <widget class="QListWidget" name="enabledTableList">
+                 <property name="dragEnabled">
+                  <bool>true</bool>
+                 </property>
+                 <property name="dragDropMode">
+                  <enum>QAbstractItemView::DragDropMode::InternalMove</enum>
+                 </property>
+                 <property name="defaultDropAction">
+                  <enum>Qt::DropAction::MoveAction</enum>
+                 </property>
+                </widget>
                </item>
               </layout>
              </widget>
@@ -1309,7 +1074,7 @@
             <x>0</x>
             <y>0</y>
             <width>624</width>
-            <height>459</height>
+            <height>503</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="dictionaryTabScrollContentsLayout">
@@ -1465,7 +1230,7 @@
             <x>0</x>
             <y>0</y>
             <width>624</width>
-            <height>459</height>
+            <height>503</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="aiTabScrollContentsLayout">
@@ -1609,139 +1374,6 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="advancedTab">
-      <attribute name="title">
-       <string>Advanced</string>
-      </attribute>
-      <layout class="QVBoxLayout" name="advancedTabLayout">
-       <property name="leftMargin">
-        <number>0</number>
-       </property>
-       <property name="topMargin">
-        <number>0</number>
-       </property>
-       <property name="rightMargin">
-        <number>0</number>
-       </property>
-       <property name="bottomMargin">
-        <number>0</number>
-       </property>
-       <item>
-        <widget class="QScrollArea" name="advancedScrollArea">
-         <property name="widgetResizable">
-          <bool>true</bool>
-         </property>
-         <widget class="QWidget" name="advancedScrollAreaWidgetContents">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>624</width>
-            <height>459</height>
-           </rect>
-          </property>
-          <layout class="QVBoxLayout" name="advancedScrollAreaWidgetContainer">
-           <property name="leftMargin">
-            <number>10</number>
-           </property>
-           <property name="topMargin">
-            <number>10</number>
-           </property>
-           <property name="rightMargin">
-            <number>10</number>
-           </property>
-           <property name="bottomMargin">
-            <number>10</number>
-           </property>
-           <item>
-            <layout class="QVBoxLayout" name="advancedTabMainGrid">
-             <property name="leftMargin">
-              <number>20</number>
-             </property>
-             <property name="topMargin">
-              <number>10</number>
-             </property>
-             <property name="rightMargin">
-              <number>20</number>
-             </property>
-             <property name="bottomMargin">
-              <number>10</number>
-             </property>
-             <item>
-              <widget class="QCheckBox" name="richSuggestionCheckBox">
-               <property name="text">
-                <string>Use rich conversion mode in Live Conversion / Suggestion List (not recommended)</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QCheckBox" name="useCustomZenzaiModel">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="text">
-                <string>Custom Zenzai model weight</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <layout class="QHBoxLayout" name="customZenzaiModelGrid">
-               <item>
-                <spacer name="customZenzaiModelSpacer">
-                 <property name="orientation">
-                  <enum>Qt::Orientation::Horizontal</enum>
-                 </property>
-                 <property name="sizeType">
-                  <enum>QSizePolicy::Policy::Fixed</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>40</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item>
-                <widget class="QLineEdit" name="customZenzaiModelPath">
-                 <property name="enabled">
-                  <bool>false</bool>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QPushButton" name="customZenzaiModelChooseButton">
-                 <property name="enabled">
-                  <bool>false</bool>
-                 </property>
-                 <property name="text">
-                  <string>Choose file...</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <spacer name="advancedTabBottomSpacer">
-             <property name="orientation">
-              <enum>Qt::Orientation::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>324</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
-         </widget>
-        </widget>
-       </item>
-      </layout>
-     </widget>
      <widget class="QWidget" name="aboutTab">
       <attribute name="title">
        <string>About</string>
@@ -1770,7 +1402,7 @@
             <x>0</x>
             <y>0</y>
             <width>624</width>
-            <height>459</height>
+            <height>503</height>
            </rect>
           </property>
          </widget>

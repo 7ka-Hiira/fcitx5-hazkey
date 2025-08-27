@@ -157,7 +157,7 @@ func getCandidates(is_suggest: Bool) -> Hazkey_ResponseEnvelope {
     options.N_best = {
         if is_suggest
             && currentProfile.suggestionListMode
-                == Hazkey_Config_ConfigProfile.SuggestionListMode.suggestionListDisabled
+                == Hazkey_Config_Profile.SuggestionListMode.suggestionListDisabled
         {
             // for auto conversion
             return 1
@@ -171,7 +171,7 @@ func getCandidates(is_suggest: Bool) -> Hazkey_ResponseEnvelope {
     options.requireJapanesePrediction =
         is_suggest
         && currentProfile.suggestionListMode
-            == Hazkey_Config_ConfigProfile.SuggestionListMode.suggestionListShowPredictiveResults
+            == Hazkey_Config_Profile.SuggestionListMode.suggestionListShowPredictiveResults
     options.requireEnglishPrediction = options.requireJapanesePrediction
 
     let converted = converter.requestCandidates(composingText.value, options: options)
@@ -200,13 +200,13 @@ func getCandidates(is_suggest: Bool) -> Hazkey_ResponseEnvelope {
 
     // Do not automatically convert if there is only one character
     if currentProfile.autoConvertMode
-        == Hazkey_Config_ConfigProfile.AutoConvertMode.autoConvertForMultipleChars
+        == Hazkey_Config_Profile.AutoConvertMode.autoConvertForMultipleChars
         && hiraganaPreedit.count == 1
     {
         candidatesResult.liveText = ""
         candidatesResult.liveTextIndex = -1
     } else if currentProfile.autoConvertMode
-        == Hazkey_Config_ConfigProfile.AutoConvertMode.autoConvertDisabled
+        == Hazkey_Config_Profile.AutoConvertMode.autoConvertDisabled
     {
         candidatesResult.liveText = ""
         candidatesResult.liveTextIndex = -1
@@ -215,7 +215,7 @@ func getCandidates(is_suggest: Bool) -> Hazkey_ResponseEnvelope {
     candidatesResult.pageSize = {
         if is_suggest
             && currentProfile.suggestionListMode
-                == Hazkey_Config_ConfigProfile.SuggestionListMode.suggestionListDisabled
+                == Hazkey_Config_Profile.SuggestionListMode.suggestionListDisabled
         {
             return 0
         } else if is_suggest {

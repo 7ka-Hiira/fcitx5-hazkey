@@ -36,6 +36,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
         serverconnector.h serverconnector.cpp
+        config_definitions.h
+        config_macros.h
     )
     # Define target properties for Android with Qt 6 as:
     #    set_property(TARGET hazkey-settings APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
