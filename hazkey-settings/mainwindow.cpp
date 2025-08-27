@@ -44,9 +44,6 @@ MainWindow::MainWindow(QWidget *parent)
     // Expand table settings mode change tab
     ui_->inputTableConfigModeTabWidget->tabBar()->setExpanding(true);
 
-    // Connect to server
-    server_.connect_server();
-
     // Connect UI signals
     connectSignals();
 

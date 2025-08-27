@@ -3,11 +3,20 @@ import KanaKanjiConverterModule
 import SwiftProtobuf
 
 func getCurrentConfig() -> Hazkey_ResponseEnvelope {
-    let profiles = loadConfig()
+    let profiles: [Hazkey_Config_Profile]
+    do {
+        profiles = try loadConfig()
+    } catch {
+        return Hazkey_ResponseEnvelope.with {
+            $0.status = .failed
+            $0.errorMessage = "\(error)"
+        }
+    }
 
     let currentConfig = Hazkey_Config_CurrentConfig.with {
         $0.fileHashes = []
         $0.isZenzaiAvailable = false
+        $0.xdgConfigHomePath = getConfigDirectory().absoluteString
         $0.profiles = profiles
     }
     return Hazkey_ResponseEnvelope.with {
@@ -80,42 +89,37 @@ func saveConfig(_ profiles: [Hazkey_Config_Profile]) {
     }
 }
 
-func loadConfig() -> [Hazkey_Config_Profile] {
-    do {
-        let configDir = getConfigDirectory()
-        let configPath = configDir.appendingPathComponent("config.json")
+func loadConfig() throws -> [Hazkey_Config_Profile] {
+    let configDir = getConfigDirectory()
+    let configPath = configDir.appendingPathComponent("config.json")
 
-        // Check if config file exists
-        guard FileManager.default.fileExists(atPath: configPath.path) else {
-            NSLog("Config file does not exist at: \(configPath.path), returning empty config")
-            return [genDefaultConfig()]
-        }
-
-        // Read file contents
-        let jsonData = try Data(contentsOf: configPath)
-
-        // Parse JSON array
-        let jsonArray =
-            try JSONSerialization.jsonObject(with: jsonData, options: []) as! [[String: Any]]
-
-        var configs: [Hazkey_Config_Profile] = []
-        for jsonObject in jsonArray {
-            let jsonObjectData = try JSONSerialization.data(withJSONObject: jsonObject, options: [])
-            let config = try Hazkey_Config_Profile(jsonUTF8Data: jsonObjectData)
-            configs.append(config)
-        }
-
-        if configs.count == 0 {
-            NSLog("Loaded empty config. returning default config...")
-            return [genDefaultConfig()]
-        }
-
-        NSLog("Config loaded from: \(configPath.path)")
-        return configs
-    } catch {
-        NSLog("Failed to load config: \(error), returning default config")
+    // Check if config file exists
+    guard FileManager.default.fileExists(atPath: configPath.path) else {
+        NSLog("Config file does not exist at: \(configPath.path), returning empty config")
         return [genDefaultConfig()]
     }
+
+    // Read file contents
+    let jsonData = try Data(contentsOf: configPath)
+
+    // Parse JSON array
+    let jsonArray =
+        try JSONSerialization.jsonObject(with: jsonData, options: []) as! [[String: Any]]
+
+    var configs: [Hazkey_Config_Profile] = []
+    for jsonObject in jsonArray {
+        let jsonObjectData = try JSONSerialization.data(withJSONObject: jsonObject, options: [])
+        let config = try Hazkey_Config_Profile(jsonUTF8Data: jsonObjectData)
+        configs.append(config)
+    }
+
+    if configs.count == 0 {
+        NSLog("Loaded empty config. returning default config...")
+        return [genDefaultConfig()]
+    }
+
+    NSLog("Config loaded from: \(configPath.path)")
+    return configs
 }
 
 // replace with FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!?

@@ -8,6 +8,7 @@
 #include <unistd.h>
 
 #include <QMessageBox>
+#include <chrono>
 #include <mutex>
 #include <thread>
 
@@ -98,24 +99,24 @@ bool readAll(int fd, void* data, size_t len) {
     return true;
 }
 
-void ServerConnector::connect_server() {
+int ServerConnector::create_connection() {
     std::string socket_path = get_socket_path();
 
     constexpr int MAX_RETRIES = 3;
     constexpr int RETRY_INTERVAL_MS = 100;
-    int attempt;
-    for (attempt = 0; attempt < MAX_RETRIES; ++attempt) {
-        sock_ = socket(AF_UNIX, SOCK_STREAM, 0);
-        if (sock_ < 0) {
+
+    for (int attempt = 0; attempt < MAX_RETRIES; ++attempt) {
+        int sock = socket(AF_UNIX, SOCK_STREAM, 0);
+        if (sock < 0) {
             std::this_thread::sleep_for(
                 std::chrono::milliseconds(RETRY_INTERVAL_MS));
             continue;
         }
+
         int fcntlRes =
-            fcntl(sock_, F_SETFL, fcntl(sock_, F_GETFL, 0) | O_NONBLOCK);
+            fcntl(sock, F_SETFL, fcntl(sock, F_GETFL, 0) | O_NONBLOCK);
         if (fcntlRes != 0) {
-            close(sock_);
-            sock_ = -1;
+            close(sock);
             std::this_thread::sleep_for(
                 std::chrono::milliseconds(RETRY_INTERVAL_MS));
             continue;
@@ -125,96 +126,93 @@ void ServerConnector::connect_server() {
         addr.sun_family = AF_UNIX;
         strncpy(addr.sun_path, socket_path.c_str(), sizeof(addr.sun_path) - 1);
 
-        int ret = connect(sock_, (sockaddr*)&addr, sizeof(addr));
+        int ret = connect(sock, (sockaddr*)&addr, sizeof(addr));
         if (ret == 0) {
             // Connected
-            return;
+            return sock;
         }
         if (errno == EINPROGRESS) {
             fd_set wfds;
             FD_ZERO(&wfds);
-            FD_SET(sock_, &wfds);
+            FD_SET(sock, &wfds);
             timeval tv = {2, 0};
-            int sel = select(sock_ + 1, NULL, &wfds, NULL, &tv);
-            if (sel > 0 && FD_ISSET(sock_, &wfds)) {
+            int sel = select(sock + 1, NULL, &wfds, NULL, &tv);
+            if (sel > 0 && FD_ISSET(sock, &wfds)) {
                 int so_error = 0;
                 socklen_t len = sizeof(so_error);
-                getsockopt(sock_, SOL_SOCKET, SO_ERROR, &so_error, &len);
+                getsockopt(sock, SOL_SOCKET, SO_ERROR, &so_error, &len);
                 if (so_error == 0) {
                     // Connected
-                    return;
+                    return sock;
                 }
             }
         }
-        close(sock_);
-        sock_ = -1;
+        close(sock);
         restart_hazkey_server();
         std::this_thread::sleep_for(
             std::chrono::milliseconds(RETRY_INTERVAL_MS));
     }
+    return -1;
 }
 
 std::optional<hazkey::ResponseEnvelope> ServerConnector::transact(
     const hazkey::RequestEnvelope& send_data) {
     std::lock_guard<std::mutex> lock(transact_mutex);
 
-    if (sock_ == -1) {
-        connect_server();
-        if (sock_ == -1) {
-            return std::nullopt;
-        }
+    // Create new connection for each transaction
+    int sock = create_connection();
+    if (sock == -1) {
+        return std::nullopt;
     }
 
     std::string msg;
     if (!send_data.SerializeToString(&msg)) {
+        close(sock);
         return std::nullopt;
     }
+
     // write length
     uint32_t writeLen = htonl(msg.size());
-    if (!writeAll(sock_, &writeLen, 4)) {
-        close(sock_);
-        sock_ = -1;
-        connect_server();
+    if (!writeAll(sock, &writeLen, 4)) {
+        close(sock);
         return std::nullopt;
     }
 
     // write data
-    if (!writeAll(sock_, msg.c_str(), msg.size())) {
-        close(sock_);
-        sock_ = -1;
-        connect_server();
+    if (!writeAll(sock, msg.c_str(), msg.size())) {
+        close(sock);
         return std::nullopt;
     }
 
     // read response length
     uint32_t readLenBuf;
-    if (!readAll(sock_, &readLenBuf, 4)) {
-        close(sock_);
-        sock_ = -1;
+    if (!readAll(sock, &readLenBuf, 4)) {
+        close(sock);
         return std::nullopt;
     }
 
     uint32_t readLen = ntohl(readLenBuf);
 
     if (readLen > 2 * 1024 * 1024) {  // 2MB limit
-        close(sock_);
-        sock_ = -1;
+        close(sock);
         return std::nullopt;
     }
 
     // read response
     std::vector<char> buf(readLen);
-    if (!readAll(sock_, buf.data(), readLen)) {
-        close(sock_);
-        sock_ = -1;
+    if (!readAll(sock, buf.data(), readLen)) {
+        close(sock);
         return std::nullopt;
     }
 
     hazkey::ResponseEnvelope resp;
     if (!resp.ParseFromArray(buf.data(), readLen)) {
+        close(sock);
         return std::nullopt;
     }
 
+    // Close connection after transaction
+    close(sock);
     return resp;
 }
 
