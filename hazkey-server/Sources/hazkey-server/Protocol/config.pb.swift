@@ -102,74 +102,130 @@ struct Hazkey_Config_Profile: @unchecked Sendable {
   }
 
   var useDefaultInputUiSettings: Bool {
-    get {return _storage._useDefaultInputUiSettings}
+    get {return _storage._useDefaultInputUiSettings ?? false}
     set {_uniqueStorage()._useDefaultInputUiSettings = newValue}
   }
+  /// Returns true if `useDefaultInputUiSettings` has been explicitly set.
+  var hasUseDefaultInputUiSettings: Bool {return _storage._useDefaultInputUiSettings != nil}
+  /// Clears the value of `useDefaultInputUiSettings`. Subsequent reads from it will return its default value.
+  mutating func clearUseDefaultInputUiSettings() {_uniqueStorage()._useDefaultInputUiSettings = nil}
 
   var autoConvertMode: Hazkey_Config_Profile.AutoConvertMode {
-    get {return _storage._autoConvertMode}
+    get {return _storage._autoConvertMode ?? .unspecified}
     set {_uniqueStorage()._autoConvertMode = newValue}
   }
+  /// Returns true if `autoConvertMode` has been explicitly set.
+  var hasAutoConvertMode: Bool {return _storage._autoConvertMode != nil}
+  /// Clears the value of `autoConvertMode`. Subsequent reads from it will return its default value.
+  mutating func clearAutoConvertMode() {_uniqueStorage()._autoConvertMode = nil}
 
   var auxTextMode: Hazkey_Config_Profile.AuxTextMode {
-    get {return _storage._auxTextMode}
+    get {return _storage._auxTextMode ?? .unspecified}
     set {_uniqueStorage()._auxTextMode = newValue}
   }
+  /// Returns true if `auxTextMode` has been explicitly set.
+  var hasAuxTextMode: Bool {return _storage._auxTextMode != nil}
+  /// Clears the value of `auxTextMode`. Subsequent reads from it will return its default value.
+  mutating func clearAuxTextMode() {_uniqueStorage()._auxTextMode = nil}
 
   var suggestionListMode: Hazkey_Config_Profile.SuggestionListMode {
-    get {return _storage._suggestionListMode}
+    get {return _storage._suggestionListMode ?? .unspecified}
     set {_uniqueStorage()._suggestionListMode = newValue}
   }
+  /// Returns true if `suggestionListMode` has been explicitly set.
+  var hasSuggestionListMode: Bool {return _storage._suggestionListMode != nil}
+  /// Clears the value of `suggestionListMode`. Subsequent reads from it will return its default value.
+  mutating func clearSuggestionListMode() {_uniqueStorage()._suggestionListMode = nil}
 
   var useRichSuggestion: Bool {
-    get {return _storage._useRichSuggestion}
+    get {return _storage._useRichSuggestion ?? false}
     set {_uniqueStorage()._useRichSuggestion = newValue}
   }
+  /// Returns true if `useRichSuggestion` has been explicitly set.
+  var hasUseRichSuggestion: Bool {return _storage._useRichSuggestion != nil}
+  /// Clears the value of `useRichSuggestion`. Subsequent reads from it will return its default value.
+  mutating func clearUseRichSuggestion() {_uniqueStorage()._useRichSuggestion = nil}
 
   var numSuggestions: Int32 {
-    get {return _storage._numSuggestions}
+    get {return _storage._numSuggestions ?? 0}
     set {_uniqueStorage()._numSuggestions = newValue}
   }
+  /// Returns true if `numSuggestions` has been explicitly set.
+  var hasNumSuggestions: Bool {return _storage._numSuggestions != nil}
+  /// Clears the value of `numSuggestions`. Subsequent reads from it will return its default value.
+  mutating func clearNumSuggestions() {_uniqueStorage()._numSuggestions = nil}
 
   var useDefaultConversionUiSettings: Bool {
-    get {return _storage._useDefaultConversionUiSettings}
+    get {return _storage._useDefaultConversionUiSettings ?? false}
     set {_uniqueStorage()._useDefaultConversionUiSettings = newValue}
   }
+  /// Returns true if `useDefaultConversionUiSettings` has been explicitly set.
+  var hasUseDefaultConversionUiSettings: Bool {return _storage._useDefaultConversionUiSettings != nil}
+  /// Clears the value of `useDefaultConversionUiSettings`. Subsequent reads from it will return its default value.
+  mutating func clearUseDefaultConversionUiSettings() {_uniqueStorage()._useDefaultConversionUiSettings = nil}
 
   var numCandidatesPerPage: Int32 {
-    get {return _storage._numCandidatesPerPage}
+    get {return _storage._numCandidatesPerPage ?? 0}
     set {_uniqueStorage()._numCandidatesPerPage = newValue}
   }
+  /// Returns true if `numCandidatesPerPage` has been explicitly set.
+  var hasNumCandidatesPerPage: Bool {return _storage._numCandidatesPerPage != nil}
+  /// Clears the value of `numCandidatesPerPage`. Subsequent reads from it will return its default value.
+  mutating func clearNumCandidatesPerPage() {_uniqueStorage()._numCandidatesPerPage = nil}
 
   var useRichCandidates: Bool {
-    get {return _storage._useRichCandidates}
+    get {return _storage._useRichCandidates ?? false}
     set {_uniqueStorage()._useRichCandidates = newValue}
   }
+  /// Returns true if `useRichCandidates` has been explicitly set.
+  var hasUseRichCandidates: Bool {return _storage._useRichCandidates != nil}
+  /// Clears the value of `useRichCandidates`. Subsequent reads from it will return its default value.
+  mutating func clearUseRichCandidates() {_uniqueStorage()._useRichCandidates = nil}
 
   var useDefaultHistorySettings: Bool {
-    get {return _storage._useDefaultHistorySettings}
+    get {return _storage._useDefaultHistorySettings ?? false}
     set {_uniqueStorage()._useDefaultHistorySettings = newValue}
   }
+  /// Returns true if `useDefaultHistorySettings` has been explicitly set.
+  var hasUseDefaultHistorySettings: Bool {return _storage._useDefaultHistorySettings != nil}
+  /// Clears the value of `useDefaultHistorySettings`. Subsequent reads from it will return its default value.
+  mutating func clearUseDefaultHistorySettings() {_uniqueStorage()._useDefaultHistorySettings = nil}
 
   var useProfileIndependentHistory: Bool {
-    get {return _storage._useProfileIndependentHistory}
+    get {return _storage._useProfileIndependentHistory ?? false}
     set {_uniqueStorage()._useProfileIndependentHistory = newValue}
   }
+  /// Returns true if `useProfileIndependentHistory` has been explicitly set.
+  var hasUseProfileIndependentHistory: Bool {return _storage._useProfileIndependentHistory != nil}
+  /// Clears the value of `useProfileIndependentHistory`. Subsequent reads from it will return its default value.
+  mutating func clearUseProfileIndependentHistory() {_uniqueStorage()._useProfileIndependentHistory = nil}
 
   var useInputHistory: Bool {
-    get {return _storage._useInputHistory}
+    get {return _storage._useInputHistory ?? false}
     set {_uniqueStorage()._useInputHistory = newValue}
   }
+  /// Returns true if `useInputHistory` has been explicitly set.
+  var hasUseInputHistory: Bool {return _storage._useInputHistory != nil}
+  /// Clears the value of `useInputHistory`. Subsequent reads from it will return its default value.
+  mutating func clearUseInputHistory() {_uniqueStorage()._useInputHistory = nil}
 
   var stopStoreNewHistory: Bool {
-    get {return _storage._stopStoreNewHistory}
+    get {return _storage._stopStoreNewHistory ?? false}
     set {_uniqueStorage()._stopStoreNewHistory = newValue}
   }
+  /// Returns true if `stopStoreNewHistory` has been explicitly set.
+  var hasStopStoreNewHistory: Bool {return _storage._stopStoreNewHistory != nil}
+  /// Clears the value of `stopStoreNewHistory`. Subsequent reads from it will return its default value.
+  mutating func clearStopStoreNewHistory() {_uniqueStorage()._stopStoreNewHistory = nil}
 
   var useDefaultSpecialConversionSettings: Bool {
-    get {return _storage._useDefaultSpecialConversionSettings}
+    get {return _storage._useDefaultSpecialConversionSettings ?? false}
     set {_uniqueStorage()._useDefaultSpecialConversionSettings = newValue}
   }
+  /// Returns true if `useDefaultSpecialConversionSettings` has been explicitly set.
+  var hasUseDefaultSpecialConversionSettings: Bool {return _storage._useDefaultSpecialConversionSettings != nil}
+  /// Clears the value of `useDefaultSpecialConversionSettings`. Subsequent reads from it will return its default value.
+  mutating func clearUseDefaultSpecialConversionSettings() {_uniqueStorage()._useDefaultSpecialConversionSettings = nil}
 
   var specialConversionMode: Hazkey_Config_Profile.SpecialConversionMode {
     get {return _storage._specialConversionMode ?? Hazkey_Config_Profile.SpecialConversionMode()}
@@ -181,34 +237,54 @@ struct Hazkey_Config_Profile: @unchecked Sendable {
   mutating func clearSpecialConversionMode() {_uniqueStorage()._specialConversionMode = nil}
 
   var useDefaultTableSettings: Bool {
-    get {return _storage._useDefaultTableSettings}
+    get {return _storage._useDefaultTableSettings ?? false}
     set {_uniqueStorage()._useDefaultTableSettings = newValue}
   }
+  /// Returns true if `useDefaultTableSettings` has been explicitly set.
+  var hasUseDefaultTableSettings: Bool {return _storage._useDefaultTableSettings != nil}
+  /// Clears the value of `useDefaultTableSettings`. Subsequent reads from it will return its default value.
+  mutating func clearUseDefaultTableSettings() {_uniqueStorage()._useDefaultTableSettings = nil}
 
-  var enabledTables: [Hazkey_Config_InputTable] {
+  var enabledTables: [Hazkey_Config_Profile.EnabledInputTable] {
     get {return _storage._enabledTables}
     set {_uniqueStorage()._enabledTables = newValue}
   }
 
   var useDefaultZenzaiSettings: Bool {
-    get {return _storage._useDefaultZenzaiSettings}
+    get {return _storage._useDefaultZenzaiSettings ?? false}
     set {_uniqueStorage()._useDefaultZenzaiSettings = newValue}
   }
+  /// Returns true if `useDefaultZenzaiSettings` has been explicitly set.
+  var hasUseDefaultZenzaiSettings: Bool {return _storage._useDefaultZenzaiSettings != nil}
+  /// Clears the value of `useDefaultZenzaiSettings`. Subsequent reads from it will return its default value.
+  mutating func clearUseDefaultZenzaiSettings() {_uniqueStorage()._useDefaultZenzaiSettings = nil}
 
   var zenzaiEnable: Bool {
-    get {return _storage._zenzaiEnable}
+    get {return _storage._zenzaiEnable ?? false}
     set {_uniqueStorage()._zenzaiEnable = newValue}
   }
+  /// Returns true if `zenzaiEnable` has been explicitly set.
+  var hasZenzaiEnable: Bool {return _storage._zenzaiEnable != nil}
+  /// Clears the value of `zenzaiEnable`. Subsequent reads from it will return its default value.
+  mutating func clearZenzaiEnable() {_uniqueStorage()._zenzaiEnable = nil}
 
   var zenzaiInferLimit: Int32 {
-    get {return _storage._zenzaiInferLimit}
+    get {return _storage._zenzaiInferLimit ?? 0}
     set {_uniqueStorage()._zenzaiInferLimit = newValue}
   }
+  /// Returns true if `zenzaiInferLimit` has been explicitly set.
+  var hasZenzaiInferLimit: Bool {return _storage._zenzaiInferLimit != nil}
+  /// Clears the value of `zenzaiInferLimit`. Subsequent reads from it will return its default value.
+  mutating func clearZenzaiInferLimit() {_uniqueStorage()._zenzaiInferLimit = nil}
 
   var zenzaiContextualMode: Bool {
-    get {return _storage._zenzaiContextualMode}
+    get {return _storage._zenzaiContextualMode ?? false}
     set {_uniqueStorage()._zenzaiContextualMode = newValue}
   }
+  /// Returns true if `zenzaiContextualMode` has been explicitly set.
+  var hasZenzaiContextualMode: Bool {return _storage._zenzaiContextualMode != nil}
+  /// Clears the value of `zenzaiContextualMode`. Subsequent reads from it will return its default value.
+  mutating func clearZenzaiContextualMode() {_uniqueStorage()._zenzaiContextualMode = nil}
 
   var zenzaiVersionConfig: Hazkey_Config_Profile.ZenzaiVersionConfig {
     get {return _storage._zenzaiVersionConfig ?? Hazkey_Config_Profile.ZenzaiVersionConfig()}
@@ -220,14 +296,22 @@ struct Hazkey_Config_Profile: @unchecked Sendable {
   mutating func clearZenzaiVersionConfig() {_uniqueStorage()._zenzaiVersionConfig = nil}
 
   var useZenzaiCustomWeight: Bool {
-    get {return _storage._useZenzaiCustomWeight}
+    get {return _storage._useZenzaiCustomWeight ?? false}
     set {_uniqueStorage()._useZenzaiCustomWeight = newValue}
   }
+  /// Returns true if `useZenzaiCustomWeight` has been explicitly set.
+  var hasUseZenzaiCustomWeight: Bool {return _storage._useZenzaiCustomWeight != nil}
+  /// Clears the value of `useZenzaiCustomWeight`. Subsequent reads from it will return its default value.
+  mutating func clearUseZenzaiCustomWeight() {_uniqueStorage()._useZenzaiCustomWeight = nil}
 
   var zenzaiWeightPath: String {
-    get {return _storage._zenzaiWeightPath}
+    get {return _storage._zenzaiWeightPath ?? String()}
     set {_uniqueStorage()._zenzaiWeightPath = newValue}
   }
+  /// Returns true if `zenzaiWeightPath` has been explicitly set.
+  var hasZenzaiWeightPath: Bool {return _storage._zenzaiWeightPath != nil}
+  /// Clears the value of `zenzaiWeightPath`. Subsequent reads from it will return its default value.
+  mutating func clearZenzaiWeightPath() {_uniqueStorage()._zenzaiWeightPath = nil}
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -362,27 +446,100 @@ struct Hazkey_Config_Profile: @unchecked Sendable {
     // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
     // methods supported on all messages.
 
-    var commaSeparatedNumber: Bool = false
+    var commaSeparatedNumber: Bool {
+      get {return _commaSeparatedNumber ?? false}
+      set {_commaSeparatedNumber = newValue}
+    }
+    /// Returns true if `commaSeparatedNumber` has been explicitly set.
+    var hasCommaSeparatedNumber: Bool {return self._commaSeparatedNumber != nil}
+    /// Clears the value of `commaSeparatedNumber`. Subsequent reads from it will return its default value.
+    mutating func clearCommaSeparatedNumber() {self._commaSeparatedNumber = nil}
 
-    var mailDomain: Bool = false
+    var mailDomain: Bool {
+      get {return _mailDomain ?? false}
+      set {_mailDomain = newValue}
+    }
+    /// Returns true if `mailDomain` has been explicitly set.
+    var hasMailDomain: Bool {return self._mailDomain != nil}
+    /// Clears the value of `mailDomain`. Subsequent reads from it will return its default value.
+    mutating func clearMailDomain() {self._mailDomain = nil}
 
-    var calender: Bool = false
+    var calendar: Bool {
+      get {return _calendar ?? false}
+      set {_calendar = newValue}
+    }
+    /// Returns true if `calendar` has been explicitly set.
+    var hasCalendar: Bool {return self._calendar != nil}
+    /// Clears the value of `calendar`. Subsequent reads from it will return its default value.
+    mutating func clearCalendar() {self._calendar = nil}
 
-    var time: Bool = false
+    var time: Bool {
+      get {return _time ?? false}
+      set {_time = newValue}
+    }
+    /// Returns true if `time` has been explicitly set.
+    var hasTime: Bool {return self._time != nil}
+    /// Clears the value of `time`. Subsequent reads from it will return its default value.
+    mutating func clearTime() {self._time = nil}
 
-    var romanTypography: Bool = false
+    var romanTypography: Bool {
+      get {return _romanTypography ?? false}
+      set {_romanTypography = newValue}
+    }
+    /// Returns true if `romanTypography` has been explicitly set.
+    var hasRomanTypography: Bool {return self._romanTypography != nil}
+    /// Clears the value of `romanTypography`. Subsequent reads from it will return its default value.
+    mutating func clearRomanTypography() {self._romanTypography = nil}
 
-    var unicodeCodepoint: Bool = false
+    var unicodeCodepoint: Bool {
+      get {return _unicodeCodepoint ?? false}
+      set {_unicodeCodepoint = newValue}
+    }
+    /// Returns true if `unicodeCodepoint` has been explicitly set.
+    var hasUnicodeCodepoint: Bool {return self._unicodeCodepoint != nil}
+    /// Clears the value of `unicodeCodepoint`. Subsequent reads from it will return its default value.
+    mutating func clearUnicodeCodepoint() {self._unicodeCodepoint = nil}
 
-    var hazkeyVersion: Bool = false
+    var hazkeyVersion: Bool {
+      get {return _hazkeyVersion ?? false}
+      set {_hazkeyVersion = newValue}
+    }
+    /// Returns true if `hazkeyVersion` has been explicitly set.
+    var hasHazkeyVersion: Bool {return self._hazkeyVersion != nil}
+    /// Clears the value of `hazkeyVersion`. Subsequent reads from it will return its default value.
+    mutating func clearHazkeyVersion() {self._hazkeyVersion = nil}
 
-    var halfwidthKatakana: Bool = false
+    var halfwidthKatakana: Bool {
+      get {return _halfwidthKatakana ?? false}
+      set {_halfwidthKatakana = newValue}
+    }
+    /// Returns true if `halfwidthKatakana` has been explicitly set.
+    var hasHalfwidthKatakana: Bool {return self._halfwidthKatakana != nil}
+    /// Clears the value of `halfwidthKatakana`. Subsequent reads from it will return its default value.
+    mutating func clearHalfwidthKatakana() {self._halfwidthKatakana = nil}
 
-    var extendedEmoji: Bool = false
+    var extendedEmoji: Bool {
+      get {return _extendedEmoji ?? false}
+      set {_extendedEmoji = newValue}
+    }
+    /// Returns true if `extendedEmoji` has been explicitly set.
+    var hasExtendedEmoji: Bool {return self._extendedEmoji != nil}
+    /// Clears the value of `extendedEmoji`. Subsequent reads from it will return its default value.
+    mutating func clearExtendedEmoji() {self._extendedEmoji = nil}
 
     var unknownFields = SwiftProtobuf.UnknownStorage()
 
     init() {}
+
+    fileprivate var _commaSeparatedNumber: Bool? = nil
+    fileprivate var _mailDomain: Bool? = nil
+    fileprivate var _calendar: Bool? = nil
+    fileprivate var _time: Bool? = nil
+    fileprivate var _romanTypography: Bool? = nil
+    fileprivate var _unicodeCodepoint: Bool? = nil
+    fileprivate var _hazkeyVersion: Bool? = nil
+    fileprivate var _halfwidthKatakana: Bool? = nil
+    fileprivate var _extendedEmoji: Bool? = nil
   }
 
   struct EnabledInputTable: Sendable {
@@ -390,15 +547,40 @@ struct Hazkey_Config_Profile: @unchecked Sendable {
     // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
     // methods supported on all messages.
 
-    var name: String = String()
+    var name: String {
+      get {return _name ?? String()}
+      set {_name = newValue}
+    }
+    /// Returns true if `name` has been explicitly set.
+    var hasName: Bool {return self._name != nil}
+    /// Clears the value of `name`. Subsequent reads from it will return its default value.
+    mutating func clearName() {self._name = nil}
 
-    var isBuiltIn: Bool = false
+    var isBuiltIn: Bool {
+      get {return _isBuiltIn ?? false}
+      set {_isBuiltIn = newValue}
+    }
+    /// Returns true if `isBuiltIn` has been explicitly set.
+    var hasIsBuiltIn: Bool {return self._isBuiltIn != nil}
+    /// Clears the value of `isBuiltIn`. Subsequent reads from it will return its default value.
+    mutating func clearIsBuiltIn() {self._isBuiltIn = nil}
 
-    var filename: String = String()
+    var filename: String {
+      get {return _filename ?? String()}
+      set {_filename = newValue}
+    }
+    /// Returns true if `filename` has been explicitly set.
+    var hasFilename: Bool {return self._filename != nil}
+    /// Clears the value of `filename`. Subsequent reads from it will return its default value.
+    mutating func clearFilename() {self._filename = nil}
 
     var unknownFields = SwiftProtobuf.UnknownStorage()
 
     init() {}
+
+    fileprivate var _name: String? = nil
+    fileprivate var _isBuiltIn: Bool? = nil
+    fileprivate var _filename: String? = nil
   }
 
   struct ZenzaiVersionConfig: Sendable {
@@ -456,11 +638,20 @@ struct Hazkey_Config_Profile: @unchecked Sendable {
       // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
       // methods supported on all messages.
 
-      var profile: String = String()
+      var profile: String {
+        get {return _profile ?? String()}
+        set {_profile = newValue}
+      }
+      /// Returns true if `profile` has been explicitly set.
+      var hasProfile: Bool {return self._profile != nil}
+      /// Clears the value of `profile`. Subsequent reads from it will return its default value.
+      mutating func clearProfile() {self._profile = nil}
 
       var unknownFields = SwiftProtobuf.UnknownStorage()
 
       init() {}
+
+      fileprivate var _profile: String? = nil
     }
 
     struct V3: Sendable {
@@ -468,17 +659,50 @@ struct Hazkey_Config_Profile: @unchecked Sendable {
       // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
       // methods supported on all messages.
 
-      var profile: String = String()
+      var profile: String {
+        get {return _profile ?? String()}
+        set {_profile = newValue}
+      }
+      /// Returns true if `profile` has been explicitly set.
+      var hasProfile: Bool {return self._profile != nil}
+      /// Clears the value of `profile`. Subsequent reads from it will return its default value.
+      mutating func clearProfile() {self._profile = nil}
 
-      var topic: String = String()
+      var topic: String {
+        get {return _topic ?? String()}
+        set {_topic = newValue}
+      }
+      /// Returns true if `topic` has been explicitly set.
+      var hasTopic: Bool {return self._topic != nil}
+      /// Clears the value of `topic`. Subsequent reads from it will return its default value.
+      mutating func clearTopic() {self._topic = nil}
 
-      var style: String = String()
+      var style: String {
+        get {return _style ?? String()}
+        set {_style = newValue}
+      }
+      /// Returns true if `style` has been explicitly set.
+      var hasStyle: Bool {return self._style != nil}
+      /// Clears the value of `style`. Subsequent reads from it will return its default value.
+      mutating func clearStyle() {self._style = nil}
 
-      var preference: String = String()
+      var preference: String {
+        get {return _preference ?? String()}
+        set {_preference = newValue}
+      }
+      /// Returns true if `preference` has been explicitly set.
+      var hasPreference: Bool {return self._preference != nil}
+      /// Clears the value of `preference`. Subsequent reads from it will return its default value.
+      mutating func clearPreference() {self._preference = nil}
 
       var unknownFields = SwiftProtobuf.UnknownStorage()
 
       init() {}
+
+      fileprivate var _profile: String? = nil
+      fileprivate var _topic: String? = nil
+      fileprivate var _style: String? = nil
+      fileprivate var _preference: String? = nil
     }
 
     init() {}
@@ -688,30 +912,30 @@ extension Hazkey_Config_Profile: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
   fileprivate class _StorageClass {
     var _profileName: String = String()
     var _profileID: String = String()
-    var _useDefaultInputUiSettings: Bool = false
-    var _autoConvertMode: Hazkey_Config_Profile.AutoConvertMode = .unspecified
-    var _auxTextMode: Hazkey_Config_Profile.AuxTextMode = .unspecified
-    var _suggestionListMode: Hazkey_Config_Profile.SuggestionListMode = .unspecified
-    var _useRichSuggestion: Bool = false
-    var _numSuggestions: Int32 = 0
-    var _useDefaultConversionUiSettings: Bool = false
-    var _numCandidatesPerPage: Int32 = 0
-    var _useRichCandidates: Bool = false
-    var _useDefaultHistorySettings: Bool = false
-    var _useProfileIndependentHistory: Bool = false
-    var _useInputHistory: Bool = false
-    var _stopStoreNewHistory: Bool = false
-    var _useDefaultSpecialConversionSettings: Bool = false
+    var _useDefaultInputUiSettings: Bool? = nil
+    var _autoConvertMode: Hazkey_Config_Profile.AutoConvertMode? = nil
+    var _auxTextMode: Hazkey_Config_Profile.AuxTextMode? = nil
+    var _suggestionListMode: Hazkey_Config_Profile.SuggestionListMode? = nil
+    var _useRichSuggestion: Bool? = nil
+    var _numSuggestions: Int32? = nil
+    var _useDefaultConversionUiSettings: Bool? = nil
+    var _numCandidatesPerPage: Int32? = nil
+    var _useRichCandidates: Bool? = nil
+    var _useDefaultHistorySettings: Bool? = nil
+    var _useProfileIndependentHistory: Bool? = nil
+    var _useInputHistory: Bool? = nil
+    var _stopStoreNewHistory: Bool? = nil
+    var _useDefaultSpecialConversionSettings: Bool? = nil
     var _specialConversionMode: Hazkey_Config_Profile.SpecialConversionMode? = nil
-    var _useDefaultTableSettings: Bool = false
-    var _enabledTables: [Hazkey_Config_InputTable] = []
-    var _useDefaultZenzaiSettings: Bool = false
-    var _zenzaiEnable: Bool = false
-    var _zenzaiInferLimit: Int32 = 0
-    var _zenzaiContextualMode: Bool = false
+    var _useDefaultTableSettings: Bool? = nil
+    var _enabledTables: [Hazkey_Config_Profile.EnabledInputTable] = []
+    var _useDefaultZenzaiSettings: Bool? = nil
+    var _zenzaiEnable: Bool? = nil
+    var _zenzaiInferLimit: Int32? = nil
+    var _zenzaiContextualMode: Bool? = nil
     var _zenzaiVersionConfig: Hazkey_Config_Profile.ZenzaiVersionConfig? = nil
-    var _useZenzaiCustomWeight: Bool = false
-    var _zenzaiWeightPath: String = String()
+    var _useZenzaiCustomWeight: Bool? = nil
+    var _zenzaiWeightPath: String? = nil
 
       // This property is used as the initial default value for new instances of the type.
       // The type itself is protecting the reference to its storage via CoW semantics.
@@ -810,78 +1034,78 @@ extension Hazkey_Config_Profile: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
       if !_storage._profileID.isEmpty {
         try visitor.visitSingularStringField(value: _storage._profileID, fieldNumber: 6)
       }
-      if _storage._useDefaultInputUiSettings != false {
-        try visitor.visitSingularBoolField(value: _storage._useDefaultInputUiSettings, fieldNumber: 10)
-      }
-      if _storage._autoConvertMode != .unspecified {
-        try visitor.visitSingularEnumField(value: _storage._autoConvertMode, fieldNumber: 11)
-      }
-      if _storage._auxTextMode != .unspecified {
-        try visitor.visitSingularEnumField(value: _storage._auxTextMode, fieldNumber: 12)
-      }
-      if _storage._suggestionListMode != .unspecified {
-        try visitor.visitSingularEnumField(value: _storage._suggestionListMode, fieldNumber: 13)
-      }
-      if _storage._useRichSuggestion != false {
-        try visitor.visitSingularBoolField(value: _storage._useRichSuggestion, fieldNumber: 14)
-      }
-      if _storage._numSuggestions != 0 {
-        try visitor.visitSingularInt32Field(value: _storage._numSuggestions, fieldNumber: 15)
-      }
-      if _storage._useDefaultConversionUiSettings != false {
-        try visitor.visitSingularBoolField(value: _storage._useDefaultConversionUiSettings, fieldNumber: 20)
-      }
-      if _storage._numCandidatesPerPage != 0 {
-        try visitor.visitSingularInt32Field(value: _storage._numCandidatesPerPage, fieldNumber: 21)
-      }
-      if _storage._useRichCandidates != false {
-        try visitor.visitSingularBoolField(value: _storage._useRichCandidates, fieldNumber: 22)
-      }
-      if _storage._stopStoreNewHistory != false {
-        try visitor.visitSingularBoolField(value: _storage._stopStoreNewHistory, fieldNumber: 23)
-      }
-      if _storage._useDefaultHistorySettings != false {
-        try visitor.visitSingularBoolField(value: _storage._useDefaultHistorySettings, fieldNumber: 30)
-      }
-      if _storage._useProfileIndependentHistory != false {
-        try visitor.visitSingularBoolField(value: _storage._useProfileIndependentHistory, fieldNumber: 31)
-      }
-      if _storage._useInputHistory != false {
-        try visitor.visitSingularBoolField(value: _storage._useInputHistory, fieldNumber: 32)
-      }
-      if _storage._useDefaultSpecialConversionSettings != false {
-        try visitor.visitSingularBoolField(value: _storage._useDefaultSpecialConversionSettings, fieldNumber: 40)
-      }
+      try { if let v = _storage._useDefaultInputUiSettings {
+        try visitor.visitSingularBoolField(value: v, fieldNumber: 10)
+      } }()
+      try { if let v = _storage._autoConvertMode {
+        try visitor.visitSingularEnumField(value: v, fieldNumber: 11)
+      } }()
+      try { if let v = _storage._auxTextMode {
+        try visitor.visitSingularEnumField(value: v, fieldNumber: 12)
+      } }()
+      try { if let v = _storage._suggestionListMode {
+        try visitor.visitSingularEnumField(value: v, fieldNumber: 13)
+      } }()
+      try { if let v = _storage._useRichSuggestion {
+        try visitor.visitSingularBoolField(value: v, fieldNumber: 14)
+      } }()
+      try { if let v = _storage._numSuggestions {
+        try visitor.visitSingularInt32Field(value: v, fieldNumber: 15)
+      } }()
+      try { if let v = _storage._useDefaultConversionUiSettings {
+        try visitor.visitSingularBoolField(value: v, fieldNumber: 20)
+      } }()
+      try { if let v = _storage._numCandidatesPerPage {
+        try visitor.visitSingularInt32Field(value: v, fieldNumber: 21)
+      } }()
+      try { if let v = _storage._useRichCandidates {
+        try visitor.visitSingularBoolField(value: v, fieldNumber: 22)
+      } }()
+      try { if let v = _storage._stopStoreNewHistory {
+        try visitor.visitSingularBoolField(value: v, fieldNumber: 23)
+      } }()
+      try { if let v = _storage._useDefaultHistorySettings {
+        try visitor.visitSingularBoolField(value: v, fieldNumber: 30)
+      } }()
+      try { if let v = _storage._useProfileIndependentHistory {
+        try visitor.visitSingularBoolField(value: v, fieldNumber: 31)
+      } }()
+      try { if let v = _storage._useInputHistory {
+        try visitor.visitSingularBoolField(value: v, fieldNumber: 32)
+      } }()
+      try { if let v = _storage._useDefaultSpecialConversionSettings {
+        try visitor.visitSingularBoolField(value: v, fieldNumber: 40)
+      } }()
       try { if let v = _storage._specialConversionMode {
         try visitor.visitSingularMessageField(value: v, fieldNumber: 41)
       } }()
-      if _storage._useDefaultTableSettings != false {
-        try visitor.visitSingularBoolField(value: _storage._useDefaultTableSettings, fieldNumber: 50)
-      }
+      try { if let v = _storage._useDefaultTableSettings {
+        try visitor.visitSingularBoolField(value: v, fieldNumber: 50)
+      } }()
       if !_storage._enabledTables.isEmpty {
         try visitor.visitRepeatedMessageField(value: _storage._enabledTables, fieldNumber: 51)
       }
-      if _storage._useDefaultZenzaiSettings != false {
-        try visitor.visitSingularBoolField(value: _storage._useDefaultZenzaiSettings, fieldNumber: 100)
-      }
-      if _storage._zenzaiEnable != false {
-        try visitor.visitSingularBoolField(value: _storage._zenzaiEnable, fieldNumber: 101)
-      }
-      if _storage._zenzaiInferLimit != 0 {
-        try visitor.visitSingularInt32Field(value: _storage._zenzaiInferLimit, fieldNumber: 102)
-      }
-      if _storage._zenzaiContextualMode != false {
-        try visitor.visitSingularBoolField(value: _storage._zenzaiContextualMode, fieldNumber: 103)
-      }
+      try { if let v = _storage._useDefaultZenzaiSettings {
+        try visitor.visitSingularBoolField(value: v, fieldNumber: 100)
+      } }()
+      try { if let v = _storage._zenzaiEnable {
+        try visitor.visitSingularBoolField(value: v, fieldNumber: 101)
+      } }()
+      try { if let v = _storage._zenzaiInferLimit {
+        try visitor.visitSingularInt32Field(value: v, fieldNumber: 102)
+      } }()
+      try { if let v = _storage._zenzaiContextualMode {
+        try visitor.visitSingularBoolField(value: v, fieldNumber: 103)
+      } }()
       try { if let v = _storage._zenzaiVersionConfig {
         try visitor.visitSingularMessageField(value: v, fieldNumber: 104)
       } }()
-      if _storage._useZenzaiCustomWeight != false {
-        try visitor.visitSingularBoolField(value: _storage._useZenzaiCustomWeight, fieldNumber: 105)
-      }
-      if !_storage._zenzaiWeightPath.isEmpty {
-        try visitor.visitSingularStringField(value: _storage._zenzaiWeightPath, fieldNumber: 106)
-      }
+      try { if let v = _storage._useZenzaiCustomWeight {
+        try visitor.visitSingularBoolField(value: v, fieldNumber: 105)
+      } }()
+      try { if let v = _storage._zenzaiWeightPath {
+        try visitor.visitSingularStringField(value: v, fieldNumber: 106)
+      } }()
     }
     try unknownFields.traverse(visitor: &visitor)
   }
@@ -958,7 +1182,7 @@ extension Hazkey_Config_Profile.SpecialConversionMode: SwiftProtobuf.Message, Sw
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .standard(proto: "comma_separated_number"),
     2: .standard(proto: "mail_domain"),
-    3: .same(proto: "calender"),
+    3: .same(proto: "calendar"),
     4: .same(proto: "time"),
     5: .standard(proto: "roman_typography"),
     6: .standard(proto: "unicode_codepoint"),
@@ -973,61 +1197,65 @@ extension Hazkey_Config_Profile.SpecialConversionMode: SwiftProtobuf.Message, Sw
       // allocates stack space for every case branch when no optimizations are
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
-      case 1: try { try decoder.decodeSingularBoolField(value: &self.commaSeparatedNumber) }()
-      case 2: try { try decoder.decodeSingularBoolField(value: &self.mailDomain) }()
-      case 3: try { try decoder.decodeSingularBoolField(value: &self.calender) }()
-      case 4: try { try decoder.decodeSingularBoolField(value: &self.time) }()
-      case 5: try { try decoder.decodeSingularBoolField(value: &self.romanTypography) }()
-      case 6: try { try decoder.decodeSingularBoolField(value: &self.unicodeCodepoint) }()
-      case 7: try { try decoder.decodeSingularBoolField(value: &self.hazkeyVersion) }()
-      case 50: try { try decoder.decodeSingularBoolField(value: &self.halfwidthKatakana) }()
-      case 51: try { try decoder.decodeSingularBoolField(value: &self.extendedEmoji) }()
+      case 1: try { try decoder.decodeSingularBoolField(value: &self._commaSeparatedNumber) }()
+      case 2: try { try decoder.decodeSingularBoolField(value: &self._mailDomain) }()
+      case 3: try { try decoder.decodeSingularBoolField(value: &self._calendar) }()
+      case 4: try { try decoder.decodeSingularBoolField(value: &self._time) }()
+      case 5: try { try decoder.decodeSingularBoolField(value: &self._romanTypography) }()
+      case 6: try { try decoder.decodeSingularBoolField(value: &self._unicodeCodepoint) }()
+      case 7: try { try decoder.decodeSingularBoolField(value: &self._hazkeyVersion) }()
+      case 50: try { try decoder.decodeSingularBoolField(value: &self._halfwidthKatakana) }()
+      case 51: try { try decoder.decodeSingularBoolField(value: &self._extendedEmoji) }()
       default: break
       }
     }
   }
 
   func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if self.commaSeparatedNumber != false {
-      try visitor.visitSingularBoolField(value: self.commaSeparatedNumber, fieldNumber: 1)
-    }
-    if self.mailDomain != false {
-      try visitor.visitSingularBoolField(value: self.mailDomain, fieldNumber: 2)
-    }
-    if self.calender != false {
-      try visitor.visitSingularBoolField(value: self.calender, fieldNumber: 3)
-    }
-    if self.time != false {
-      try visitor.visitSingularBoolField(value: self.time, fieldNumber: 4)
-    }
-    if self.romanTypography != false {
-      try visitor.visitSingularBoolField(value: self.romanTypography, fieldNumber: 5)
-    }
-    if self.unicodeCodepoint != false {
-      try visitor.visitSingularBoolField(value: self.unicodeCodepoint, fieldNumber: 6)
-    }
-    if self.hazkeyVersion != false {
-      try visitor.visitSingularBoolField(value: self.hazkeyVersion, fieldNumber: 7)
-    }
-    if self.halfwidthKatakana != false {
-      try visitor.visitSingularBoolField(value: self.halfwidthKatakana, fieldNumber: 50)
-    }
-    if self.extendedEmoji != false {
-      try visitor.visitSingularBoolField(value: self.extendedEmoji, fieldNumber: 51)
-    }
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
+    try { if let v = self._commaSeparatedNumber {
+      try visitor.visitSingularBoolField(value: v, fieldNumber: 1)
+    } }()
+    try { if let v = self._mailDomain {
+      try visitor.visitSingularBoolField(value: v, fieldNumber: 2)
+    } }()
+    try { if let v = self._calendar {
+      try visitor.visitSingularBoolField(value: v, fieldNumber: 3)
+    } }()
+    try { if let v = self._time {
+      try visitor.visitSingularBoolField(value: v, fieldNumber: 4)
+    } }()
+    try { if let v = self._romanTypography {
+      try visitor.visitSingularBoolField(value: v, fieldNumber: 5)
+    } }()
+    try { if let v = self._unicodeCodepoint {
+      try visitor.visitSingularBoolField(value: v, fieldNumber: 6)
+    } }()
+    try { if let v = self._hazkeyVersion {
+      try visitor.visitSingularBoolField(value: v, fieldNumber: 7)
+    } }()
+    try { if let v = self._halfwidthKatakana {
+      try visitor.visitSingularBoolField(value: v, fieldNumber: 50)
+    } }()
+    try { if let v = self._extendedEmoji {
+      try visitor.visitSingularBoolField(value: v, fieldNumber: 51)
+    } }()
     try unknownFields.traverse(visitor: &visitor)
   }
 
   static func ==(lhs: Hazkey_Config_Profile.SpecialConversionMode, rhs: Hazkey_Config_Profile.SpecialConversionMode) -> Bool {
-    if lhs.commaSeparatedNumber != rhs.commaSeparatedNumber {return false}
-    if lhs.mailDomain != rhs.mailDomain {return false}
-    if lhs.calender != rhs.calender {return false}
-    if lhs.time != rhs.time {return false}
-    if lhs.romanTypography != rhs.romanTypography {return false}
-    if lhs.unicodeCodepoint != rhs.unicodeCodepoint {return false}
-    if lhs.hazkeyVersion != rhs.hazkeyVersion {return false}
-    if lhs.halfwidthKatakana != rhs.halfwidthKatakana {return false}
-    if lhs.extendedEmoji != rhs.extendedEmoji {return false}
+    if lhs._commaSeparatedNumber != rhs._commaSeparatedNumber {return false}
+    if lhs._mailDomain != rhs._mailDomain {return false}
+    if lhs._calendar != rhs._calendar {return false}
+    if lhs._time != rhs._time {return false}
+    if lhs._romanTypography != rhs._romanTypography {return false}
+    if lhs._unicodeCodepoint != rhs._unicodeCodepoint {return false}
+    if lhs._hazkeyVersion != rhs._hazkeyVersion {return false}
+    if lhs._halfwidthKatakana != rhs._halfwidthKatakana {return false}
+    if lhs._extendedEmoji != rhs._extendedEmoji {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -1047,31 +1275,35 @@ extension Hazkey_Config_Profile.EnabledInputTable: SwiftProtobuf.Message, SwiftP
       // allocates stack space for every case branch when no optimizations are
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
-      case 1: try { try decoder.decodeSingularStringField(value: &self.name) }()
-      case 2: try { try decoder.decodeSingularBoolField(value: &self.isBuiltIn) }()
-      case 3: try { try decoder.decodeSingularStringField(value: &self.filename) }()
+      case 1: try { try decoder.decodeSingularStringField(value: &self._name) }()
+      case 2: try { try decoder.decodeSingularBoolField(value: &self._isBuiltIn) }()
+      case 3: try { try decoder.decodeSingularStringField(value: &self._filename) }()
       default: break
       }
     }
   }
 
   func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if !self.name.isEmpty {
-      try visitor.visitSingularStringField(value: self.name, fieldNumber: 1)
-    }
-    if self.isBuiltIn != false {
-      try visitor.visitSingularBoolField(value: self.isBuiltIn, fieldNumber: 2)
-    }
-    if !self.filename.isEmpty {
-      try visitor.visitSingularStringField(value: self.filename, fieldNumber: 3)
-    }
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
+    try { if let v = self._name {
+      try visitor.visitSingularStringField(value: v, fieldNumber: 1)
+    } }()
+    try { if let v = self._isBuiltIn {
+      try visitor.visitSingularBoolField(value: v, fieldNumber: 2)
+    } }()
+    try { if let v = self._filename {
+      try visitor.visitSingularStringField(value: v, fieldNumber: 3)
+    } }()
     try unknownFields.traverse(visitor: &visitor)
   }
 
   static func ==(lhs: Hazkey_Config_Profile.EnabledInputTable, rhs: Hazkey_Config_Profile.EnabledInputTable) -> Bool {
-    if lhs.name != rhs.name {return false}
-    if lhs.isBuiltIn != rhs.isBuiltIn {return false}
-    if lhs.filename != rhs.filename {return false}
+    if lhs._name != rhs._name {return false}
+    if lhs._isBuiltIn != rhs._isBuiltIn {return false}
+    if lhs._filename != rhs._filename {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -1196,21 +1428,25 @@ extension Hazkey_Config_Profile.ZenzaiVersionConfig.V2: SwiftProtobuf.Message, S
       // allocates stack space for every case branch when no optimizations are
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
-      case 1: try { try decoder.decodeSingularStringField(value: &self.profile) }()
+      case 1: try { try decoder.decodeSingularStringField(value: &self._profile) }()
       default: break
       }
     }
   }
 
   func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if !self.profile.isEmpty {
-      try visitor.visitSingularStringField(value: self.profile, fieldNumber: 1)
-    }
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
+    try { if let v = self._profile {
+      try visitor.visitSingularStringField(value: v, fieldNumber: 1)
+    } }()
     try unknownFields.traverse(visitor: &visitor)
   }
 
   static func ==(lhs: Hazkey_Config_Profile.ZenzaiVersionConfig.V2, rhs: Hazkey_Config_Profile.ZenzaiVersionConfig.V2) -> Bool {
-    if lhs.profile != rhs.profile {return false}
+    if lhs._profile != rhs._profile {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -1231,36 +1467,40 @@ extension Hazkey_Config_Profile.ZenzaiVersionConfig.V3: SwiftProtobuf.Message, S
       // allocates stack space for every case branch when no optimizations are
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
-      case 1: try { try decoder.decodeSingularStringField(value: &self.profile) }()
-      case 2: try { try decoder.decodeSingularStringField(value: &self.topic) }()
-      case 3: try { try decoder.decodeSingularStringField(value: &self.style) }()
-      case 4: try { try decoder.decodeSingularStringField(value: &self.preference) }()
+      case 1: try { try decoder.decodeSingularStringField(value: &self._profile) }()
+      case 2: try { try decoder.decodeSingularStringField(value: &self._topic) }()
+      case 3: try { try decoder.decodeSingularStringField(value: &self._style) }()
+      case 4: try { try decoder.decodeSingularStringField(value: &self._preference) }()
       default: break
       }
     }
   }
 
   func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if !self.profile.isEmpty {
-      try visitor.visitSingularStringField(value: self.profile, fieldNumber: 1)
-    }
-    if !self.topic.isEmpty {
-      try visitor.visitSingularStringField(value: self.topic, fieldNumber: 2)
-    }
-    if !self.style.isEmpty {
-      try visitor.visitSingularStringField(value: self.style, fieldNumber: 3)
-    }
-    if !self.preference.isEmpty {
-      try visitor.visitSingularStringField(value: self.preference, fieldNumber: 4)
-    }
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
+    try { if let v = self._profile {
+      try visitor.visitSingularStringField(value: v, fieldNumber: 1)
+    } }()
+    try { if let v = self._topic {
+      try visitor.visitSingularStringField(value: v, fieldNumber: 2)
+    } }()
+    try { if let v = self._style {
+      try visitor.visitSingularStringField(value: v, fieldNumber: 3)
+    } }()
+    try { if let v = self._preference {
+      try visitor.visitSingularStringField(value: v, fieldNumber: 4)
+    } }()
     try unknownFields.traverse(visitor: &visitor)
   }
 
   static func ==(lhs: Hazkey_Config_Profile.ZenzaiVersionConfig.V3, rhs: Hazkey_Config_Profile.ZenzaiVersionConfig.V3) -> Bool {
-    if lhs.profile != rhs.profile {return false}
-    if lhs.topic != rhs.topic {return false}
-    if lhs.style != rhs.style {return false}
-    if lhs.preference != rhs.preference {return false}
+    if lhs._profile != rhs._profile {return false}
+    if lhs._topic != rhs._topic {return false}
+    if lhs._style != rhs._style {return false}
+    if lhs._preference != rhs._preference {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }

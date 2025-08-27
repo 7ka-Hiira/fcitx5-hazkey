@@ -321,9 +321,6 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 inline constexpr CandidatesResult_Candidate::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
-        words_{},
-        diff_indexes_{},
-        _diff_indexes_cached_byte_size_{0},
         text_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
@@ -445,15 +442,11 @@ const ::uint32_t
         2,
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::hazkey::commands::CandidatesResult_Candidate, _impl_._has_bits_),
-        7, // hasbit index offset
+        5, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::hazkey::commands::CandidatesResult_Candidate, _impl_.text_),
         PROTOBUF_FIELD_OFFSET(::hazkey::commands::CandidatesResult_Candidate, _impl_.sub_hiragana_),
-        PROTOBUF_FIELD_OFFSET(::hazkey::commands::CandidatesResult_Candidate, _impl_.words_),
-        PROTOBUF_FIELD_OFFSET(::hazkey::commands::CandidatesResult_Candidate, _impl_.diff_indexes_),
         0,
         1,
-        ~0u,
-        ~0u,
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::hazkey::commands::CandidatesResult, _impl_._has_bits_),
         7, // hasbit index offset
@@ -482,7 +475,7 @@ static const ::_pbi::MigrationSchema
         {40, sizeof(::hazkey::commands::Text)},
         {45, sizeof(::hazkey::commands::TextWithCursor)},
         {54, sizeof(::hazkey::commands::CandidatesResult_Candidate)},
-        {65, sizeof(::hazkey::commands::CandidatesResult)},
+        {61, sizeof(::hazkey::commands::CandidatesResult)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::hazkey::commands::_NewComposingText_default_instance_._instance,
@@ -517,19 +510,18 @@ const char descriptor_table_protodef_commands_2eproto[] ABSL_ATTRIBUTE_SECTION_V
     "\n\rGetCandidates\022\022\n\nis_suggest\030\001 \001(\010\"\024\n\004T"
     "ext\022\014\n\004text\030\001 \001(\t\"N\n\016TextWithCursor\022\025\n\rb"
     "eforeCursosr\030\001 \001(\t\022\020\n\010onCursor\030\002 \001(\t\022\023\n\013"
-    "afterCursor\030\003 \001(\t\"\350\001\n\020CandidatesResult\022\?"
+    "afterCursor\030\003 \001(\t\"\303\001\n\020CandidatesResult\022\?"
     "\n\ncandidates\030\001 \003(\0132+.hazkey.commands.Can"
     "didatesResult.Candidate\022\021\n\tlive_text\030\002 \001"
     "(\t\022\027\n\017live_text_index\030\003 \001(\005\022\021\n\tpage_size"
-    "\030\004 \001(\005\032T\n\tCandidate\022\014\n\004text\030\001 \001(\t\022\024\n\014sub"
-    "_hiragana\030\002 \001(\t\022\r\n\005words\030\003 \003(\t\022\024\n\014diff_i"
-    "ndexes\030\004 \003(\005b\006proto3"
+    "\030\004 \001(\005\032/\n\tCandidate\022\014\n\004text\030\001 \001(\t\022\024\n\014sub"
+    "_hiragana\030\002 \001(\tb\006proto3"
 };
 static ::absl::once_flag descriptor_table_commands_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_commands_2eproto = {
     false,
     false,
-    860,
+    823,
     descriptor_table_protodef_commands_2eproto,
     "commands.proto",
     &descriptor_table_commands_2eproto_once,
@@ -3212,9 +3204,6 @@ PROTOBUF_NDEBUG_INLINE CandidatesResult_Candidate::Impl_::Impl_(
     const ::hazkey::commands::CandidatesResult_Candidate& from_msg)
       : _has_bits_{from._has_bits_},
         _cached_size_{0},
-        words_{visibility, arena, from.words_},
-        diff_indexes_{visibility, arena, from.diff_indexes_},
-        _diff_indexes_cached_byte_size_{0},
         text_(arena, from.text_),
         sub_hiragana_(arena, from.sub_hiragana_) {}
 
@@ -3238,9 +3227,6 @@ PROTOBUF_NDEBUG_INLINE CandidatesResult_Candidate::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
       : _cached_size_{0},
-        words_{visibility, arena},
-        diff_indexes_{visibility, arena},
-        _diff_indexes_cached_byte_size_{0},
         text_(arena),
         sub_hiragana_(arena) {}
 
@@ -3266,24 +3252,8 @@ inline void* PROTOBUF_NONNULL CandidatesResult_Candidate::PlacementNew_(
   return ::new (mem) CandidatesResult_Candidate(arena);
 }
 constexpr auto CandidatesResult_Candidate::InternalNewImpl_() {
-  constexpr auto arena_bits = ::google::protobuf::internal::EncodePlacementArenaOffsets({
-      PROTOBUF_FIELD_OFFSET(CandidatesResult_Candidate, _impl_.words_) +
-          decltype(CandidatesResult_Candidate::_impl_.words_)::
-              InternalGetArenaOffset(
-                  ::google::protobuf::Message::internal_visibility()),
-      PROTOBUF_FIELD_OFFSET(CandidatesResult_Candidate, _impl_.diff_indexes_) +
-          decltype(CandidatesResult_Candidate::_impl_.diff_indexes_)::
-              InternalGetArenaOffset(
-                  ::google::protobuf::Message::internal_visibility()),
-  });
-  if (arena_bits.has_value()) {
-    return ::google::protobuf::internal::MessageCreator::CopyInit(
-        sizeof(CandidatesResult_Candidate), alignof(CandidatesResult_Candidate), *arena_bits);
-  } else {
-    return ::google::protobuf::internal::MessageCreator(&CandidatesResult_Candidate::PlacementNew_,
-                                 sizeof(CandidatesResult_Candidate),
-                                 alignof(CandidatesResult_Candidate));
-  }
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(CandidatesResult_Candidate),
+                                            alignof(CandidatesResult_Candidate));
 }
 constexpr auto CandidatesResult_Candidate::InternalGenerateClassData_() {
   return ::google::protobuf::internal::ClassDataFull{
@@ -3319,16 +3289,16 @@ CandidatesResult_Candidate::GetClassData() const {
   return CandidatesResult_Candidate_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 4, 0, 72, 2>
+const ::_pbi::TcParseTable<1, 2, 0, 67, 2>
 CandidatesResult_Candidate::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(CandidatesResult_Candidate, _impl_._has_bits_),
     0, // no _extensions_
-    4, 24,  // max_field_number, fast_idx_mask
+    2, 8,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967280,  // skipmap
+    4294967292,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    4,  // num_field_entries
+    2,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     CandidatesResult_Candidate_class_data_.base(),
@@ -3338,18 +3308,12 @@ CandidatesResult_Candidate::_table_ = {
     ::_pbi::TcParser::GetTable<::hazkey::commands::CandidatesResult_Candidate>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // repeated int32 diff_indexes = 4;
-    {::_pbi::TcParser::FastV32P1,
-     {34, 63, 0, PROTOBUF_FIELD_OFFSET(CandidatesResult_Candidate, _impl_.diff_indexes_)}},
-    // string text = 1;
-    {::_pbi::TcParser::FastUS1,
-     {10, 0, 0, PROTOBUF_FIELD_OFFSET(CandidatesResult_Candidate, _impl_.text_)}},
     // string sub_hiragana = 2;
     {::_pbi::TcParser::FastUS1,
      {18, 1, 0, PROTOBUF_FIELD_OFFSET(CandidatesResult_Candidate, _impl_.sub_hiragana_)}},
-    // repeated string words = 3;
-    {::_pbi::TcParser::FastUR1,
-     {26, 63, 0, PROTOBUF_FIELD_OFFSET(CandidatesResult_Candidate, _impl_.words_)}},
+    // string text = 1;
+    {::_pbi::TcParser::FastUS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(CandidatesResult_Candidate, _impl_.text_)}},
   }}, {{
     65535, 65535
   }}, {{
@@ -3359,20 +3323,13 @@ CandidatesResult_Candidate::_table_ = {
     // string sub_hiragana = 2;
     {PROTOBUF_FIELD_OFFSET(CandidatesResult_Candidate, _impl_.sub_hiragana_), _Internal::kHasBitsOffset + 1, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // repeated string words = 3;
-    {PROTOBUF_FIELD_OFFSET(CandidatesResult_Candidate, _impl_.words_), -1, 0,
-    (0 | ::_fl::kFcRepeated | ::_fl::kUtf8String | ::_fl::kRepSString)},
-    // repeated int32 diff_indexes = 4;
-    {PROTOBUF_FIELD_OFFSET(CandidatesResult_Candidate, _impl_.diff_indexes_), -1, 0,
-    (0 | ::_fl::kFcRepeated | ::_fl::kPackedInt32)},
   }},
   // no aux_entries
   {{
-    "\52\4\14\5\0\0\0\0"
+    "\52\4\14\0\0\0\0\0"
     "hazkey.commands.CandidatesResult.Candidate"
     "text"
     "sub_hiragana"
-    "words"
   }},
 };
 PROTOBUF_NOINLINE void CandidatesResult_Candidate::Clear() {
@@ -3382,8 +3339,6 @@ PROTOBUF_NOINLINE void CandidatesResult_Candidate::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.words_.Clear();
-  _impl_.diff_indexes_.Clear();
   cached_has_bits = _impl_._has_bits_[0];
   if ((cached_has_bits & 0x00000003u) != 0) {
     if ((cached_has_bits & 0x00000001u) != 0) {
@@ -3432,23 +3387,6 @@ PROTOBUF_NOINLINE void CandidatesResult_Candidate::Clear() {
     }
   }
 
-  // repeated string words = 3;
-  for (int i = 0, n = this_._internal_words_size(); i < n; ++i) {
-    const auto& s = this_._internal_words().Get(i);
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-        s.data(), static_cast<int>(s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "hazkey.commands.CandidatesResult.Candidate.words");
-    target = stream->WriteString(3, s, target);
-  }
-
-  // repeated int32 diff_indexes = 4;
-  {
-    int byte_size = this_._impl_._diff_indexes_cached_byte_size_.Get();
-    if (byte_size > 0) {
-      target = stream->WriteInt32Packed(
-          4, this_._internal_diff_indexes(), byte_size, target);
-    }
-  }
-
   if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
     target =
         ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
@@ -3473,24 +3411,6 @@ PROTOBUF_NOINLINE void CandidatesResult_Candidate::Clear() {
   (void)cached_has_bits;
 
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
-   {
-    // repeated string words = 3;
-    {
-      total_size +=
-          1 * ::google::protobuf::internal::FromIntSize(this_._internal_words().size());
-      for (int i = 0, n = this_._internal_words().size(); i < n; ++i) {
-        total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
-            this_._internal_words().Get(i));
-      }
-    }
-    // repeated int32 diff_indexes = 4;
-    {
-      total_size +=
-          ::_pbi::WireFormatLite::Int32SizeWithPackedTagSize(
-              this_._internal_diff_indexes(), 1,
-              this_._impl_._diff_indexes_cached_byte_size_);
-    }
-  }
   cached_has_bits = this_._impl_._has_bits_[0];
   if ((cached_has_bits & 0x00000003u) != 0) {
     // string text = 1;
@@ -3520,8 +3440,6 @@ void CandidatesResult_Candidate::MergeImpl(::google::protobuf::MessageLite& to_m
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  _this->_internal_mutable_words()->MergeFrom(from._internal_words());
-  _this->_internal_mutable_diff_indexes()->MergeFrom(from._internal_diff_indexes());
   cached_has_bits = from._impl_._has_bits_[0];
   if ((cached_has_bits & 0x00000003u) != 0) {
     if ((cached_has_bits & 0x00000001u) != 0) {
@@ -3561,8 +3479,6 @@ void CandidatesResult_Candidate::InternalSwap(CandidatesResult_Candidate* PROTOB
   ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-  _impl_.words_.InternalSwap(&other->_impl_.words_);
-  _impl_.diff_indexes_.InternalSwap(&other->_impl_.diff_indexes_);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.text_, &other->_impl_.text_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.sub_hiragana_, &other->_impl_.sub_hiragana_, arena);
 }

@@ -74,9 +74,11 @@ func saveConfig(_ profiles: [Hazkey_Config_Profile]) throws {
 
     // Convert each protobuf to JSON string and then combine into array
     var jsonObjects: [Any] = []
+    var encodeOptions = JSONEncodingOptions()
+    encodeOptions.alwaysPrintEnumsAsInts = true
+    encodeOptions.useDeterministicOrdering = true
     for profile in profiles {
-        let jsonString = try profile.jsonString()
-        let jsonData = jsonString.data(using: .utf8)!
+        let jsonData = try profile.jsonUTF8Data(options: encodeOptions)
         let jsonObject = try JSONSerialization.jsonObject(with: jsonData, options: [])
         jsonObjects.append(jsonObject)
     }
@@ -204,7 +206,7 @@ func genBaseConvertRequestOptions() -> ConvertRequestOptions {
         let mode = currentProfile.specialConversionMode
         let providers: [SpecialCandidateProvider?] = [
             mode.commaSeparatedNumber ? CommaSeparatedNumberSpecialCandidateProvider() : nil,
-            mode.calender ? CalendarSpecialCandidateProvider() : nil,
+            mode.calendar ? CalendarSpecialCandidateProvider() : nil,
             mode.hazkeyVersion ? VersionSpecialCandidateProvider() : nil,
             mode.mailDomain ? EmailAddressSpecialCandidateProvider() : nil,
             mode.romanTypography ? TypographySpecialCandidateProvider() : nil,

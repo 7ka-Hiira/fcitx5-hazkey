@@ -42,35 +42,35 @@ message Profile {
     }
 
     message SpecialConversionMode {
-        bool comma_separated_number = 1;
-        bool mail_domain = 2;
-        bool calender = 3;
-        bool time = 4;
-        bool roman_typography = 5;
-        bool unicode_codepoint = 6;
-        bool hazkey_version = 7;
-        bool halfwidth_katakana = 50;
-        bool extended_emoji = 51;
+        optional bool comma_separated_number = 1;
+        optional bool mail_domain = 2;
+        optional bool calendar = 3;
+        optional bool time = 4;
+        optional bool roman_typography = 5;
+        optional bool unicode_codepoint = 6;
+        optional bool hazkey_version = 7;
+        optional bool halfwidth_katakana = 50;
+        optional bool extended_emoji = 51;
     }
 
     message EnabledInputTable {
-        string name = 1;
-        bool is_built_in = 2;
-        string filename = 3;
+        optional string name = 1;
+        optional bool is_built_in = 2;
+        optional string filename = 3;
     }
 
     message ZenzaiVersionConfig {
         message V1 {}
 
         message V2 {
-            string profile = 1;
+            optional string profile = 1;
         }
 
         message V3 {
-            string profile = 1;
-            string topic = 2;
-            string style = 3;
-            string preference = 4;
+            optional string profile = 1;
+            optional string topic = 2;
+            optional string style = 3;
+            optional string preference = 4;
         }
 
         oneof version {
@@ -83,35 +83,35 @@ message Profile {
     string profile_name = 5;
     string profile_id = 6;
 
-    bool use_default_input_ui_settings = 10;
-    AutoConvertMode auto_convert_mode = 11;
-    AuxTextMode aux_text_mode = 12;
-    SuggestionListMode suggestion_list_mode = 13;
-    bool use_rich_suggestion = 14;
-    int32 num_suggestions = 15;
+    optional bool use_default_input_ui_settings = 10;
+    optional AutoConvertMode auto_convert_mode = 11;
+    optional AuxTextMode aux_text_mode = 12;
+    optional SuggestionListMode suggestion_list_mode = 13;
+    optional bool use_rich_suggestion = 14;
+    optional int32 num_suggestions = 15;
 
-    bool use_default_conversion_ui_settings = 20;
-    int32 num_candidates_per_page = 21;
-    bool use_rich_candidates = 22;
+    optional bool use_default_conversion_ui_settings = 20;
+    optional int32 num_candidates_per_page = 21;
+    optional bool use_rich_candidates = 22;
 
-    bool use_default_history_settings = 30;
-    bool use_profile_independent_history = 31;
-    bool use_input_history = 32;
-    bool stop_store_new_history = 23;
+    optional bool use_default_history_settings = 30;
+    optional bool use_profile_independent_history = 31;
+    optional bool use_input_history = 32;
+    optional bool stop_store_new_history = 23;
 
-    bool use_default_special_conversion_settings = 40;
-    SpecialConversionMode special_conversion_mode = 41;
+    optional bool use_default_special_conversion_settings = 40;
+    optional SpecialConversionMode special_conversion_mode = 41;
 
-    bool use_default_table_settings = 50;
-    repeated InputTable enabled_tables = 51;
+    optional bool use_default_table_settings = 50;
+    repeated EnabledInputTable enabled_tables = 51;
 
-    bool use_default_zenzai_settings = 100;
-    bool zenzai_enable = 101;
-    int32 zenzai_infer_limit = 102;
-    bool zenzai_contextual_mode = 103;
-    ZenzaiVersionConfig zenzai_version_config = 104;
-    bool use_zenzai_custom_weight = 105;
-    string zenzai_weight_path = 106;
+    optional bool use_default_zenzai_settings = 100;
+    optional bool zenzai_enable = 101;
+    optional int32 zenzai_infer_limit = 102;
+    optional bool zenzai_contextual_mode = 103;
+    optional ZenzaiVersionConfig zenzai_version_config = 104;
+    optional bool use_zenzai_custom_weight = 105;
+    optional string zenzai_weight_path = 106;
 }
 
 // Request messages

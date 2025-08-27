@@ -149,7 +149,7 @@ bool MainWindow::loadCurrentConfig() {
     SET_CHECKBOX(ui_->commaSeparatedNumCoversion,
                  specialConversions->comma_separated_number(),
                  ConfigDefs::CheckboxDefaults::COMMA_SEPARATED_NUMBER);
-    SET_CHECKBOX(ui_->calenderConversion, specialConversions->calender(),
+    SET_CHECKBOX(ui_->calendarConversion, specialConversions->calendar(),
                  ConfigDefs::CheckboxDefaults::CALENDER);
     SET_CHECKBOX(ui_->timeConversion, specialConversions->time(),
                  ConfigDefs::CheckboxDefaults::TIME);
@@ -175,7 +175,7 @@ bool MainWindow::saveCurrentConfig() {
         QMessageBox::warning(this, "Error", "No configuration profile loaded.");
         return false;
     }
-    // コンボボックス -> enum変換（定義から自動的に変換）
+
     currentProfile_->set_auto_convert_mode(
         GET_COMBO_TO_CONFIG(ConfigDefs::AutoConvertMode, ui_->autoConvertion));
     currentProfile_->set_aux_text_mode(
@@ -183,14 +183,12 @@ bool MainWindow::saveCurrentConfig() {
     currentProfile_->set_suggestion_list_mode(GET_COMBO_TO_CONFIG(
         ConfigDefs::SuggestionListMode, ui_->suggestionList));
 
-    // スピンボックス -> int
     currentProfile_->set_num_suggestions(GET_SPINBOX_INT(ui_->numSuggestion));
     currentProfile_->set_num_candidates_per_page(
         GET_SPINBOX_INT(ui_->numCandidatesPerPage));
     currentProfile_->set_zenzai_infer_limit(
         GET_SPINBOX_INT(ui_->zenzaiInferenceLimit));
 
-    // チェックボックス -> bool
     currentProfile_->set_use_input_history(GET_CHECKBOX_BOOL(ui_->useHistory));
     currentProfile_->set_stop_store_new_history(
         GET_CHECKBOX_BOOL(ui_->stopStoreNewHistory));
@@ -198,7 +196,6 @@ bool MainWindow::saveCurrentConfig() {
     currentProfile_->set_zenzai_contextual_mode(
         GET_CHECKBOX_BOOL(ui_->zenzaiContextualConversion));
 
-    // Special Conversion設定
     auto *specialConversions =
         currentProfile_->mutable_special_conversion_mode();
     specialConversions->set_halfwidth_katakana(
@@ -207,8 +204,8 @@ bool MainWindow::saveCurrentConfig() {
         GET_CHECKBOX_BOOL(ui_->extendedEmojiConversion));
     specialConversions->set_comma_separated_number(
         GET_CHECKBOX_BOOL(ui_->commaSeparatedNumCoversion));
-    specialConversions->set_calender(
-        GET_CHECKBOX_BOOL(ui_->calenderConversion));
+    specialConversions->set_calendar(
+        GET_CHECKBOX_BOOL(ui_->calendarConversion));
     specialConversions->set_time(GET_CHECKBOX_BOOL(ui_->timeConversion));
     specialConversions->set_mail_domain(
         GET_CHECKBOX_BOOL(ui_->mailDomainConversion));
@@ -222,8 +219,6 @@ bool MainWindow::saveCurrentConfig() {
     // Save to server
     try {
         server_.setCurrentConfig(currentConfig_);
-        QMessageBox::information(this, "Success",
-                                 "Configuration saved successfully.");
         return true;
     } catch (const std::exception &e) {
         QMessageBox::critical(

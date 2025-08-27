@@ -63,8 +63,6 @@ message CandidatesResult {
     message Candidate {
         string text = 1;
         string sub_hiragana = 2;
-        repeated string words = 3;
-        repeated int32 diff_indexes = 4;
     }
 
     repeated Candidate candidates = 1;

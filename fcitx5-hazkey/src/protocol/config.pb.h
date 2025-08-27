@@ -445,7 +445,8 @@ class Profile_ZenzaiVersionConfig_V3 final : public ::google::protobuf::Message
     kStyleFieldNumber = 3,
     kPreferenceFieldNumber = 4,
   };
-  // string profile = 1;
+  // optional string profile = 1;
+  bool has_profile() const;
   void clear_profile() ;
   const ::std::string& profile() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -460,7 +461,8 @@ class Profile_ZenzaiVersionConfig_V3 final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_profile();
 
   public:
-  // string topic = 2;
+  // optional string topic = 2;
+  bool has_topic() const;
   void clear_topic() ;
   const ::std::string& topic() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -475,7 +477,8 @@ class Profile_ZenzaiVersionConfig_V3 final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_topic();
 
   public:
-  // string style = 3;
+  // optional string style = 3;
+  bool has_style() const;
   void clear_style() ;
   const ::std::string& style() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -490,7 +493,8 @@ class Profile_ZenzaiVersionConfig_V3 final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_style();
 
   public:
-  // string preference = 4;
+  // optional string preference = 4;
+  bool has_preference() const;
   void clear_preference() ;
   const ::std::string& preference() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -689,7 +693,8 @@ class Profile_ZenzaiVersionConfig_V2 final : public ::google::protobuf::Message
   enum : int {
     kProfileFieldNumber = 1,
   };
-  // string profile = 1;
+  // optional string profile = 1;
+  bool has_profile() const;
   void clear_profile() ;
   const ::std::string& profile() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -1031,7 +1036,7 @@ class Profile_SpecialConversionMode final : public ::google::protobuf::Message
   enum : int {
     kCommaSeparatedNumberFieldNumber = 1,
     kMailDomainFieldNumber = 2,
-    kCalenderFieldNumber = 3,
+    kCalendarFieldNumber = 3,
     kTimeFieldNumber = 4,
     kRomanTypographyFieldNumber = 5,
     kUnicodeCodepointFieldNumber = 6,
@@ -1039,7 +1044,8 @@ class Profile_SpecialConversionMode final : public ::google::protobuf::Message
     kHalfwidthKatakanaFieldNumber = 50,
     kExtendedEmojiFieldNumber = 51,
   };
-  // bool comma_separated_number = 1;
+  // optional bool comma_separated_number = 1;
+  bool has_comma_separated_number() const;
   void clear_comma_separated_number() ;
   bool comma_separated_number() const;
   void set_comma_separated_number(bool value);
@@ -1049,7 +1055,8 @@ class Profile_SpecialConversionMode final : public ::google::protobuf::Message
   void _internal_set_comma_separated_number(bool value);
 
   public:
-  // bool mail_domain = 2;
+  // optional bool mail_domain = 2;
+  bool has_mail_domain() const;
   void clear_mail_domain() ;
   bool mail_domain() const;
   void set_mail_domain(bool value);
@@ -1059,17 +1066,19 @@ class Profile_SpecialConversionMode final : public ::google::protobuf::Message
   void _internal_set_mail_domain(bool value);
 
   public:
-  // bool calender = 3;
-  void clear_calender() ;
-  bool calender() const;
-  void set_calender(bool value);
+  // optional bool calendar = 3;
+  bool has_calendar() const;
+  void clear_calendar() ;
+  bool calendar() const;
+  void set_calendar(bool value);
 
   private:
-  bool _internal_calender() const;
-  void _internal_set_calender(bool value);
+  bool _internal_calendar() const;
+  void _internal_set_calendar(bool value);
 
   public:
-  // bool time = 4;
+  // optional bool time = 4;
+  bool has_time() const;
   void clear_time() ;
   bool time() const;
   void set_time(bool value);
@@ -1079,7 +1088,8 @@ class Profile_SpecialConversionMode final : public ::google::protobuf::Message
   void _internal_set_time(bool value);
 
   public:
-  // bool roman_typography = 5;
+  // optional bool roman_typography = 5;
+  bool has_roman_typography() const;
   void clear_roman_typography() ;
   bool roman_typography() const;
   void set_roman_typography(bool value);
@@ -1089,7 +1099,8 @@ class Profile_SpecialConversionMode final : public ::google::protobuf::Message
   void _internal_set_roman_typography(bool value);
 
   public:
-  // bool unicode_codepoint = 6;
+  // optional bool unicode_codepoint = 6;
+  bool has_unicode_codepoint() const;
   void clear_unicode_codepoint() ;
   bool unicode_codepoint() const;
   void set_unicode_codepoint(bool value);
@@ -1099,7 +1110,8 @@ class Profile_SpecialConversionMode final : public ::google::protobuf::Message
   void _internal_set_unicode_codepoint(bool value);
 
   public:
-  // bool hazkey_version = 7;
+  // optional bool hazkey_version = 7;
+  bool has_hazkey_version() const;
   void clear_hazkey_version() ;
   bool hazkey_version() const;
   void set_hazkey_version(bool value);
@@ -1109,7 +1121,8 @@ class Profile_SpecialConversionMode final : public ::google::protobuf::Message
   void _internal_set_hazkey_version(bool value);
 
   public:
-  // bool halfwidth_katakana = 50;
+  // optional bool halfwidth_katakana = 50;
+  bool has_halfwidth_katakana() const;
   void clear_halfwidth_katakana() ;
   bool halfwidth_katakana() const;
   void set_halfwidth_katakana(bool value);
@@ -1119,7 +1132,8 @@ class Profile_SpecialConversionMode final : public ::google::protobuf::Message
   void _internal_set_halfwidth_katakana(bool value);
 
   public:
-  // bool extended_emoji = 51;
+  // optional bool extended_emoji = 51;
+  bool has_extended_emoji() const;
   void clear_extended_emoji() ;
   bool extended_emoji() const;
   void set_extended_emoji(bool value);
@@ -1157,7 +1171,7 @@ class Profile_SpecialConversionMode final : public ::google::protobuf::Message
     ::google::protobuf::internal::CachedSize _cached_size_;
     bool comma_separated_number_;
     bool mail_domain_;
-    bool calender_;
+    bool calendar_;
     bool time_;
     bool roman_typography_;
     bool unicode_codepoint_;
@@ -1320,7 +1334,8 @@ class Profile_EnabledInputTable final : public ::google::protobuf::Message
     kFilenameFieldNumber = 3,
     kIsBuiltInFieldNumber = 2,
   };
-  // string name = 1;
+  // optional string name = 1;
+  bool has_name() const;
   void clear_name() ;
   const ::std::string& name() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -1335,7 +1350,8 @@ class Profile_EnabledInputTable final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_name();
 
   public:
-  // string filename = 3;
+  // optional string filename = 3;
+  bool has_filename() const;
   void clear_filename() ;
   const ::std::string& filename() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -1350,7 +1366,8 @@ class Profile_EnabledInputTable final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_filename();
 
   public:
-  // bool is_built_in = 2;
+  // optional bool is_built_in = 2;
+  bool has_is_built_in() const;
   void clear_is_built_in() ;
   bool is_built_in() const;
   void set_is_built_in(bool value);
@@ -2857,23 +2874,23 @@ class Profile final : public ::google::protobuf::Message
     kZenzaiContextualModeFieldNumber = 103,
     kUseZenzaiCustomWeightFieldNumber = 105,
   };
-  // repeated .hazkey.config.InputTable enabled_tables = 51;
+  // repeated .hazkey.config.Profile.EnabledInputTable enabled_tables = 51;
   int enabled_tables_size() const;
   private:
   int _internal_enabled_tables_size() const;
 
   public:
   void clear_enabled_tables() ;
-  ::hazkey::config::InputTable* PROTOBUF_NONNULL mutable_enabled_tables(int index);
-  ::google::protobuf::RepeatedPtrField<::hazkey::config::InputTable>* PROTOBUF_NONNULL mutable_enabled_tables();
+  ::hazkey::config::Profile_EnabledInputTable* PROTOBUF_NONNULL mutable_enabled_tables(int index);
+  ::google::protobuf::RepeatedPtrField<::hazkey::config::Profile_EnabledInputTable>* PROTOBUF_NONNULL mutable_enabled_tables();
 
   private:
-  const ::google::protobuf::RepeatedPtrField<::hazkey::config::InputTable>& _internal_enabled_tables() const;
-  ::google::protobuf::RepeatedPtrField<::hazkey::config::InputTable>* PROTOBUF_NONNULL _internal_mutable_enabled_tables();
+  const ::google::protobuf::RepeatedPtrField<::hazkey::config::Profile_EnabledInputTable>& _internal_enabled_tables() const;
+  ::google::protobuf::RepeatedPtrField<::hazkey::config::Profile_EnabledInputTable>* PROTOBUF_NONNULL _internal_mutable_enabled_tables();
   public:
-  const ::hazkey::config::InputTable& enabled_tables(int index) const;
-  ::hazkey::config::InputTable* PROTOBUF_NONNULL add_enabled_tables();
-  const ::google::protobuf::RepeatedPtrField<::hazkey::config::InputTable>& enabled_tables() const;
+  const ::hazkey::config::Profile_EnabledInputTable& enabled_tables(int index) const;
+  ::hazkey::config::Profile_EnabledInputTable* PROTOBUF_NONNULL add_enabled_tables();
+  const ::google::protobuf::RepeatedPtrField<::hazkey::config::Profile_EnabledInputTable>& enabled_tables() const;
   // string profile_name = 5;
   void clear_profile_name() ;
   const ::std::string& profile_name() const;
@@ -2904,7 +2921,8 @@ class Profile final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_profile_id();
 
   public:
-  // string zenzai_weight_path = 106;
+  // optional string zenzai_weight_path = 106;
+  bool has_zenzai_weight_path() const;
   void clear_zenzai_weight_path() ;
   const ::std::string& zenzai_weight_path() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -2919,7 +2937,7 @@ class Profile final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_zenzai_weight_path();
 
   public:
-  // .hazkey.config.Profile.SpecialConversionMode special_conversion_mode = 41;
+  // optional .hazkey.config.Profile.SpecialConversionMode special_conversion_mode = 41;
   bool has_special_conversion_mode() const;
   void clear_special_conversion_mode() ;
   const ::hazkey::config::Profile_SpecialConversionMode& special_conversion_mode() const;
@@ -2934,7 +2952,7 @@ class Profile final : public ::google::protobuf::Message
   ::hazkey::config::Profile_SpecialConversionMode* PROTOBUF_NONNULL _internal_mutable_special_conversion_mode();
 
   public:
-  // .hazkey.config.Profile.ZenzaiVersionConfig zenzai_version_config = 104;
+  // optional .hazkey.config.Profile.ZenzaiVersionConfig zenzai_version_config = 104;
   bool has_zenzai_version_config() const;
   void clear_zenzai_version_config() ;
   const ::hazkey::config::Profile_ZenzaiVersionConfig& zenzai_version_config() const;
@@ -2949,7 +2967,8 @@ class Profile final : public ::google::protobuf::Message
   ::hazkey::config::Profile_ZenzaiVersionConfig* PROTOBUF_NONNULL _internal_mutable_zenzai_version_config();
 
   public:
-  // .hazkey.config.Profile.AutoConvertMode auto_convert_mode = 11;
+  // optional .hazkey.config.Profile.AutoConvertMode auto_convert_mode = 11;
+  bool has_auto_convert_mode() const;
   void clear_auto_convert_mode() ;
   ::hazkey::config::Profile_AutoConvertMode auto_convert_mode() const;
   void set_auto_convert_mode(::hazkey::config::Profile_AutoConvertMode value);
@@ -2959,7 +2978,8 @@ class Profile final : public ::google::protobuf::Message
   void _internal_set_auto_convert_mode(::hazkey::config::Profile_AutoConvertMode value);
 
   public:
-  // .hazkey.config.Profile.AuxTextMode aux_text_mode = 12;
+  // optional .hazkey.config.Profile.AuxTextMode aux_text_mode = 12;
+  bool has_aux_text_mode() const;
   void clear_aux_text_mode() ;
   ::hazkey::config::Profile_AuxTextMode aux_text_mode() const;
   void set_aux_text_mode(::hazkey::config::Profile_AuxTextMode value);
@@ -2969,7 +2989,8 @@ class Profile final : public ::google::protobuf::Message
   void _internal_set_aux_text_mode(::hazkey::config::Profile_AuxTextMode value);
 
   public:
-  // .hazkey.config.Profile.SuggestionListMode suggestion_list_mode = 13;
+  // optional .hazkey.config.Profile.SuggestionListMode suggestion_list_mode = 13;
+  bool has_suggestion_list_mode() const;
   void clear_suggestion_list_mode() ;
   ::hazkey::config::Profile_SuggestionListMode suggestion_list_mode() const;
   void set_suggestion_list_mode(::hazkey::config::Profile_SuggestionListMode value);
@@ -2979,7 +3000,8 @@ class Profile final : public ::google::protobuf::Message
   void _internal_set_suggestion_list_mode(::hazkey::config::Profile_SuggestionListMode value);
 
   public:
-  // int32 num_suggestions = 15;
+  // optional int32 num_suggestions = 15;
+  bool has_num_suggestions() const;
   void clear_num_suggestions() ;
   ::int32_t num_suggestions() const;
   void set_num_suggestions(::int32_t value);
@@ -2989,7 +3011,8 @@ class Profile final : public ::google::protobuf::Message
   void _internal_set_num_suggestions(::int32_t value);
 
   public:
-  // bool use_default_input_ui_settings = 10;
+  // optional bool use_default_input_ui_settings = 10;
+  bool has_use_default_input_ui_settings() const;
   void clear_use_default_input_ui_settings() ;
   bool use_default_input_ui_settings() const;
   void set_use_default_input_ui_settings(bool value);
@@ -2999,7 +3022,8 @@ class Profile final : public ::google::protobuf::Message
   void _internal_set_use_default_input_ui_settings(bool value);
 
   public:
-  // bool use_rich_suggestion = 14;
+  // optional bool use_rich_suggestion = 14;
+  bool has_use_rich_suggestion() const;
   void clear_use_rich_suggestion() ;
   bool use_rich_suggestion() const;
   void set_use_rich_suggestion(bool value);
@@ -3009,7 +3033,8 @@ class Profile final : public ::google::protobuf::Message
   void _internal_set_use_rich_suggestion(bool value);
 
   public:
-  // bool use_default_conversion_ui_settings = 20;
+  // optional bool use_default_conversion_ui_settings = 20;
+  bool has_use_default_conversion_ui_settings() const;
   void clear_use_default_conversion_ui_settings() ;
   bool use_default_conversion_ui_settings() const;
   void set_use_default_conversion_ui_settings(bool value);
@@ -3019,7 +3044,8 @@ class Profile final : public ::google::protobuf::Message
   void _internal_set_use_default_conversion_ui_settings(bool value);
 
   public:
-  // bool use_rich_candidates = 22;
+  // optional bool use_rich_candidates = 22;
+  bool has_use_rich_candidates() const;
   void clear_use_rich_candidates() ;
   bool use_rich_candidates() const;
   void set_use_rich_candidates(bool value);
@@ -3029,7 +3055,8 @@ class Profile final : public ::google::protobuf::Message
   void _internal_set_use_rich_candidates(bool value);
 
   public:
-  // int32 num_candidates_per_page = 21;
+  // optional int32 num_candidates_per_page = 21;
+  bool has_num_candidates_per_page() const;
   void clear_num_candidates_per_page() ;
   ::int32_t num_candidates_per_page() const;
   void set_num_candidates_per_page(::int32_t value);
@@ -3039,7 +3066,8 @@ class Profile final : public ::google::protobuf::Message
   void _internal_set_num_candidates_per_page(::int32_t value);
 
   public:
-  // bool stop_store_new_history = 23;
+  // optional bool stop_store_new_history = 23;
+  bool has_stop_store_new_history() const;
   void clear_stop_store_new_history() ;
   bool stop_store_new_history() const;
   void set_stop_store_new_history(bool value);
@@ -3049,7 +3077,8 @@ class Profile final : public ::google::protobuf::Message
   void _internal_set_stop_store_new_history(bool value);
 
   public:
-  // bool use_default_history_settings = 30;
+  // optional bool use_default_history_settings = 30;
+  bool has_use_default_history_settings() const;
   void clear_use_default_history_settings() ;
   bool use_default_history_settings() const;
   void set_use_default_history_settings(bool value);
@@ -3059,7 +3088,8 @@ class Profile final : public ::google::protobuf::Message
   void _internal_set_use_default_history_settings(bool value);
 
   public:
-  // bool use_profile_independent_history = 31;
+  // optional bool use_profile_independent_history = 31;
+  bool has_use_profile_independent_history() const;
   void clear_use_profile_independent_history() ;
   bool use_profile_independent_history() const;
   void set_use_profile_independent_history(bool value);
@@ -3069,7 +3099,8 @@ class Profile final : public ::google::protobuf::Message
   void _internal_set_use_profile_independent_history(bool value);
 
   public:
-  // bool use_input_history = 32;
+  // optional bool use_input_history = 32;
+  bool has_use_input_history() const;
   void clear_use_input_history() ;
   bool use_input_history() const;
   void set_use_input_history(bool value);
@@ -3079,7 +3110,8 @@ class Profile final : public ::google::protobuf::Message
   void _internal_set_use_input_history(bool value);
 
   public:
-  // bool use_default_special_conversion_settings = 40;
+  // optional bool use_default_special_conversion_settings = 40;
+  bool has_use_default_special_conversion_settings() const;
   void clear_use_default_special_conversion_settings() ;
   bool use_default_special_conversion_settings() const;
   void set_use_default_special_conversion_settings(bool value);
@@ -3089,7 +3121,8 @@ class Profile final : public ::google::protobuf::Message
   void _internal_set_use_default_special_conversion_settings(bool value);
 
   public:
-  // bool use_default_table_settings = 50;
+  // optional bool use_default_table_settings = 50;
+  bool has_use_default_table_settings() const;
   void clear_use_default_table_settings() ;
   bool use_default_table_settings() const;
   void set_use_default_table_settings(bool value);
@@ -3099,7 +3132,8 @@ class Profile final : public ::google::protobuf::Message
   void _internal_set_use_default_table_settings(bool value);
 
   public:
-  // bool use_default_zenzai_settings = 100;
+  // optional bool use_default_zenzai_settings = 100;
+  bool has_use_default_zenzai_settings() const;
   void clear_use_default_zenzai_settings() ;
   bool use_default_zenzai_settings() const;
   void set_use_default_zenzai_settings(bool value);
@@ -3109,7 +3143,8 @@ class Profile final : public ::google::protobuf::Message
   void _internal_set_use_default_zenzai_settings(bool value);
 
   public:
-  // bool zenzai_enable = 101;
+  // optional bool zenzai_enable = 101;
+  bool has_zenzai_enable() const;
   void clear_zenzai_enable() ;
   bool zenzai_enable() const;
   void set_zenzai_enable(bool value);
@@ -3119,7 +3154,8 @@ class Profile final : public ::google::protobuf::Message
   void _internal_set_zenzai_enable(bool value);
 
   public:
-  // int32 zenzai_infer_limit = 102;
+  // optional int32 zenzai_infer_limit = 102;
+  bool has_zenzai_infer_limit() const;
   void clear_zenzai_infer_limit() ;
   ::int32_t zenzai_infer_limit() const;
   void set_zenzai_infer_limit(::int32_t value);
@@ -3129,7 +3165,8 @@ class Profile final : public ::google::protobuf::Message
   void _internal_set_zenzai_infer_limit(::int32_t value);
 
   public:
-  // bool zenzai_contextual_mode = 103;
+  // optional bool zenzai_contextual_mode = 103;
+  bool has_zenzai_contextual_mode() const;
   void clear_zenzai_contextual_mode() ;
   bool zenzai_contextual_mode() const;
   void set_zenzai_contextual_mode(bool value);
@@ -3139,7 +3176,8 @@ class Profile final : public ::google::protobuf::Message
   void _internal_set_zenzai_contextual_mode(bool value);
 
   public:
-  // bool use_zenzai_custom_weight = 105;
+  // optional bool use_zenzai_custom_weight = 105;
+  bool has_use_zenzai_custom_weight() const;
   void clear_use_zenzai_custom_weight() ;
   bool use_zenzai_custom_weight() const;
   void set_use_zenzai_custom_weight(bool value);
@@ -3175,7 +3213,7 @@ class Profile final : public ::google::protobuf::Message
         const Profile& from_msg);
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
-    ::google::protobuf::RepeatedPtrField< ::hazkey::config::InputTable > enabled_tables_;
+    ::google::protobuf::RepeatedPtrField< ::hazkey::config::Profile_EnabledInputTable > enabled_tables_;
     ::google::protobuf::internal::ArenaStringPtr profile_name_;
     ::google::protobuf::internal::ArenaStringPtr profile_id_;
     ::google::protobuf::internal::ArenaStringPtr zenzai_weight_path_;
@@ -4022,7 +4060,11 @@ inline void InputTable::set_allocated_filename(::std::string* PROTOBUF_NULLABLE 
 
 // Profile_SpecialConversionMode
 
-// bool comma_separated_number = 1;
+// optional bool comma_separated_number = 1;
+inline bool Profile_SpecialConversionMode::has_comma_separated_number() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
 inline void Profile_SpecialConversionMode::clear_comma_separated_number() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.comma_separated_number_ = false;
@@ -4046,7 +4088,11 @@ inline void Profile_SpecialConversionMode::_internal_set_comma_separated_number(
   _impl_.comma_separated_number_ = value;
 }
 
-// bool mail_domain = 2;
+// optional bool mail_domain = 2;
+inline bool Profile_SpecialConversionMode::has_mail_domain() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  return value;
+}
 inline void Profile_SpecialConversionMode::clear_mail_domain() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.mail_domain_ = false;
@@ -4070,31 +4116,39 @@ inline void Profile_SpecialConversionMode::_internal_set_mail_domain(bool value)
   _impl_.mail_domain_ = value;
 }
 
-// bool calender = 3;
-inline void Profile_SpecialConversionMode::clear_calender() {
+// optional bool calendar = 3;
+inline bool Profile_SpecialConversionMode::has_calendar() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000004u) != 0;
+  return value;
+}
+inline void Profile_SpecialConversionMode::clear_calendar() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.calender_ = false;
+  _impl_.calendar_ = false;
   _impl_._has_bits_[0] &= ~0x00000004u;
 }
-inline bool Profile_SpecialConversionMode::calender() const {
-  // @@protoc_insertion_point(field_get:hazkey.config.Profile.SpecialConversionMode.calender)
-  return _internal_calender();
+inline bool Profile_SpecialConversionMode::calendar() const {
+  // @@protoc_insertion_point(field_get:hazkey.config.Profile.SpecialConversionMode.calendar)
+  return _internal_calendar();
 }
-inline void Profile_SpecialConversionMode::set_calender(bool value) {
-  _internal_set_calender(value);
+inline void Profile_SpecialConversionMode::set_calendar(bool value) {
+  _internal_set_calendar(value);
   _impl_._has_bits_[0] |= 0x00000004u;
-  // @@protoc_insertion_point(field_set:hazkey.config.Profile.SpecialConversionMode.calender)
+  // @@protoc_insertion_point(field_set:hazkey.config.Profile.SpecialConversionMode.calendar)
 }
-inline bool Profile_SpecialConversionMode::_internal_calender() const {
+inline bool Profile_SpecialConversionMode::_internal_calendar() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.calender_;
+  return _impl_.calendar_;
 }
-inline void Profile_SpecialConversionMode::_internal_set_calender(bool value) {
+inline void Profile_SpecialConversionMode::_internal_set_calendar(bool value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.calender_ = value;
+  _impl_.calendar_ = value;
 }
 
-// bool time = 4;
+// optional bool time = 4;
+inline bool Profile_SpecialConversionMode::has_time() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000008u) != 0;
+  return value;
+}
 inline void Profile_SpecialConversionMode::clear_time() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.time_ = false;
@@ -4118,7 +4172,11 @@ inline void Profile_SpecialConversionMode::_internal_set_time(bool value) {
   _impl_.time_ = value;
 }
 
-// bool roman_typography = 5;
+// optional bool roman_typography = 5;
+inline bool Profile_SpecialConversionMode::has_roman_typography() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000010u) != 0;
+  return value;
+}
 inline void Profile_SpecialConversionMode::clear_roman_typography() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.roman_typography_ = false;
@@ -4142,7 +4200,11 @@ inline void Profile_SpecialConversionMode::_internal_set_roman_typography(bool v
   _impl_.roman_typography_ = value;
 }
 
-// bool unicode_codepoint = 6;
+// optional bool unicode_codepoint = 6;
+inline bool Profile_SpecialConversionMode::has_unicode_codepoint() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000020u) != 0;
+  return value;
+}
 inline void Profile_SpecialConversionMode::clear_unicode_codepoint() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.unicode_codepoint_ = false;
@@ -4166,7 +4228,11 @@ inline void Profile_SpecialConversionMode::_internal_set_unicode_codepoint(bool 
   _impl_.unicode_codepoint_ = value;
 }
 
-// bool hazkey_version = 7;
+// optional bool hazkey_version = 7;
+inline bool Profile_SpecialConversionMode::has_hazkey_version() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000040u) != 0;
+  return value;
+}
 inline void Profile_SpecialConversionMode::clear_hazkey_version() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.hazkey_version_ = false;
@@ -4190,7 +4256,11 @@ inline void Profile_SpecialConversionMode::_internal_set_hazkey_version(bool val
   _impl_.hazkey_version_ = value;
 }
 
-// bool halfwidth_katakana = 50;
+// optional bool halfwidth_katakana = 50;
+inline bool Profile_SpecialConversionMode::has_halfwidth_katakana() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000080u) != 0;
+  return value;
+}
 inline void Profile_SpecialConversionMode::clear_halfwidth_katakana() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.halfwidth_katakana_ = false;
@@ -4214,7 +4284,11 @@ inline void Profile_SpecialConversionMode::_internal_set_halfwidth_katakana(bool
   _impl_.halfwidth_katakana_ = value;
 }
 
-// bool extended_emoji = 51;
+// optional bool extended_emoji = 51;
+inline bool Profile_SpecialConversionMode::has_extended_emoji() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000100u) != 0;
+  return value;
+}
 inline void Profile_SpecialConversionMode::clear_extended_emoji() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.extended_emoji_ = false;
@@ -4242,7 +4316,11 @@ inline void Profile_SpecialConversionMode::_internal_set_extended_emoji(bool val
 
 // Profile_EnabledInputTable
 
-// string name = 1;
+// optional string name = 1;
+inline bool Profile_EnabledInputTable::has_name() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
 inline void Profile_EnabledInputTable::clear_name() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.name_.ClearToEmpty();
@@ -4307,7 +4385,11 @@ inline void Profile_EnabledInputTable::set_allocated_name(::std::string* PROTOBU
   // @@protoc_insertion_point(field_set_allocated:hazkey.config.Profile.EnabledInputTable.name)
 }
 
-// bool is_built_in = 2;
+// optional bool is_built_in = 2;
+inline bool Profile_EnabledInputTable::has_is_built_in() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000004u) != 0;
+  return value;
+}
 inline void Profile_EnabledInputTable::clear_is_built_in() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.is_built_in_ = false;
@@ -4331,7 +4413,11 @@ inline void Profile_EnabledInputTable::_internal_set_is_built_in(bool value) {
   _impl_.is_built_in_ = value;
 }
 
-// string filename = 3;
+// optional string filename = 3;
+inline bool Profile_EnabledInputTable::has_filename() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  return value;
+}
 inline void Profile_EnabledInputTable::clear_filename() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.filename_.ClearToEmpty();
@@ -4404,7 +4490,11 @@ inline void Profile_EnabledInputTable::set_allocated_filename(::std::string* PRO
 
 // Profile_ZenzaiVersionConfig_V2
 
-// string profile = 1;
+// optional string profile = 1;
+inline bool Profile_ZenzaiVersionConfig_V2::has_profile() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
 inline void Profile_ZenzaiVersionConfig_V2::clear_profile() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.profile_.ClearToEmpty();
@@ -4473,7 +4563,11 @@ inline void Profile_ZenzaiVersionConfig_V2::set_allocated_profile(::std::string*
 
 // Profile_ZenzaiVersionConfig_V3
 
-// string profile = 1;
+// optional string profile = 1;
+inline bool Profile_ZenzaiVersionConfig_V3::has_profile() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
 inline void Profile_ZenzaiVersionConfig_V3::clear_profile() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.profile_.ClearToEmpty();
@@ -4538,7 +4632,11 @@ inline void Profile_ZenzaiVersionConfig_V3::set_allocated_profile(::std::string*
   // @@protoc_insertion_point(field_set_allocated:hazkey.config.Profile.ZenzaiVersionConfig.V3.profile)
 }
 
-// string topic = 2;
+// optional string topic = 2;
+inline bool Profile_ZenzaiVersionConfig_V3::has_topic() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  return value;
+}
 inline void Profile_ZenzaiVersionConfig_V3::clear_topic() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.topic_.ClearToEmpty();
@@ -4603,7 +4701,11 @@ inline void Profile_ZenzaiVersionConfig_V3::set_allocated_topic(::std::string* P
   // @@protoc_insertion_point(field_set_allocated:hazkey.config.Profile.ZenzaiVersionConfig.V3.topic)
 }
 
-// string style = 3;
+// optional string style = 3;
+inline bool Profile_ZenzaiVersionConfig_V3::has_style() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000004u) != 0;
+  return value;
+}
 inline void Profile_ZenzaiVersionConfig_V3::clear_style() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.style_.ClearToEmpty();
@@ -4668,7 +4770,11 @@ inline void Profile_ZenzaiVersionConfig_V3::set_allocated_style(::std::string* P
   // @@protoc_insertion_point(field_set_allocated:hazkey.config.Profile.ZenzaiVersionConfig.V3.style)
 }
 
-// string preference = 4;
+// optional string preference = 4;
+inline bool Profile_ZenzaiVersionConfig_V3::has_preference() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000008u) != 0;
+  return value;
+}
 inline void Profile_ZenzaiVersionConfig_V3::clear_preference() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.preference_.ClearToEmpty();
@@ -5123,7 +5229,11 @@ inline void Profile::set_allocated_profile_id(::std::string* PROTOBUF_NULLABLE v
   // @@protoc_insertion_point(field_set_allocated:hazkey.config.Profile.profile_id)
 }
 
-// bool use_default_input_ui_settings = 10;
+// optional bool use_default_input_ui_settings = 10;
+inline bool Profile::has_use_default_input_ui_settings() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000200u) != 0;
+  return value;
+}
 inline void Profile::clear_use_default_input_ui_settings() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.use_default_input_ui_settings_ = false;
@@ -5147,7 +5257,11 @@ inline void Profile::_internal_set_use_default_input_ui_settings(bool value) {
   _impl_.use_default_input_ui_settings_ = value;
 }
 
-// .hazkey.config.Profile.AutoConvertMode auto_convert_mode = 11;
+// optional .hazkey.config.Profile.AutoConvertMode auto_convert_mode = 11;
+inline bool Profile::has_auto_convert_mode() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000020u) != 0;
+  return value;
+}
 inline void Profile::clear_auto_convert_mode() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.auto_convert_mode_ = 0;
@@ -5171,7 +5285,11 @@ inline void Profile::_internal_set_auto_convert_mode(::hazkey::config::Profile_A
   _impl_.auto_convert_mode_ = value;
 }
 
-// .hazkey.config.Profile.AuxTextMode aux_text_mode = 12;
+// optional .hazkey.config.Profile.AuxTextMode aux_text_mode = 12;
+inline bool Profile::has_aux_text_mode() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000040u) != 0;
+  return value;
+}
 inline void Profile::clear_aux_text_mode() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.aux_text_mode_ = 0;
@@ -5195,7 +5313,11 @@ inline void Profile::_internal_set_aux_text_mode(::hazkey::config::Profile_AuxTe
   _impl_.aux_text_mode_ = value;
 }
 
-// .hazkey.config.Profile.SuggestionListMode suggestion_list_mode = 13;
+// optional .hazkey.config.Profile.SuggestionListMode suggestion_list_mode = 13;
+inline bool Profile::has_suggestion_list_mode() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000080u) != 0;
+  return value;
+}
 inline void Profile::clear_suggestion_list_mode() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.suggestion_list_mode_ = 0;
@@ -5219,7 +5341,11 @@ inline void Profile::_internal_set_suggestion_list_mode(::hazkey::config::Profil
   _impl_.suggestion_list_mode_ = value;
 }
 
-// bool use_rich_suggestion = 14;
+// optional bool use_rich_suggestion = 14;
+inline bool Profile::has_use_rich_suggestion() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000400u) != 0;
+  return value;
+}
 inline void Profile::clear_use_rich_suggestion() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.use_rich_suggestion_ = false;
@@ -5243,7 +5369,11 @@ inline void Profile::_internal_set_use_rich_suggestion(bool value) {
   _impl_.use_rich_suggestion_ = value;
 }
 
-// int32 num_suggestions = 15;
+// optional int32 num_suggestions = 15;
+inline bool Profile::has_num_suggestions() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000100u) != 0;
+  return value;
+}
 inline void Profile::clear_num_suggestions() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.num_suggestions_ = 0;
@@ -5267,7 +5397,11 @@ inline void Profile::_internal_set_num_suggestions(::int32_t value) {
   _impl_.num_suggestions_ = value;
 }
 
-// bool use_default_conversion_ui_settings = 20;
+// optional bool use_default_conversion_ui_settings = 20;
+inline bool Profile::has_use_default_conversion_ui_settings() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000800u) != 0;
+  return value;
+}
 inline void Profile::clear_use_default_conversion_ui_settings() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.use_default_conversion_ui_settings_ = false;
@@ -5291,7 +5425,11 @@ inline void Profile::_internal_set_use_default_conversion_ui_settings(bool value
   _impl_.use_default_conversion_ui_settings_ = value;
 }
 
-// int32 num_candidates_per_page = 21;
+// optional int32 num_candidates_per_page = 21;
+inline bool Profile::has_num_candidates_per_page() const {
+  bool value = (_impl_._has_bits_[0] & 0x00002000u) != 0;
+  return value;
+}
 inline void Profile::clear_num_candidates_per_page() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.num_candidates_per_page_ = 0;
@@ -5315,7 +5453,11 @@ inline void Profile::_internal_set_num_candidates_per_page(::int32_t value) {
   _impl_.num_candidates_per_page_ = value;
 }
 
-// bool use_rich_candidates = 22;
+// optional bool use_rich_candidates = 22;
+inline bool Profile::has_use_rich_candidates() const {
+  bool value = (_impl_._has_bits_[0] & 0x00001000u) != 0;
+  return value;
+}
 inline void Profile::clear_use_rich_candidates() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.use_rich_candidates_ = false;
@@ -5339,7 +5481,11 @@ inline void Profile::_internal_set_use_rich_candidates(bool value) {
   _impl_.use_rich_candidates_ = value;
 }
 
-// bool use_default_history_settings = 30;
+// optional bool use_default_history_settings = 30;
+inline bool Profile::has_use_default_history_settings() const {
+  bool value = (_impl_._has_bits_[0] & 0x00008000u) != 0;
+  return value;
+}
 inline void Profile::clear_use_default_history_settings() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.use_default_history_settings_ = false;
@@ -5363,7 +5509,11 @@ inline void Profile::_internal_set_use_default_history_settings(bool value) {
   _impl_.use_default_history_settings_ = value;
 }
 
-// bool use_profile_independent_history = 31;
+// optional bool use_profile_independent_history = 31;
+inline bool Profile::has_use_profile_independent_history() const {
+  bool value = (_impl_._has_bits_[0] & 0x00010000u) != 0;
+  return value;
+}
 inline void Profile::clear_use_profile_independent_history() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.use_profile_independent_history_ = false;
@@ -5387,7 +5537,11 @@ inline void Profile::_internal_set_use_profile_independent_history(bool value) {
   _impl_.use_profile_independent_history_ = value;
 }
 
-// bool use_input_history = 32;
+// optional bool use_input_history = 32;
+inline bool Profile::has_use_input_history() const {
+  bool value = (_impl_._has_bits_[0] & 0x00020000u) != 0;
+  return value;
+}
 inline void Profile::clear_use_input_history() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.use_input_history_ = false;
@@ -5411,7 +5565,11 @@ inline void Profile::_internal_set_use_input_history(bool value) {
   _impl_.use_input_history_ = value;
 }
 
-// bool stop_store_new_history = 23;
+// optional bool stop_store_new_history = 23;
+inline bool Profile::has_stop_store_new_history() const {
+  bool value = (_impl_._has_bits_[0] & 0x00004000u) != 0;
+  return value;
+}
 inline void Profile::clear_stop_store_new_history() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.stop_store_new_history_ = false;
@@ -5435,7 +5593,11 @@ inline void Profile::_internal_set_stop_store_new_history(bool value) {
   _impl_.stop_store_new_history_ = value;
 }
 
-// bool use_default_special_conversion_settings = 40;
+// optional bool use_default_special_conversion_settings = 40;
+inline bool Profile::has_use_default_special_conversion_settings() const {
+  bool value = (_impl_._has_bits_[0] & 0x00040000u) != 0;
+  return value;
+}
 inline void Profile::clear_use_default_special_conversion_settings() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.use_default_special_conversion_settings_ = false;
@@ -5459,7 +5621,7 @@ inline void Profile::_internal_set_use_default_special_conversion_settings(bool 
   _impl_.use_default_special_conversion_settings_ = value;
 }
 
-// .hazkey.config.Profile.SpecialConversionMode special_conversion_mode = 41;
+// optional .hazkey.config.Profile.SpecialConversionMode special_conversion_mode = 41;
 inline bool Profile::has_special_conversion_mode() const {
   bool value = (_impl_._has_bits_[0] & 0x00000008u) != 0;
   PROTOBUF_ASSUME(!value || _impl_.special_conversion_mode_ != nullptr);
@@ -5557,7 +5719,11 @@ inline void Profile::set_allocated_special_conversion_mode(::hazkey::config::Pro
   // @@protoc_insertion_point(field_set_allocated:hazkey.config.Profile.special_conversion_mode)
 }
 
-// bool use_default_table_settings = 50;
+// optional bool use_default_table_settings = 50;
+inline bool Profile::has_use_default_table_settings() const {
+  bool value = (_impl_._has_bits_[0] & 0x00080000u) != 0;
+  return value;
+}
 inline void Profile::clear_use_default_table_settings() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.use_default_table_settings_ = false;
@@ -5581,7 +5747,7 @@ inline void Profile::_internal_set_use_default_table_settings(bool value) {
   _impl_.use_default_table_settings_ = value;
 }
 
-// repeated .hazkey.config.InputTable enabled_tables = 51;
+// repeated .hazkey.config.Profile.EnabledInputTable enabled_tables = 51;
 inline int Profile::_internal_enabled_tables_size() const {
   return _internal_enabled_tables().size();
 }
@@ -5592,46 +5758,50 @@ inline void Profile::clear_enabled_tables() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.enabled_tables_.Clear();
 }
-inline ::hazkey::config::InputTable* PROTOBUF_NONNULL Profile::mutable_enabled_tables(int index)
+inline ::hazkey::config::Profile_EnabledInputTable* PROTOBUF_NONNULL Profile::mutable_enabled_tables(int index)
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   // @@protoc_insertion_point(field_mutable:hazkey.config.Profile.enabled_tables)
   return _internal_mutable_enabled_tables()->Mutable(index);
 }
-inline ::google::protobuf::RepeatedPtrField<::hazkey::config::InputTable>* PROTOBUF_NONNULL Profile::mutable_enabled_tables()
+inline ::google::protobuf::RepeatedPtrField<::hazkey::config::Profile_EnabledInputTable>* PROTOBUF_NONNULL Profile::mutable_enabled_tables()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   // @@protoc_insertion_point(field_mutable_list:hazkey.config.Profile.enabled_tables)
   ::google::protobuf::internal::TSanWrite(&_impl_);
   return _internal_mutable_enabled_tables();
 }
-inline const ::hazkey::config::InputTable& Profile::enabled_tables(int index) const
+inline const ::hazkey::config::Profile_EnabledInputTable& Profile::enabled_tables(int index) const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   // @@protoc_insertion_point(field_get:hazkey.config.Profile.enabled_tables)
   return _internal_enabled_tables().Get(index);
 }
-inline ::hazkey::config::InputTable* PROTOBUF_NONNULL Profile::add_enabled_tables()
+inline ::hazkey::config::Profile_EnabledInputTable* PROTOBUF_NONNULL Profile::add_enabled_tables()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::hazkey::config::InputTable* _add = _internal_mutable_enabled_tables()->Add();
+  ::hazkey::config::Profile_EnabledInputTable* _add = _internal_mutable_enabled_tables()->Add();
   // @@protoc_insertion_point(field_add:hazkey.config.Profile.enabled_tables)
   return _add;
 }
-inline const ::google::protobuf::RepeatedPtrField<::hazkey::config::InputTable>& Profile::enabled_tables() const
+inline const ::google::protobuf::RepeatedPtrField<::hazkey::config::Profile_EnabledInputTable>& Profile::enabled_tables() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   // @@protoc_insertion_point(field_list:hazkey.config.Profile.enabled_tables)
   return _internal_enabled_tables();
 }
-inline const ::google::protobuf::RepeatedPtrField<::hazkey::config::InputTable>&
+inline const ::google::protobuf::RepeatedPtrField<::hazkey::config::Profile_EnabledInputTable>&
 Profile::_internal_enabled_tables() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return _impl_.enabled_tables_;
 }
-inline ::google::protobuf::RepeatedPtrField<::hazkey::config::InputTable>* PROTOBUF_NONNULL
+inline ::google::protobuf::RepeatedPtrField<::hazkey::config::Profile_EnabledInputTable>* PROTOBUF_NONNULL
 Profile::_internal_mutable_enabled_tables() {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return &_impl_.enabled_tables_;
 }
 
-// bool use_default_zenzai_settings = 100;
+// optional bool use_default_zenzai_settings = 100;
+inline bool Profile::has_use_default_zenzai_settings() const {
+  bool value = (_impl_._has_bits_[0] & 0x00100000u) != 0;
+  return value;
+}
 inline void Profile::clear_use_default_zenzai_settings() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.use_default_zenzai_settings_ = false;
@@ -5655,7 +5825,11 @@ inline void Profile::_internal_set_use_default_zenzai_settings(bool value) {
   _impl_.use_default_zenzai_settings_ = value;
 }
 
-// bool zenzai_enable = 101;
+// optional bool zenzai_enable = 101;
+inline bool Profile::has_zenzai_enable() const {
+  bool value = (_impl_._has_bits_[0] & 0x00200000u) != 0;
+  return value;
+}
 inline void Profile::clear_zenzai_enable() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.zenzai_enable_ = false;
@@ -5679,7 +5853,11 @@ inline void Profile::_internal_set_zenzai_enable(bool value) {
   _impl_.zenzai_enable_ = value;
 }
 
-// int32 zenzai_infer_limit = 102;
+// optional int32 zenzai_infer_limit = 102;
+inline bool Profile::has_zenzai_infer_limit() const {
+  bool value = (_impl_._has_bits_[0] & 0x00400000u) != 0;
+  return value;
+}
 inline void Profile::clear_zenzai_infer_limit() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.zenzai_infer_limit_ = 0;
@@ -5703,7 +5881,11 @@ inline void Profile::_internal_set_zenzai_infer_limit(::int32_t value) {
   _impl_.zenzai_infer_limit_ = value;
 }
 
-// bool zenzai_contextual_mode = 103;
+// optional bool zenzai_contextual_mode = 103;
+inline bool Profile::has_zenzai_contextual_mode() const {
+  bool value = (_impl_._has_bits_[0] & 0x00800000u) != 0;
+  return value;
+}
 inline void Profile::clear_zenzai_contextual_mode() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.zenzai_contextual_mode_ = false;
@@ -5727,7 +5909,7 @@ inline void Profile::_internal_set_zenzai_contextual_mode(bool value) {
   _impl_.zenzai_contextual_mode_ = value;
 }
 
-// .hazkey.config.Profile.ZenzaiVersionConfig zenzai_version_config = 104;
+// optional .hazkey.config.Profile.ZenzaiVersionConfig zenzai_version_config = 104;
 inline bool Profile::has_zenzai_version_config() const {
   bool value = (_impl_._has_bits_[0] & 0x00000010u) != 0;
   PROTOBUF_ASSUME(!value || _impl_.zenzai_version_config_ != nullptr);
@@ -5825,7 +6007,11 @@ inline void Profile::set_allocated_zenzai_version_config(::hazkey::config::Profi
   // @@protoc_insertion_point(field_set_allocated:hazkey.config.Profile.zenzai_version_config)
 }
 
-// bool use_zenzai_custom_weight = 105;
+// optional bool use_zenzai_custom_weight = 105;
+inline bool Profile::has_use_zenzai_custom_weight() const {
+  bool value = (_impl_._has_bits_[0] & 0x01000000u) != 0;
+  return value;
+}
 inline void Profile::clear_use_zenzai_custom_weight() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.use_zenzai_custom_weight_ = false;
@@ -5849,7 +6035,11 @@ inline void Profile::_internal_set_use_zenzai_custom_weight(bool value) {
   _impl_.use_zenzai_custom_weight_ = value;
 }
 
-// string zenzai_weight_path = 106;
+// optional string zenzai_weight_path = 106;
+inline bool Profile::has_zenzai_weight_path() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000004u) != 0;
+  return value;
+}
 inline void Profile::clear_zenzai_weight_path() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.zenzai_weight_path_.ClearToEmpty();

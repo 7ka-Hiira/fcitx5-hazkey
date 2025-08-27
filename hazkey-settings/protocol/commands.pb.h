@@ -2544,51 +2544,9 @@ class CandidatesResult_Candidate final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
-    kWordsFieldNumber = 3,
-    kDiffIndexesFieldNumber = 4,
     kTextFieldNumber = 1,
     kSubHiraganaFieldNumber = 2,
   };
-  // repeated string words = 3;
-  int words_size() const;
-  private:
-  int _internal_words_size() const;
-
-  public:
-  void clear_words() ;
-  const ::std::string& words(int index) const;
-  ::std::string* PROTOBUF_NONNULL mutable_words(int index);
-  template <typename Arg_ = const ::std::string&, typename... Args_>
-  void set_words(int index, Arg_&& value, Args_... args);
-  ::std::string* PROTOBUF_NONNULL add_words();
-  template <typename Arg_ = const ::std::string&, typename... Args_>
-  void add_words(Arg_&& value, Args_... args);
-  const ::google::protobuf::RepeatedPtrField<::std::string>& words() const;
-  ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL mutable_words();
-
-  private:
-  const ::google::protobuf::RepeatedPtrField<::std::string>& _internal_words() const;
-  ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL _internal_mutable_words();
-
-  public:
-  // repeated int32 diff_indexes = 4;
-  int diff_indexes_size() const;
-  private:
-  int _internal_diff_indexes_size() const;
-
-  public:
-  void clear_diff_indexes() ;
-  ::int32_t diff_indexes(int index) const;
-  void set_diff_indexes(int index, ::int32_t value);
-  void add_diff_indexes(::int32_t value);
-  const ::google::protobuf::RepeatedField<::int32_t>& diff_indexes() const;
-  ::google::protobuf::RepeatedField<::int32_t>* PROTOBUF_NONNULL mutable_diff_indexes();
-
-  private:
-  const ::google::protobuf::RepeatedField<::int32_t>& _internal_diff_indexes() const;
-  ::google::protobuf::RepeatedField<::int32_t>* PROTOBUF_NONNULL _internal_mutable_diff_indexes();
-
-  public:
   // string text = 1;
   void clear_text() ;
   const ::std::string& text() const;
@@ -2623,8 +2581,8 @@ class CandidatesResult_Candidate final : public ::google::protobuf::Message
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<2, 4,
-                                   0, 72,
+  static const ::google::protobuf::internal::TcParseTable<1, 2,
+                                   0, 67,
                                    2>
       _table_;
 
@@ -2645,9 +2603,6 @@ class CandidatesResult_Candidate final : public ::google::protobuf::Message
         const CandidatesResult_Candidate& from_msg);
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
-    ::google::protobuf::RepeatedPtrField<::std::string> words_;
-    ::google::protobuf::RepeatedField<::int32_t> diff_indexes_;
-    ::google::protobuf::internal::CachedSize _diff_indexes_cached_byte_size_;
     ::google::protobuf::internal::ArenaStringPtr text_;
     ::google::protobuf::internal::ArenaStringPtr sub_hiragana_;
     PROTOBUF_TSAN_DECLARE_MEMBER
@@ -3689,116 +3644,6 @@ inline void CandidatesResult_Candidate::set_allocated_sub_hiragana(::std::string
     _impl_.sub_hiragana_.Set("", GetArena());
   }
   // @@protoc_insertion_point(field_set_allocated:hazkey.commands.CandidatesResult.Candidate.sub_hiragana)
-}
-
-// repeated string words = 3;
-inline int CandidatesResult_Candidate::_internal_words_size() const {
-  return _internal_words().size();
-}
-inline int CandidatesResult_Candidate::words_size() const {
-  return _internal_words_size();
-}
-inline void CandidatesResult_Candidate::clear_words() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.words_.Clear();
-}
-inline ::std::string* PROTOBUF_NONNULL CandidatesResult_Candidate::add_words()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::std::string* _s = _internal_mutable_words()->Add();
-  // @@protoc_insertion_point(field_add_mutable:hazkey.commands.CandidatesResult.Candidate.words)
-  return _s;
-}
-inline const ::std::string& CandidatesResult_Candidate::words(int index) const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:hazkey.commands.CandidatesResult.Candidate.words)
-  return _internal_words().Get(index);
-}
-inline ::std::string* PROTOBUF_NONNULL CandidatesResult_Candidate::mutable_words(int index)
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable:hazkey.commands.CandidatesResult.Candidate.words)
-  return _internal_mutable_words()->Mutable(index);
-}
-template <typename Arg_, typename... Args_>
-inline void CandidatesResult_Candidate::set_words(int index, Arg_&& value, Args_... args) {
-  ::google::protobuf::internal::AssignToString(*_internal_mutable_words()->Mutable(index), ::std::forward<Arg_>(value),
-                        args... );
-  // @@protoc_insertion_point(field_set:hazkey.commands.CandidatesResult.Candidate.words)
-}
-template <typename Arg_, typename... Args_>
-inline void CandidatesResult_Candidate::add_words(Arg_&& value, Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::google::protobuf::internal::AddToRepeatedPtrField(*_internal_mutable_words(),
-                               ::std::forward<Arg_>(value),
-                               args... );
-  // @@protoc_insertion_point(field_add:hazkey.commands.CandidatesResult.Candidate.words)
-}
-inline const ::google::protobuf::RepeatedPtrField<::std::string>& CandidatesResult_Candidate::words()
-    const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_list:hazkey.commands.CandidatesResult.Candidate.words)
-  return _internal_words();
-}
-inline ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL
-CandidatesResult_Candidate::mutable_words() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable_list:hazkey.commands.CandidatesResult.Candidate.words)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _internal_mutable_words();
-}
-inline const ::google::protobuf::RepeatedPtrField<::std::string>&
-CandidatesResult_Candidate::_internal_words() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.words_;
-}
-inline ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL
-CandidatesResult_Candidate::_internal_mutable_words() {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return &_impl_.words_;
-}
-
-// repeated int32 diff_indexes = 4;
-inline int CandidatesResult_Candidate::_internal_diff_indexes_size() const {
-  return _internal_diff_indexes().size();
-}
-inline int CandidatesResult_Candidate::diff_indexes_size() const {
-  return _internal_diff_indexes_size();
-}
-inline void CandidatesResult_Candidate::clear_diff_indexes() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.diff_indexes_.Clear();
-}
-inline ::int32_t CandidatesResult_Candidate::diff_indexes(int index) const {
-  // @@protoc_insertion_point(field_get:hazkey.commands.CandidatesResult.Candidate.diff_indexes)
-  return _internal_diff_indexes().Get(index);
-}
-inline void CandidatesResult_Candidate::set_diff_indexes(int index, ::int32_t value) {
-  _internal_mutable_diff_indexes()->Set(index, value);
-  // @@protoc_insertion_point(field_set:hazkey.commands.CandidatesResult.Candidate.diff_indexes)
-}
-inline void CandidatesResult_Candidate::add_diff_indexes(::int32_t value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _internal_mutable_diff_indexes()->Add(value);
-  // @@protoc_insertion_point(field_add:hazkey.commands.CandidatesResult.Candidate.diff_indexes)
-}
-inline const ::google::protobuf::RepeatedField<::int32_t>& CandidatesResult_Candidate::diff_indexes() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_list:hazkey.commands.CandidatesResult.Candidate.diff_indexes)
-  return _internal_diff_indexes();
-}
-inline ::google::protobuf::RepeatedField<::int32_t>* PROTOBUF_NONNULL CandidatesResult_Candidate::mutable_diff_indexes()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable_list:hazkey.commands.CandidatesResult.Candidate.diff_indexes)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _internal_mutable_diff_indexes();
-}
-inline const ::google::protobuf::RepeatedField<::int32_t>&
-CandidatesResult_Candidate::_internal_diff_indexes() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.diff_indexes_;
-}
-inline ::google::protobuf::RepeatedField<::int32_t>* PROTOBUF_NONNULL
-CandidatesResult_Candidate::_internal_mutable_diff_indexes() {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return &_impl_.diff_indexes_;
 }
 
 // -------------------------------------------------------------------

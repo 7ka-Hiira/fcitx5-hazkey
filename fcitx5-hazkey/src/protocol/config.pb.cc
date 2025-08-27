@@ -113,7 +113,7 @@ inline constexpr Profile_SpecialConversionMode::Impl_::Impl_(
       : _cached_size_{0},
         comma_separated_number_{false},
         mail_domain_{false},
-        calender_{false},
+        calendar_{false},
         time_{false},
         roman_typography_{false},
         unicode_codepoint_{false},
@@ -467,7 +467,7 @@ const ::uint32_t
         12, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::hazkey::config::Profile_SpecialConversionMode, _impl_.comma_separated_number_),
         PROTOBUF_FIELD_OFFSET(::hazkey::config::Profile_SpecialConversionMode, _impl_.mail_domain_),
-        PROTOBUF_FIELD_OFFSET(::hazkey::config::Profile_SpecialConversionMode, _impl_.calender_),
+        PROTOBUF_FIELD_OFFSET(::hazkey::config::Profile_SpecialConversionMode, _impl_.calendar_),
         PROTOBUF_FIELD_OFFSET(::hazkey::config::Profile_SpecialConversionMode, _impl_.time_),
         PROTOBUF_FIELD_OFFSET(::hazkey::config::Profile_SpecialConversionMode, _impl_.roman_typography_),
         PROTOBUF_FIELD_OFFSET(::hazkey::config::Profile_SpecialConversionMode, _impl_.unicode_codepoint_),
@@ -636,77 +636,104 @@ const char descriptor_table_protodef_config_2eproto[] ABSL_ATTRIBUTE_SECTION_VAR
     "gFileType\"2\n\016ConfigFileType\022\017\n\013CONFIG_MA"
     "IN\020\000\022\017\n\013INPUT_TABLE\020\001\"A\n\nInputTable\022\014\n\004n"
     "ame\030\001 \001(\t\022\023\n\013is_built_in\030\002 \001(\010\022\020\n\010filena"
-    "me\030\003 \001(\t\"\350\020\n\007Profile\022\024\n\014profile_name\030\005 \001"
-    "(\t\022\022\n\nprofile_id\030\006 \001(\t\022%\n\035use_default_in"
-    "put_ui_settings\030\n \001(\010\022A\n\021auto_convert_mo"
-    "de\030\013 \001(\0162&.hazkey.config.Profile.AutoCon"
-    "vertMode\0229\n\raux_text_mode\030\014 \001(\0162\".hazkey"
-    ".config.Profile.AuxTextMode\022G\n\024suggestio"
-    "n_list_mode\030\r \001(\0162).hazkey.config.Profil"
-    "e.SuggestionListMode\022\033\n\023use_rich_suggest"
-    "ion\030\016 \001(\010\022\027\n\017num_suggestions\030\017 \001(\005\022*\n\"us"
-    "e_default_conversion_ui_settings\030\024 \001(\010\022\037"
-    "\n\027num_candidates_per_page\030\025 \001(\005\022\033\n\023use_r"
-    "ich_candidates\030\026 \001(\010\022$\n\034use_default_hist"
-    "ory_settings\030\036 \001(\010\022\'\n\037use_profile_indepe"
-    "ndent_history\030\037 \001(\010\022\031\n\021use_input_history"
-    "\030  \001(\010\022\036\n\026stop_store_new_history\030\027 \001(\010\022/"
-    "\n\'use_default_special_conversion_setting"
-    "s\030( \001(\010\022M\n\027special_conversion_mode\030) \001(\013"
-    "2,.hazkey.config.Profile.SpecialConversi"
-    "onMode\022\"\n\032use_default_table_settings\0302 \001"
-    "(\010\0221\n\016enabled_tables\0303 \003(\0132\031.hazkey.conf"
-    "ig.InputTable\022#\n\033use_default_zenzai_sett"
-    "ings\030d \001(\010\022\025\n\rzenzai_enable\030e \001(\010\022\032\n\022zen"
-    "zai_infer_limit\030f \001(\005\022\036\n\026zenzai_contextu"
-    "al_mode\030g \001(\010\022I\n\025zenzai_version_config\030h"
-    " \001(\0132*.hazkey.config.Profile.ZenzaiVersi"
-    "onConfig\022 \n\030use_zenzai_custom_weight\030i \001"
-    "(\010\022\032\n\022zenzai_weight_path\030j \001(\t\032\355\001\n\025Speci"
-    "alConversionMode\022\036\n\026comma_separated_numb"
-    "er\030\001 \001(\010\022\023\n\013mail_domain\030\002 \001(\010\022\020\n\010calende"
-    "r\030\003 \001(\010\022\014\n\004time\030\004 \001(\010\022\030\n\020roman_typograph"
-    "y\030\005 \001(\010\022\031\n\021unicode_codepoint\030\006 \001(\010\022\026\n\016ha"
-    "zkey_version\030\007 \001(\010\022\032\n\022halfwidth_katakana"
-    "\0302 \001(\010\022\026\n\016extended_emoji\0303 \001(\010\032H\n\021Enable"
-    "dInputTable\022\014\n\004name\030\001 \001(\t\022\023\n\013is_built_in"
-    "\030\002 \001(\010\022\020\n\010filename\030\003 \001(\t\032\275\002\n\023ZenzaiVersi"
-    "onConfig\022;\n\002v1\030\001 \001(\0132-.hazkey.config.Pro"
-    "file.ZenzaiVersionConfig.V1H\000\022;\n\002v2\030\002 \001("
-    "\0132-.hazkey.config.Profile.ZenzaiVersionC"
-    "onfig.V2H\000\022;\n\002v3\030\003 \001(\0132-.hazkey.config.P"
-    "rofile.ZenzaiVersionConfig.V3H\000\032\004\n\002V1\032\025\n"
-    "\002V2\022\017\n\007profile\030\001 \001(\t\032G\n\002V3\022\017\n\007profile\030\001 "
-    "\001(\t\022\r\n\005topic\030\002 \001(\t\022\r\n\005style\030\003 \001(\t\022\022\n\npre"
-    "ference\030\004 \001(\tB\t\n\007version\"\215\001\n\017AutoConvert"
-    "Mode\022!\n\035AUTO_CONVERT_MODE_UNSPECIFIED\020\000\022"
-    "\031\n\025AUTO_CONVERT_DISABLED\020\001\022\027\n\023AUTO_CONVE"
-    "RT_ALWAYS\020\002\022#\n\037AUTO_CONVERT_FOR_MULTIPLE"
-    "_CHARS\020\003\"\207\001\n\013AuxTextMode\022\035\n\031AUX_TEXT_MOD"
-    "E_UNSPECIFIED\020\000\022\025\n\021AUX_TEXT_DISABLED\020\001\022\030"
-    "\n\024AUX_TEXT_SHOW_ALWAYS\020\002\022(\n$AUX_TEXT_SHO"
-    "W_WHEN_CURSOR_NOT_AT_END\020\003\"\256\001\n\022Suggestio"
-    "nListMode\022$\n SUGGESTION_LIST_MODE_UNSPEC"
-    "IFIED\020\000\022\034\n\030SUGGESTION_LIST_DISABLED\020\001\022\'\n"
-    "#SUGGESTION_LIST_SHOW_NORMAL_RESULTS\020\002\022+"
-    "\n\'SUGGESTION_LIST_SHOW_PREDICTIVE_RESULT"
-    "S\020\003\"\013\n\tGetConfig\"c\n\tSetConfig\022,\n\013file_ha"
-    "shes\030\001 \003(\0132\027.hazkey.config.FileHash\022(\n\010p"
-    "rofiles\030\002 \003(\0132\026.hazkey.config.Profile\"\023\n"
-    "\021GetDefaultProfile\"%\n\017ClearAllHistory\022\022\n"
-    "\nprofile_id\030\001 \001(\t\"\327\001\n\rCurrentConfig\022,\n\013f"
-    "ile_hashes\030\001 \003(\0132\027.hazkey.config.FileHas"
-    "h\022(\n\010profiles\030\002 \003(\0132\026.hazkey.config.Prof"
-    "ile\0223\n\020available_tables\030\003 \003(\0132\031.hazkey.c"
-    "onfig.InputTable\022\033\n\023is_zenzai_available\030"
-    "\004 \001(\010\022\034\n\024xdg_config_home_path\030\005 \001(\tb\006pro"
-    "to3"
+    "me\030\003 \001(\t\"\303\031\n\007Profile\022\024\n\014profile_name\030\005 \001"
+    "(\t\022\022\n\nprofile_id\030\006 \001(\t\022*\n\035use_default_in"
+    "put_ui_settings\030\n \001(\010H\000\210\001\001\022F\n\021auto_conve"
+    "rt_mode\030\013 \001(\0162&.hazkey.config.Profile.Au"
+    "toConvertModeH\001\210\001\001\022>\n\raux_text_mode\030\014 \001("
+    "\0162\".hazkey.config.Profile.AuxTextModeH\002\210"
+    "\001\001\022L\n\024suggestion_list_mode\030\r \001(\0162).hazke"
+    "y.config.Profile.SuggestionListModeH\003\210\001\001"
+    "\022 \n\023use_rich_suggestion\030\016 \001(\010H\004\210\001\001\022\034\n\017nu"
+    "m_suggestions\030\017 \001(\005H\005\210\001\001\022/\n\"use_default_"
+    "conversion_ui_settings\030\024 \001(\010H\006\210\001\001\022$\n\027num"
+    "_candidates_per_page\030\025 \001(\005H\007\210\001\001\022 \n\023use_r"
+    "ich_candidates\030\026 \001(\010H\010\210\001\001\022)\n\034use_default"
+    "_history_settings\030\036 \001(\010H\t\210\001\001\022,\n\037use_prof"
+    "ile_independent_history\030\037 \001(\010H\n\210\001\001\022\036\n\021us"
+    "e_input_history\030  \001(\010H\013\210\001\001\022#\n\026stop_store"
+    "_new_history\030\027 \001(\010H\014\210\001\001\0224\n\'use_default_s"
+    "pecial_conversion_settings\030( \001(\010H\r\210\001\001\022R\n"
+    "\027special_conversion_mode\030) \001(\0132,.hazkey."
+    "config.Profile.SpecialConversionModeH\016\210\001"
+    "\001\022\'\n\032use_default_table_settings\0302 \001(\010H\017\210"
+    "\001\001\022@\n\016enabled_tables\0303 \003(\0132(.hazkey.conf"
+    "ig.Profile.EnabledInputTable\022(\n\033use_defa"
+    "ult_zenzai_settings\030d \001(\010H\020\210\001\001\022\032\n\rzenzai"
+    "_enable\030e \001(\010H\021\210\001\001\022\037\n\022zenzai_infer_limit"
+    "\030f \001(\005H\022\210\001\001\022#\n\026zenzai_contextual_mode\030g "
+    "\001(\010H\023\210\001\001\022N\n\025zenzai_version_config\030h \001(\0132"
+    "*.hazkey.config.Profile.ZenzaiVersionCon"
+    "figH\024\210\001\001\022%\n\030use_zenzai_custom_weight\030i \001"
+    "(\010H\025\210\001\001\022\037\n\022zenzai_weight_path\030j \001(\tH\026\210\001\001"
+    "\032\303\003\n\025SpecialConversionMode\022#\n\026comma_sepa"
+    "rated_number\030\001 \001(\010H\000\210\001\001\022\030\n\013mail_domain\030\002"
+    " \001(\010H\001\210\001\001\022\025\n\010calendar\030\003 \001(\010H\002\210\001\001\022\021\n\004time"
+    "\030\004 \001(\010H\003\210\001\001\022\035\n\020roman_typography\030\005 \001(\010H\004\210"
+    "\001\001\022\036\n\021unicode_codepoint\030\006 \001(\010H\005\210\001\001\022\033\n\016ha"
+    "zkey_version\030\007 \001(\010H\006\210\001\001\022\037\n\022halfwidth_kat"
+    "akana\0302 \001(\010H\007\210\001\001\022\033\n\016extended_emoji\0303 \001(\010"
+    "H\010\210\001\001B\031\n\027_comma_separated_numberB\016\n\014_mai"
+    "l_domainB\013\n\t_calendarB\007\n\005_timeB\023\n\021_roman"
+    "_typographyB\024\n\022_unicode_codepointB\021\n\017_ha"
+    "zkey_versionB\025\n\023_halfwidth_katakanaB\021\n\017_"
+    "extended_emoji\032}\n\021EnabledInputTable\022\021\n\004n"
+    "ame\030\001 \001(\tH\000\210\001\001\022\030\n\013is_built_in\030\002 \001(\010H\001\210\001\001"
+    "\022\025\n\010filename\030\003 \001(\tH\002\210\001\001B\007\n\005_nameB\016\n\014_is_"
+    "built_inB\013\n\t_filename\032\222\003\n\023ZenzaiVersionC"
+    "onfig\022;\n\002v1\030\001 \001(\0132-.hazkey.config.Profil"
+    "e.ZenzaiVersionConfig.V1H\000\022;\n\002v2\030\002 \001(\0132-"
+    ".hazkey.config.Profile.ZenzaiVersionConf"
+    "ig.V2H\000\022;\n\002v3\030\003 \001(\0132-.hazkey.config.Prof"
+    "ile.ZenzaiVersionConfig.V3H\000\032\004\n\002V1\032&\n\002V2"
+    "\022\024\n\007profile\030\001 \001(\tH\000\210\001\001B\n\n\010_profile\032\212\001\n\002V"
+    "3\022\024\n\007profile\030\001 \001(\tH\000\210\001\001\022\022\n\005topic\030\002 \001(\tH\001"
+    "\210\001\001\022\022\n\005style\030\003 \001(\tH\002\210\001\001\022\027\n\npreference\030\004 "
+    "\001(\tH\003\210\001\001B\n\n\010_profileB\010\n\006_topicB\010\n\006_style"
+    "B\r\n\013_preferenceB\t\n\007version\"\215\001\n\017AutoConve"
+    "rtMode\022!\n\035AUTO_CONVERT_MODE_UNSPECIFIED\020"
+    "\000\022\031\n\025AUTO_CONVERT_DISABLED\020\001\022\027\n\023AUTO_CON"
+    "VERT_ALWAYS\020\002\022#\n\037AUTO_CONVERT_FOR_MULTIP"
+    "LE_CHARS\020\003\"\207\001\n\013AuxTextMode\022\035\n\031AUX_TEXT_M"
+    "ODE_UNSPECIFIED\020\000\022\025\n\021AUX_TEXT_DISABLED\020\001"
+    "\022\030\n\024AUX_TEXT_SHOW_ALWAYS\020\002\022(\n$AUX_TEXT_S"
+    "HOW_WHEN_CURSOR_NOT_AT_END\020\003\"\256\001\n\022Suggest"
+    "ionListMode\022$\n SUGGESTION_LIST_MODE_UNSP"
+    "ECIFIED\020\000\022\034\n\030SUGGESTION_LIST_DISABLED\020\001\022"
+    "\'\n#SUGGESTION_LIST_SHOW_NORMAL_RESULTS\020\002"
+    "\022+\n\'SUGGESTION_LIST_SHOW_PREDICTIVE_RESU"
+    "LTS\020\003B \n\036_use_default_input_ui_settingsB"
+    "\024\n\022_auto_convert_modeB\020\n\016_aux_text_modeB"
+    "\027\n\025_suggestion_list_modeB\026\n\024_use_rich_su"
+    "ggestionB\022\n\020_num_suggestionsB%\n#_use_def"
+    "ault_conversion_ui_settingsB\032\n\030_num_cand"
+    "idates_per_pageB\026\n\024_use_rich_candidatesB"
+    "\037\n\035_use_default_history_settingsB\"\n _use"
+    "_profile_independent_historyB\024\n\022_use_inp"
+    "ut_historyB\031\n\027_stop_store_new_historyB*\n"
+    "(_use_default_special_conversion_setting"
+    "sB\032\n\030_special_conversion_modeB\035\n\033_use_de"
+    "fault_table_settingsB\036\n\034_use_default_zen"
+    "zai_settingsB\020\n\016_zenzai_enableB\025\n\023_zenza"
+    "i_infer_limitB\031\n\027_zenzai_contextual_mode"
+    "B\030\n\026_zenzai_version_configB\033\n\031_use_zenza"
+    "i_custom_weightB\025\n\023_zenzai_weight_path\"\013"
+    "\n\tGetConfig\"c\n\tSetConfig\022,\n\013file_hashes\030"
+    "\001 \003(\0132\027.hazkey.config.FileHash\022(\n\010profil"
+    "es\030\002 \003(\0132\026.hazkey.config.Profile\"\023\n\021GetD"
+    "efaultProfile\"%\n\017ClearAllHistory\022\022\n\nprof"
+    "ile_id\030\001 \001(\t\"\327\001\n\rCurrentConfig\022,\n\013file_h"
+    "ashes\030\001 \003(\0132\027.hazkey.config.FileHash\022(\n\010"
+    "profiles\030\002 \003(\0132\026.hazkey.config.Profile\0223"
+    "\n\020available_tables\030\003 \003(\0132\031.hazkey.config"
+    ".InputTable\022\033\n\023is_zenzai_available\030\004 \001(\010"
+    "\022\034\n\024xdg_config_home_path\030\005 \001(\tb\006proto3"
 };
 static ::absl::once_flag descriptor_table_config_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_config_2eproto = {
     false,
     false,
-    2803,
+    3918,
     descriptor_table_protodef_config_2eproto,
     "config.proto",
     &descriptor_table_config_2eproto_once,
@@ -1540,25 +1567,25 @@ Profile_SpecialConversionMode::_table_ = {
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
-    // bool comma_separated_number = 1;
+    // optional bool comma_separated_number = 1;
     {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(Profile_SpecialConversionMode, _impl_.comma_separated_number_), 0>(),
      {8, 0, 0, PROTOBUF_FIELD_OFFSET(Profile_SpecialConversionMode, _impl_.comma_separated_number_)}},
-    // bool mail_domain = 2;
+    // optional bool mail_domain = 2;
     {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(Profile_SpecialConversionMode, _impl_.mail_domain_), 1>(),
      {16, 1, 0, PROTOBUF_FIELD_OFFSET(Profile_SpecialConversionMode, _impl_.mail_domain_)}},
-    // bool calender = 3;
-    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(Profile_SpecialConversionMode, _impl_.calender_), 2>(),
-     {24, 2, 0, PROTOBUF_FIELD_OFFSET(Profile_SpecialConversionMode, _impl_.calender_)}},
-    // bool time = 4;
+    // optional bool calendar = 3;
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(Profile_SpecialConversionMode, _impl_.calendar_), 2>(),
+     {24, 2, 0, PROTOBUF_FIELD_OFFSET(Profile_SpecialConversionMode, _impl_.calendar_)}},
+    // optional bool time = 4;
     {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(Profile_SpecialConversionMode, _impl_.time_), 3>(),
      {32, 3, 0, PROTOBUF_FIELD_OFFSET(Profile_SpecialConversionMode, _impl_.time_)}},
-    // bool roman_typography = 5;
+    // optional bool roman_typography = 5;
     {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(Profile_SpecialConversionMode, _impl_.roman_typography_), 4>(),
      {40, 4, 0, PROTOBUF_FIELD_OFFSET(Profile_SpecialConversionMode, _impl_.roman_typography_)}},
-    // bool unicode_codepoint = 6;
+    // optional bool unicode_codepoint = 6;
     {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(Profile_SpecialConversionMode, _impl_.unicode_codepoint_), 5>(),
      {48, 5, 0, PROTOBUF_FIELD_OFFSET(Profile_SpecialConversionMode, _impl_.unicode_codepoint_)}},
-    // bool hazkey_version = 7;
+    // optional bool hazkey_version = 7;
     {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(Profile_SpecialConversionMode, _impl_.hazkey_version_), 6>(),
      {56, 6, 0, PROTOBUF_FIELD_OFFSET(Profile_SpecialConversionMode, _impl_.hazkey_version_)}},
   }}, {{
@@ -1566,31 +1593,31 @@ Profile_SpecialConversionMode::_table_ = {
     65532, 7,
     65535, 65535
   }}, {{
-    // bool comma_separated_number = 1;
+    // optional bool comma_separated_number = 1;
     {PROTOBUF_FIELD_OFFSET(Profile_SpecialConversionMode, _impl_.comma_separated_number_), _Internal::kHasBitsOffset + 0, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kBool)},
-    // bool mail_domain = 2;
+    // optional bool mail_domain = 2;
     {PROTOBUF_FIELD_OFFSET(Profile_SpecialConversionMode, _impl_.mail_domain_), _Internal::kHasBitsOffset + 1, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kBool)},
-    // bool calender = 3;
-    {PROTOBUF_FIELD_OFFSET(Profile_SpecialConversionMode, _impl_.calender_), _Internal::kHasBitsOffset + 2, 0,
+    // optional bool calendar = 3;
+    {PROTOBUF_FIELD_OFFSET(Profile_SpecialConversionMode, _impl_.calendar_), _Internal::kHasBitsOffset + 2, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kBool)},
-    // bool time = 4;
+    // optional bool time = 4;
     {PROTOBUF_FIELD_OFFSET(Profile_SpecialConversionMode, _impl_.time_), _Internal::kHasBitsOffset + 3, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kBool)},
-    // bool roman_typography = 5;
+    // optional bool roman_typography = 5;
     {PROTOBUF_FIELD_OFFSET(Profile_SpecialConversionMode, _impl_.roman_typography_), _Internal::kHasBitsOffset + 4, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kBool)},
-    // bool unicode_codepoint = 6;
+    // optional bool unicode_codepoint = 6;
     {PROTOBUF_FIELD_OFFSET(Profile_SpecialConversionMode, _impl_.unicode_codepoint_), _Internal::kHasBitsOffset + 5, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kBool)},
-    // bool hazkey_version = 7;
+    // optional bool hazkey_version = 7;
     {PROTOBUF_FIELD_OFFSET(Profile_SpecialConversionMode, _impl_.hazkey_version_), _Internal::kHasBitsOffset + 6, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kBool)},
-    // bool halfwidth_katakana = 50;
+    // optional bool halfwidth_katakana = 50;
     {PROTOBUF_FIELD_OFFSET(Profile_SpecialConversionMode, _impl_.halfwidth_katakana_), _Internal::kHasBitsOffset + 7, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kBool)},
-    // bool extended_emoji = 51;
+    // optional bool extended_emoji = 51;
     {PROTOBUF_FIELD_OFFSET(Profile_SpecialConversionMode, _impl_.extended_emoji_), _Internal::kHasBitsOffset + 8, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kBool)},
   }},
@@ -1631,85 +1658,68 @@ PROTOBUF_NOINLINE void Profile_SpecialConversionMode::Clear() {
   ::uint32_t cached_has_bits = 0;
   (void)cached_has_bits;
 
-  // bool comma_separated_number = 1;
-  if ((this_._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    if (this_._internal_comma_separated_number() != 0) {
-      target = stream->EnsureSpace(target);
-      target = ::_pbi::WireFormatLite::WriteBoolToArray(
-          1, this_._internal_comma_separated_number(), target);
-    }
+  cached_has_bits = this_._impl_._has_bits_[0];
+  // optional bool comma_separated_number = 1;
+  if ((cached_has_bits & 0x00000001u) != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        1, this_._internal_comma_separated_number(), target);
   }
 
-  // bool mail_domain = 2;
-  if ((this_._impl_._has_bits_[0] & 0x00000002u) != 0) {
-    if (this_._internal_mail_domain() != 0) {
-      target = stream->EnsureSpace(target);
-      target = ::_pbi::WireFormatLite::WriteBoolToArray(
-          2, this_._internal_mail_domain(), target);
-    }
+  // optional bool mail_domain = 2;
+  if ((cached_has_bits & 0x00000002u) != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        2, this_._internal_mail_domain(), target);
   }
 
-  // bool calender = 3;
-  if ((this_._impl_._has_bits_[0] & 0x00000004u) != 0) {
-    if (this_._internal_calender() != 0) {
-      target = stream->EnsureSpace(target);
-      target = ::_pbi::WireFormatLite::WriteBoolToArray(
-          3, this_._internal_calender(), target);
-    }
+  // optional bool calendar = 3;
+  if ((cached_has_bits & 0x00000004u) != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        3, this_._internal_calendar(), target);
   }
 
-  // bool time = 4;
-  if ((this_._impl_._has_bits_[0] & 0x00000008u) != 0) {
-    if (this_._internal_time() != 0) {
-      target = stream->EnsureSpace(target);
-      target = ::_pbi::WireFormatLite::WriteBoolToArray(
-          4, this_._internal_time(), target);
-    }
+  // optional bool time = 4;
+  if ((cached_has_bits & 0x00000008u) != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        4, this_._internal_time(), target);
   }
 
-  // bool roman_typography = 5;
-  if ((this_._impl_._has_bits_[0] & 0x00000010u) != 0) {
-    if (this_._internal_roman_typography() != 0) {
-      target = stream->EnsureSpace(target);
-      target = ::_pbi::WireFormatLite::WriteBoolToArray(
-          5, this_._internal_roman_typography(), target);
-    }
+  // optional bool roman_typography = 5;
+  if ((cached_has_bits & 0x00000010u) != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        5, this_._internal_roman_typography(), target);
   }
 
-  // bool unicode_codepoint = 6;
-  if ((this_._impl_._has_bits_[0] & 0x00000020u) != 0) {
-    if (this_._internal_unicode_codepoint() != 0) {
-      target = stream->EnsureSpace(target);
-      target = ::_pbi::WireFormatLite::WriteBoolToArray(
-          6, this_._internal_unicode_codepoint(), target);
-    }
+  // optional bool unicode_codepoint = 6;
+  if ((cached_has_bits & 0x00000020u) != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        6, this_._internal_unicode_codepoint(), target);
   }
 
-  // bool hazkey_version = 7;
-  if ((this_._impl_._has_bits_[0] & 0x00000040u) != 0) {
-    if (this_._internal_hazkey_version() != 0) {
-      target = stream->EnsureSpace(target);
-      target = ::_pbi::WireFormatLite::WriteBoolToArray(
-          7, this_._internal_hazkey_version(), target);
-    }
+  // optional bool hazkey_version = 7;
+  if ((cached_has_bits & 0x00000040u) != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        7, this_._internal_hazkey_version(), target);
   }
 
-  // bool halfwidth_katakana = 50;
-  if ((this_._impl_._has_bits_[0] & 0x00000080u) != 0) {
-    if (this_._internal_halfwidth_katakana() != 0) {
-      target = stream->EnsureSpace(target);
-      target = ::_pbi::WireFormatLite::WriteBoolToArray(
-          50, this_._internal_halfwidth_katakana(), target);
-    }
+  // optional bool halfwidth_katakana = 50;
+  if ((cached_has_bits & 0x00000080u) != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        50, this_._internal_halfwidth_katakana(), target);
   }
 
-  // bool extended_emoji = 51;
-  if ((this_._impl_._has_bits_[0] & 0x00000100u) != 0) {
-    if (this_._internal_extended_emoji() != 0) {
-      target = stream->EnsureSpace(target);
-      target = ::_pbi::WireFormatLite::WriteBoolToArray(
-          51, this_._internal_extended_emoji(), target);
-    }
+  // optional bool extended_emoji = 51;
+  if ((cached_has_bits & 0x00000100u) != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        51, this_._internal_extended_emoji(), target);
   }
 
   if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -1737,64 +1747,8 @@ PROTOBUF_NOINLINE void Profile_SpecialConversionMode::Clear() {
 
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
   cached_has_bits = this_._impl_._has_bits_[0];
-  if ((cached_has_bits & 0x000000ffu) != 0) {
-    // bool comma_separated_number = 1;
-    if ((cached_has_bits & 0x00000001u) != 0) {
-      if (this_._internal_comma_separated_number() != 0) {
-        total_size += 2;
-      }
-    }
-    // bool mail_domain = 2;
-    if ((cached_has_bits & 0x00000002u) != 0) {
-      if (this_._internal_mail_domain() != 0) {
-        total_size += 2;
-      }
-    }
-    // bool calender = 3;
-    if ((cached_has_bits & 0x00000004u) != 0) {
-      if (this_._internal_calender() != 0) {
-        total_size += 2;
-      }
-    }
-    // bool time = 4;
-    if ((cached_has_bits & 0x00000008u) != 0) {
-      if (this_._internal_time() != 0) {
-        total_size += 2;
-      }
-    }
-    // bool roman_typography = 5;
-    if ((cached_has_bits & 0x00000010u) != 0) {
-      if (this_._internal_roman_typography() != 0) {
-        total_size += 2;
-      }
-    }
-    // bool unicode_codepoint = 6;
-    if ((cached_has_bits & 0x00000020u) != 0) {
-      if (this_._internal_unicode_codepoint() != 0) {
-        total_size += 2;
-      }
-    }
-    // bool hazkey_version = 7;
-    if ((cached_has_bits & 0x00000040u) != 0) {
-      if (this_._internal_hazkey_version() != 0) {
-        total_size += 2;
-      }
-    }
-    // bool halfwidth_katakana = 50;
-    if ((cached_has_bits & 0x00000080u) != 0) {
-      if (this_._internal_halfwidth_katakana() != 0) {
-        total_size += 3;
-      }
-    }
-  }
-   {
-    // bool extended_emoji = 51;
-    if ((cached_has_bits & 0x00000100u) != 0) {
-      if (this_._internal_extended_emoji() != 0) {
-        total_size += 3;
-      }
-    }
-  }
+  total_size += ::absl::popcount(0x00000180u & cached_has_bits) * 3;
+  total_size += ::absl::popcount(0x0000007fu & cached_has_bits) * 2;
   return this_.MaybeComputeUnknownFieldsSize(total_size,
                                              &this_._impl_._cached_size_);
 }
@@ -1810,50 +1764,32 @@ void Profile_SpecialConversionMode::MergeImpl(::google::protobuf::MessageLite& t
   cached_has_bits = from._impl_._has_bits_[0];
   if ((cached_has_bits & 0x000000ffu) != 0) {
     if ((cached_has_bits & 0x00000001u) != 0) {
-      if (from._internal_comma_separated_number() != 0) {
-        _this->_impl_.comma_separated_number_ = from._impl_.comma_separated_number_;
-      }
+      _this->_impl_.comma_separated_number_ = from._impl_.comma_separated_number_;
     }
     if ((cached_has_bits & 0x00000002u) != 0) {
-      if (from._internal_mail_domain() != 0) {
-        _this->_impl_.mail_domain_ = from._impl_.mail_domain_;
-      }
+      _this->_impl_.mail_domain_ = from._impl_.mail_domain_;
     }
     if ((cached_has_bits & 0x00000004u) != 0) {
-      if (from._internal_calender() != 0) {
-        _this->_impl_.calender_ = from._impl_.calender_;
-      }
+      _this->_impl_.calendar_ = from._impl_.calendar_;
     }
     if ((cached_has_bits & 0x00000008u) != 0) {
-      if (from._internal_time() != 0) {
-        _this->_impl_.time_ = from._impl_.time_;
-      }
+      _this->_impl_.time_ = from._impl_.time_;
     }
     if ((cached_has_bits & 0x00000010u) != 0) {
-      if (from._internal_roman_typography() != 0) {
-        _this->_impl_.roman_typography_ = from._impl_.roman_typography_;
-      }
+      _this->_impl_.roman_typography_ = from._impl_.roman_typography_;
     }
     if ((cached_has_bits & 0x00000020u) != 0) {
-      if (from._internal_unicode_codepoint() != 0) {
-        _this->_impl_.unicode_codepoint_ = from._impl_.unicode_codepoint_;
-      }
+      _this->_impl_.unicode_codepoint_ = from._impl_.unicode_codepoint_;
     }
     if ((cached_has_bits & 0x00000040u) != 0) {
-      if (from._internal_hazkey_version() != 0) {
-        _this->_impl_.hazkey_version_ = from._impl_.hazkey_version_;
-      }
+      _this->_impl_.hazkey_version_ = from._impl_.hazkey_version_;
     }
     if ((cached_has_bits & 0x00000080u) != 0) {
-      if (from._internal_halfwidth_katakana() != 0) {
-        _this->_impl_.halfwidth_katakana_ = from._impl_.halfwidth_katakana_;
-      }
+      _this->_impl_.halfwidth_katakana_ = from._impl_.halfwidth_katakana_;
     }
   }
   if ((cached_has_bits & 0x00000100u) != 0) {
-    if (from._internal_extended_emoji() != 0) {
-      _this->_impl_.extended_emoji_ = from._impl_.extended_emoji_;
-    }
+    _this->_impl_.extended_emoji_ = from._impl_.extended_emoji_;
   }
   _this->_impl_._has_bits_[0] |= cached_has_bits;
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
@@ -2014,25 +1950,25 @@ Profile_EnabledInputTable::_table_ = {
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
-    // string name = 1;
+    // optional string name = 1;
     {::_pbi::TcParser::FastUS1,
      {10, 0, 0, PROTOBUF_FIELD_OFFSET(Profile_EnabledInputTable, _impl_.name_)}},
-    // bool is_built_in = 2;
+    // optional bool is_built_in = 2;
     {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(Profile_EnabledInputTable, _impl_.is_built_in_), 2>(),
      {16, 2, 0, PROTOBUF_FIELD_OFFSET(Profile_EnabledInputTable, _impl_.is_built_in_)}},
-    // string filename = 3;
+    // optional string filename = 3;
     {::_pbi::TcParser::FastUS1,
      {26, 1, 0, PROTOBUF_FIELD_OFFSET(Profile_EnabledInputTable, _impl_.filename_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string name = 1;
+    // optional string name = 1;
     {PROTOBUF_FIELD_OFFSET(Profile_EnabledInputTable, _impl_.name_), _Internal::kHasBitsOffset + 0, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // bool is_built_in = 2;
+    // optional bool is_built_in = 2;
     {PROTOBUF_FIELD_OFFSET(Profile_EnabledInputTable, _impl_.is_built_in_), _Internal::kHasBitsOffset + 2, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kBool)},
-    // string filename = 3;
+    // optional string filename = 3;
     {PROTOBUF_FIELD_OFFSET(Profile_EnabledInputTable, _impl_.filename_), _Internal::kHasBitsOffset + 1, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
@@ -2080,33 +2016,28 @@ PROTOBUF_NOINLINE void Profile_EnabledInputTable::Clear() {
   ::uint32_t cached_has_bits = 0;
   (void)cached_has_bits;
 
-  // string name = 1;
-  if ((this_._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    if (!this_._internal_name().empty()) {
-      const ::std::string& _s = this_._internal_name();
-      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "hazkey.config.Profile.EnabledInputTable.name");
-      target = stream->WriteStringMaybeAliased(1, _s, target);
-    }
+  cached_has_bits = this_._impl_._has_bits_[0];
+  // optional string name = 1;
+  if ((cached_has_bits & 0x00000001u) != 0) {
+    const ::std::string& _s = this_._internal_name();
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "hazkey.config.Profile.EnabledInputTable.name");
+    target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
-  // bool is_built_in = 2;
-  if ((this_._impl_._has_bits_[0] & 0x00000004u) != 0) {
-    if (this_._internal_is_built_in() != 0) {
-      target = stream->EnsureSpace(target);
-      target = ::_pbi::WireFormatLite::WriteBoolToArray(
-          2, this_._internal_is_built_in(), target);
-    }
+  // optional bool is_built_in = 2;
+  if ((cached_has_bits & 0x00000004u) != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        2, this_._internal_is_built_in(), target);
   }
 
-  // string filename = 3;
-  if ((this_._impl_._has_bits_[0] & 0x00000002u) != 0) {
-    if (!this_._internal_filename().empty()) {
-      const ::std::string& _s = this_._internal_filename();
-      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "hazkey.config.Profile.EnabledInputTable.filename");
-      target = stream->WriteStringMaybeAliased(3, _s, target);
-    }
+  // optional string filename = 3;
+  if ((cached_has_bits & 0x00000002u) != 0) {
+    const ::std::string& _s = this_._internal_filename();
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "hazkey.config.Profile.EnabledInputTable.filename");
+    target = stream->WriteStringMaybeAliased(3, _s, target);
   }
 
   if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -2134,26 +2065,17 @@ PROTOBUF_NOINLINE void Profile_EnabledInputTable::Clear() {
 
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
   cached_has_bits = this_._impl_._has_bits_[0];
-  if ((cached_has_bits & 0x00000007u) != 0) {
-    // string name = 1;
+  total_size += static_cast<bool>(0x00000004u & cached_has_bits) * 2;
+  if ((cached_has_bits & 0x00000003u) != 0) {
+    // optional string name = 1;
     if ((cached_has_bits & 0x00000001u) != 0) {
-      if (!this_._internal_name().empty()) {
-        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                        this_._internal_name());
-      }
+      total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                      this_._internal_name());
     }
-    // string filename = 3;
+    // optional string filename = 3;
     if ((cached_has_bits & 0x00000002u) != 0) {
-      if (!this_._internal_filename().empty()) {
-        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                        this_._internal_filename());
-      }
-    }
-    // bool is_built_in = 2;
-    if ((cached_has_bits & 0x00000004u) != 0) {
-      if (this_._internal_is_built_in() != 0) {
-        total_size += 2;
-      }
+      total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                      this_._internal_filename());
     }
   }
   return this_.MaybeComputeUnknownFieldsSize(total_size,
@@ -2171,27 +2093,13 @@ void Profile_EnabledInputTable::MergeImpl(::google::protobuf::MessageLite& to_ms
   cached_has_bits = from._impl_._has_bits_[0];
   if ((cached_has_bits & 0x00000007u) != 0) {
     if ((cached_has_bits & 0x00000001u) != 0) {
-      if (!from._internal_name().empty()) {
-        _this->_internal_set_name(from._internal_name());
-      } else {
-        if (_this->_impl_.name_.IsDefault()) {
-          _this->_internal_set_name("");
-        }
-      }
+      _this->_internal_set_name(from._internal_name());
     }
     if ((cached_has_bits & 0x00000002u) != 0) {
-      if (!from._internal_filename().empty()) {
-        _this->_internal_set_filename(from._internal_filename());
-      } else {
-        if (_this->_impl_.filename_.IsDefault()) {
-          _this->_internal_set_filename("");
-        }
-      }
+      _this->_internal_set_filename(from._internal_filename());
     }
     if ((cached_has_bits & 0x00000004u) != 0) {
-      if (from._internal_is_built_in() != 0) {
-        _this->_impl_.is_built_in_ = from._impl_.is_built_in_;
-      }
+      _this->_impl_.is_built_in_ = from._impl_.is_built_in_;
     }
   }
   _this->_impl_._has_bits_[0] |= cached_has_bits;
@@ -2455,13 +2363,13 @@ Profile_ZenzaiVersionConfig_V2::_table_ = {
     ::_pbi::TcParser::GetTable<::hazkey::config::Profile_ZenzaiVersionConfig_V2>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string profile = 1;
+    // optional string profile = 1;
     {::_pbi::TcParser::FastUS1,
      {10, 0, 0, PROTOBUF_FIELD_OFFSET(Profile_ZenzaiVersionConfig_V2, _impl_.profile_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string profile = 1;
+    // optional string profile = 1;
     {PROTOBUF_FIELD_OFFSET(Profile_ZenzaiVersionConfig_V2, _impl_.profile_), _Internal::kHasBitsOffset + 0, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
@@ -2502,14 +2410,13 @@ PROTOBUF_NOINLINE void Profile_ZenzaiVersionConfig_V2::Clear() {
   ::uint32_t cached_has_bits = 0;
   (void)cached_has_bits;
 
-  // string profile = 1;
-  if ((this_._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    if (!this_._internal_profile().empty()) {
-      const ::std::string& _s = this_._internal_profile();
-      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "hazkey.config.Profile.ZenzaiVersionConfig.V2.profile");
-      target = stream->WriteStringMaybeAliased(1, _s, target);
-    }
+  cached_has_bits = this_._impl_._has_bits_[0];
+  // optional string profile = 1;
+  if ((cached_has_bits & 0x00000001u) != 0) {
+    const ::std::string& _s = this_._internal_profile();
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "hazkey.config.Profile.ZenzaiVersionConfig.V2.profile");
+    target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
   if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -2536,13 +2443,11 @@ PROTOBUF_NOINLINE void Profile_ZenzaiVersionConfig_V2::Clear() {
   (void)cached_has_bits;
 
    {
-    // string profile = 1;
+    // optional string profile = 1;
     cached_has_bits = this_._impl_._has_bits_[0];
     if ((cached_has_bits & 0x00000001u) != 0) {
-      if (!this_._internal_profile().empty()) {
-        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                        this_._internal_profile());
-      }
+      total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                      this_._internal_profile());
     }
   }
   return this_.MaybeComputeUnknownFieldsSize(total_size,
@@ -2559,13 +2464,7 @@ void Profile_ZenzaiVersionConfig_V2::MergeImpl(::google::protobuf::MessageLite& 
 
   cached_has_bits = from._impl_._has_bits_[0];
   if ((cached_has_bits & 0x00000001u) != 0) {
-    if (!from._internal_profile().empty()) {
-      _this->_internal_set_profile(from._internal_profile());
-    } else {
-      if (_this->_impl_.profile_.IsDefault()) {
-        _this->_internal_set_profile("");
-      }
-    }
+    _this->_internal_set_profile(from._internal_profile());
   }
   _this->_impl_._has_bits_[0] |= cached_has_bits;
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
@@ -2726,31 +2625,31 @@ Profile_ZenzaiVersionConfig_V3::_table_ = {
     ::_pbi::TcParser::GetTable<::hazkey::config::Profile_ZenzaiVersionConfig_V3>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string preference = 4;
+    // optional string preference = 4;
     {::_pbi::TcParser::FastUS1,
      {34, 3, 0, PROTOBUF_FIELD_OFFSET(Profile_ZenzaiVersionConfig_V3, _impl_.preference_)}},
-    // string profile = 1;
+    // optional string profile = 1;
     {::_pbi::TcParser::FastUS1,
      {10, 0, 0, PROTOBUF_FIELD_OFFSET(Profile_ZenzaiVersionConfig_V3, _impl_.profile_)}},
-    // string topic = 2;
+    // optional string topic = 2;
     {::_pbi::TcParser::FastUS1,
      {18, 1, 0, PROTOBUF_FIELD_OFFSET(Profile_ZenzaiVersionConfig_V3, _impl_.topic_)}},
-    // string style = 3;
+    // optional string style = 3;
     {::_pbi::TcParser::FastUS1,
      {26, 2, 0, PROTOBUF_FIELD_OFFSET(Profile_ZenzaiVersionConfig_V3, _impl_.style_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string profile = 1;
+    // optional string profile = 1;
     {PROTOBUF_FIELD_OFFSET(Profile_ZenzaiVersionConfig_V3, _impl_.profile_), _Internal::kHasBitsOffset + 0, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string topic = 2;
+    // optional string topic = 2;
     {PROTOBUF_FIELD_OFFSET(Profile_ZenzaiVersionConfig_V3, _impl_.topic_), _Internal::kHasBitsOffset + 1, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string style = 3;
+    // optional string style = 3;
     {PROTOBUF_FIELD_OFFSET(Profile_ZenzaiVersionConfig_V3, _impl_.style_), _Internal::kHasBitsOffset + 2, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string preference = 4;
+    // optional string preference = 4;
     {PROTOBUF_FIELD_OFFSET(Profile_ZenzaiVersionConfig_V3, _impl_.preference_), _Internal::kHasBitsOffset + 3, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
@@ -2805,44 +2704,37 @@ PROTOBUF_NOINLINE void Profile_ZenzaiVersionConfig_V3::Clear() {
   ::uint32_t cached_has_bits = 0;
   (void)cached_has_bits;
 
-  // string profile = 1;
-  if ((this_._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    if (!this_._internal_profile().empty()) {
-      const ::std::string& _s = this_._internal_profile();
-      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "hazkey.config.Profile.ZenzaiVersionConfig.V3.profile");
-      target = stream->WriteStringMaybeAliased(1, _s, target);
-    }
+  cached_has_bits = this_._impl_._has_bits_[0];
+  // optional string profile = 1;
+  if ((cached_has_bits & 0x00000001u) != 0) {
+    const ::std::string& _s = this_._internal_profile();
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "hazkey.config.Profile.ZenzaiVersionConfig.V3.profile");
+    target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
-  // string topic = 2;
-  if ((this_._impl_._has_bits_[0] & 0x00000002u) != 0) {
-    if (!this_._internal_topic().empty()) {
-      const ::std::string& _s = this_._internal_topic();
-      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "hazkey.config.Profile.ZenzaiVersionConfig.V3.topic");
-      target = stream->WriteStringMaybeAliased(2, _s, target);
-    }
+  // optional string topic = 2;
+  if ((cached_has_bits & 0x00000002u) != 0) {
+    const ::std::string& _s = this_._internal_topic();
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "hazkey.config.Profile.ZenzaiVersionConfig.V3.topic");
+    target = stream->WriteStringMaybeAliased(2, _s, target);
   }
 
-  // string style = 3;
-  if ((this_._impl_._has_bits_[0] & 0x00000004u) != 0) {
-    if (!this_._internal_style().empty()) {
-      const ::std::string& _s = this_._internal_style();
-      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "hazkey.config.Profile.ZenzaiVersionConfig.V3.style");
-      target = stream->WriteStringMaybeAliased(3, _s, target);
-    }
+  // optional string style = 3;
+  if ((cached_has_bits & 0x00000004u) != 0) {
+    const ::std::string& _s = this_._internal_style();
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "hazkey.config.Profile.ZenzaiVersionConfig.V3.style");
+    target = stream->WriteStringMaybeAliased(3, _s, target);
   }
 
-  // string preference = 4;
-  if ((this_._impl_._has_bits_[0] & 0x00000008u) != 0) {
-    if (!this_._internal_preference().empty()) {
-      const ::std::string& _s = this_._internal_preference();
-      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "hazkey.config.Profile.ZenzaiVersionConfig.V3.preference");
-      target = stream->WriteStringMaybeAliased(4, _s, target);
-    }
+  // optional string preference = 4;
+  if ((cached_has_bits & 0x00000008u) != 0) {
+    const ::std::string& _s = this_._internal_preference();
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "hazkey.config.Profile.ZenzaiVersionConfig.V3.preference");
+    target = stream->WriteStringMaybeAliased(4, _s, target);
   }
 
   if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -2871,33 +2763,25 @@ PROTOBUF_NOINLINE void Profile_ZenzaiVersionConfig_V3::Clear() {
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
   cached_has_bits = this_._impl_._has_bits_[0];
   if ((cached_has_bits & 0x0000000fu) != 0) {
-    // string profile = 1;
+    // optional string profile = 1;
     if ((cached_has_bits & 0x00000001u) != 0) {
-      if (!this_._internal_profile().empty()) {
-        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                        this_._internal_profile());
-      }
+      total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                      this_._internal_profile());
     }
-    // string topic = 2;
+    // optional string topic = 2;
     if ((cached_has_bits & 0x00000002u) != 0) {
-      if (!this_._internal_topic().empty()) {
-        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                        this_._internal_topic());
-      }
+      total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                      this_._internal_topic());
     }
-    // string style = 3;
+    // optional string style = 3;
     if ((cached_has_bits & 0x00000004u) != 0) {
-      if (!this_._internal_style().empty()) {
-        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                        this_._internal_style());
-      }
+      total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                      this_._internal_style());
     }
-    // string preference = 4;
+    // optional string preference = 4;
     if ((cached_has_bits & 0x00000008u) != 0) {
-      if (!this_._internal_preference().empty()) {
-        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                        this_._internal_preference());
-      }
+      total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                      this_._internal_preference());
     }
   }
   return this_.MaybeComputeUnknownFieldsSize(total_size,
@@ -2915,40 +2799,16 @@ void Profile_ZenzaiVersionConfig_V3::MergeImpl(::google::protobuf::MessageLite& 
   cached_has_bits = from._impl_._has_bits_[0];
   if ((cached_has_bits & 0x0000000fu) != 0) {
     if ((cached_has_bits & 0x00000001u) != 0) {
-      if (!from._internal_profile().empty()) {
-        _this->_internal_set_profile(from._internal_profile());
-      } else {
-        if (_this->_impl_.profile_.IsDefault()) {
-          _this->_internal_set_profile("");
-        }
-      }
+      _this->_internal_set_profile(from._internal_profile());
     }
     if ((cached_has_bits & 0x00000002u) != 0) {
-      if (!from._internal_topic().empty()) {
-        _this->_internal_set_topic(from._internal_topic());
-      } else {
-        if (_this->_impl_.topic_.IsDefault()) {
-          _this->_internal_set_topic("");
-        }
-      }
+      _this->_internal_set_topic(from._internal_topic());
     }
     if ((cached_has_bits & 0x00000004u) != 0) {
-      if (!from._internal_style().empty()) {
-        _this->_internal_set_style(from._internal_style());
-      } else {
-        if (_this->_impl_.style_.IsDefault()) {
-          _this->_internal_set_style("");
-        }
-      }
+      _this->_internal_set_style(from._internal_style());
     }
     if ((cached_has_bits & 0x00000008u) != 0) {
-      if (!from._internal_preference().empty()) {
-        _this->_internal_set_preference(from._internal_preference());
-      } else {
-        if (_this->_impl_.preference_.IsDefault()) {
-          _this->_internal_set_preference("");
-        }
-      }
+      _this->_internal_set_preference(from._internal_preference());
     }
   }
   _this->_impl_._has_bits_[0] |= cached_has_bits;
@@ -3564,62 +3424,62 @@ Profile::_table_ = {
     {::_pbi::TcParser::MiniParse, {}},
     {::_pbi::TcParser::MiniParse, {}},
     {::_pbi::TcParser::MiniParse, {}},
-    // bool use_default_input_ui_settings = 10;
+    // optional bool use_default_input_ui_settings = 10;
     {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(Profile, _impl_.use_default_input_ui_settings_), 9>(),
      {80, 9, 0, PROTOBUF_FIELD_OFFSET(Profile, _impl_.use_default_input_ui_settings_)}},
-    // .hazkey.config.Profile.AutoConvertMode auto_convert_mode = 11;
+    // optional .hazkey.config.Profile.AutoConvertMode auto_convert_mode = 11;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Profile, _impl_.auto_convert_mode_), 5>(),
      {88, 5, 0, PROTOBUF_FIELD_OFFSET(Profile, _impl_.auto_convert_mode_)}},
-    // .hazkey.config.Profile.AuxTextMode aux_text_mode = 12;
+    // optional .hazkey.config.Profile.AuxTextMode aux_text_mode = 12;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Profile, _impl_.aux_text_mode_), 6>(),
      {96, 6, 0, PROTOBUF_FIELD_OFFSET(Profile, _impl_.aux_text_mode_)}},
-    // .hazkey.config.Profile.SuggestionListMode suggestion_list_mode = 13;
+    // optional .hazkey.config.Profile.SuggestionListMode suggestion_list_mode = 13;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Profile, _impl_.suggestion_list_mode_), 7>(),
      {104, 7, 0, PROTOBUF_FIELD_OFFSET(Profile, _impl_.suggestion_list_mode_)}},
-    // bool use_rich_suggestion = 14;
+    // optional bool use_rich_suggestion = 14;
     {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(Profile, _impl_.use_rich_suggestion_), 10>(),
      {112, 10, 0, PROTOBUF_FIELD_OFFSET(Profile, _impl_.use_rich_suggestion_)}},
-    // int32 num_suggestions = 15;
+    // optional int32 num_suggestions = 15;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Profile, _impl_.num_suggestions_), 8>(),
      {120, 8, 0, PROTOBUF_FIELD_OFFSET(Profile, _impl_.num_suggestions_)}},
-    // bool use_input_history = 32;
+    // optional bool use_input_history = 32;
     {::_pbi::TcParser::FastV8S2,
      {640, 17, 0, PROTOBUF_FIELD_OFFSET(Profile, _impl_.use_input_history_)}},
     {::_pbi::TcParser::MiniParse, {}},
-    // bool use_default_table_settings = 50;
+    // optional bool use_default_table_settings = 50;
     {::_pbi::TcParser::FastV8S2,
      {912, 19, 0, PROTOBUF_FIELD_OFFSET(Profile, _impl_.use_default_table_settings_)}},
-    // repeated .hazkey.config.InputTable enabled_tables = 51;
+    // repeated .hazkey.config.Profile.EnabledInputTable enabled_tables = 51;
     {::_pbi::TcParser::FastMtR2,
      {922, 63, 1, PROTOBUF_FIELD_OFFSET(Profile, _impl_.enabled_tables_)}},
-    // bool use_default_conversion_ui_settings = 20;
+    // optional bool use_default_conversion_ui_settings = 20;
     {::_pbi::TcParser::FastV8S2,
      {416, 11, 0, PROTOBUF_FIELD_OFFSET(Profile, _impl_.use_default_conversion_ui_settings_)}},
-    // int32 num_candidates_per_page = 21;
+    // optional int32 num_candidates_per_page = 21;
     {::_pbi::TcParser::FastV32S2,
      {424, 13, 0, PROTOBUF_FIELD_OFFSET(Profile, _impl_.num_candidates_per_page_)}},
-    // bool use_rich_candidates = 22;
+    // optional bool use_rich_candidates = 22;
     {::_pbi::TcParser::FastV8S2,
      {432, 12, 0, PROTOBUF_FIELD_OFFSET(Profile, _impl_.use_rich_candidates_)}},
-    // bool stop_store_new_history = 23;
+    // optional bool stop_store_new_history = 23;
     {::_pbi::TcParser::FastV8S2,
      {440, 14, 0, PROTOBUF_FIELD_OFFSET(Profile, _impl_.stop_store_new_history_)}},
-    // bool use_default_special_conversion_settings = 40;
+    // optional bool use_default_special_conversion_settings = 40;
     {::_pbi::TcParser::FastV8S2,
      {704, 18, 0, PROTOBUF_FIELD_OFFSET(Profile, _impl_.use_default_special_conversion_settings_)}},
-    // .hazkey.config.Profile.SpecialConversionMode special_conversion_mode = 41;
+    // optional .hazkey.config.Profile.SpecialConversionMode special_conversion_mode = 41;
     {::_pbi::TcParser::FastMtS2,
      {714, 3, 0, PROTOBUF_FIELD_OFFSET(Profile, _impl_.special_conversion_mode_)}},
-    // string zenzai_weight_path = 106;
+    // optional string zenzai_weight_path = 106;
     {::_pbi::TcParser::FastUS2,
      {1746, 2, 0, PROTOBUF_FIELD_OFFSET(Profile, _impl_.zenzai_weight_path_)}},
     {::_pbi::TcParser::MiniParse, {}},
     {::_pbi::TcParser::MiniParse, {}},
     {::_pbi::TcParser::MiniParse, {}},
-    // bool use_default_history_settings = 30;
+    // optional bool use_default_history_settings = 30;
     {::_pbi::TcParser::FastV8S2,
      {496, 15, 0, PROTOBUF_FIELD_OFFSET(Profile, _impl_.use_default_history_settings_)}},
-    // bool use_profile_independent_history = 31;
+    // optional bool use_profile_independent_history = 31;
     {::_pbi::TcParser::FastV8S2,
      {504, 16, 0, PROTOBUF_FIELD_OFFSET(Profile, _impl_.use_profile_independent_history_)}},
   }}, {{
@@ -3637,82 +3497,82 @@ Profile::_table_ = {
     // string profile_id = 6;
     {PROTOBUF_FIELD_OFFSET(Profile, _impl_.profile_id_), _Internal::kHasBitsOffset + 1, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // bool use_default_input_ui_settings = 10;
+    // optional bool use_default_input_ui_settings = 10;
     {PROTOBUF_FIELD_OFFSET(Profile, _impl_.use_default_input_ui_settings_), _Internal::kHasBitsOffset + 9, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kBool)},
-    // .hazkey.config.Profile.AutoConvertMode auto_convert_mode = 11;
+    // optional .hazkey.config.Profile.AutoConvertMode auto_convert_mode = 11;
     {PROTOBUF_FIELD_OFFSET(Profile, _impl_.auto_convert_mode_), _Internal::kHasBitsOffset + 5, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kOpenEnum)},
-    // .hazkey.config.Profile.AuxTextMode aux_text_mode = 12;
+    // optional .hazkey.config.Profile.AuxTextMode aux_text_mode = 12;
     {PROTOBUF_FIELD_OFFSET(Profile, _impl_.aux_text_mode_), _Internal::kHasBitsOffset + 6, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kOpenEnum)},
-    // .hazkey.config.Profile.SuggestionListMode suggestion_list_mode = 13;
+    // optional .hazkey.config.Profile.SuggestionListMode suggestion_list_mode = 13;
     {PROTOBUF_FIELD_OFFSET(Profile, _impl_.suggestion_list_mode_), _Internal::kHasBitsOffset + 7, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kOpenEnum)},
-    // bool use_rich_suggestion = 14;
+    // optional bool use_rich_suggestion = 14;
     {PROTOBUF_FIELD_OFFSET(Profile, _impl_.use_rich_suggestion_), _Internal::kHasBitsOffset + 10, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kBool)},
-    // int32 num_suggestions = 15;
+    // optional int32 num_suggestions = 15;
     {PROTOBUF_FIELD_OFFSET(Profile, _impl_.num_suggestions_), _Internal::kHasBitsOffset + 8, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
-    // bool use_default_conversion_ui_settings = 20;
+    // optional bool use_default_conversion_ui_settings = 20;
     {PROTOBUF_FIELD_OFFSET(Profile, _impl_.use_default_conversion_ui_settings_), _Internal::kHasBitsOffset + 11, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kBool)},
-    // int32 num_candidates_per_page = 21;
+    // optional int32 num_candidates_per_page = 21;
     {PROTOBUF_FIELD_OFFSET(Profile, _impl_.num_candidates_per_page_), _Internal::kHasBitsOffset + 13, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
-    // bool use_rich_candidates = 22;
+    // optional bool use_rich_candidates = 22;
     {PROTOBUF_FIELD_OFFSET(Profile, _impl_.use_rich_candidates_), _Internal::kHasBitsOffset + 12, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kBool)},
-    // bool stop_store_new_history = 23;
+    // optional bool stop_store_new_history = 23;
     {PROTOBUF_FIELD_OFFSET(Profile, _impl_.stop_store_new_history_), _Internal::kHasBitsOffset + 14, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kBool)},
-    // bool use_default_history_settings = 30;
+    // optional bool use_default_history_settings = 30;
     {PROTOBUF_FIELD_OFFSET(Profile, _impl_.use_default_history_settings_), _Internal::kHasBitsOffset + 15, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kBool)},
-    // bool use_profile_independent_history = 31;
+    // optional bool use_profile_independent_history = 31;
     {PROTOBUF_FIELD_OFFSET(Profile, _impl_.use_profile_independent_history_), _Internal::kHasBitsOffset + 16, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kBool)},
-    // bool use_input_history = 32;
+    // optional bool use_input_history = 32;
     {PROTOBUF_FIELD_OFFSET(Profile, _impl_.use_input_history_), _Internal::kHasBitsOffset + 17, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kBool)},
-    // bool use_default_special_conversion_settings = 40;
+    // optional bool use_default_special_conversion_settings = 40;
     {PROTOBUF_FIELD_OFFSET(Profile, _impl_.use_default_special_conversion_settings_), _Internal::kHasBitsOffset + 18, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kBool)},
-    // .hazkey.config.Profile.SpecialConversionMode special_conversion_mode = 41;
+    // optional .hazkey.config.Profile.SpecialConversionMode special_conversion_mode = 41;
     {PROTOBUF_FIELD_OFFSET(Profile, _impl_.special_conversion_mode_), _Internal::kHasBitsOffset + 3, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-    // bool use_default_table_settings = 50;
+    // optional bool use_default_table_settings = 50;
     {PROTOBUF_FIELD_OFFSET(Profile, _impl_.use_default_table_settings_), _Internal::kHasBitsOffset + 19, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kBool)},
-    // repeated .hazkey.config.InputTable enabled_tables = 51;
+    // repeated .hazkey.config.Profile.EnabledInputTable enabled_tables = 51;
     {PROTOBUF_FIELD_OFFSET(Profile, _impl_.enabled_tables_), -1, 1,
     (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
-    // bool use_default_zenzai_settings = 100;
+    // optional bool use_default_zenzai_settings = 100;
     {PROTOBUF_FIELD_OFFSET(Profile, _impl_.use_default_zenzai_settings_), _Internal::kHasBitsOffset + 20, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kBool)},
-    // bool zenzai_enable = 101;
+    // optional bool zenzai_enable = 101;
     {PROTOBUF_FIELD_OFFSET(Profile, _impl_.zenzai_enable_), _Internal::kHasBitsOffset + 21, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kBool)},
-    // int32 zenzai_infer_limit = 102;
+    // optional int32 zenzai_infer_limit = 102;
     {PROTOBUF_FIELD_OFFSET(Profile, _impl_.zenzai_infer_limit_), _Internal::kHasBitsOffset + 22, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
-    // bool zenzai_contextual_mode = 103;
+    // optional bool zenzai_contextual_mode = 103;
     {PROTOBUF_FIELD_OFFSET(Profile, _impl_.zenzai_contextual_mode_), _Internal::kHasBitsOffset + 23, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kBool)},
-    // .hazkey.config.Profile.ZenzaiVersionConfig zenzai_version_config = 104;
+    // optional .hazkey.config.Profile.ZenzaiVersionConfig zenzai_version_config = 104;
     {PROTOBUF_FIELD_OFFSET(Profile, _impl_.zenzai_version_config_), _Internal::kHasBitsOffset + 4, 2,
     (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-    // bool use_zenzai_custom_weight = 105;
+    // optional bool use_zenzai_custom_weight = 105;
     {PROTOBUF_FIELD_OFFSET(Profile, _impl_.use_zenzai_custom_weight_), _Internal::kHasBitsOffset + 24, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kBool)},
-    // string zenzai_weight_path = 106;
+    // optional string zenzai_weight_path = 106;
     {PROTOBUF_FIELD_OFFSET(Profile, _impl_.zenzai_weight_path_), _Internal::kHasBitsOffset + 2, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
   {{
       {::_pbi::TcParser::GetTable<::hazkey::config::Profile_SpecialConversionMode>()},
-      {::_pbi::TcParser::GetTable<::hazkey::config::InputTable>()},
+      {::_pbi::TcParser::GetTable<::hazkey::config::Profile_EnabledInputTable>()},
       {::_pbi::TcParser::GetTable<::hazkey::config::Profile_ZenzaiVersionConfig>()},
   }},
   {{
@@ -3806,150 +3666,120 @@ PROTOBUF_NOINLINE void Profile::Clear() {
     }
   }
 
-  // bool use_default_input_ui_settings = 10;
-  if ((this_._impl_._has_bits_[0] & 0x00000200u) != 0) {
-    if (this_._internal_use_default_input_ui_settings() != 0) {
-      target = stream->EnsureSpace(target);
-      target = ::_pbi::WireFormatLite::WriteBoolToArray(
-          10, this_._internal_use_default_input_ui_settings(), target);
-    }
-  }
-
-  // .hazkey.config.Profile.AutoConvertMode auto_convert_mode = 11;
-  if ((this_._impl_._has_bits_[0] & 0x00000020u) != 0) {
-    if (this_._internal_auto_convert_mode() != 0) {
-      target = stream->EnsureSpace(target);
-      target = ::_pbi::WireFormatLite::WriteEnumToArray(
-          11, this_._internal_auto_convert_mode(), target);
-    }
-  }
-
-  // .hazkey.config.Profile.AuxTextMode aux_text_mode = 12;
-  if ((this_._impl_._has_bits_[0] & 0x00000040u) != 0) {
-    if (this_._internal_aux_text_mode() != 0) {
-      target = stream->EnsureSpace(target);
-      target = ::_pbi::WireFormatLite::WriteEnumToArray(
-          12, this_._internal_aux_text_mode(), target);
-    }
-  }
-
-  // .hazkey.config.Profile.SuggestionListMode suggestion_list_mode = 13;
-  if ((this_._impl_._has_bits_[0] & 0x00000080u) != 0) {
-    if (this_._internal_suggestion_list_mode() != 0) {
-      target = stream->EnsureSpace(target);
-      target = ::_pbi::WireFormatLite::WriteEnumToArray(
-          13, this_._internal_suggestion_list_mode(), target);
-    }
-  }
-
-  // bool use_rich_suggestion = 14;
-  if ((this_._impl_._has_bits_[0] & 0x00000400u) != 0) {
-    if (this_._internal_use_rich_suggestion() != 0) {
-      target = stream->EnsureSpace(target);
-      target = ::_pbi::WireFormatLite::WriteBoolToArray(
-          14, this_._internal_use_rich_suggestion(), target);
-    }
-  }
-
-  // int32 num_suggestions = 15;
-  if ((this_._impl_._has_bits_[0] & 0x00000100u) != 0) {
-    if (this_._internal_num_suggestions() != 0) {
-      target =
-          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<15>(
-              stream, this_._internal_num_suggestions(), target);
-    }
-  }
-
-  // bool use_default_conversion_ui_settings = 20;
-  if ((this_._impl_._has_bits_[0] & 0x00000800u) != 0) {
-    if (this_._internal_use_default_conversion_ui_settings() != 0) {
-      target = stream->EnsureSpace(target);
-      target = ::_pbi::WireFormatLite::WriteBoolToArray(
-          20, this_._internal_use_default_conversion_ui_settings(), target);
-    }
-  }
-
-  // int32 num_candidates_per_page = 21;
-  if ((this_._impl_._has_bits_[0] & 0x00002000u) != 0) {
-    if (this_._internal_num_candidates_per_page() != 0) {
-      target = stream->EnsureSpace(target);
-      target = ::_pbi::WireFormatLite::WriteInt32ToArray(
-          21, this_._internal_num_candidates_per_page(), target);
-    }
-  }
-
-  // bool use_rich_candidates = 22;
-  if ((this_._impl_._has_bits_[0] & 0x00001000u) != 0) {
-    if (this_._internal_use_rich_candidates() != 0) {
-      target = stream->EnsureSpace(target);
-      target = ::_pbi::WireFormatLite::WriteBoolToArray(
-          22, this_._internal_use_rich_candidates(), target);
-    }
-  }
-
-  // bool stop_store_new_history = 23;
-  if ((this_._impl_._has_bits_[0] & 0x00004000u) != 0) {
-    if (this_._internal_stop_store_new_history() != 0) {
-      target = stream->EnsureSpace(target);
-      target = ::_pbi::WireFormatLite::WriteBoolToArray(
-          23, this_._internal_stop_store_new_history(), target);
-    }
-  }
-
-  // bool use_default_history_settings = 30;
-  if ((this_._impl_._has_bits_[0] & 0x00008000u) != 0) {
-    if (this_._internal_use_default_history_settings() != 0) {
-      target = stream->EnsureSpace(target);
-      target = ::_pbi::WireFormatLite::WriteBoolToArray(
-          30, this_._internal_use_default_history_settings(), target);
-    }
-  }
-
-  // bool use_profile_independent_history = 31;
-  if ((this_._impl_._has_bits_[0] & 0x00010000u) != 0) {
-    if (this_._internal_use_profile_independent_history() != 0) {
-      target = stream->EnsureSpace(target);
-      target = ::_pbi::WireFormatLite::WriteBoolToArray(
-          31, this_._internal_use_profile_independent_history(), target);
-    }
-  }
-
-  // bool use_input_history = 32;
-  if ((this_._impl_._has_bits_[0] & 0x00020000u) != 0) {
-    if (this_._internal_use_input_history() != 0) {
-      target = stream->EnsureSpace(target);
-      target = ::_pbi::WireFormatLite::WriteBoolToArray(
-          32, this_._internal_use_input_history(), target);
-    }
-  }
-
-  // bool use_default_special_conversion_settings = 40;
-  if ((this_._impl_._has_bits_[0] & 0x00040000u) != 0) {
-    if (this_._internal_use_default_special_conversion_settings() != 0) {
-      target = stream->EnsureSpace(target);
-      target = ::_pbi::WireFormatLite::WriteBoolToArray(
-          40, this_._internal_use_default_special_conversion_settings(), target);
-    }
-  }
-
   cached_has_bits = this_._impl_._has_bits_[0];
-  // .hazkey.config.Profile.SpecialConversionMode special_conversion_mode = 41;
+  // optional bool use_default_input_ui_settings = 10;
+  if ((cached_has_bits & 0x00000200u) != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        10, this_._internal_use_default_input_ui_settings(), target);
+  }
+
+  // optional .hazkey.config.Profile.AutoConvertMode auto_convert_mode = 11;
+  if ((cached_has_bits & 0x00000020u) != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteEnumToArray(
+        11, this_._internal_auto_convert_mode(), target);
+  }
+
+  // optional .hazkey.config.Profile.AuxTextMode aux_text_mode = 12;
+  if ((cached_has_bits & 0x00000040u) != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteEnumToArray(
+        12, this_._internal_aux_text_mode(), target);
+  }
+
+  // optional .hazkey.config.Profile.SuggestionListMode suggestion_list_mode = 13;
+  if ((cached_has_bits & 0x00000080u) != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteEnumToArray(
+        13, this_._internal_suggestion_list_mode(), target);
+  }
+
+  // optional bool use_rich_suggestion = 14;
+  if ((cached_has_bits & 0x00000400u) != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        14, this_._internal_use_rich_suggestion(), target);
+  }
+
+  // optional int32 num_suggestions = 15;
+  if ((cached_has_bits & 0x00000100u) != 0) {
+    target =
+        ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<15>(
+            stream, this_._internal_num_suggestions(), target);
+  }
+
+  // optional bool use_default_conversion_ui_settings = 20;
+  if ((cached_has_bits & 0x00000800u) != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        20, this_._internal_use_default_conversion_ui_settings(), target);
+  }
+
+  // optional int32 num_candidates_per_page = 21;
+  if ((cached_has_bits & 0x00002000u) != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(
+        21, this_._internal_num_candidates_per_page(), target);
+  }
+
+  // optional bool use_rich_candidates = 22;
+  if ((cached_has_bits & 0x00001000u) != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        22, this_._internal_use_rich_candidates(), target);
+  }
+
+  // optional bool stop_store_new_history = 23;
+  if ((cached_has_bits & 0x00004000u) != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        23, this_._internal_stop_store_new_history(), target);
+  }
+
+  // optional bool use_default_history_settings = 30;
+  if ((cached_has_bits & 0x00008000u) != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        30, this_._internal_use_default_history_settings(), target);
+  }
+
+  // optional bool use_profile_independent_history = 31;
+  if ((cached_has_bits & 0x00010000u) != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        31, this_._internal_use_profile_independent_history(), target);
+  }
+
+  // optional bool use_input_history = 32;
+  if ((cached_has_bits & 0x00020000u) != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        32, this_._internal_use_input_history(), target);
+  }
+
+  // optional bool use_default_special_conversion_settings = 40;
+  if ((cached_has_bits & 0x00040000u) != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        40, this_._internal_use_default_special_conversion_settings(), target);
+  }
+
+  // optional .hazkey.config.Profile.SpecialConversionMode special_conversion_mode = 41;
   if ((cached_has_bits & 0x00000008u) != 0) {
     target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
         41, *this_._impl_.special_conversion_mode_, this_._impl_.special_conversion_mode_->GetCachedSize(), target,
         stream);
   }
 
-  // bool use_default_table_settings = 50;
+  // optional bool use_default_table_settings = 50;
   if ((cached_has_bits & 0x00080000u) != 0) {
-    if (this_._internal_use_default_table_settings() != 0) {
-      target = stream->EnsureSpace(target);
-      target = ::_pbi::WireFormatLite::WriteBoolToArray(
-          50, this_._internal_use_default_table_settings(), target);
-    }
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        50, this_._internal_use_default_table_settings(), target);
   }
 
-  // repeated .hazkey.config.InputTable enabled_tables = 51;
+  // repeated .hazkey.config.Profile.EnabledInputTable enabled_tables = 51;
   for (unsigned i = 0, n = static_cast<unsigned>(
                            this_._internal_enabled_tables_size());
        i < n; i++) {
@@ -3960,66 +3790,54 @@ PROTOBUF_NOINLINE void Profile::Clear() {
             target, stream);
   }
 
-  // bool use_default_zenzai_settings = 100;
+  // optional bool use_default_zenzai_settings = 100;
   if ((cached_has_bits & 0x00100000u) != 0) {
-    if (this_._internal_use_default_zenzai_settings() != 0) {
-      target = stream->EnsureSpace(target);
-      target = ::_pbi::WireFormatLite::WriteBoolToArray(
-          100, this_._internal_use_default_zenzai_settings(), target);
-    }
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        100, this_._internal_use_default_zenzai_settings(), target);
   }
 
-  // bool zenzai_enable = 101;
+  // optional bool zenzai_enable = 101;
   if ((cached_has_bits & 0x00200000u) != 0) {
-    if (this_._internal_zenzai_enable() != 0) {
-      target = stream->EnsureSpace(target);
-      target = ::_pbi::WireFormatLite::WriteBoolToArray(
-          101, this_._internal_zenzai_enable(), target);
-    }
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        101, this_._internal_zenzai_enable(), target);
   }
 
-  // int32 zenzai_infer_limit = 102;
+  // optional int32 zenzai_infer_limit = 102;
   if ((cached_has_bits & 0x00400000u) != 0) {
-    if (this_._internal_zenzai_infer_limit() != 0) {
-      target = stream->EnsureSpace(target);
-      target = ::_pbi::WireFormatLite::WriteInt32ToArray(
-          102, this_._internal_zenzai_infer_limit(), target);
-    }
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(
+        102, this_._internal_zenzai_infer_limit(), target);
   }
 
-  // bool zenzai_contextual_mode = 103;
+  // optional bool zenzai_contextual_mode = 103;
   if ((cached_has_bits & 0x00800000u) != 0) {
-    if (this_._internal_zenzai_contextual_mode() != 0) {
-      target = stream->EnsureSpace(target);
-      target = ::_pbi::WireFormatLite::WriteBoolToArray(
-          103, this_._internal_zenzai_contextual_mode(), target);
-    }
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        103, this_._internal_zenzai_contextual_mode(), target);
   }
 
-  // .hazkey.config.Profile.ZenzaiVersionConfig zenzai_version_config = 104;
+  // optional .hazkey.config.Profile.ZenzaiVersionConfig zenzai_version_config = 104;
   if ((cached_has_bits & 0x00000010u) != 0) {
     target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
         104, *this_._impl_.zenzai_version_config_, this_._impl_.zenzai_version_config_->GetCachedSize(), target,
         stream);
   }
 
-  // bool use_zenzai_custom_weight = 105;
+  // optional bool use_zenzai_custom_weight = 105;
   if ((cached_has_bits & 0x01000000u) != 0) {
-    if (this_._internal_use_zenzai_custom_weight() != 0) {
-      target = stream->EnsureSpace(target);
-      target = ::_pbi::WireFormatLite::WriteBoolToArray(
-          105, this_._internal_use_zenzai_custom_weight(), target);
-    }
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        105, this_._internal_use_zenzai_custom_weight(), target);
   }
 
-  // string zenzai_weight_path = 106;
+  // optional string zenzai_weight_path = 106;
   if ((cached_has_bits & 0x00000004u) != 0) {
-    if (!this_._internal_zenzai_weight_path().empty()) {
-      const ::std::string& _s = this_._internal_zenzai_weight_path();
-      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "hazkey.config.Profile.zenzai_weight_path");
-      target = stream->WriteStringMaybeAliased(106, _s, target);
-    }
+    const ::std::string& _s = this_._internal_zenzai_weight_path();
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "hazkey.config.Profile.zenzai_weight_path");
+    target = stream->WriteStringMaybeAliased(106, _s, target);
   }
 
   if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -4047,7 +3865,7 @@ PROTOBUF_NOINLINE void Profile::Clear() {
 
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
    {
-    // repeated .hazkey.config.InputTable enabled_tables = 51;
+    // repeated .hazkey.config.Profile.EnabledInputTable enabled_tables = 51;
     {
       total_size += 2UL * this_._internal_enabled_tables_size();
       for (const auto& msg : this_._internal_enabled_tables()) {
@@ -4056,6 +3874,8 @@ PROTOBUF_NOINLINE void Profile::Clear() {
     }
   }
   cached_has_bits = this_._impl_._has_bits_[0];
+  total_size += ::absl::popcount(0x01bfd800u & cached_has_bits) * 3;
+  total_size += ::absl::popcount(0x00000600u & cached_has_bits) * 2;
   if ((cached_has_bits & 0x000000ffu) != 0) {
     // string profile_name = 5;
     if ((cached_has_bits & 0x00000001u) != 0) {
@@ -4071,154 +3891,54 @@ PROTOBUF_NOINLINE void Profile::Clear() {
                                         this_._internal_profile_id());
       }
     }
-    // string zenzai_weight_path = 106;
+    // optional string zenzai_weight_path = 106;
     if ((cached_has_bits & 0x00000004u) != 0) {
-      if (!this_._internal_zenzai_weight_path().empty()) {
-        total_size += 2 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                        this_._internal_zenzai_weight_path());
-      }
+      total_size += 2 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                      this_._internal_zenzai_weight_path());
     }
-    // .hazkey.config.Profile.SpecialConversionMode special_conversion_mode = 41;
+    // optional .hazkey.config.Profile.SpecialConversionMode special_conversion_mode = 41;
     if ((cached_has_bits & 0x00000008u) != 0) {
       total_size += 2 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.special_conversion_mode_);
     }
-    // .hazkey.config.Profile.ZenzaiVersionConfig zenzai_version_config = 104;
+    // optional .hazkey.config.Profile.ZenzaiVersionConfig zenzai_version_config = 104;
     if ((cached_has_bits & 0x00000010u) != 0) {
       total_size += 2 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.zenzai_version_config_);
     }
-    // .hazkey.config.Profile.AutoConvertMode auto_convert_mode = 11;
+    // optional .hazkey.config.Profile.AutoConvertMode auto_convert_mode = 11;
     if ((cached_has_bits & 0x00000020u) != 0) {
-      if (this_._internal_auto_convert_mode() != 0) {
-        total_size += 1 +
-                      ::_pbi::WireFormatLite::EnumSize(this_._internal_auto_convert_mode());
-      }
+      total_size += 1 +
+                    ::_pbi::WireFormatLite::EnumSize(this_._internal_auto_convert_mode());
     }
-    // .hazkey.config.Profile.AuxTextMode aux_text_mode = 12;
+    // optional .hazkey.config.Profile.AuxTextMode aux_text_mode = 12;
     if ((cached_has_bits & 0x00000040u) != 0) {
-      if (this_._internal_aux_text_mode() != 0) {
-        total_size += 1 +
-                      ::_pbi::WireFormatLite::EnumSize(this_._internal_aux_text_mode());
-      }
+      total_size += 1 +
+                    ::_pbi::WireFormatLite::EnumSize(this_._internal_aux_text_mode());
     }
-    // .hazkey.config.Profile.SuggestionListMode suggestion_list_mode = 13;
+    // optional .hazkey.config.Profile.SuggestionListMode suggestion_list_mode = 13;
     if ((cached_has_bits & 0x00000080u) != 0) {
-      if (this_._internal_suggestion_list_mode() != 0) {
-        total_size += 1 +
-                      ::_pbi::WireFormatLite::EnumSize(this_._internal_suggestion_list_mode());
-      }
+      total_size += 1 +
+                    ::_pbi::WireFormatLite::EnumSize(this_._internal_suggestion_list_mode());
     }
   }
-  if ((cached_has_bits & 0x0000ff00u) != 0) {
-    // int32 num_suggestions = 15;
+  if ((cached_has_bits & 0x00002100u) != 0) {
+    // optional int32 num_suggestions = 15;
     if ((cached_has_bits & 0x00000100u) != 0) {
-      if (this_._internal_num_suggestions() != 0) {
-        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
-            this_._internal_num_suggestions());
-      }
+      total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+          this_._internal_num_suggestions());
     }
-    // bool use_default_input_ui_settings = 10;
-    if ((cached_has_bits & 0x00000200u) != 0) {
-      if (this_._internal_use_default_input_ui_settings() != 0) {
-        total_size += 2;
-      }
-    }
-    // bool use_rich_suggestion = 14;
-    if ((cached_has_bits & 0x00000400u) != 0) {
-      if (this_._internal_use_rich_suggestion() != 0) {
-        total_size += 2;
-      }
-    }
-    // bool use_default_conversion_ui_settings = 20;
-    if ((cached_has_bits & 0x00000800u) != 0) {
-      if (this_._internal_use_default_conversion_ui_settings() != 0) {
-        total_size += 3;
-      }
-    }
-    // bool use_rich_candidates = 22;
-    if ((cached_has_bits & 0x00001000u) != 0) {
-      if (this_._internal_use_rich_candidates() != 0) {
-        total_size += 3;
-      }
-    }
-    // int32 num_candidates_per_page = 21;
+    // optional int32 num_candidates_per_page = 21;
     if ((cached_has_bits & 0x00002000u) != 0) {
-      if (this_._internal_num_candidates_per_page() != 0) {
-        total_size += 2 + ::_pbi::WireFormatLite::Int32Size(
-                                        this_._internal_num_candidates_per_page());
-      }
-    }
-    // bool stop_store_new_history = 23;
-    if ((cached_has_bits & 0x00004000u) != 0) {
-      if (this_._internal_stop_store_new_history() != 0) {
-        total_size += 3;
-      }
-    }
-    // bool use_default_history_settings = 30;
-    if ((cached_has_bits & 0x00008000u) != 0) {
-      if (this_._internal_use_default_history_settings() != 0) {
-        total_size += 3;
-      }
-    }
-  }
-  if ((cached_has_bits & 0x00ff0000u) != 0) {
-    // bool use_profile_independent_history = 31;
-    if ((cached_has_bits & 0x00010000u) != 0) {
-      if (this_._internal_use_profile_independent_history() != 0) {
-        total_size += 3;
-      }
-    }
-    // bool use_input_history = 32;
-    if ((cached_has_bits & 0x00020000u) != 0) {
-      if (this_._internal_use_input_history() != 0) {
-        total_size += 3;
-      }
-    }
-    // bool use_default_special_conversion_settings = 40;
-    if ((cached_has_bits & 0x00040000u) != 0) {
-      if (this_._internal_use_default_special_conversion_settings() != 0) {
-        total_size += 3;
-      }
-    }
-    // bool use_default_table_settings = 50;
-    if ((cached_has_bits & 0x00080000u) != 0) {
-      if (this_._internal_use_default_table_settings() != 0) {
-        total_size += 3;
-      }
-    }
-    // bool use_default_zenzai_settings = 100;
-    if ((cached_has_bits & 0x00100000u) != 0) {
-      if (this_._internal_use_default_zenzai_settings() != 0) {
-        total_size += 3;
-      }
-    }
-    // bool zenzai_enable = 101;
-    if ((cached_has_bits & 0x00200000u) != 0) {
-      if (this_._internal_zenzai_enable() != 0) {
-        total_size += 3;
-      }
-    }
-    // int32 zenzai_infer_limit = 102;
-    if ((cached_has_bits & 0x00400000u) != 0) {
-      if (this_._internal_zenzai_infer_limit() != 0) {
-        total_size += 2 + ::_pbi::WireFormatLite::Int32Size(
-                                        this_._internal_zenzai_infer_limit());
-      }
-    }
-    // bool zenzai_contextual_mode = 103;
-    if ((cached_has_bits & 0x00800000u) != 0) {
-      if (this_._internal_zenzai_contextual_mode() != 0) {
-        total_size += 3;
-      }
+      total_size += 2 + ::_pbi::WireFormatLite::Int32Size(
+                                      this_._internal_num_candidates_per_page());
     }
   }
    {
-    // bool use_zenzai_custom_weight = 105;
-    if ((cached_has_bits & 0x01000000u) != 0) {
-      if (this_._internal_use_zenzai_custom_weight() != 0) {
-        total_size += 3;
-      }
+    // optional int32 zenzai_infer_limit = 102;
+    if ((cached_has_bits & 0x00400000u) != 0) {
+      total_size += 2 + ::_pbi::WireFormatLite::Int32Size(
+                                      this_._internal_zenzai_infer_limit());
     }
   }
   return this_.MaybeComputeUnknownFieldsSize(total_size,
@@ -4257,13 +3977,7 @@ void Profile::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google:
       }
     }
     if ((cached_has_bits & 0x00000004u) != 0) {
-      if (!from._internal_zenzai_weight_path().empty()) {
-        _this->_internal_set_zenzai_weight_path(from._internal_zenzai_weight_path());
-      } else {
-        if (_this->_impl_.zenzai_weight_path_.IsDefault()) {
-          _this->_internal_set_zenzai_weight_path("");
-        }
-      }
+      _this->_internal_set_zenzai_weight_path(from._internal_zenzai_weight_path());
     }
     if ((cached_has_bits & 0x00000008u) != 0) {
       ABSL_DCHECK(from._impl_.special_conversion_mode_ != nullptr);
@@ -4282,109 +3996,69 @@ void Profile::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google:
       }
     }
     if ((cached_has_bits & 0x00000020u) != 0) {
-      if (from._internal_auto_convert_mode() != 0) {
-        _this->_impl_.auto_convert_mode_ = from._impl_.auto_convert_mode_;
-      }
+      _this->_impl_.auto_convert_mode_ = from._impl_.auto_convert_mode_;
     }
     if ((cached_has_bits & 0x00000040u) != 0) {
-      if (from._internal_aux_text_mode() != 0) {
-        _this->_impl_.aux_text_mode_ = from._impl_.aux_text_mode_;
-      }
+      _this->_impl_.aux_text_mode_ = from._impl_.aux_text_mode_;
     }
     if ((cached_has_bits & 0x00000080u) != 0) {
-      if (from._internal_suggestion_list_mode() != 0) {
-        _this->_impl_.suggestion_list_mode_ = from._impl_.suggestion_list_mode_;
-      }
+      _this->_impl_.suggestion_list_mode_ = from._impl_.suggestion_list_mode_;
     }
   }
   if ((cached_has_bits & 0x0000ff00u) != 0) {
     if ((cached_has_bits & 0x00000100u) != 0) {
-      if (from._internal_num_suggestions() != 0) {
-        _this->_impl_.num_suggestions_ = from._impl_.num_suggestions_;
-      }
+      _this->_impl_.num_suggestions_ = from._impl_.num_suggestions_;
     }
     if ((cached_has_bits & 0x00000200u) != 0) {
-      if (from._internal_use_default_input_ui_settings() != 0) {
-        _this->_impl_.use_default_input_ui_settings_ = from._impl_.use_default_input_ui_settings_;
-      }
+      _this->_impl_.use_default_input_ui_settings_ = from._impl_.use_default_input_ui_settings_;
     }
     if ((cached_has_bits & 0x00000400u) != 0) {
-      if (from._internal_use_rich_suggestion() != 0) {
-        _this->_impl_.use_rich_suggestion_ = from._impl_.use_rich_suggestion_;
-      }
+      _this->_impl_.use_rich_suggestion_ = from._impl_.use_rich_suggestion_;
     }
     if ((cached_has_bits & 0x00000800u) != 0) {
-      if (from._internal_use_default_conversion_ui_settings() != 0) {
-        _this->_impl_.use_default_conversion_ui_settings_ = from._impl_.use_default_conversion_ui_settings_;
-      }
+      _this->_impl_.use_default_conversion_ui_settings_ = from._impl_.use_default_conversion_ui_settings_;
     }
     if ((cached_has_bits & 0x00001000u) != 0) {
-      if (from._internal_use_rich_candidates() != 0) {
-        _this->_impl_.use_rich_candidates_ = from._impl_.use_rich_candidates_;
-      }
+      _this->_impl_.use_rich_candidates_ = from._impl_.use_rich_candidates_;
     }
     if ((cached_has_bits & 0x00002000u) != 0) {
-      if (from._internal_num_candidates_per_page() != 0) {
-        _this->_impl_.num_candidates_per_page_ = from._impl_.num_candidates_per_page_;
-      }
+      _this->_impl_.num_candidates_per_page_ = from._impl_.num_candidates_per_page_;
     }
     if ((cached_has_bits & 0x00004000u) != 0) {
-      if (from._internal_stop_store_new_history() != 0) {
-        _this->_impl_.stop_store_new_history_ = from._impl_.stop_store_new_history_;
-      }
+      _this->_impl_.stop_store_new_history_ = from._impl_.stop_store_new_history_;
     }
     if ((cached_has_bits & 0x00008000u) != 0) {
-      if (from._internal_use_default_history_settings() != 0) {
-        _this->_impl_.use_default_history_settings_ = from._impl_.use_default_history_settings_;
-      }
+      _this->_impl_.use_default_history_settings_ = from._impl_.use_default_history_settings_;
     }
   }
   if ((cached_has_bits & 0x00ff0000u) != 0) {
     if ((cached_has_bits & 0x00010000u) != 0) {
-      if (from._internal_use_profile_independent_history() != 0) {
-        _this->_impl_.use_profile_independent_history_ = from._impl_.use_profile_independent_history_;
-      }
+      _this->_impl_.use_profile_independent_history_ = from._impl_.use_profile_independent_history_;
     }
     if ((cached_has_bits & 0x00020000u) != 0) {
-      if (from._internal_use_input_history() != 0) {
-        _this->_impl_.use_input_history_ = from._impl_.use_input_history_;
-      }
+      _this->_impl_.use_input_history_ = from._impl_.use_input_history_;
     }
     if ((cached_has_bits & 0x00040000u) != 0) {
-      if (from._internal_use_default_special_conversion_settings() != 0) {
-        _this->_impl_.use_default_special_conversion_settings_ = from._impl_.use_default_special_conversion_settings_;
-      }
+      _this->_impl_.use_default_special_conversion_settings_ = from._impl_.use_default_special_conversion_settings_;
     }
     if ((cached_has_bits & 0x00080000u) != 0) {
-      if (from._internal_use_default_table_settings() != 0) {
-        _this->_impl_.use_default_table_settings_ = from._impl_.use_default_table_settings_;
-      }
+      _this->_impl_.use_default_table_settings_ = from._impl_.use_default_table_settings_;
     }
     if ((cached_has_bits & 0x00100000u) != 0) {
-      if (from._internal_use_default_zenzai_settings() != 0) {
-        _this->_impl_.use_default_zenzai_settings_ = from._impl_.use_default_zenzai_settings_;
-      }
+      _this->_impl_.use_default_zenzai_settings_ = from._impl_.use_default_zenzai_settings_;
     }
     if ((cached_has_bits & 0x00200000u) != 0) {
-      if (from._internal_zenzai_enable() != 0) {
-        _this->_impl_.zenzai_enable_ = from._impl_.zenzai_enable_;
-      }
+      _this->_impl_.zenzai_enable_ = from._impl_.zenzai_enable_;
     }
     if ((cached_has_bits & 0x00400000u) != 0) {
-      if (from._internal_zenzai_infer_limit() != 0) {
-        _this->_impl_.zenzai_infer_limit_ = from._impl_.zenzai_infer_limit_;
-      }
+      _this->_impl_.zenzai_infer_limit_ = from._impl_.zenzai_infer_limit_;
     }
     if ((cached_has_bits & 0x00800000u) != 0) {
-      if (from._internal_zenzai_contextual_mode() != 0) {
-        _this->_impl_.zenzai_contextual_mode_ = from._impl_.zenzai_contextual_mode_;
-      }
+      _this->_impl_.zenzai_contextual_mode_ = from._impl_.zenzai_contextual_mode_;
     }
   }
   if ((cached_has_bits & 0x01000000u) != 0) {
-    if (from._internal_use_zenzai_custom_weight() != 0) {
-      _this->_impl_.use_zenzai_custom_weight_ = from._impl_.use_zenzai_custom_weight_;
-    }
+    _this->_impl_.use_zenzai_custom_weight_ = from._impl_.use_zenzai_custom_weight_;
   }
   _this->_impl_._has_bits_[0] |= cached_has_bits;
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);

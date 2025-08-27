@@ -7,10 +7,17 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
+#include <QCoreApplication>
+#include <QDir>
 #include <QMessageBox>
+#include <QProcess>
 #include <chrono>
 #include <mutex>
 #include <thread>
+
+#include "env_config.h"
+#include "qdir.h"
+#include "qlogging.h"
 
 static std::mutex transact_mutex;
 
@@ -28,27 +35,11 @@ std::string ServerConnector::get_socket_path() {
 }
 
 void ServerConnector::restart_hazkey_server() {
-    pid_t pid = fork();
-    if (pid == 0) {
-        // First child process
-        pid_t second_pid = fork();
+    bool success =
+        QProcess::startDetached(INSTALL_LIBDIR "/hazkey/hazkey-server");
 
-        if (second_pid == 0) {
-            // TODO: get install dir
-            execl(
-                "/usr/lib"
-                "/hazkey/hazkey-server",
-                "hazkey-server", (char*)NULL);
-            exit(1);
-        } else if (second_pid < 0) {
-            exit(1);
-        } else {
-            exit(0);
-        }
-    } else if (pid < 0) {
-    } else {
-        int status;
-        waitpid(pid, &status, 0);
+    if (!success) {
+        qWarning() << "Failed to start hazkey-server.";
     }
 }
 

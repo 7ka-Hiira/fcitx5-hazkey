@@ -13,6 +13,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 REQUIRED COMPONENTS Widgets LinguistTools)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools)
 
+configure_file(
+  ${CMAKE_CURRENT_SOURCE_DIR}/env_config.h.in
+  ${CMAKE_CURRENT_BINARY_DIR}/env_config.h
+)
+
 set(TS_FILES hazkey-settings_ja_JP.ts)
 
 set(PROJECT_SOURCES
@@ -57,6 +62,7 @@ find_package(absl REQUIRED)
 find_package(Protobuf REQUIRED)
 # link_directories(${Protobuf_LIBRARY_DIRS})
 
+target_include_directories(hazkey-settings PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 target_link_libraries(hazkey-settings PRIVATE Qt${QT_VERSION_MAJOR}::Widgets ${Protobuf_LIBRARIES} absl::log_internal_message absl::log_internal_check_op)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

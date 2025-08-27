@@ -236,10 +236,6 @@ struct Hazkey_Commands_CandidatesResult: Sendable {
 
     var subHiragana: String = String()
 
-    var words: [String] = []
-
-    var diffIndexes: [Int32] = []
-
     var unknownFields = SwiftProtobuf.UnknownStorage()
 
     init() {}
@@ -679,8 +675,6 @@ extension Hazkey_Commands_CandidatesResult.Candidate: SwiftProtobuf.Message, Swi
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "text"),
     2: .standard(proto: "sub_hiragana"),
-    3: .same(proto: "words"),
-    4: .standard(proto: "diff_indexes"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -691,8 +685,6 @@ extension Hazkey_Commands_CandidatesResult.Candidate: SwiftProtobuf.Message, Swi
       switch fieldNumber {
       case 1: try { try decoder.decodeSingularStringField(value: &self.text) }()
       case 2: try { try decoder.decodeSingularStringField(value: &self.subHiragana) }()
-      case 3: try { try decoder.decodeRepeatedStringField(value: &self.words) }()
-      case 4: try { try decoder.decodeRepeatedInt32Field(value: &self.diffIndexes) }()
       default: break
       }
     }
@@ -705,20 +697,12 @@ extension Hazkey_Commands_CandidatesResult.Candidate: SwiftProtobuf.Message, Swi
     if !self.subHiragana.isEmpty {
       try visitor.visitSingularStringField(value: self.subHiragana, fieldNumber: 2)
     }
-    if !self.words.isEmpty {
-      try visitor.visitRepeatedStringField(value: self.words, fieldNumber: 3)
-    }
-    if !self.diffIndexes.isEmpty {
-      try visitor.visitPackedInt32Field(value: self.diffIndexes, fieldNumber: 4)
-    }
     try unknownFields.traverse(visitor: &visitor)
   }
 
   static func ==(lhs: Hazkey_Commands_CandidatesResult.Candidate, rhs: Hazkey_Commands_CandidatesResult.Candidate) -> Bool {
     if lhs.text != rhs.text {return false}
     if lhs.subHiragana != rhs.subHiragana {return false}
-    if lhs.words != rhs.words {return false}
-    if lhs.diffIndexes != rhs.diffIndexes {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
