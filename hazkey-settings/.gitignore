@@ -83,3 +83,5 @@ CMakeLists.txt.user*
 
 /CMakeFiles
 /CMakeCache.txt
+
+/protocol

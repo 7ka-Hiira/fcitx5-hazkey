@@ -3,64 +3,68 @@ name: Build
 on:
   push:
     tags:
-      - '*'
+      - "*"
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-22.04
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-    - name: Update submodules
-      run: git submodule update --init --recursive
+      - name: Update submodules
+        run: git submodule update --init --recursive
 
-    - name: Install Swift Environment
-      run: |
-        wget https://download.swift.org/swift-6.0.2-release/ubuntu2204/swift-6.0.2-RELEASE/swift-6.0.2-RELEASE-ubuntu22.04.tar.gz
-        tar xf swift-6.0.2-RELEASE-ubuntu22.04.tar.gz
-        sudo mv swift-6.0.2-RELEASE-ubuntu22.04 /usr/share/swift
-        echo "PATH=/usr/share/swift/usr/bin:$PATH" >> $GITHUB_ENV
+      - name: Install Swift Environment
+        run: |
+          wget https://download.swift.org/swift-6.1.2-release/ubuntu2204/swift-6.1.2-RELEASE/swift-6.1.2-RELEASE-ubuntu22.04.tar.gz
+          tar xf swift-6.1.2-RELEASE-ubuntu22.04.tar.gz
+          sudo mv swift-6.1.2-RELEASE-ubuntu22.04 /usr/share/swift
+          echo "PATH=/usr/share/swift/usr/bin:$PATH" >> $GITHUB_ENV
 
-    - name: Install Dependencies
-      run: |
-        sudo apt-get update -y
-        sudo apt-get install -y build-essential cmake gettext fakeroot libvulkan-dev libfcitx5core-dev libfcitx5config-dev libfcitx5utils-dev
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y build-essential cmake gettext fakeroot protobuf-compiler libprotobuf-dev libprotoc-dev libabsl-dev libabsl20210324 libfcitx5core-dev libfcitx5config-dev libfcitx5utils-dev
+          sudo apt-get install -y ninja-build qt6-base-dev qt6-tools-dev qt6-tools-dev-tools libqt6widgets6 libqt6gui6 qt6-l10n-tools libglx-dev libgl1-mesa-dev libxkbcommon-dev
 
-    - name: Workaround step for swift issue 78003
-      run: |
-        sudo cp /usr/share/swift/usr/lib/swift/linux/libswiftCxx.a /usr/share/swift/usr/lib/swift_static/linux/libswiftCxx.a
-        sudo cp /usr/share/swift/usr/lib/swift/linux/libswiftCxxStdlib.a /usr/share/swift/usr/lib/swift_static/linux/libswiftCxxStdlib.a
+      - name: Create Directories
+        run: |
+          mkdir -p $GITHUB_WORKSPACE/workdir
+          mkdir -p $GITHUB_WORKSPACE/packages
 
-    - name: Create Directories
-      run: |
-        mkdir -p $GITHUB_WORKSPACE/build
-        mkdir -p $GITHUB_WORKSPACE/workdir
-        mkdir -p $GITHUB_WORKSPACE/packages
+      - name: Build hazkey-server
+        run: |
+          mkdir -p $GITHUB_WORKSPACE/hazkey-server/build
+          cd $GITHUB_WORKSPACE/hazkey-server/build
+          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DSWIFT_LINK_PATH=/usr/share/swift/usr/lib/swift/linux -G Ninja ..
+          ninja -j$(nproc)
+          env DESTDIR=$GITHUB_WORKSPACE/workdir ninja install
 
-    - name: Build Hazkey
-      run: |
-        cd $GITHUB_WORKSPACE/build
-        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr .. || true
-        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr ..
-        make -j$(nproc)
-        make install DESTDIR=$GITHUB_WORKSPACE/workdir
+      - name: Build hazkey-settings
+        run: |
+          mkdir -p $GITHUB_WORKSPACE/hazkey-settings/build
+          cd $GITHUB_WORKSPACE/hazkey-settings/build
+          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -G Ninja ..
+          ninja -j$(nproc)
+          env  DESTDIR=$GITHUB_WORKSPACE/workdir ninja install
 
-    - name: Create deb package
-      run: |
-        cd $GITHUB_WORKSPACE/workdir
-        mkdir -p ./DEBIAN
-        cat $GITHUB_WORKSPACE/debian/control > ./DEBIAN/control
-        fakeroot dpkg-deb --build . $GITHUB_WORKSPACE/packages
+      - name: Build fcitx5-hazkey
+        run: |
+          mkdir -p $GITHUB_WORKSPACE/fcitx5-hazkey/build
+          cd $GITHUB_WORKSPACE/fcitx5-hazkey/build
+          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -G Ninja ..
+          ninja -j$(nproc)
+          env DESTDIR=$GITHUB_WORKSPACE/workdir ninja install
 
-    - name: Create tar.gz package
-      run: |
-        cd $GITHUB_WORKSPACE/workdir
-        tar -czvf $GITHUB_WORKSPACE/packages/fcitx5-hazkey-${{ github.ref_name }}-x86_64.tar.gz ./usr
+      - name: Create tar.gz fcitx5-hazkey package
+        run: |
+          cd $GITHUB_WORKSPACE/workdir
+          tar -czvf $GITHUB_WORKSPACE/packages/fcitx5-hazkey-${{ github.ref_name }}-x86_64.tar.gz ./usr
 
-    - name: Upload Build Artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: fcitx5-hazkey-x86_64
-        path: ${{ github.workspace }}/packages/*
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: fcitx5-hazkey-x86_64
+          path: ${{ github.workspace }}/packages/*

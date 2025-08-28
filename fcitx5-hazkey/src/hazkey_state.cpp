@@ -7,10 +7,10 @@
 #include <string>
 #include <vector>
 
+#include "commands.pb.h"
 #include "hazkey_candidate.h"
 #include "hazkey_engine.h"
 #include "hazkey_server_connector.h"
-#include "protocol/commands.pb.h"
 
 namespace fcitx {
 

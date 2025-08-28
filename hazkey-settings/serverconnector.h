@@ -4,7 +4,7 @@
 #include <optional>
 #include <string>
 
-#include "protocol/base.pb.h"
+#include "base.pb.h"
 
 class ServerConnector {
    public:

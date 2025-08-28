@@ -15,14 +15,13 @@
 #include <cstdint>
 #include <cstdlib>
 #include <mutex>
-#include <nlohmann/json.hpp>
 #include <optional>
 #include <string>
 #include <thread>
 
+#include "base.pb.h"
+#include "commands.pb.h"
 #include "env_config.h"
-#include "protocol/base.pb.h"
-#include "protocol/commands.pb.h"
 
 static std::mutex transact_mutex;
 
@@ -277,11 +276,12 @@ std::string HazkeyServerConnector::getComposingText(
                       << responseVal.error_message();
         return "";
     }
-    if (!responseVal.has_text()) {
-        FCITX_ERROR() << "getComposingText: "
-                      << "Server returned unexpected response";
-        return "";
-    }
+    // old protobuf doesn't have has_text() method.
+    // if (!responseVal.has_text()) {
+    //     FCITX_ERROR() << "getComposingText: "
+    //                   << "Server returned unexpected response";
+    //     return "";
+    // }
     return responseVal.text();
 }
 

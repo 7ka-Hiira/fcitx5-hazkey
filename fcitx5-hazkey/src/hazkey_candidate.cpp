@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "protocol/commands.pb.h"
+#include "commands.pb.h"
 
 namespace fcitx {
 

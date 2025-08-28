@@ -8,9 +8,9 @@
 
 #include <string>
 
+#include "base.pb.h"
+#include "commands.pb.h"
 #include "env_config.h"
-#include "protocol/base.pb.h"
-#include "protocol/commands.pb.h"
 
 class HazkeyServerConnector {
    public:

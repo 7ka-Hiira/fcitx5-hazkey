@@ -4,8 +4,8 @@
 #include <QComboBox>
 #include <QtCore>
 
+#include "base.pb.h"
 #include "config_macros.h"
-#include "protocol/base.pb.h"
 
 #define CONFIG_COMBO_DEFINITION(name, default_index, ...)                      \
     struct name##_Config {                                                     \

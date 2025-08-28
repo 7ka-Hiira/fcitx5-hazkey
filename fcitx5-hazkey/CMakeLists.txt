@@ -15,7 +15,6 @@ set(CMAKE_CXX_STANDARD 20)
 add_definitions(-DFCITX_GETTEXT_DOMAIN=\"fcitx5-hazkey\")
 
 find_package(Protobuf REQUIRED)
-find_package(absl REQUIRED)
 
 find_package(Fcitx5Core REQUIRED)
 find_package(Fcitx5Utils REQUIRED)
