@@ -123,6 +123,17 @@ guard listen(fd, 10) != -1 else {
 }
 
 // FIXME: unglobalize these vars
+let zenzaiAvailable = {
+    guard let handle = dlopen(nil, RTLD_NOW) else {
+        // cannot dlopen current process
+        NSLog("Failed to dlopen current process")
+        return false
+    }
+    defer { dlclose(handle) }
+    // actual llama library shouldn't have this symbol
+    return dlsym(handle, "llama_lib_is_stub") == nil
+}()
+
 let systemResourceDir = URL(fileURLWithPath: systemResourcePath, isDirectory: true)
 var converter = KanaKanjiConverter.init(
     dictionaryURL: systemResourceDir.appendingPathComponent("Dictionary", isDirectory: true))

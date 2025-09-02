@@ -15,7 +15,7 @@ func getCurrentConfig() -> Hazkey_ResponseEnvelope {
 
     let currentConfig = Hazkey_Config_CurrentConfig.with {
         $0.fileHashes = []
-        $0.isZenzaiAvailable = false
+        $0.isZenzaiAvailable = zenzaiAvailable
         $0.xdgConfigHomePath = getConfigDirectory().absoluteString
         $0.profiles = profiles
     }
@@ -142,9 +142,9 @@ func getConfigDirectory() -> URL {
 
 @MainActor
 func genZenzaiMode(leftContext: String) -> ConvertRequestOptions.ZenzaiMode {
-    if currentProfile.zenzaiEnable {
+    if zenzaiAvailable && currentProfile.zenzaiEnable {
         return ConvertRequestOptions.ZenzaiMode.on(
-            weight: systemResourceDir.appendingPathComponent("zenz-v3.gguf", isDirectory: false),
+            weight: systemResourceDir.appendingPathComponent("zenzai.gguf", isDirectory: false),
             inferenceLimit: Int(currentProfile.zenzaiInferLimit),
             requestRichCandidates: currentProfile.useRichCandidates,
             personalizationMode: nil,

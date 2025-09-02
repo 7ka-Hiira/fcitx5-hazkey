@@ -1,5 +1,7 @@
 #include "mainwindow.h"
 
+#include <qlabel.h>
+
 #include <QAbstractButton>
 #include <QCheckBox>
 #include <QDialogButtonBox>
@@ -110,6 +112,17 @@ bool MainWindow::loadCurrentConfig() {
     currentProfile_ = currentConfig_.mutable_profiles(0);
     if (!currentProfile_) {
         return false;
+    }
+
+    if (!currentConfig_.is_zenzai_available()) {
+        ui_->enableZenzai->setEnabled(false);
+        ui_->zenzaiContextualConversion->setEnabled(false);
+        ui_->zenzaiInferenceLimit->setEnabled(false);
+        ui_->zenzaiUserPlofile->setEnabled(false);
+        QLabel *warningLabel =
+            new QLabel("<b>Warning:</b> Zenzai support not installed.");
+        warningLabel->setStyleSheet("background-color: yellow; padding: 5px;");
+        ui_->aiTabScrollContentsLayout->insertWidget(1, warningLabel);
     }
 
     SET_COMBO_FROM_CONFIG(ConfigDefs::AutoConvertMode, ui_->autoConvertion,
