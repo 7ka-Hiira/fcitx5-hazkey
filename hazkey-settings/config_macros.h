@@ -36,7 +36,6 @@
     case index_val:                     \
         return enum_val;
 
-// 設定定義を使った便利マクロ
 #define SET_COMBO_FROM_CONFIG(config_struct, ui_element, enum_value) \
     config_struct::setFromEnum(ui_element, enum_value)
 
