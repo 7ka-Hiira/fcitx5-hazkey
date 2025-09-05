@@ -56,16 +56,25 @@ add_dependencies(build_hazkey_server llama)
 
 # install hazkey-server
 install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/swift-build/${SWIFT_BUILD_TYPE}/hazkey-server
-        DESTINATION ${CMAKE_INSTALL_LIBDIR}/hazkey)
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/hazkey)
+
+# create a symlink of hazkey-server in the binary directory
+install(CODE "file(CREATE_LINK
+    ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/hazkey/hazkey-server
+    ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}/hazkey-server
+    SYMBOLIC
+)")
+
+# install llama stub library
 install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/llama-stub/libllama.so
-        DESTINATION ${CMAKE_INSTALL_LIBDIR}/hazkey/llama-stub)
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/hazkey/llama-stub)
 
 # install dictionary
 if(NOT SKIP_KKC_PATH_UPDATE)
     install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/azooKey_dictionary_storage/Dictionary
-        DESTINATION ${CMAKE_INSTALL_DATADIR}/hazkey)
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATADIR}/hazkey)
 endif()
 
 #install emoji dictionary
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/azooKey_emoji_dictionary_storage/EmojiDictionary/emoji_all_E16.0.txt
-        DESTINATION ${CMAKE_INSTALL_DATADIR}/hazkey)
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATADIR}/hazkey)
