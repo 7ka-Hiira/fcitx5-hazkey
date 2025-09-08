@@ -14,6 +14,9 @@ namespace fcitx {
 FCITX_CONFIGURATION(HazkeyEngineConfig,
                     Option<bool> showTabToSelect{
                         this, "showTabToSelect",
-                        _("Show [Press Tab to Select] indicator"), true};);
+                        _("Show [Press Tab to Select] indicator"), true};
+                    ExternalOption openHazkeySettings{
+                        this, "openHazkeySettings", _("Open Hazkey Settings"),
+                        stringutils::concat("hazkey-settings")};);
 }  // namespace fcitx
 #endif  // _FCITX5_HAZKEY_HAZKEY_CONFIG_H_
