@@ -91,6 +91,15 @@ struct Hazkey_Config_Profile: @unchecked Sendable {
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
+  var serverVersion: String {
+    get {return _storage._serverVersion ?? String()}
+    set {_uniqueStorage()._serverVersion = newValue}
+  }
+  /// Returns true if `serverVersion` has been explicitly set.
+  var hasServerVersion: Bool {return _storage._serverVersion != nil}
+  /// Clears the value of `serverVersion`. Subsequent reads from it will return its default value.
+  mutating func clearServerVersion() {_uniqueStorage()._serverVersion = nil}
+
   var profileName: String {
     get {return _storage._profileName}
     set {_uniqueStorage()._profileName = newValue}
@@ -881,6 +890,7 @@ extension Hazkey_Config_InputTable: SwiftProtobuf.Message, SwiftProtobuf._Messag
 extension Hazkey_Config_Profile: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   static let protoMessageName: String = _protobuf_package + ".Profile"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    4: .standard(proto: "server_version"),
     5: .standard(proto: "profile_name"),
     6: .standard(proto: "profile_id"),
     10: .standard(proto: "use_default_input_ui_settings"),
@@ -910,6 +920,7 @@ extension Hazkey_Config_Profile: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
   ]
 
   fileprivate class _StorageClass {
+    var _serverVersion: String? = nil
     var _profileName: String = String()
     var _profileID: String = String()
     var _useDefaultInputUiSettings: Bool? = nil
@@ -946,6 +957,7 @@ extension Hazkey_Config_Profile: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
     private init() {}
 
     init(copying source: _StorageClass) {
+      _serverVersion = source._serverVersion
       _profileName = source._profileName
       _profileID = source._profileID
       _useDefaultInputUiSettings = source._useDefaultInputUiSettings
@@ -990,6 +1002,7 @@ extension Hazkey_Config_Profile: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
         // allocates stack space for every case branch when no optimizations are
         // enabled. https://github.com/apple/swift-protobuf/issues/1034
         switch fieldNumber {
+        case 4: try { try decoder.decodeSingularStringField(value: &_storage._serverVersion) }()
         case 5: try { try decoder.decodeSingularStringField(value: &_storage._profileName) }()
         case 6: try { try decoder.decodeSingularStringField(value: &_storage._profileID) }()
         case 10: try { try decoder.decodeSingularBoolField(value: &_storage._useDefaultInputUiSettings) }()
@@ -1028,6 +1041,9 @@ extension Hazkey_Config_Profile: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
       // allocates stack space for every if/case branch local when no optimizations
       // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
       // https://github.com/apple/swift-protobuf/issues/1182
+      try { if let v = _storage._serverVersion {
+        try visitor.visitSingularStringField(value: v, fieldNumber: 4)
+      } }()
       if !_storage._profileName.isEmpty {
         try visitor.visitSingularStringField(value: _storage._profileName, fieldNumber: 5)
       }
@@ -1115,6 +1131,7 @@ extension Hazkey_Config_Profile: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
       let storagesAreEqual: Bool = withExtendedLifetime((lhs._storage, rhs._storage)) { (_args: (_StorageClass, _StorageClass)) in
         let _storage = _args.0
         let rhs_storage = _args.1
+        if _storage._serverVersion != rhs_storage._serverVersion {return false}
         if _storage._profileName != rhs_storage._profileName {return false}
         if _storage._profileID != rhs_storage._profileID {return false}
         if _storage._useDefaultInputUiSettings != rhs_storage._useDefaultInputUiSettings {return false}

@@ -80,6 +80,8 @@ message Profile {
         }
     }
 
+    optional string server_version = 4;
+
     string profile_name = 5;
     string profile_id = 6;
 
