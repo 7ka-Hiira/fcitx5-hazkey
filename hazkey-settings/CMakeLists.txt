@@ -28,9 +28,9 @@ set(TS_FILES hazkey-settings_ja_JP.ts)
 
 # Proto files
 set(PROTO_FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/../Protocol/base.proto
-    ${CMAKE_CURRENT_SOURCE_DIR}/../Protocol/commands.proto
-    ${CMAKE_CURRENT_SOURCE_DIR}/../Protocol/config.proto
+    ${CMAKE_CURRENT_SOURCE_DIR}/../protocol/base.proto
+    ${CMAKE_CURRENT_SOURCE_DIR}/../protocol/commands.proto
+    ${CMAKE_CURRENT_SOURCE_DIR}/../protocol/config.proto
 )
 
 set(PROJECT_SOURCES
@@ -55,7 +55,7 @@ if(Protobuf_VERSION VERSION_GREATER_EQUAL "3.15")
         TARGET hazkey-settings
         LANGUAGE cpp
         PROTOS ${PROTO_FILES}
-        IMPORT_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/../Protocol
+        IMPORT_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/../protocol
         PROTOC_OUT_DIR ${CMAKE_CURRENT_BINARY_DIR}
     )
 elseif(Protobuf_VERSION VERSION_GREATER_EQUAL "3.12")
@@ -80,8 +80,8 @@ elseif(Protobuf_VERSION VERSION_GREATER_EQUAL "3.12")
             COMMAND ${Protobuf_PROTOC_EXECUTABLE}
             ARGS --cpp_out=${CMAKE_CURRENT_BINARY_DIR}
                  --experimental_allow_proto3_optional
-                 --proto_path=${CMAKE_CURRENT_SOURCE_DIR}/../Protocol
-                 ${CMAKE_CURRENT_SOURCE_DIR}/../Protocol/${PROTO_NAME}.proto
+                 --proto_path=${CMAKE_CURRENT_SOURCE_DIR}/../protocol
+                 ${CMAKE_CURRENT_SOURCE_DIR}/../protocol/${PROTO_NAME}.proto
             DEPENDS ${PROTO_FILE}
             COMMENT "Generating C++ protobuf files from ${PROTO_FILE}"
             VERBATIM
