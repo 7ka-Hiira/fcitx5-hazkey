@@ -668,75 +668,51 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="inputTableTab">
+     <widget class="QWidget" name="tab">
       <attribute name="title">
-       <string>Input Table</string>
+       <string>Input Style</string>
       </attribute>
-      <layout class="QVBoxLayout" name="inputTableTabLayout">
-       <property name="leftMargin">
-        <number>0</number>
-       </property>
-       <property name="topMargin">
-        <number>0</number>
-       </property>
-       <property name="rightMargin">
-        <number>0</number>
-       </property>
-       <property name="bottomMargin">
-        <number>0</number>
-       </property>
+      <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
-        <widget class="QScrollArea" name="inputTableScrollArea">
-         <property name="widgetResizable">
+        <widget class="QTabWidget" name="inputTableConfigModeTabWidget">
+         <property name="currentIndex">
+          <number>0</number>
+         </property>
+         <property name="documentMode">
           <bool>true</bool>
          </property>
-         <widget class="QWidget" name="inputTabScrollContents">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>624</width>
-            <height>503</height>
-           </rect>
-          </property>
-          <layout class="QVBoxLayout" name="inputTabScrollContentsLayout">
+         <widget class="QWidget" name="inputStyleSimpleModeTab">
+          <attribute name="title">
+           <string>Basic</string>
+          </attribute>
+          <layout class="QVBoxLayout" name="inputTableSimpleModeTabLayout_4">
            <property name="leftMargin">
-            <number>10</number>
+            <number>0</number>
            </property>
            <property name="topMargin">
             <number>10</number>
            </property>
            <property name="rightMargin">
-            <number>10</number>
+            <number>0</number>
            </property>
            <property name="bottomMargin">
-            <number>10</number>
+            <number>0</number>
            </property>
            <item>
-            <widget class="QTabWidget" name="inputTableConfigModeTabWidget">
-             <property name="currentIndex">
-              <number>0</number>
-             </property>
-             <property name="documentMode">
+            <widget class="QScrollArea" name="inputStyleSimpleModeScrollArea">
+             <property name="widgetResizable">
               <bool>true</bool>
              </property>
-             <widget class="QWidget" name="inputTableSimpleModeTab">
-              <attribute name="title">
-               <string>Basic</string>
-              </attribute>
-              <layout class="QVBoxLayout" name="inputTableSimpleModeTabLayout">
-               <property name="leftMargin">
-                <number>0</number>
-               </property>
-               <property name="topMargin">
-                <number>10</number>
-               </property>
-               <property name="rightMargin">
-                <number>0</number>
-               </property>
-               <property name="bottomMargin">
-                <number>0</number>
-               </property>
+             <widget class="QWidget" name="inputStyleSimpleModeScrollAreaContents">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>608</width>
+                <height>445</height>
+               </rect>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout">
                <item>
                 <layout class="QHBoxLayout" name="inputStylesHeader">
                  <property name="topMargin">
@@ -784,11 +760,84 @@
                  <property name="spacing">
                   <number>12</number>
                  </property>
-                 <item row="0" column="0">
-                  <widget class="QLabel" name="mainInputStyleLabel">
+                 <item row="1" column="1">
+                  <widget class="QComboBox" name="punctuationStyle">
+                   <item>
+                    <property name="text">
+                     <string>Kuten+Toten: 。、</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Period+Comma: ．，</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Kuten+Comma: 。，</string>
+                    </property>
+                   </item>
+                  </widget>
+                 </item>
+                 <item row="1" column="0">
+                  <widget class="QLabel" name="punctuationStyleLabel">
                    <property name="text">
-                    <string>Main input style</string>
+                    <string>Punctuation style</string>
                    </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="0">
+                  <widget class="QLabel" name="spaceStyle">
+                   <property name="text">
+                    <string>Space style</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="1">
+                  <widget class="QComboBox" name="numberStyle">
+                   <item>
+                    <property name="text">
+                     <string>Fullwidth: １２３４５</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Halfwidth: 12345</string>
+                    </property>
+                   </item>
+                  </widget>
+                 </item>
+                 <item row="4" column="1">
+                  <widget class="QComboBox" name="spaceStyleLabel">
+                   <item>
+                    <property name="text">
+                     <string>Fullwidth: &quot;　&quot;</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Halfwidth: &quot; &quot;</string>
+                    </property>
+                   </item>
+                  </widget>
+                 </item>
+                 <item row="3" column="1">
+                  <widget class="QComboBox" name="commonSymbolStyle">
+                   <item>
+                    <property name="text">
+                     <string>Fullwidth Japanese: ！＃＠・「」</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Fullwidth Direct : ！＃＠／［］</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Halfwidth Direct: !#@/[]</string>
+                    </property>
+                   </item>
                   </widget>
                  </item>
                  <item row="2" column="0">
@@ -798,31 +847,10 @@
                    </property>
                   </widget>
                  </item>
-                 <item row="2" column="1">
-                  <widget class="QComboBox" name="numberStyle">
-                   <item>
-                    <property name="text">
-                     <string>Fullwidth</string>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string>Halfwidth</string>
-                    </property>
-                   </item>
-                  </widget>
-                 </item>
                  <item row="3" column="0">
-                  <widget class="QLabel" name="symbolStyleLabel">
+                  <widget class="QLabel" name="commonSymbolStyleLabel">
                    <property name="text">
                     <string>Symbol style</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="0">
-                  <widget class="QLabel" name="punctuationStyleLabel">
-                   <property name="text">
-                    <string>Punctuation style</string>
                    </property>
                   </widget>
                  </item>
@@ -835,68 +863,16 @@
                    </item>
                    <item>
                     <property name="text">
-                     <string>Kana (JIS)</string>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string>AZIK</string>
+                     <string>JIS Kana</string>
                     </property>
                    </item>
                   </widget>
                  </item>
-                 <item row="3" column="1">
-                  <widget class="QComboBox" name="symbolStyle">
-                   <item>
-                    <property name="text">
-                     <string>Fullwidth</string>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string>Halfwidth</string>
-                    </property>
-                   </item>
-                  </widget>
-                 </item>
-                 <item row="1" column="1">
-                  <widget class="QComboBox" name="punctuationStyle">
-                   <item>
-                    <property name="text">
-                     <string>。、(Kuten/Toten)</string>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string>．，(Period/Comma)</string>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string>。，(Kuten/Comma)</string>
-                    </property>
-                   </item>
-                  </widget>
-                 </item>
-                 <item row="4" column="0">
-                  <widget class="QLabel" name="spaceStyle">
+                 <item row="0" column="0">
+                  <widget class="QLabel" name="mainInputStyleLabel">
                    <property name="text">
-                    <string>Space style</string>
+                    <string>Main input style</string>
                    </property>
-                  </widget>
-                 </item>
-                 <item row="4" column="1">
-                  <widget class="QComboBox" name="spaceStyleLabel">
-                   <item>
-                    <property name="text">
-                     <string>Fullwidth</string>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string>Halfwidth</string>
-                    </property>
-                   </item>
                   </widget>
                  </item>
                 </layout>
@@ -916,24 +892,402 @@
                </item>
               </layout>
              </widget>
-             <widget class="QWidget" name="inputTableAdvancedModeTab">
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="inputTableAdvancedModeTab">
+          <attribute name="title">
+           <string>Advanced</string>
+          </attribute>
+          <layout class="QVBoxLayout" name="inputTableAdvancedModeTabLayout_4">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QTabWidget" name="advancedTabTabWidget">
+             <property name="currentIndex">
+              <number>0</number>
+             </property>
+             <widget class="QWidget" name="advancedTabTabWidgetKeymapPage" native="true">
               <attribute name="title">
-               <string>Advanced</string>
+               <string>Keymap</string>
               </attribute>
-              <layout class="QGridLayout" name="inputTableAdvancedModeTabLayout">
-               <property name="leftMargin">
-                <number>0</number>
-               </property>
-               <property name="topMargin">
-                <number>10</number>
-               </property>
-               <property name="rightMargin">
-                <number>0</number>
-               </property>
-               <property name="bottomMargin">
-                <number>0</number>
-               </property>
-               <item row="3" column="0" colspan="3">
+              <layout class="QVBoxLayout" name="advancedKeymapPageLayout">
+               <item>
+                <layout class="QGridLayout" name="keymapSelectionGrid">
+                 <property name="leftMargin">
+                  <number>10</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>10</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>10</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>10</number>
+                 </property>
+                 <property name="spacing">
+                  <number>10</number>
+                 </property>
+                 <item row="1" column="1">
+                  <layout class="QVBoxLayout" name="keymapManageButtons">
+                   <property name="spacing">
+                    <number>5</number>
+                   </property>
+                   <item>
+                    <spacer name="keymapManageTopSpacer">
+                     <property name="orientation">
+                      <enum>Qt::Orientation::Vertical</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>0</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                   <item>
+                    <widget class="QToolButton" name="keymapMoveUp">
+                     <property name="minimumSize">
+                      <size>
+                       <width>80</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="text">
+                      <string>Move Up</string>
+                     </property>
+                     <property name="icon">
+                      <iconset theme="QIcon::ThemeIcon::GoUp"/>
+                     </property>
+                     <property name="toolButtonStyle">
+                      <enum>Qt::ToolButtonStyle::ToolButtonTextUnderIcon</enum>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QToolButton" name="keymapMoveDown">
+                     <property name="minimumSize">
+                      <size>
+                       <width>80</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="text">
+                      <string>Move Down</string>
+                     </property>
+                     <property name="icon">
+                      <iconset theme="QIcon::ThemeIcon::GoDown"/>
+                     </property>
+                     <property name="toolButtonStyle">
+                      <enum>Qt::ToolButtonStyle::ToolButtonTextUnderIcon</enum>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="Line" name="keymapManageSeparator">
+                     <property name="orientation">
+                      <enum>Qt::Orientation::Horizontal</enum>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QToolButton" name="enableKeymap">
+                     <property name="minimumSize">
+                      <size>
+                       <width>80</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="text">
+                      <string>Enable</string>
+                     </property>
+                     <property name="icon">
+                      <iconset theme="QIcon::ThemeIcon::GoPrevious"/>
+                     </property>
+                     <property name="toolButtonStyle">
+                      <enum>Qt::ToolButtonStyle::ToolButtonTextUnderIcon</enum>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QToolButton" name="disableKeymap">
+                     <property name="minimumSize">
+                      <size>
+                       <width>80</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="text">
+                      <string>Disable</string>
+                     </property>
+                     <property name="icon">
+                      <iconset theme="QIcon::ThemeIcon::GoNext"/>
+                     </property>
+                     <property name="toolButtonStyle">
+                      <enum>Qt::ToolButtonStyle::ToolButtonTextUnderIcon</enum>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="keymapManageBottomSpacer">
+                     <property name="orientation">
+                      <enum>Qt::Orientation::Vertical</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>0</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                  </layout>
+                 </item>
+                 <item row="1" column="2">
+                  <widget class="QListWidget" name="availableKeymapList">
+                   <property name="selectionMode">
+                    <enum>QAbstractItemView::SelectionMode::SingleSelection</enum>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="2">
+                  <widget class="QLabel" name="availableKeymapLabel">
+                   <property name="text">
+                    <string>Available keymaps:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="0">
+                  <widget class="QListWidget" name="enabledKeymapList">
+                   <property name="dragEnabled">
+                    <bool>true</bool>
+                   </property>
+                   <property name="dragDropMode">
+                    <enum>QAbstractItemView::DragDropMode::InternalMove</enum>
+                   </property>
+                   <property name="defaultDropAction">
+                    <enum>Qt::DropAction::MoveAction</enum>
+                   </property>
+                   <property name="selectionMode">
+                    <enum>QAbstractItemView::SelectionMode::SingleSelection</enum>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="0">
+                  <widget class="QLabel" name="enabledKeymapLabel">
+                   <property name="text">
+                    <string>Enabled keymaps:</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <widget class="QLabel" name="keymapAdvancedNote">
+                 <property name="text">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700; font-style:italic;&quot;&gt;Note:&lt;/span&gt;&lt;span style=&quot; font-style:italic;&quot;&gt; You can use custom Keymaps in TSV format, located in &lt;/span&gt;&lt;span style=&quot; font-weight:700; font-style:italic;&quot;&gt;$XDG_CONFIG_HOME/hazkey/keymap&lt;/span&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;. &lt;/span&gt;&lt;a href=&quot;https://hazkey.hiira.dev/docs/input-style#Keymap&quot;&gt;&lt;span style=&quot; font-style:italic; text-decoration: underline; color:#2980b9;&quot;&gt;More info...&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                 <property name="wordWrap">
+                  <bool>true</bool>
+                 </property>
+                 <property name="margin">
+                  <number>10</number>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+             <widget class="QWidget" name="advancedTabTabWidgetTablePage" native="true">
+              <attribute name="title">
+               <string>Input Table</string>
+              </attribute>
+              <layout class="QVBoxLayout" name="advancedInputTablePageLayout">
+               <item>
+                <layout class="QGridLayout" name="tableSelectionGrid">
+                 <property name="leftMargin">
+                  <number>10</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>10</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>10</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>10</number>
+                 </property>
+                 <property name="spacing">
+                  <number>10</number>
+                 </property>
+                 <item row="0" column="0">
+                  <widget class="QLabel" name="enabledTableLabel">
+                   <property name="text">
+                    <string>Enabled tables:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="2">
+                  <widget class="QLabel" name="availableTableLabel">
+                   <property name="text">
+                    <string>Available tables:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="0">
+                  <widget class="QListWidget" name="enabledTableList">
+                   <property name="dragEnabled">
+                    <bool>true</bool>
+                   </property>
+                   <property name="dragDropMode">
+                    <enum>QAbstractItemView::DragDropMode::InternalMove</enum>
+                   </property>
+                   <property name="defaultDropAction">
+                    <enum>Qt::DropAction::MoveAction</enum>
+                   </property>
+                   <property name="selectionMode">
+                    <enum>QAbstractItemView::SelectionMode::SingleSelection</enum>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="1">
+                  <layout class="QVBoxLayout" name="tableManageButtons">
+                   <property name="spacing">
+                    <number>5</number>
+                   </property>
+                   <item>
+                    <spacer name="tableManageTopSpacer">
+                     <property name="orientation">
+                      <enum>Qt::Orientation::Vertical</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>0</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                   <item>
+                    <widget class="QToolButton" name="tableMoveUp">
+                     <property name="minimumSize">
+                      <size>
+                       <width>80</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="text">
+                      <string>Move Up</string>
+                     </property>
+                     <property name="icon">
+                      <iconset theme="QIcon::ThemeIcon::GoUp"/>
+                     </property>
+                     <property name="toolButtonStyle">
+                      <enum>Qt::ToolButtonStyle::ToolButtonTextUnderIcon</enum>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QToolButton" name="tableMoveDown">
+                     <property name="minimumSize">
+                      <size>
+                       <width>80</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="text">
+                      <string>Move Down</string>
+                     </property>
+                     <property name="icon">
+                      <iconset theme="QIcon::ThemeIcon::GoDown"/>
+                     </property>
+                     <property name="toolButtonStyle">
+                      <enum>Qt::ToolButtonStyle::ToolButtonTextUnderIcon</enum>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="Line" name="tableManageSeparator">
+                     <property name="orientation">
+                      <enum>Qt::Orientation::Horizontal</enum>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QToolButton" name="enableTable">
+                     <property name="minimumSize">
+                      <size>
+                       <width>80</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="text">
+                      <string>Enable</string>
+                     </property>
+                     <property name="icon">
+                      <iconset theme="QIcon::ThemeIcon::GoPrevious"/>
+                     </property>
+                     <property name="toolButtonStyle">
+                      <enum>Qt::ToolButtonStyle::ToolButtonTextUnderIcon</enum>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QToolButton" name="disableTable">
+                     <property name="minimumSize">
+                      <size>
+                       <width>80</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="text">
+                      <string>Disable</string>
+                     </property>
+                     <property name="icon">
+                      <iconset theme="QIcon::ThemeIcon::GoNext"/>
+                     </property>
+                     <property name="toolButtonStyle">
+                      <enum>Qt::ToolButtonStyle::ToolButtonTextUnderIcon</enum>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="tableManageBottomSpacer">
+                     <property name="orientation">
+                      <enum>Qt::Orientation::Vertical</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>0</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                  </layout>
+                 </item>
+                 <item row="1" column="2">
+                  <widget class="QListWidget" name="availableTableList">
+                   <property name="selectionMode">
+                    <enum>QAbstractItemView::SelectionMode::SingleSelection</enum>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
                 <widget class="QLabel" name="inputTableAdvancedNote">
                  <property name="font">
                   <font>
@@ -941,98 +1295,13 @@
                   </font>
                  </property>
                  <property name="text">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Note:&lt;/span&gt; You can use custom input tables in TSV format, located in &lt;span style=&quot; font-weight:700;&quot;&gt;$XDG_CONFIG_HOME/hazkey/table&lt;/span&gt;. &lt;a href=&quot;https://hazkey.hiira.dev/docs/input-tables&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;More info...&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Note:&lt;/span&gt; You can use custom input tables in TSV format, located in &lt;span style=&quot; font-weight:700;&quot;&gt;$XDG_CONFIG_HOME/hazkey/table&lt;/span&gt;. &lt;a href=&quot;https://hazkey.hiira.dev/docs/input-style#InputTable&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;More info...&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                  <property name="wordWrap">
                   <bool>true</bool>
                  </property>
-                </widget>
-               </item>
-               <item row="1" column="1">
-                <layout class="QVBoxLayout" name="tableManageGrid">
-                 <item>
-                  <spacer name="tableManageTopSpacer">
-                   <property name="orientation">
-                    <enum>Qt::Orientation::Vertical</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>20</width>
-                     <height>40</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                 <item>
-                  <widget class="QToolButton" name="tableMoveUp">
-                   <property name="icon">
-                    <iconset theme="QIcon::ThemeIcon::GoUp"/>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QToolButton" name="enableTable">
-                   <property name="icon">
-                    <iconset theme="QIcon::ThemeIcon::GoPrevious"/>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QToolButton" name="disableTable">
-                   <property name="icon">
-                    <iconset theme="QIcon::ThemeIcon::GoNext"/>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QToolButton" name="tableMoveDown">
-                   <property name="icon">
-                    <iconset theme="QIcon::ThemeIcon::GoDown"/>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <spacer name="tableManageBottomSpacer">
-                   <property name="orientation">
-                    <enum>Qt::Orientation::Vertical</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>20</width>
-                     <height>40</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                </layout>
-               </item>
-               <item row="0" column="2">
-                <widget class="QLabel" name="availableTableLabel">
-                 <property name="text">
-                  <string>Available tables:</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="0">
-                <widget class="QLabel" name="enabledTableLabel">
-                 <property name="text">
-                  <string>Enabled tables:</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="2">
-                <widget class="QListWidget" name="availableTableList"/>
-               </item>
-               <item row="1" column="0">
-                <widget class="QListWidget" name="enabledTableList">
-                 <property name="dragEnabled">
-                  <bool>true</bool>
-                 </property>
-                 <property name="dragDropMode">
-                  <enum>QAbstractItemView::DragDropMode::InternalMove</enum>
-                 </property>
-                 <property name="defaultDropAction">
-                  <enum>Qt::DropAction::MoveAction</enum>
+                 <property name="margin">
+                  <number>10</number>
                  </property>
                 </widget>
                </item>

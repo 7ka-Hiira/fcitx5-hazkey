@@ -26,21 +26,28 @@ import SwiftUtils
 @MainActor func inputChar(
     inputString: String, isDirect: Bool
 ) -> Hazkey_ResponseEnvelope {
-    guard var inputUnicode = inputString.unicodeScalars.first else {
+    guard let inputChar = inputString.first else {
         return Hazkey_ResponseEnvelope.with {
             $0.status = .failed
             $0.errorMessage = "failed to get first unicode character"
         }
     }
-
     if !isDirect {
-        // convert katakana to hiragana
-        if (0x30A0...0x30F3).contains(inputUnicode.value) {
-            inputUnicode = UnicodeScalar(inputUnicode.value - 96)!
+        let piece: InputPiece
+        if let (intentionChar, overrideInputChar) = keymap[inputChar] {
+            piece = .key(
+                intention: intentionChar, input: overrideInputChar ?? inputChar, modifiers: [])
+        } else {
+            piece = .character(inputChar)
         }
-        composingText.value.insertAtCursorPosition(String(inputUnicode), inputStyle: .roman2kana)
+
+        composingText.value.insertAtCursorPosition([
+            ComposingText.InputElement.init(
+                piece: piece,
+                inputStyle: .mapped(id: .tableName(currentTableName)))
+        ])
     } else {
-        composingText.value.insertAtCursorPosition(String(inputUnicode), inputStyle: .direct)
+        composingText.value.insertAtCursorPosition(String(inputChar), inputStyle: .direct)
     }
     return Hazkey_ResponseEnvelope.with { $0.status = .success }
 }

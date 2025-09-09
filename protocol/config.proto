@@ -13,6 +13,12 @@ message FileHash {
     ConfigFileType type = 3;
 }
 
+message Keymap {
+    string name = 1;
+    bool is_built_in = 2;
+    string filename = 3;
+}
+
 message InputTable {
     string name = 1;
     bool is_built_in = 2;
@@ -51,6 +57,12 @@ message Profile {
         optional bool hazkey_version = 7;
         optional bool halfwidth_katakana = 50;
         optional bool extended_emoji = 51;
+    }
+
+    message EnabledKeymap {
+        optional string name = 1;
+        optional bool is_built_in = 2;
+        optional string filename = 3;
     }
 
     message EnabledInputTable {
@@ -104,8 +116,11 @@ message Profile {
     optional bool use_default_special_conversion_settings = 40;
     optional SpecialConversionMode special_conversion_mode = 41;
 
-    optional bool use_default_table_settings = 50;
-    repeated EnabledInputTable enabled_tables = 51;
+    optional bool use_default_keymap_settings = 50;
+    repeated EnabledKeymap enabled_keymaps = 51;
+
+    optional bool use_default_table_settings = 55;
+    repeated EnabledInputTable enabled_tables = 56;
 
     optional bool use_default_zenzai_settings = 100;
     optional bool zenzai_enable = 101;
@@ -136,7 +151,8 @@ message ClearAllHistory {
 message CurrentConfig {
     repeated FileHash file_hashes = 1;
     repeated Profile profiles = 2;
-    repeated InputTable available_tables = 3;
-    bool is_zenzai_available = 4;
-    string xdg_config_home_path = 5;
+    repeated Keymap available_keymaps = 3;
+    repeated InputTable available_tables = 4;
+    bool is_zenzai_available = 5;
+    string xdg_config_home_path = 6;
 }

@@ -152,6 +152,12 @@ do {
 // TODO: add [0] out of range handling
 var currentProfile = profiles[0]
 
+var keymap = loadKeymap()
+
+var currentTableName = UUID().uuidString
+
+loadInputTable(tableName: currentTableName)
+
 var baseConvertRequestOptions = genBaseConvertRequestOptions()
 // set non-blocking
 var flags = fcntl(fd, F_GETFL, 0)

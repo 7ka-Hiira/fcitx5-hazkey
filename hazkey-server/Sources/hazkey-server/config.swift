@@ -2,6 +2,34 @@ import Foundation
 import KanaKanjiConverterModule
 import SwiftProtobuf
 
+let KEYMAP_FILE_SIZE_LIMIT = 1024 * 1024  //1MB
+let TABLE_FILE_SIZE_LIMIT = 1024 * 1024  //1MB
+
+let builtInKeymaps = [
+    "Fullwidth Period",
+    "Fullwidth Comma",
+    "Japanese Symbol",
+    "Fullwidth Symbol",
+    "Fullwidth Number",
+].map { name in
+    Hazkey_Config_Keymap.with {
+        $0.name = name
+        $0.isBuiltIn = true
+        $0.filename = name
+    }
+}
+
+let builtInInputTables = [
+    "Romaji",
+    "Kana",
+].map { name in
+    Hazkey_Config_InputTable.with {
+        $0.name = name
+        $0.isBuiltIn = true
+        $0.filename = name
+    }
+}
+
 func getCurrentConfig() -> Hazkey_ResponseEnvelope {
     let profiles: [Hazkey_Config_Profile]
     do {
@@ -13,10 +41,86 @@ func getCurrentConfig() -> Hazkey_ResponseEnvelope {
         }
     }
 
+    let userKeymapDir = getConfigDirectory().appendingPathComponent(
+        "keymap", isDirectory: true
+    )
+    var keymaps = builtInKeymaps
+    do {
+        try FileManager.default.createDirectory(
+            at: userKeymapDir, withIntermediateDirectories: true)
+        let fileURLs = try FileManager.default.contentsOfDirectory(
+            at: userKeymapDir,
+            includingPropertiesForKeys: [.fileSizeKey],
+            options: [.skipsHiddenFiles]
+        )
+
+        let keymapFiles = try fileURLs.filter { url in
+            guard url.pathExtension.lowercased() == "tsv" else { return false }
+            let attrs = try url.resourceValues(forKeys: [.fileSizeKey])
+            if let size = attrs.fileSize {
+                return size < KEYMAP_FILE_SIZE_LIMIT
+            }
+            return false
+        }
+
+        for file in keymapFiles {
+            keymaps.append(
+                Hazkey_Config_Keymap.with {
+                    $0.name = file.deletingPathExtension().lastPathComponent
+                    $0.isBuiltIn = false
+                    $0.filename = file.lastPathComponent
+                })
+        }
+    } catch {
+        return Hazkey_ResponseEnvelope.with {
+            $0.status = .failed
+            $0.errorMessage = "Failed to get user keymap files: \(error)"
+        }
+    }
+
+    let userInputTableDir = getConfigDirectory().appendingPathComponent(
+        "table", isDirectory: true
+    )
+    var inputTables = builtInInputTables
+    do {
+        try FileManager.default.createDirectory(
+            at: userInputTableDir, withIntermediateDirectories: true)
+        let fileURLs = try FileManager.default.contentsOfDirectory(
+            at: userInputTableDir,
+            includingPropertiesForKeys: [.fileSizeKey],
+            options: [.skipsHiddenFiles]
+        )
+
+        let inputTableFiles = try fileURLs.filter { url in
+            guard url.pathExtension.lowercased() == "tsv" else { return false }
+            let attrs = try url.resourceValues(forKeys: [.fileSizeKey])
+            if let size = attrs.fileSize {
+                return size < TABLE_FILE_SIZE_LIMIT
+            }
+            return false
+        }
+
+        for file in inputTableFiles {
+            inputTables.append(
+                Hazkey_Config_InputTable.with {
+                    $0.name = file.deletingPathExtension().lastPathComponent
+                    $0.isBuiltIn = false
+                    $0.filename = file.lastPathComponent
+                })
+        }
+    } catch {
+        return Hazkey_ResponseEnvelope.with {
+            $0.status = .failed
+            $0.errorMessage = "Failed to get user input table files: \(error)"
+        }
+    }
+
     let currentConfig = Hazkey_Config_CurrentConfig.with {
         $0.fileHashes = []
         $0.isZenzaiAvailable = zenzaiAvailable
         $0.xdgConfigHomePath = getConfigDirectory().absoluteString
+        $0.availableKeymaps = keymaps
+        $0.availableTables = inputTables
         $0.profiles = profiles
     }
     return Hazkey_ResponseEnvelope.with {
@@ -25,6 +129,7 @@ func getCurrentConfig() -> Hazkey_ResponseEnvelope {
     }
 }
 
+@MainActor
 func setCurrentConfig(
     _ hashes: [Hazkey_Config_FileHash],
     _ profiles: [Hazkey_Config_Profile]
@@ -57,13 +162,38 @@ func genDefaultConfig() -> Hazkey_Config_Profile {
     newConf.useRichCandidates = false
     newConf.useInputHistory = true
     newConf.stopStoreNewHistory = false
+    newConf.enabledKeymaps = [
+        Hazkey_Config_Profile.EnabledKeymap.with {
+            $0.name = "Fullwidth Number"
+            $0.isBuiltIn = true
+            $0.filename = "Fullwidth Number"
+        },
+        Hazkey_Config_Profile.EnabledKeymap.with {
+            $0.name = "Japanese Symbol"
+            $0.isBuiltIn = true
+            $0.filename = "Japanese Symbol"
+        },
+        Hazkey_Config_Profile.EnabledKeymap.with {
+            $0.name = "Fullwidth Symbol"
+            $0.isBuiltIn = true
+            $0.filename = "Fullwidth Symbol"
+        },
+    ]
+    newConf.enabledTables = [
+        Hazkey_Config_Profile.EnabledInputTable.with {
+            $0.name = "Romaji"
+            $0.isBuiltIn = true
+            $0.filename = "Romaji"
+        }
+    ]
     newConf.zenzaiEnable = true
-    newConf.zenzaiInferLimit = 1
+    newConf.zenzaiInferLimit = 10
     newConf.zenzaiContextualMode = true
     newConf.zenzaiVersionConfig.v3 = Hazkey_Config_Profile.ZenzaiVersionConfig.V3.init()
     return newConf
 }
 
+@MainActor
 func saveConfig(_ profiles: [Hazkey_Config_Profile]) throws {
     let configDir = getConfigDirectory()
     let configPath = configDir.appendingPathComponent("config.json")
@@ -91,6 +221,10 @@ func saveConfig(_ profiles: [Hazkey_Config_Profile]) throws {
     try jsonData.write(to: configPath)
 
     NSLog("Config saved to: \(configPath.path)")
+    keymap = loadKeymap()
+    let newTableName = UUID().uuidString
+    loadInputTable(tableName: newTableName)
+    currentTableName = newTableName
 }
 
 func loadConfig() throws -> [Hazkey_Config_Profile] {

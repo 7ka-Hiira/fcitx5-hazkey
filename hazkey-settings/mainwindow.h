@@ -23,11 +23,31 @@ class MainWindow : public QWidget {
     void onButtonClicked(QAbstractButton *button);
     void onApply();
     void onUseHistoryToggled(bool enabled);
+    void onEnableTable();
+    void onDisableTable();
+    void onTableMoveUp();
+    void onTableMoveDown();
+    void onEnabledTableSelectionChanged();
+    void onAvailableTableSelectionChanged();
+    void onEnableKeymap();
+    void onDisableKeymap();
+    void onKeymapMoveUp();
+    void onKeymapMoveDown();
+    void onEnabledKeymapSelectionChanged();
+    void onAvailableKeymapSelectionChanged();
 
    private:
     void connectSignals();
     bool loadCurrentConfig();
     bool saveCurrentConfig();
+    void setupInputTableLists();
+    void loadInputTables();
+    void saveInputTables();
+    void updateTableButtonStates();
+    void setupKeymapLists();
+    void loadKeymaps();
+    void saveKeymaps();
+    void updateKeymapButtonStates();
     Ui::MainWindow *ui_;
     ServerConnector server_;
     hazkey::config::CurrentConfig currentConfig_;
