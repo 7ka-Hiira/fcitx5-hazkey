@@ -106,12 +106,14 @@ target_link_libraries(hazkey-settings PRIVATE
 
 include(GNUInstallDirs)
 install(TARGETS hazkey-settings
-    RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/hazkey
+    RUNTIME DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}/hazkey
 )
 
 # create a symlink in the binary directory
-install(CODE "file(CREATE_LINK
-    ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/hazkey/hazkey-settings
-    ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}/hazkey-settings
-    SYMBOLIC
-)")
+install(CODE "
+    file(MAKE_DIRECTORY \"\$ENV{DESTDIR}${CMAKE_INSTALL_FULL_BINDIR}\")
+    file(CREATE_LINK
+    \"${CMAKE_INSTALL_FULL_LIBDIR}/hazkey/hazkey-settings\"
+    \"\$ENV{DESTDIR}${CMAKE_INSTALL_FULL_BINDIR}/hazkey-settings\"
+    SYMBOLIC)
+")
