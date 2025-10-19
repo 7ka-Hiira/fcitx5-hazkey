@@ -2,6 +2,11 @@ import Foundation
 import KanaKanjiConverterModule
 import SwiftUtils
 
+let subModeEntryPointChar: [Character] = [
+    "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P",
+    "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
+]
+
 @MainActor func setContext(
     surroundingText: String, anchorIndex: Int
 ) -> Hazkey_ResponseEnvelope {
@@ -31,7 +36,8 @@ import SwiftUtils
             $0.errorMessage = "failed to get first unicode character"
         }
     }
-    isSubInputMode = isSubInputMode || isShiftPressedAlone
+    isSubInputMode =
+        isSubInputMode || (isShiftPressedAlone && subModeEntryPointChar.contains(inputChar))
     isShiftPressedAlone = false
     if isSubInputMode {
         composingText.value.insertAtCursorPosition(String(inputChar), inputStyle: .direct)
