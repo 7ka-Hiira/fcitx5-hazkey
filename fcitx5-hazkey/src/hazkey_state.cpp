@@ -221,10 +221,14 @@ void HazkeyState::candidateKeyEvent(
     std::vector<std::string> preedit;
     switch (keysym) {
         case FcitxKey_Right:
-            candidateList->nextPage();
+            if (event.key().states() == KeyState::Alt) {
+                candidateList->nextPage();
+            }
             break;
         case FcitxKey_Left:
-            candidateList->prevPage();
+            if (event.key().states() == KeyState::Alt) {
+                candidateList->prevPage();
+            }
             break;
         case FcitxKey_Return:
             candidateCompleteHandler(candidateList);
@@ -286,8 +290,8 @@ void HazkeyState::candidateCompleteHandler(
     std::shared_ptr<HazkeyCandidateList> candidateList) {
     auto preedit =
         candidateList->getCandidate(candidateList->cursorIndex()).getPreedit();
-    // hazkey cannot get surroundingText correctly immediately after committing
-    // so call it with appendText before committing.
+    // hazkey cannot get surroundingText correctly immediately after
+    // committing so call it with appendText before committing.
     updateSurroundingText(preedit[0]);
     engine_->server().completePrefix(candidateList->globalCursorIndex());
     ic_->commitString(preedit[0]);
