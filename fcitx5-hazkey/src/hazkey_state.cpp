@@ -32,6 +32,8 @@ bool HazkeyState::isInputableEvent(const KeyEvent &event) {
     return false;
 }
 
+void HazkeyState::commitPreedit() { preedit_.commitPreedit(); }
+
 void HazkeyState::keyEvent(KeyEvent &event) {
     FCITX_DEBUG() << "HazkeyState keyEvent";
 

@@ -19,6 +19,7 @@ class HazkeyState : public InputContextProperty {
     // complete the prefix and remove from composingText_
     void candidateCompleteHandler(
         std::shared_ptr<HazkeyCandidateList> candidateList);
+    void commitPreedit();
     // handle key event. call candidateKeyEvent or preeditNoPredictKeyEvent
     // depends on the current mode
     void keyEvent(KeyEvent &keyEvent);
