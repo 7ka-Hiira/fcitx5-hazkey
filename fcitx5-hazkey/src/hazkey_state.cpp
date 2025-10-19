@@ -1,5 +1,6 @@
 #include "hazkey_state.h"
 
+#include <fcitx-utils/key.h>
 #include <fcitx-utils/log.h>
 #include <fcitx/candidatelist.h>
 
@@ -8,6 +9,7 @@
 #include <vector>
 
 #include "commands.pb.h"
+#include "fcitx-utils/keysym.h"
 #include "hazkey_candidate.h"
 #include "hazkey_engine.h"
 #include "hazkey_server_connector.h"
@@ -33,28 +35,9 @@ bool HazkeyState::isInputableEvent(const KeyEvent &event) {
 void HazkeyState::keyEvent(KeyEvent &event) {
     FCITX_DEBUG() << "HazkeyState keyEvent";
 
-    // Alphabet + Shift to enter direct input mode
-    // Pressing only Shift key to toggle direct input mode
-    if (!event.isRelease() &&
-        // FcitxKey_A-Z means shifted LAZ keys, enter direct mode even if shift
-        // is not pressed alone
-        // Ctrl & Alt also make alphabets Upper case so we need to check
-        // Shift state can't be detected
-        (event.key().sym() >= FcitxKey_A && event.key().sym() <= FcitxKey_Z &&
-         event.key().states() == KeyState::NoState)) {
-        isDirectInputMode_ = true;
-        isShiftPressedAlone_ = false;
-    } else if (event.isRelease() &&
-               (event.key().sym() == FcitxKey_Shift_L ||
-                event.key().sym() == FcitxKey_Shift_R) &&
-               isShiftPressedAlone_) {
-        isDirectInputMode_ = !isDirectInputMode_;
-        isShiftPressedAlone_ = false;
-    } else if (!event.isRelease() && isShiftPressedAlone_) {
-        isShiftPressedAlone_ = false;
-    } else if (!event.isRelease() && (event.key().sym() == FcitxKey_Shift_L ||
-                                      event.key().sym() == FcitxKey_Shift_R)) {
-        isShiftPressedAlone_ = true;
+    if (event.key().sym() == FcitxKey_Shift_L ||
+        event.key().sym() == FcitxKey_Shift_R) {
+        engine_->server().shiftKeyEvent(event.isRelease());
     }
 
     auto candidateList = std::dynamic_pointer_cast<HazkeyCandidateList>(
@@ -100,27 +83,25 @@ void HazkeyState::noPreeditKeyEvent(KeyEvent &event) {
 
     switch (keysym) {
         case FcitxKey_space:
-            if (!isDirectInputMode_ && key.states() != KeyState::Shift) {
-                engine_->server().inputChar(" ", true);
-                preedit_.setSimplePreedit(engine_->server().getComposingText(
+            if (key.states() != KeyState::Shift) {
+                ic_->commitString(" ");
+            } else {
+                engine_->server().inputChar(" ");
+                ic_->commitString(engine_->server().getComposingText(
                     hazkey::commands::GetComposingString_CharType::
                         GetComposingString_CharType_HIRAGANA,
                     ""));
-                preedit_.commitPreedit();
                 reset();
-            } else {
-                ic_->commitString(" ");
             }
             break;
         default:
             if (isInputableEvent(event)) {
                 updateSurroundingText();
-                engine_->server().inputChar(Key::keySymToUTF8(keysym),
-                                            isDirectInputMode_);
+                engine_->server().inputChar(Key::keySymToUTF8(keysym));
                 showPreeditCandidateList();
                 setHiraganaAUX();
             } else {
-                isDirectInputMode_ = false;
+                // isDirectInputMode_ = false;
                 return event.filter();
             }
             break;
@@ -201,8 +182,7 @@ void HazkeyState::preeditKeyEvent(
                     preedit_.commitPreedit();
                     reset();
                 }
-                engine_->server().inputChar(Key::keySymToUTF8(keysym),
-                                            isDirectInputMode_);
+                engine_->server().inputChar(Key::keySymToUTF8(keysym));
                 showPreeditCandidateList();
             }
             break;
@@ -264,6 +244,9 @@ void HazkeyState::candidateKeyEvent(
         case FcitxKey_F10:
             functionKeyHandler(event);
             break;
+        case FcitxKey_Shift_L:
+        case FcitxKey_Shift_R:
+
         default:
             if (isAltDigitKeyEvent(event) ||
                 key.checkKeyList(defaultSelectionKeys)) {
@@ -277,8 +260,7 @@ void HazkeyState::candidateKeyEvent(
             } else if (isInputableEvent(event)) {
                 preedit_.commitPreedit();
                 reset();
-                engine_->server().inputChar(Key::keySymToUTF8(keysym),
-                                            isDirectInputMode_);
+                engine_->server().inputChar(Key::keySymToUTF8(keysym));
                 showPreeditCandidateList();
             } else {
                 return event.filter();
@@ -482,7 +464,7 @@ void HazkeyState::setCandidateCursorAUX(
 
 void HazkeyState::setAuxDownText(std::optional<std::string> optText) {
     auto aux = Text();
-    if (isDirectInputMode_) {
+    if (engine_->server().currentInputModeIsDirect()) {
         // appending fcitx::Text is supported only >= 5.1.9
         aux.append(std::string(_("[Direct Input]")));
     } else if (optText != std::nullopt) {
@@ -502,8 +484,6 @@ void HazkeyState::reset() {
     FCITX_DEBUG() << "HazkeyState reset";
     isDirectConversionMode_ = false;
     livePreeditIndex_ = -1;
-    // do not reset isShiftPressedAlone_ because shift may still be pressed
-    isDirectInputMode_ = false;
     isCursorMoving_ = false;
     engine_->server().newComposingText();
     ic_->inputPanel().reset();

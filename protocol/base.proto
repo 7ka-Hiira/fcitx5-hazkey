@@ -10,13 +10,15 @@ message RequestEnvelope {
         hazkey.commands.NewComposingText new_composing_text = 1;
         hazkey.commands.SetContext set_context = 2;
         hazkey.commands.InputChar input_char = 3;
-        hazkey.commands.MoveCursor move_cursor = 4;
-        hazkey.commands.PrefixComplete prefix_complete = 5;
-        hazkey.commands.DeleteLeft delete_left = 6;
-        hazkey.commands.DeleteRight delete_right = 7;
-        hazkey.commands.GetComposingString get_composing_string = 8;
-        hazkey.commands.GetHiraganaWithCursor get_hiragana_with_cursor = 9;
-        hazkey.commands.GetCandidates get_candidates = 10;
+        hazkey.commands.ModifierEvent modifier_event = 4;
+        hazkey.commands.MoveCursor move_cursor = 5;
+        hazkey.commands.PrefixComplete prefix_complete = 6;
+        hazkey.commands.DeleteLeft delete_left = 7;
+        hazkey.commands.DeleteRight delete_right = 8;
+        hazkey.commands.GetComposingString get_composing_string = 9;
+        hazkey.commands.GetHiraganaWithCursor get_hiragana_with_cursor = 10;
+        hazkey.commands.GetCandidates get_candidates = 11;
+        hazkey.commands.GetCurrentInputModeInfo get_current_input_mode = 12;
 
         hazkey.config.GetConfig get_config = 100;
         hazkey.config.SetConfig set_config = 101;
@@ -38,7 +40,7 @@ message ResponseEnvelope {
         string text = 3;
         hazkey.commands.CandidatesResult candidates = 4;
         hazkey.commands.TextWithCursor text_with_cursor = 5;
-
+        hazkey.commands.CurrentInputModeInfo current_input_mode_info = 6;
         hazkey.config.CurrentConfig current_config = 100;
     }
 }

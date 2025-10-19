@@ -51,9 +51,93 @@ struct Hazkey_Commands_InputChar: Sendable {
 
   var text: String = String()
 
-  var isDirect: Bool = false
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+struct Hazkey_Commands_ModifierEvent: Sendable {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var modType: Hazkey_Commands_ModifierEvent.ModifierType = .unspecified
+
+  var eventType: Hazkey_Commands_ModifierEvent.EventType = .unspecified
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  enum ModifierType: SwiftProtobuf.Enum, Swift.CaseIterable {
+    typealias RawValue = Int
+    case unspecified // = 0
+    case shift // = 1
+    case UNRECOGNIZED(Int)
+
+    init() {
+      self = .unspecified
+    }
+
+    init?(rawValue: Int) {
+      switch rawValue {
+      case 0: self = .unspecified
+      case 1: self = .shift
+      default: self = .UNRECOGNIZED(rawValue)
+      }
+    }
+
+    var rawValue: Int {
+      switch self {
+      case .unspecified: return 0
+      case .shift: return 1
+      case .UNRECOGNIZED(let i): return i
+      }
+    }
+
+    // The compiler won't synthesize support with the UNRECOGNIZED case.
+    static let allCases: [Hazkey_Commands_ModifierEvent.ModifierType] = [
+      .unspecified,
+      .shift,
+    ]
+
+  }
+
+  enum EventType: SwiftProtobuf.Enum, Swift.CaseIterable {
+    typealias RawValue = Int
+    case unspecified // = 0
+    case press // = 1
+    case release // = 2
+    case UNRECOGNIZED(Int)
+
+    init() {
+      self = .unspecified
+    }
+
+    init?(rawValue: Int) {
+      switch rawValue {
+      case 0: self = .unspecified
+      case 1: self = .press
+      case 2: self = .release
+      default: self = .UNRECOGNIZED(rawValue)
+      }
+    }
+
+    var rawValue: Int {
+      switch self {
+      case .unspecified: return 0
+      case .press: return 1
+      case .release: return 2
+      case .UNRECOGNIZED(let i): return i
+      }
+    }
+
+    // The compiler won't synthesize support with the UNRECOGNIZED case.
+    static let allCases: [Hazkey_Commands_ModifierEvent.EventType] = [
+      .unspecified,
+      .press,
+      .release,
+    ]
+
+  }
 
   init() {}
 }
@@ -184,6 +268,16 @@ struct Hazkey_Commands_GetCandidates: Sendable {
   init() {}
 }
 
+struct Hazkey_Commands_GetCurrentInputModeInfo: Sendable {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
 struct Hazkey_Commands_Text: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
@@ -239,6 +333,52 @@ struct Hazkey_Commands_CandidatesResult: Sendable {
     var unknownFields = SwiftProtobuf.UnknownStorage()
 
     init() {}
+  }
+
+  init() {}
+}
+
+struct Hazkey_Commands_CurrentInputModeInfo: Sendable {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var inputMode: Hazkey_Commands_CurrentInputModeInfo.InputMode = .normal
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  enum InputMode: SwiftProtobuf.Enum, Swift.CaseIterable {
+    typealias RawValue = Int
+    case normal // = 0
+    case direct // = 1
+    case UNRECOGNIZED(Int)
+
+    init() {
+      self = .normal
+    }
+
+    init?(rawValue: Int) {
+      switch rawValue {
+      case 0: self = .normal
+      case 1: self = .direct
+      default: self = .UNRECOGNIZED(rawValue)
+      }
+    }
+
+    var rawValue: Int {
+      switch self {
+      case .normal: return 0
+      case .direct: return 1
+      case .UNRECOGNIZED(let i): return i
+      }
+    }
+
+    // The compiler won't synthesize support with the UNRECOGNIZED case.
+    static let allCases: [Hazkey_Commands_CurrentInputModeInfo.InputMode] = [
+      .normal,
+      .direct,
+    ]
+
   }
 
   init() {}
@@ -309,7 +449,6 @@ extension Hazkey_Commands_InputChar: SwiftProtobuf.Message, SwiftProtobuf._Messa
   static let protoMessageName: String = _protobuf_package + ".InputChar"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "text"),
-    2: .standard(proto: "is_direct"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -319,7 +458,6 @@ extension Hazkey_Commands_InputChar: SwiftProtobuf.Message, SwiftProtobuf._Messa
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
       case 1: try { try decoder.decodeSingularStringField(value: &self.text) }()
-      case 2: try { try decoder.decodeSingularBoolField(value: &self.isDirect) }()
       default: break
       }
     }
@@ -329,18 +467,67 @@ extension Hazkey_Commands_InputChar: SwiftProtobuf.Message, SwiftProtobuf._Messa
     if !self.text.isEmpty {
       try visitor.visitSingularStringField(value: self.text, fieldNumber: 1)
     }
-    if self.isDirect != false {
-      try visitor.visitSingularBoolField(value: self.isDirect, fieldNumber: 2)
-    }
     try unknownFields.traverse(visitor: &visitor)
   }
 
   static func ==(lhs: Hazkey_Commands_InputChar, rhs: Hazkey_Commands_InputChar) -> Bool {
     if lhs.text != rhs.text {return false}
-    if lhs.isDirect != rhs.isDirect {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
+}
+
+extension Hazkey_Commands_ModifierEvent: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".ModifierEvent"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .standard(proto: "mod_type"),
+    2: .standard(proto: "event_type"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularEnumField(value: &self.modType) }()
+      case 2: try { try decoder.decodeSingularEnumField(value: &self.eventType) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if self.modType != .unspecified {
+      try visitor.visitSingularEnumField(value: self.modType, fieldNumber: 1)
+    }
+    if self.eventType != .unspecified {
+      try visitor.visitSingularEnumField(value: self.eventType, fieldNumber: 2)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Hazkey_Commands_ModifierEvent, rhs: Hazkey_Commands_ModifierEvent) -> Bool {
+    if lhs.modType != rhs.modType {return false}
+    if lhs.eventType != rhs.eventType {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Hazkey_Commands_ModifierEvent.ModifierType: SwiftProtobuf._ProtoNameProviding {
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    0: .same(proto: "MODIFIER_TYPE_UNSPECIFIED"),
+    1: .same(proto: "SHIFT"),
+  ]
+}
+
+extension Hazkey_Commands_ModifierEvent.EventType: SwiftProtobuf._ProtoNameProviding {
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    0: .same(proto: "EVENT_TYPE_UNSPECIFIED"),
+    1: .same(proto: "PRESS"),
+    2: .same(proto: "RELEASE"),
+  ]
 }
 
 extension Hazkey_Commands_MoveCursor: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
@@ -544,6 +731,25 @@ extension Hazkey_Commands_GetCandidates: SwiftProtobuf.Message, SwiftProtobuf._M
   }
 }
 
+extension Hazkey_Commands_GetCurrentInputModeInfo: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".GetCurrentInputModeInfo"
+  static let _protobuf_nameMap = SwiftProtobuf._NameMap()
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    // Load everything into unknown fields
+    while try decoder.nextFieldNumber() != nil {}
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Hazkey_Commands_GetCurrentInputModeInfo, rhs: Hazkey_Commands_GetCurrentInputModeInfo) -> Bool {
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
 extension Hazkey_Commands_Text: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   static let protoMessageName: String = _protobuf_package + ".Text"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
@@ -706,4 +912,43 @@ extension Hazkey_Commands_CandidatesResult.Candidate: SwiftProtobuf.Message, Swi
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
+}
+
+extension Hazkey_Commands_CurrentInputModeInfo: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".CurrentInputModeInfo"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .standard(proto: "input_mode"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularEnumField(value: &self.inputMode) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if self.inputMode != .normal {
+      try visitor.visitSingularEnumField(value: self.inputMode, fieldNumber: 1)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Hazkey_Commands_CurrentInputModeInfo, rhs: Hazkey_Commands_CurrentInputModeInfo) -> Bool {
+    if lhs.inputMode != rhs.inputMode {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Hazkey_Commands_CurrentInputModeInfo.InputMode: SwiftProtobuf._ProtoNameProviding {
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    0: .same(proto: "NORMAL"),
+    1: .same(proto: "DIRECT"),
+  ]
 }

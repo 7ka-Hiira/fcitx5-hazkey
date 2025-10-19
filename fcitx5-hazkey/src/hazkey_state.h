@@ -106,8 +106,6 @@ class HazkeyState : public InputContextProperty {
     bool isCursorMoving_ = false;
 
     bool isDirectConversionMode_ = false;
-    bool isDirectInputMode_ = false;
-    bool isShiftPressedAlone_ = false;
     int livePreeditIndex_ = -1;
     // engine
     HazkeyEngine *engine_;

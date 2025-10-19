@@ -22,7 +22,9 @@ func processProto(data: Data) -> Data {
     case .newComposingText:
         response = createComposingTextInstanse()
     case .inputChar(let req):
-        response = inputChar(inputString: req.text, isDirect: req.isDirect)
+        response = inputChar(inputString: req.text)
+    case .modifierEvent(let req):
+        response = processModifierEvent(modifier: req.modType, event: req.eventType)
     case .deleteLeft:
         response = deleteLeft()
     case .deleteRight:
@@ -37,15 +39,23 @@ func processProto(data: Data) -> Data {
         response = getComposingString(charType: req.charType, currentPreedit: req.currentPreedit)
     case .getCandidates(let req):
         response = getCandidates(is_suggest: req.isSuggest)
+    case .getCurrentInputMode:
+        response = getCurrentInputMode()
     case .getConfig:
         response = getCurrentConfig()
     case .setConfig(let req):
         response = setCurrentConfig(req.fileHashes, req.profiles)
-    default:
-        NSLog("Unimplemented command")
+    case .getDefaultProfile, .clearAllHistory_p:
+        NSLog("Unimplemented: getDefaultProfile")
         response = Hazkey_ResponseEnvelope.with {
             $0.status = .failed
-            $0.errorMessage = "Unimplemented command: \(query)"
+            $0.errorMessage = "Unimplemented: getDefaultProfile"
+        }
+    case .none:
+        NSLog("Payload not specified")
+        response = Hazkey_ResponseEnvelope.with {
+            $0.status = .failed
+            $0.errorMessage = "Payload not specified"
         }
     }
     return serializeResult(unserialized: response)

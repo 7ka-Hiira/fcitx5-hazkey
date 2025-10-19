@@ -36,7 +36,11 @@ class HazkeyServerConnector {
 
     fcitx::Text getComposingHiraganaWithCursor();
 
-    void inputChar(std::string text, bool isDirect);
+    void inputChar(std::string text);
+
+    void shiftKeyEvent(bool isRelease);
+
+    bool currentInputModeIsDirect();
 
     void deleteLeft();
 

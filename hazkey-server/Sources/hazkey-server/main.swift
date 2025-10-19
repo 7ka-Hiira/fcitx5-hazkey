@@ -149,6 +149,9 @@ do {
     profiles = [genDefaultConfig()]
 }
 
+var isShiftPressedAlone = false
+var isSubInputMode = false
+
 // TODO: add [0] out of range handling
 var currentProfile = profiles[0]
 

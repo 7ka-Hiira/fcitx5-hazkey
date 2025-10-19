@@ -18,21 +18,24 @@ import SwiftUtils
 @MainActor func createComposingTextInstanse() -> Hazkey_ResponseEnvelope {
     composingText = ComposingTextBox()
     currentCandidateList = nil
+    isSubInputMode = false
     return Hazkey_ResponseEnvelope.with {
         $0.status = .success
     }
 }
 
-@MainActor func inputChar(
-    inputString: String, isDirect: Bool
-) -> Hazkey_ResponseEnvelope {
+@MainActor func inputChar(inputString: String) -> Hazkey_ResponseEnvelope {
     guard let inputChar = inputString.first else {
         return Hazkey_ResponseEnvelope.with {
             $0.status = .failed
             $0.errorMessage = "failed to get first unicode character"
         }
     }
-    if !isDirect {
+    isSubInputMode = isSubInputMode || isShiftPressedAlone
+    isShiftPressedAlone = false
+    if isSubInputMode {
+        composingText.value.insertAtCursorPosition(String(inputChar), inputStyle: .direct)
+    } else {
         let piece: InputPiece
         if let (intentionChar, overrideInputChar) = keymap[inputChar] {
             piece = .key(
@@ -46,10 +49,48 @@ import SwiftUtils
                 piece: piece,
                 inputStyle: .mapped(id: .tableName(currentTableName)))
         ])
-    } else {
-        composingText.value.insertAtCursorPosition(String(inputChar), inputStyle: .direct)
     }
     return Hazkey_ResponseEnvelope.with { $0.status = .success }
+}
+
+@MainActor func processModifierEvent(
+    modifier: Hazkey_Commands_ModifierEvent.ModifierType,
+    event: Hazkey_Commands_ModifierEvent.EventType
+) -> Hazkey_ResponseEnvelope {
+    switch modifier {
+    case .shift:
+        switch event {
+        case .press:
+            isShiftPressedAlone = true
+        case .release:
+            if isShiftPressedAlone {
+                isSubInputMode.toggle()
+                isShiftPressedAlone = false
+            }
+        case .unspecified, .UNRECOGNIZED(_):
+            NSLog("Unexpected event type")
+            return Hazkey_ResponseEnvelope.with {
+                $0.status = .failed
+                $0.errorMessage = "Unexpected event type"
+            }
+        }
+    case .unspecified, .UNRECOGNIZED(_):
+        NSLog("Unexpected modifier type")
+        return Hazkey_ResponseEnvelope.with {
+            $0.status = .failed
+            $0.errorMessage = "Unexpected modifier type"
+        }
+    }
+    return Hazkey_ResponseEnvelope.with { $0.status = .success }
+}
+
+@MainActor func getCurrentInputMode() -> Hazkey_ResponseEnvelope {
+    return Hazkey_ResponseEnvelope.with {
+        $0.status = .success
+        $0.currentInputModeInfo = Hazkey_Commands_CurrentInputModeInfo.with {
+            $0.inputMode = isSubInputMode ? .direct : .normal
+        }
+    }
 }
 
 @MainActor func deleteLeft() -> Hazkey_ResponseEnvelope {
