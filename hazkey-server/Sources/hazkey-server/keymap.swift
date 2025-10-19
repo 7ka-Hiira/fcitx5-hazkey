@@ -62,6 +62,10 @@ let fullwidthJapaneseSymbolMap: Keymap = [
     ".": ("。", nil),
 ]
 
+let fullwidthSpaceMap: Keymap = [
+    " ": ("　", nil)
+]
+
 func constructInputTable(
     _ base: [String: String],
 ) -> InputTable {

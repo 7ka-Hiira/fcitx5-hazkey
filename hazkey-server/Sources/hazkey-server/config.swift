@@ -11,6 +11,7 @@ let builtInKeymaps = [
     "Japanese Symbol",
     "Fullwidth Symbol",
     "Fullwidth Number",
+    "Fullwidth Space",
 ].map { name in
     Hazkey_Config_Keymap.with {
         $0.name = name
@@ -177,6 +178,11 @@ func genDefaultConfig() -> Hazkey_Config_Profile {
             $0.name = "Fullwidth Symbol"
             $0.isBuiltIn = true
             $0.filename = "Fullwidth Symbol"
+        },
+        Hazkey_Config_Profile.EnabledKeymap.with {
+            $0.name = "Fullwidth Space"
+            $0.isBuiltIn = true
+            $0.filename = "Fullwidth Space"
         },
     ]
     newConf.enabledTables = [

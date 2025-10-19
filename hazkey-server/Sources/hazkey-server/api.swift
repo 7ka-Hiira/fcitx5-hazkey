@@ -24,6 +24,7 @@ let subModeEntryPointChar: [Character] = [
     composingText = ComposingTextBox()
     currentCandidateList = nil
     isSubInputMode = false
+    isShiftPressedAlone = false
     return Hazkey_ResponseEnvelope.with {
         $0.status = .success
     }

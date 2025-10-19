@@ -19,6 +19,8 @@ func loadKeymap() -> Keymap {
                 newKeymapRule = fullwidthSymbolMap
             case "Fullwidth Number":
                 newKeymapRule = fullwidthNumberMap
+            case "Fullwidth Space":
+                newKeymapRule = fullwidthSpaceMap
             default:
                 NSLog("Unknown built-in keymap: \(enabledKeymap.name)")
                 continue outer

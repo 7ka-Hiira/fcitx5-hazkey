@@ -82,9 +82,13 @@ void HazkeyState::noPreeditKeyEvent(KeyEvent &event) {
     auto keysym = key.sym();
 
     switch (keysym) {
+        case FcitxKey_Escape:
+            reset();
+            break;
         case FcitxKey_space:
-            if (key.states() != KeyState::Shift) {
+            if (key.states() == KeyState::Shift) {
                 ic_->commitString(" ");
+                reset();
             } else {
                 engine_->server().inputChar(" ");
                 ic_->commitString(engine_->server().getComposingText(
@@ -146,6 +150,14 @@ void HazkeyState::preeditKeyEvent(
             reset();
             break;
         case FcitxKey_space:
+            if (!isDirectConversionMode_ &&
+                event.key().states() == KeyState::Shift) {
+                engine_->server().inputChar(" ");
+                showPreeditCandidateList();
+            } else {
+                showNonPredictCandidateList();
+            }
+            break;
         case FcitxKey_Henkan:
             showNonPredictCandidateList();
             break;
