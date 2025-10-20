@@ -18,9 +18,9 @@ jobs:
 
       - name: Install Swift Environment
         run: |
-          wget https://download.swift.org/swift-6.1.2-release/ubuntu2204/swift-6.1.2-RELEASE/swift-6.1.2-RELEASE-ubuntu22.04.tar.gz
-          tar xf swift-6.1.2-RELEASE-ubuntu22.04.tar.gz
-          sudo mv swift-6.1.2-RELEASE-ubuntu22.04 /usr/share/swift
+          wget https://download.swift.org/swift-6.1-release/ubuntu2204/swift-6.1-RELEASE/swift-6.1-RELEASE-ubuntu22.04.tar.gz
+          tar xf swift-6.1-RELEASE-ubuntu22.04.tar.gz
+          sudo mv swift-6.1-RELEASE-ubuntu22.04 /usr/share/swift
           echo "PATH=/usr/share/swift/usr/bin:$PATH" >> $GITHUB_ENV
 
       - name: Install Dependencies
