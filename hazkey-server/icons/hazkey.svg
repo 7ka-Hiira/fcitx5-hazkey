@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="500mm"
+   height="500mm"
+   viewBox="0 0 500 500"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
+   sodipodi:docname="hazkey_v2.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="0.31875507"
+     inkscape:cx="879.98601"
+     inkscape:cy="927.04409"
+     inkscape:window-width="1901"
+     inkscape:window-height="1354"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="fill:#f0db13;stroke:#86ab30;stroke-width:0.000264583;paint-order:stroke fill markers"
+       d="m 261.54683,300.00014 -51.96169,90.00019 h 207.4478 a 200,200 0 0 0 31.96446,-90.00019 z"
+       id="path4" />
+    <path
+       style="fill:#5ecd1e;stroke:#86ab30;stroke-width:0.000264583;paint-order:stroke fill markers;fill-opacity:1"
+       d="m 51.002572,300.00014 a 200,200 0 0 0 31.964457,90.00019 h 80.430751 l 51.96117,-90.00019 z"
+       id="path3" />
+    <path
+       style="fill:#5ecd1e;stroke:#86ab30;stroke-width:0.000264583;paint-order:stroke fill markers;fill-opacity:1"
+       d="M 366.81895,117.66347 284.64102,259.99999 H 448.9974 a 200,200 0 0 0 -82.17793,-142.33652 200,200 0 0 0 -5.2e-4,0 z"
+       id="path2" />
+    <path
+       style="fill:#f0db13;stroke:#86ab30;stroke-width:0.000264583;paint-order:stroke fill markers"
+       d="M 250.00024,80.000132 A 200,200 0 0 0 51.002572,259.99999 H 238.45315 L 332.17817,97.663136 A 200,200 0 0 0 250.00024,80.000132 Z"
+       id="path1" />
+  </g>
+</svg>

@@ -71,8 +71,24 @@ install(CODE "
 install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/llama-stub/libllama.so
         DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}/hazkey/llama-stub)
 
+# install icons
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/icons/hazkey.svg
+        DESTINATION ${CMAKE_INSTALL_FULL_DATADIR}/icons/hicolor/scalable/apps)
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/icons/hazkey_256x256.png
+        RENAME hazkey.png
+        DESTINATION ${CMAKE_INSTALL_FULL_DATADIR}/icons/hicolor/256x256/apps)
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/icons/hazkey_48x48.png
+        RENAME hazkey.png
+        DESTINATION ${CMAKE_INSTALL_FULL_DATADIR}/icons/hicolor/48x48/apps)
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/icons/hazkey_32x32.png
+        RENAME hazkey.png
+        DESTINATION ${CMAKE_INSTALL_FULL_DATADIR}/icons/hicolor/32x32/apps)
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/icons/hazkey_24x24.png
+        RENAME hazkey.png
+        DESTINATION ${CMAKE_INSTALL_FULL_DATADIR}/icons/hicolor/24x24/apps)
+
 # install dictionary
-if(NOT SKIP_KKC_PATH_UPDATE)
+if(NOT SKIP_INSTALL_DICTIONARY)
     install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/azooKey_dictionary_storage/Dictionary
         DESTINATION ${CMAKE_INSTALL_FULL_DATADIR}/hazkey)
 endif()
