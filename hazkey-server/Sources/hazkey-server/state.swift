@@ -316,4 +316,24 @@ class HazkeyServerState {
         }
     }
 
+    func reinitializeConfiguration(zenzaiAvailable: Bool) {
+        NSLog("Reinitializing state configuration...")
+
+        self.keymap = serverConfig.loadKeymap()
+
+        let newTableName = UUID().uuidString
+        serverConfig.loadInputTable(tableName: newTableName)
+        self.currentTableName = newTableName
+
+        self.baseConvertRequestOptions = serverConfig.genBaseConvertRequestOptions(
+            zenzaiAvailable: zenzaiAvailable)
+
+        self.composingText = ComposingTextBox()
+        self.currentCandidateList = nil
+        self.isSubInputMode = false
+        self.isShiftPressedAlone = false
+
+        NSLog("State configuration reinitialized successfully")
+    }
+
 }

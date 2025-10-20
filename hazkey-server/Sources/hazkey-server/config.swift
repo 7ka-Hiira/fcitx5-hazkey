@@ -247,12 +247,7 @@ class HazkeyServerConfig {
         NSLog("Config saved to: \(configPath.path)")
 
         if let state = state {
-            state.keymap = loadKeymap()
-            let newTableName = UUID().uuidString
-            loadInputTable(tableName: newTableName)
-            state.currentTableName = newTableName
-            state.baseConvertRequestOptions = genBaseConvertRequestOptions(
-                zenzaiAvailable: zenzaiAvailable)
+            state.reinitializeConfiguration(zenzaiAvailable: zenzaiAvailable)
         }
     }
 
