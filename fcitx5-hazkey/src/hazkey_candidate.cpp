@@ -42,10 +42,7 @@ CandidateLayoutHint HazkeyCandidateList::layoutHint() const {
     return CandidateLayoutHint::Vertical;
 }
 
-void HazkeyCandidateList::focus() {
-    setPageSize(9);
-    setGlobalCursorIndex(0);
-}
+void HazkeyCandidateList::focus() { setGlobalCursorIndex(0); }
 
 const HazkeyCandidateWord& HazkeyCandidateList::getCandidate(
     int localIndex) const {

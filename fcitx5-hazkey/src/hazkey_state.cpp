@@ -4,6 +4,7 @@
 #include <fcitx-utils/log.h>
 #include <fcitx/candidatelist.h>
 
+#include <algorithm>
 #include <optional>
 #include <string>
 #include <vector>
@@ -16,12 +17,12 @@
 
 namespace fcitx {
 
-HazkeyState::HazkeyState(HazkeyEngine *engine, InputContext *ic)
+HazkeyState::HazkeyState(HazkeyEngine* engine, InputContext* ic)
     : engine_(engine), ic_(ic), preedit_(HazkeyPreedit(ic)) {
     engine_->server().newComposingText();
 }
 
-bool HazkeyState::isInputableEvent(const KeyEvent &event) {
+bool HazkeyState::isInputableEvent(const KeyEvent& event) {
     auto key = event.key();
     if (key.check(FcitxKey_space) || key.isSimple() ||
         Key::keySymToUTF8(key.sym()).size() > 1 ||
@@ -34,7 +35,7 @@ bool HazkeyState::isInputableEvent(const KeyEvent &event) {
 
 void HazkeyState::commitPreedit() { preedit_.commitPreedit(); }
 
-void HazkeyState::keyEvent(KeyEvent &event) {
+void HazkeyState::keyEvent(KeyEvent& event) {
     FCITX_DEBUG() << "HazkeyState keyEvent";
 
     if (event.key().sym() == FcitxKey_Shift_L ||
@@ -77,7 +78,7 @@ void HazkeyState::keyEvent(KeyEvent &event) {
     }
 }
 
-void HazkeyState::noPreeditKeyEvent(KeyEvent &event) {
+void HazkeyState::noPreeditKeyEvent(KeyEvent& event) {
     FCITX_DEBUG() << "HazkeyState noPredictKeyEvent";
 
     auto key = event.key();
@@ -117,7 +118,7 @@ void HazkeyState::noPreeditKeyEvent(KeyEvent &event) {
 }
 
 void HazkeyState::preeditKeyEvent(
-    KeyEvent &event,
+    KeyEvent& event,
     std::shared_ptr<HazkeyCandidateList> PredictCandidateList) {
     FCITX_DEBUG() << "HazkeyState preeditKeyEvent";
 
@@ -204,7 +205,7 @@ void HazkeyState::preeditKeyEvent(
     return event.filterAndAccept();
 }
 
-bool HazkeyState::isAltDigitKeyEvent(const KeyEvent &event) {
+bool HazkeyState::isAltDigitKeyEvent(const KeyEvent& event) {
     auto key = event.key();
     if (key.states() == KeyState::Alt && key.sym() >= FcitxKey_1 &&
         key.sym() <= FcitxKey_9) {
@@ -214,7 +215,7 @@ bool HazkeyState::isAltDigitKeyEvent(const KeyEvent &event) {
 }
 
 void HazkeyState::candidateKeyEvent(
-    KeyEvent &event, std::shared_ptr<HazkeyCandidateList> candidateList) {
+    KeyEvent& event, std::shared_ptr<HazkeyCandidateList> candidateList) {
     FCITX_DEBUG() << "HazkeyState candidateKeyEvent";
 
     auto key = event.key();
@@ -307,7 +308,7 @@ void HazkeyState::candidateCompleteHandler(
 void HazkeyState::updateSurroundingText(std::string appendText) {
     if (ic_->capabilityFlags().test(CapabilityFlag::SurroundingText) &&
         ic_->surroundingText().isValid()) {
-        auto &surroundingText = ic_->surroundingText();
+        auto& surroundingText = ic_->surroundingText();
         engine_->server().setContext(
             surroundingText.text() + appendText,
             surroundingText.anchor() + appendText.length());
@@ -316,7 +317,7 @@ void HazkeyState::updateSurroundingText(std::string appendText) {
     }
 }
 
-void HazkeyState::functionKeyHandler(KeyEvent &event) {
+void HazkeyState::functionKeyHandler(KeyEvent& event) {
     auto keysym = event.key().sym();
     switch (keysym) {
         case FcitxKey_F6:
@@ -416,9 +417,12 @@ bool HazkeyState::showCandidateList(bool isSuggest) {
         auto newFcitxCandidateList =
             std::dynamic_pointer_cast<HazkeyCandidateList>(
                 ic_->inputPanel().candidateList());
-        newFcitxCandidateList->setPageSize(response.page_size());
+        int pageSize = std::min(static_cast<size_t>(response.page_size()),
+                                defaultSelectionKeys.size());
+        newFcitxCandidateList->setPageSize(pageSize);
     }
 
+    // true if the list is displayed
     return response.page_size() > 0;
 }
 
