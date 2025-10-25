@@ -19,32 +19,6 @@ MainWindow::MainWindow(QWidget* parent)
     : QWidget(parent), ui_(new Ui::MainWindow), server_(ServerConnector()) {
     ui_->setupUi(this);
 
-    // Manage settings button
-    QMenu* manageSettingsMenu = new QMenu(this);
-    QAction* importAction = manageSettingsMenu->addAction("Import");
-    QAction* exportAction = manageSettingsMenu->addAction("Export");
-    QAction* restoreDefaultAction =
-        manageSettingsMenu->addAction("Restore Default");
-    QPushButton* manageSettingsButton = new QPushButton("Manage Settings");
-    manageSettingsButton->setMenu(manageSettingsMenu);
-    ui_->dialogButtonBox->addButton(manageSettingsButton,
-                                    QDialogButtonBox::ResetRole);
-
-    // Connect menu actions (placeholder implementations)
-    connect(importAction, &QAction::triggered, this, [this]() {
-        QMessageBox::information(this, "Import",
-                                 "Import functionality not yet implemented.");
-    });
-    connect(exportAction, &QAction::triggered, this, [this]() {
-        QMessageBox::information(this, "Export",
-                                 "Export functionality not yet implemented.");
-    });
-    connect(restoreDefaultAction, &QAction::triggered, this, [this]() {
-        QMessageBox::information(
-            this, "Restore Default",
-            "Restore Default functionality not yet implemented.");
-    });
-
     // Expand table settings mode change tab
     ui_->inputTableConfigModeTabWidget->tabBar()->setExpanding(true);
 
