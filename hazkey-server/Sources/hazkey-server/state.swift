@@ -80,7 +80,7 @@ class HazkeyServerState {
             }
 
             composingText.value.insertAtCursorPosition([
-                ComposingText.InputElement.init(
+                ComposingText.InputElement(
                     piece: piece,
                     inputStyle: .mapped(id: .tableName(currentTableName)))
             ])
@@ -261,11 +261,24 @@ class HazkeyServerState {
                 == Hazkey_Config_Profile.SuggestionListMode.suggestionListShowPredictiveResults
         options.requireEnglishPrediction = options.requireJapanesePrediction
 
-        let converted = converter.requestCandidates(composingText.value, options: options)
+        var copiedComposingText = composingText.value
+
+        if !is_suggest {
+            let _ = copiedComposingText.moveCursorFromCursorPosition(
+                count: copiedComposingText.toHiragana().count)
+            copiedComposingText.insertAtCursorPosition(
+                [
+                    ComposingText.InputElement(
+                        piece: .compositionSeparator,
+                        inputStyle: .mapped(id: .tableName(currentTableName)))
+                ])
+        }
+
+        let converted = converter.requestCandidates(copiedComposingText, options: options)
 
         currentCandidateList = converted.mainResults
 
-        let hiraganaPreedit = composingText.value.toHiragana()
+        let hiraganaPreedit = copiedComposingText.toHiragana()
 
         var candidatesResult = Hazkey_Commands_CandidatesResult()
         candidatesResult.liveTextIndex = -1
