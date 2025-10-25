@@ -1332,7 +1332,7 @@
                  <item row="0" column="0">
                   <widget class="QLabel" name="subModeEntryPointChars">
                    <property name="text">
-                    <string>Direct Mode Entry Point Characters</string>
+                    <string>Direct mode entry point characters</string>
                    </property>
                   </widget>
                  </item>
