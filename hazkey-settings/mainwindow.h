@@ -35,6 +35,7 @@ class MainWindow : public QWidget {
     void onKeymapMoveDown();
     void onEnabledKeymapSelectionChanged();
     void onAvailableKeymapSelectionChanged();
+    void onSubmodeEntryChanged();
     void onBasicInputStyleChanged();
     void onBasicSettingChanged();
     void resetInputStyleToDefault();
@@ -69,7 +70,6 @@ class MainWindow : public QWidget {
     ServerConnector server_;
     hazkey::config::CurrentConfig currentConfig_;
     hazkey::config::Profile* currentProfile_;
-    QWidget* basicModeWarning_;
     bool isUpdatingFromAdvanced_;
 };
 #endif  // MAINWINDOW_H

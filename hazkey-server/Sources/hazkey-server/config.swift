@@ -8,7 +8,6 @@ let TABLE_FILE_SIZE_LIMIT = 1024 * 1024  //1MB
 let builtInKeymaps = [
     "Fullwidth Period",
     "Fullwidth Comma",
-    "Japanese Symbol",
     "Fullwidth Symbol",
     "Fullwidth Number",
     "Fullwidth Space",
@@ -187,11 +186,6 @@ class HazkeyServerConfig {
                 $0.name = "Fullwidth Number"
                 $0.isBuiltIn = true
                 $0.filename = "Fullwidth Number"
-            },
-            Hazkey_Config_Profile.EnabledKeymap.with {
-                $0.name = "Japanese Symbol"
-                $0.isBuiltIn = true
-                $0.filename = "Japanese Symbol"
             },
             Hazkey_Config_Profile.EnabledKeymap.with {
                 $0.name = "Fullwidth Symbol"
@@ -409,8 +403,6 @@ class HazkeyServerConfig {
                     newKeymapRule = fullwidthPeriodMap
                 case "Fullwidth Comma":
                     newKeymapRule = fullwidthCommaMap
-                case "Japanese Symbol":
-                    newKeymapRule = fullwidthJapaneseSymbolMap
                 case "Fullwidth Symbol":
                     newKeymapRule = fullwidthSymbolMap
                 case "Fullwidth Number":
@@ -466,7 +458,7 @@ class HazkeyServerConfig {
             if enabledTable.isBuiltIn {
                 switch enabledTable.filename {
                 case "Romaji":
-                    tableToAdd = InputTable.defaultRomanToKana
+                    tableToAdd = romajiTable
                 case "Kana":
                     tableToAdd = kanaTable
                 default:

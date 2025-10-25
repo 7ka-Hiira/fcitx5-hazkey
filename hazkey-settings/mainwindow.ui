@@ -777,6 +777,11 @@
                      <string>Kuten+Comma: 。，</string>
                     </property>
                    </item>
+                   <item>
+                    <property name="text">
+                     <string>Period+Toten: ．、</string>
+                    </property>
+                   </item>
                   </widget>
                  </item>
                  <item row="1" column="0">
@@ -825,17 +830,12 @@
                   <widget class="QComboBox" name="commonSymbolStyle">
                    <item>
                     <property name="text">
-                     <string>Fullwidth Japanese: ！＃＠・「」</string>
+                     <string>Fullwidth: ！＃＠（</string>
                     </property>
                    </item>
                    <item>
                     <property name="text">
-                     <string>Fullwidth Direct : ！＃＠／［］</string>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string>Halfwidth Direct: !#@/[]</string>
+                     <string>Halfwidth: !#@(</string>
                     </property>
                    </item>
                   </widget>
