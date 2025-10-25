@@ -452,7 +452,7 @@ class HazkeyServerConfig {
     }
 
     func loadInputTable(tableName: String) {
-        var tables: [InputTable] = []
+        var tables: [InputTable] = [compositionSeparatorTable]
         outer: for enabledTable in currentProfile.enabledTables.reversed() {
             let tableToAdd: InputTable
             if enabledTable.isBuiltIn {
