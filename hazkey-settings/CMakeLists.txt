@@ -109,6 +109,10 @@ install(TARGETS hazkey-settings
     RUNTIME DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}/hazkey
 )
 
+# install desktop entry
+install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/hazkey-settings.desktop"
+    DESTINATION ${CMAKE_INSTALL_FULL_DATADIR}/applications)
+
 # create a symlink in the binary directory
 install(CODE "
     file(MAKE_DIRECTORY \"\$ENV{DESTDIR}${CMAKE_INSTALL_FULL_BINDIR}\")

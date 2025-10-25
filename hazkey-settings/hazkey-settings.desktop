@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name[ja]=Hazkey設定ツール
+Name=Hazkey Settings
+GenericName[ja]=入力メソッドの設定
+GenericName=Input Method Settings
+Comment[ja]=Hazkeyの設定を変更します
+Comment=Configure Hazkey settings
+Exec=hazkey-settings
+Icon=hazkey
+Categories=Settings;
