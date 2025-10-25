@@ -38,17 +38,21 @@ void HazkeyState::commitPreedit() { preedit_.commitPreedit(); }
 void HazkeyState::keyEvent(KeyEvent& event) {
     FCITX_DEBUG() << "HazkeyState keyEvent";
 
+    std::string composingText = engine_->server().getComposingText(
+        hazkey::commands::GetComposingString_CharType_HIRAGANA,
+        preedit_.text());
+
     if (event.key().sym() == FcitxKey_Shift_L ||
         event.key().sym() == FcitxKey_Shift_R) {
         engine_->server().shiftKeyEvent(event.isRelease());
+        if (composingText == "") {
+            setAuxDownText(std::nullopt);
+            return;
+        }
     }
 
     auto candidateList = std::dynamic_pointer_cast<HazkeyCandidateList>(
         event.inputContext()->inputPanel().candidateList());
-
-    std::string composingText = engine_->server().getComposingText(
-        hazkey::commands::GetComposingString_CharType_HIRAGANA,
-        preedit_.text());
 
     if (candidateList != nullptr && candidateList->focused() &&
         !event.isRelease()) {
@@ -108,7 +112,7 @@ void HazkeyState::noPreeditKeyEvent(KeyEvent& event) {
                 showPreeditCandidateList();
                 setHiraganaAUX();
             } else {
-                // isDirectInputMode_ = false;
+                reset();
                 return event.filter();
             }
             break;
@@ -445,6 +449,14 @@ void HazkeyState::showNonPredictCandidateList() {
 }
 
 void HazkeyState::showPreeditCandidateList() {
+    if (engine_->server()
+            .getComposingText(
+                hazkey::commands::GetComposingString_CharType_HIRAGANA,
+                preedit_.text())
+            .size() <= 0) {
+        reset();
+        return;
+    }
     if (showCandidateList(true) && engine_->config().showTabToSelect.value()) {
         setAuxDownText(std::string(_("[Press Tab to Select]")));
     } else {
