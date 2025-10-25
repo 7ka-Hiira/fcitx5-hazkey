@@ -289,6 +289,15 @@ struct Hazkey_Config_Profile: @unchecked Sendable {
     set {_uniqueStorage()._enabledTables = newValue}
   }
 
+  var submodeEntryPointChars: String {
+    get {return _storage._submodeEntryPointChars ?? String()}
+    set {_uniqueStorage()._submodeEntryPointChars = newValue}
+  }
+  /// Returns true if `submodeEntryPointChars` has been explicitly set.
+  var hasSubmodeEntryPointChars: Bool {return _storage._submodeEntryPointChars != nil}
+  /// Clears the value of `submodeEntryPointChars`. Subsequent reads from it will return its default value.
+  mutating func clearSubmodeEntryPointChars() {_uniqueStorage()._submodeEntryPointChars = nil}
+
   var useDefaultZenzaiSettings: Bool {
     get {return _storage._useDefaultZenzaiSettings ?? false}
     set {_uniqueStorage()._useDefaultZenzaiSettings = newValue}
@@ -1029,6 +1038,7 @@ extension Hazkey_Config_Profile: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
     51: .standard(proto: "enabled_keymaps"),
     55: .standard(proto: "use_default_table_settings"),
     56: .standard(proto: "enabled_tables"),
+    60: .standard(proto: "submode_entry_point_chars"),
     100: .standard(proto: "use_default_zenzai_settings"),
     101: .standard(proto: "zenzai_enable"),
     102: .standard(proto: "zenzai_infer_limit"),
@@ -1061,6 +1071,7 @@ extension Hazkey_Config_Profile: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
     var _enabledKeymaps: [Hazkey_Config_Profile.EnabledKeymap] = []
     var _useDefaultTableSettings: Bool? = nil
     var _enabledTables: [Hazkey_Config_Profile.EnabledInputTable] = []
+    var _submodeEntryPointChars: String? = nil
     var _useDefaultZenzaiSettings: Bool? = nil
     var _zenzaiEnable: Bool? = nil
     var _zenzaiInferLimit: Int32? = nil
@@ -1100,6 +1111,7 @@ extension Hazkey_Config_Profile: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
       _enabledKeymaps = source._enabledKeymaps
       _useDefaultTableSettings = source._useDefaultTableSettings
       _enabledTables = source._enabledTables
+      _submodeEntryPointChars = source._submodeEntryPointChars
       _useDefaultZenzaiSettings = source._useDefaultZenzaiSettings
       _zenzaiEnable = source._zenzaiEnable
       _zenzaiInferLimit = source._zenzaiInferLimit
@@ -1147,6 +1159,7 @@ extension Hazkey_Config_Profile: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
         case 51: try { try decoder.decodeRepeatedMessageField(value: &_storage._enabledKeymaps) }()
         case 55: try { try decoder.decodeSingularBoolField(value: &_storage._useDefaultTableSettings) }()
         case 56: try { try decoder.decodeRepeatedMessageField(value: &_storage._enabledTables) }()
+        case 60: try { try decoder.decodeSingularStringField(value: &_storage._submodeEntryPointChars) }()
         case 100: try { try decoder.decodeSingularBoolField(value: &_storage._useDefaultZenzaiSettings) }()
         case 101: try { try decoder.decodeSingularBoolField(value: &_storage._zenzaiEnable) }()
         case 102: try { try decoder.decodeSingularInt32Field(value: &_storage._zenzaiInferLimit) }()
@@ -1232,6 +1245,9 @@ extension Hazkey_Config_Profile: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
       if !_storage._enabledTables.isEmpty {
         try visitor.visitRepeatedMessageField(value: _storage._enabledTables, fieldNumber: 56)
       }
+      try { if let v = _storage._submodeEntryPointChars {
+        try visitor.visitSingularStringField(value: v, fieldNumber: 60)
+      } }()
       try { if let v = _storage._useDefaultZenzaiSettings {
         try visitor.visitSingularBoolField(value: v, fieldNumber: 100)
       } }()
@@ -1284,6 +1300,7 @@ extension Hazkey_Config_Profile: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
         if _storage._enabledKeymaps != rhs_storage._enabledKeymaps {return false}
         if _storage._useDefaultTableSettings != rhs_storage._useDefaultTableSettings {return false}
         if _storage._enabledTables != rhs_storage._enabledTables {return false}
+        if _storage._submodeEntryPointChars != rhs_storage._submodeEntryPointChars {return false}
         if _storage._useDefaultZenzaiSettings != rhs_storage._useDefaultZenzaiSettings {return false}
         if _storage._zenzaiEnable != rhs_storage._zenzaiEnable {return false}
         if _storage._zenzaiInferLimit != rhs_storage._zenzaiInferLimit {return false}

@@ -708,8 +708,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>608</width>
-                <height>445</height>
+                <width>612</width>
+                <height>449</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout">
@@ -918,7 +918,7 @@
              <property name="currentIndex">
               <number>0</number>
              </property>
-             <widget class="QWidget" name="advancedTabTabWidgetKeymapPage" native="true">
+             <widget class="QWidget" name="advancedTabTabWidgetKeymapPage">
               <attribute name="title">
                <string>Keymap</string>
               </attribute>
@@ -1110,7 +1110,7 @@
                </item>
               </layout>
              </widget>
-             <widget class="QWidget" name="advancedTabTabWidgetTablePage" native="true">
+             <widget class="QWidget" name="advancedTabTabWidgetTablePage">
               <attribute name="title">
                <string>Input Table</string>
               </attribute>
@@ -1304,6 +1304,62 @@
                   <number>10</number>
                  </property>
                 </widget>
+               </item>
+              </layout>
+             </widget>
+             <widget class="QWidget" name="advancedTabTabWidgetOptionsPage">
+              <attribute name="title">
+               <string>Options</string>
+              </attribute>
+              <layout class="QVBoxLayout" name="verticalLayout_2">
+               <item>
+                <layout class="QGridLayout" name="advancedTabOptionsGrid">
+                 <property name="leftMargin">
+                  <number>20</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>10</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>20</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>20</number>
+                 </property>
+                 <property name="spacing">
+                  <number>12</number>
+                 </property>
+                 <item row="0" column="0">
+                  <widget class="QLabel" name="subModeEntryPointChars">
+                   <property name="text">
+                    <string>Direct Mode Entry Point Characters</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1">
+                  <widget class="QLineEdit" name="submodeEntryPointChars">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <spacer name="advancedTabBottomSpacer">
+                 <property name="orientation">
+                  <enum>Qt::Orientation::Vertical</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                </spacer>
                </item>
               </layout>
              </widget>

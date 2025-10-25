@@ -2,11 +2,6 @@ import Foundation
 import KanaKanjiConverterModule
 import SwiftUtils
 
-let subModeEntryPointChar: [Character] = [
-    "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P",
-    "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
-]
-
 class HazkeyServerState {
     let serverConfig: HazkeyServerConfig
     let converter: KanaKanjiConverter
@@ -69,7 +64,9 @@ class HazkeyServerState {
             }
         }
         isSubInputMode =
-            isSubInputMode || (isShiftPressedAlone && subModeEntryPointChar.contains(inputChar))
+            isSubInputMode
+            || (isShiftPressedAlone
+                && serverConfig.getSubModeEntryPointChars().contains(inputChar))
         isShiftPressedAlone = false
         if isSubInputMode {
             composingText.value.insertAtCursorPosition(String(inputChar), inputStyle: .direct)

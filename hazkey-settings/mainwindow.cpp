@@ -221,6 +221,10 @@ bool MainWindow::loadCurrentConfig() {
 
     ui_->stopStoreNewHistory->setEnabled(currentProfile_->use_input_history());
 
+    SET_LINEEDIT(ui_->submodeEntryPointChars,
+                 currentProfile_->submode_entry_point_chars(),
+                 "ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+
     // Load input table configuration
     loadInputTables();
 
@@ -275,6 +279,9 @@ bool MainWindow::saveCurrentConfig() {
         GET_CHECKBOX_BOOL(ui_->romanTypographyConversion));
     specialConversions->set_hazkey_version(
         GET_CHECKBOX_BOOL(ui_->hazkeyVersionConversion));
+
+    currentProfile_->set_submode_entry_point_chars(
+        GET_LINEEDIT_STRING(ui_->submodeEntryPointChars));
 
     // Save input table configuration
     saveInputTables();

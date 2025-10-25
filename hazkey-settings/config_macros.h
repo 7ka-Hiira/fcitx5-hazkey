@@ -27,6 +27,11 @@
 
 #define GET_SPINBOX_INT(ui_element) ui_element->value()
 
+#define SET_LINEEDIT(ui_element, string_value, default_value) \
+    ui_element->setText(QString::fromStdString(string_value))
+
+#define GET_LINEEDIT_STRING(ui_element) ui_element->text().toStdString()
+
 #define ENUM_CASE(enum_val, index_val) \
     case enum_val:                     \
         index = index_val;             \
@@ -43,7 +48,7 @@
     config_struct::getEnum(ui_element)
 
 // #define SET_CHECKBOX(ui_element, bool_value, default_value) \
-    // SET_CHECKBOX(ui_element, bool_value)
+// SET_CHECKBOX(ui_element, bool_value)
 
 #define SET_SPINBOX_WITH_DEFAULT(ui_element, int_value, default_value) \
     SET_SPINBOX(ui_element, int_value)

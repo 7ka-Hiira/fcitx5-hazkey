@@ -211,6 +211,7 @@ class HazkeyServerConfig {
                 $0.filename = "Romaji"
             }
         ]
+        newConf.submodeEntryPointChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         newConf.zenzaiEnable = true
         newConf.zenzaiInferLimit = 10
         newConf.zenzaiContextualMode = true
@@ -490,6 +491,10 @@ class HazkeyServerConfig {
 
         let inputTable = InputTable(tables: tables, order: InputTable.Ordering.lastInputWins)
         InputStyleManager.registerInputStyle(table: inputTable, for: tableName)
+    }
+
+    func getSubModeEntryPointChars() -> [Character] {
+        return Array(currentProfile.submodeEntryPointChars)
     }
 
 }
