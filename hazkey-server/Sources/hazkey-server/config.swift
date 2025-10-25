@@ -219,7 +219,7 @@ class HazkeyServerConfig {
     }
 
     func saveConfig(
-        _ profiles: [Hazkey_Config_Profile],
+        _ newProfiles: [Hazkey_Config_Profile],
         state: HazkeyServerState? = nil,
         zenzaiAvailable: Bool = false
     ) throws {
@@ -233,7 +233,7 @@ class HazkeyServerConfig {
         var encodeOptions = JSONEncodingOptions()
         encodeOptions.alwaysPrintEnumsAsInts = true
         encodeOptions.useDeterministicOrdering = true
-        for profile in profiles {
+        for profile in newProfiles {
             let jsonData = try profile.jsonUTF8Data(options: encodeOptions)
             let jsonObject = try JSONSerialization.jsonObject(with: jsonData, options: [])
             jsonObjects.append(jsonObject)
@@ -245,6 +245,9 @@ class HazkeyServerConfig {
         try jsonData.write(to: configPath)
 
         NSLog("Config saved to: \(configPath.path)")
+
+        profiles = newProfiles
+        currentProfile = profiles[0]
 
         if let state = state {
             state.reinitializeConfiguration(zenzaiAvailable: zenzaiAvailable)
