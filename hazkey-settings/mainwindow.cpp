@@ -10,13 +10,19 @@
 #include <QMenu>
 #include <QMessageBox>
 #include <QPushButton>
+#include <QVBoxLayout>
+#include <QWidget>
 
 #include "./ui_mainwindow.h"
 #include "config_definitions.h"
 #include "serverconnector.h"
 
 MainWindow::MainWindow(QWidget* parent)
-    : QWidget(parent), ui_(new Ui::MainWindow), server_(ServerConnector()) {
+    : QWidget(parent),
+      ui_(new Ui::MainWindow),
+      server_(ServerConnector()),
+      basicModeWarning_(nullptr),
+      isUpdatingFromAdvanced_(false) {
     ui_->setupUi(this);
 
     // Expand table settings mode change tab
@@ -83,6 +89,23 @@ void MainWindow::connectSignals() {
             &MainWindow::onEnabledKeymapSelectionChanged);
     connect(ui_->availableKeymapList, &QListWidget::itemSelectionChanged, this,
             &MainWindow::onAvailableKeymapSelectionChanged);
+
+    // Connect Basic tab input style changes
+    connect(ui_->mainInputStyle,
+            QOverload<int>::of(&QComboBox::currentIndexChanged), this,
+            &MainWindow::onBasicInputStyleChanged);
+    connect(ui_->punctuationStyle,
+            QOverload<int>::of(&QComboBox::currentIndexChanged), this,
+            &MainWindow::onBasicSettingChanged);
+    connect(ui_->numberStyle,
+            QOverload<int>::of(&QComboBox::currentIndexChanged), this,
+            &MainWindow::onBasicSettingChanged);
+    connect(ui_->commonSymbolStyle,
+            QOverload<int>::of(&QComboBox::currentIndexChanged), this,
+            &MainWindow::onBasicSettingChanged);
+    connect(ui_->spaceStyleLabel,
+            QOverload<int>::of(&QComboBox::currentIndexChanged), this,
+            &MainWindow::onBasicSettingChanged);
 }
 
 void MainWindow::onButtonClicked(QAbstractButton* button) {
@@ -204,6 +227,9 @@ bool MainWindow::loadCurrentConfig() {
 
     // Load keymap configuration
     loadKeymaps();
+
+    // Sync Advanced tab settings to Basic tab
+    syncAdvancedToBasic();
 
     return true;
 }
@@ -408,6 +434,7 @@ void MainWindow::onEnableTable() {
     ui_->enabledTableList->addItem(item);
 
     updateTableButtonStates();
+    syncAdvancedToBasic();
 }
 
 void MainWindow::onDisableTable() {
@@ -441,6 +468,7 @@ void MainWindow::onDisableTable() {
     }
 
     updateTableButtonStates();
+    syncAdvancedToBasic();
 }
 
 void MainWindow::onTableMoveUp() {
@@ -457,6 +485,7 @@ void MainWindow::onTableMoveUp() {
     }
 
     updateTableButtonStates();
+    syncAdvancedToBasic();
 }
 
 void MainWindow::onTableMoveDown() {
@@ -473,6 +502,7 @@ void MainWindow::onTableMoveDown() {
     }
 
     updateTableButtonStates();
+    syncAdvancedToBasic();
 }
 
 void MainWindow::onEnabledTableSelectionChanged() { updateTableButtonStates(); }
@@ -629,6 +659,7 @@ void MainWindow::onEnableKeymap() {
     ui_->enabledKeymapList->addItem(item);
 
     updateKeymapButtonStates();
+    syncAdvancedToBasic();
 }
 
 void MainWindow::onDisableKeymap() {
@@ -662,6 +693,7 @@ void MainWindow::onDisableKeymap() {
     }
 
     updateKeymapButtonStates();
+    syncAdvancedToBasic();
 }
 
 void MainWindow::onKeymapMoveUp() {
@@ -678,6 +710,7 @@ void MainWindow::onKeymapMoveUp() {
     }
 
     updateKeymapButtonStates();
+    syncAdvancedToBasic();
 }
 
 void MainWindow::onKeymapMoveDown() {
@@ -694,6 +727,7 @@ void MainWindow::onKeymapMoveDown() {
     }
 
     updateKeymapButtonStates();
+    syncAdvancedToBasic();
 }
 
 void MainWindow::onEnabledKeymapSelectionChanged() {
@@ -720,6 +754,350 @@ void MainWindow::updateKeymapButtonStates() {
     } else {
         ui_->keymapMoveUp->setEnabled(false);
         ui_->keymapMoveDown->setEnabled(false);
+    }
+}
+
+// Basic tab event handlers
+void MainWindow::onBasicInputStyleChanged() {
+    if (isUpdatingFromAdvanced_) return;
+
+    // Enable/disable other options based on input style
+    bool isKana = (ui_->mainInputStyle->currentIndex() == 1);  // JIS Kana
+
+    // For Kana mode, only Space style can be changed
+    ui_->punctuationStyle->setEnabled(!isKana);
+    ui_->numberStyle->setEnabled(!isKana);
+    ui_->commonSymbolStyle->setEnabled(!isKana);
+
+    // Update labels to indicate disabled state
+    if (isKana) {
+        ui_->punctuationStyle->setToolTip("Disabled in Kana mode");
+        ui_->numberStyle->setToolTip("Disabled in Kana mode");
+        ui_->commonSymbolStyle->setToolTip("Disabled in Kana mode");
+    } else {
+        ui_->punctuationStyle->setToolTip("");
+        ui_->numberStyle->setToolTip("");
+        ui_->commonSymbolStyle->setToolTip("");
+    }
+
+    syncBasicToAdvanced();
+}
+
+void MainWindow::onBasicSettingChanged() {
+    if (isUpdatingFromAdvanced_) return;
+
+    syncBasicToAdvanced();
+}
+
+void MainWindow::resetInputStyleToDefault() {
+    // Set default values
+    ui_->mainInputStyle->setCurrentIndex(0);     // Romaji
+    ui_->punctuationStyle->setCurrentIndex(0);   // Kuten+Toten
+    ui_->numberStyle->setCurrentIndex(1);        // Halfwidth
+    ui_->commonSymbolStyle->setCurrentIndex(2);  // Halfwidth Direct
+    ui_->spaceStyleLabel->setCurrentIndex(1);    // Halfwidth
+
+    // Re-enable all controls (since we're setting to Romaji mode)
+    ui_->punctuationStyle->setEnabled(true);
+    ui_->numberStyle->setEnabled(true);
+    ui_->commonSymbolStyle->setEnabled(true);
+
+    // Clear tooltips
+    ui_->punctuationStyle->setToolTip("");
+    ui_->numberStyle->setToolTip("");
+    ui_->commonSymbolStyle->setToolTip("");
+
+    // Apply changes
+    syncBasicToAdvanced();
+    hideBasicModeWarning();
+}
+
+void MainWindow::syncBasicToAdvanced() {
+    if (!currentProfile_) return;
+
+    // Clear existing keymaps and tables
+    clearKeymapsAndTables();
+
+    // Apply settings based on Basic tab selections
+    applyBasicInputStyle();
+    applyBasicPunctuationStyle();
+    applyBasicNumberStyle();
+    applyBasicSymbolStyle();
+    applyBasicSpaceStyle();
+
+    // Refresh the Advanced tab display
+    loadInputTables();
+    loadKeymaps();
+}
+
+void MainWindow::syncAdvancedToBasic() {
+    if (!currentProfile_) return;
+
+    isUpdatingFromAdvanced_ = true;
+
+    if (isBasicModeCompatible()) {
+        hideBasicModeWarning();
+        setBasicTabEnabled(true);
+
+        // Try to determine Basic settings from Advanced configuration
+        // This is a simplified reverse mapping
+
+        // Check Input Style based on submode entry and input tables
+        QString submodeEntry = QString::fromStdString(
+            currentProfile_->submode_entry_point_chars());
+        bool hasRomajiTable = false;
+        bool hasKanaTable = false;
+
+        for (int i = 0; i < currentProfile_->enabled_tables_size(); ++i) {
+            const auto& table = currentProfile_->enabled_tables(i);
+            QString tableName = QString::fromStdString(table.name());
+            if (tableName.contains("Romaji", Qt::CaseInsensitive)) {
+                hasRomajiTable = true;
+            }
+            if (tableName.contains("Kana", Qt::CaseInsensitive)) {
+                hasKanaTable = true;
+            }
+        }
+
+        bool isKanaMode = false;
+        if (submodeEntry == "ABCDEFGHIJKLMNOPQRSTUVWXYZ" && hasRomajiTable) {
+            ui_->mainInputStyle->setCurrentIndex(0);  // Romaji
+        } else if (submodeEntry.isEmpty() && hasKanaTable) {
+            ui_->mainInputStyle->setCurrentIndex(1);  // JIS Kana
+            isKanaMode = true;
+        }
+
+        // Enable/disable other options based on input style
+        ui_->punctuationStyle->setEnabled(!isKanaMode);
+        ui_->numberStyle->setEnabled(!isKanaMode);
+        ui_->commonSymbolStyle->setEnabled(!isKanaMode);
+
+        // Update tooltips
+        if (isKanaMode) {
+            ui_->punctuationStyle->setToolTip("Disabled in Kana mode");
+            ui_->numberStyle->setToolTip("Disabled in Kana mode");
+            ui_->commonSymbolStyle->setToolTip("Disabled in Kana mode");
+        } else {
+            ui_->punctuationStyle->setToolTip("");
+            ui_->numberStyle->setToolTip("");
+            ui_->commonSymbolStyle->setToolTip("");
+        }
+
+        // Check keymap settings for other styles
+        QSet<QString> enabledKeymaps;
+        for (int i = 0; i < currentProfile_->enabled_keymaps_size(); ++i) {
+            const auto& keymap = currentProfile_->enabled_keymaps(i);
+            enabledKeymaps.insert(QString::fromStdString(keymap.name()));
+        }
+
+        // Punctuation style
+        if (enabledKeymaps.contains("Fullwidth Period") &&
+            enabledKeymaps.contains("Fullwidth Comma")) {
+            ui_->punctuationStyle->setCurrentIndex(1);  // Period+Comma
+        } else if (enabledKeymaps.contains("Fullwidth Comma") &&
+                   !enabledKeymaps.contains("Fullwidth Period")) {
+            ui_->punctuationStyle->setCurrentIndex(2);  // Kuten+Comma
+        } else {
+            ui_->punctuationStyle->setCurrentIndex(0);  // Kuten+Toten
+        }
+
+        // Number style
+        if (enabledKeymaps.contains("Fullwidth Number")) {
+            ui_->numberStyle->setCurrentIndex(0);  // Fullwidth
+        } else {
+            ui_->numberStyle->setCurrentIndex(1);  // Halfwidth
+        }
+
+        // Symbol style
+        if (enabledKeymaps.contains("Fullwidth Symbol") &&
+            enabledKeymaps.contains("Japanese Symbol")) {
+            ui_->commonSymbolStyle->setCurrentIndex(0);  // Fullwidth Japanese
+        } else if (enabledKeymaps.contains("Fullwidth Symbol")) {
+            ui_->commonSymbolStyle->setCurrentIndex(1);  // Fullwidth Direct
+        } else {
+            ui_->commonSymbolStyle->setCurrentIndex(2);  // Halfwidth Direct
+        }
+
+        // Space style
+        if (enabledKeymaps.contains("Fullwidth Space")) {
+            ui_->spaceStyleLabel->setCurrentIndex(0);  // Fullwidth
+        } else {
+            ui_->spaceStyleLabel->setCurrentIndex(1);  // Halfwidth
+        }
+
+    } else {
+        showBasicModeWarning();
+        setBasicTabEnabled(false);
+    }
+
+    isUpdatingFromAdvanced_ = false;
+}
+
+bool MainWindow::isBasicModeCompatible() {
+    if (!currentProfile_) return false;
+
+    // Check if the current configuration can be represented in Basic mode
+    // This is a simplified check - in reality, you might want more
+    // sophisticated logic
+
+    // For now, we assume most configurations are compatible
+    // You can add more specific checks here based on your requirements
+    return true;
+}
+
+void MainWindow::showBasicModeWarning() {
+    if (!basicModeWarning_) {
+        basicModeWarning_ = new QWidget();
+        basicModeWarning_->setStyleSheet(
+            "background-color: yellow; padding: 10px;");
+
+        QVBoxLayout* layout = new QVBoxLayout(basicModeWarning_);
+
+        QLabel* warningLabel = new QLabel(
+            "<b>Warning:</b> Current settings can only be edited in Advanced "
+            "mode.");
+        warningLabel->setWordWrap(true);
+        layout->addWidget(warningLabel);
+
+        QPushButton* resetButton = new QPushButton("Reset Input Style");
+        connect(resetButton, &QPushButton::clicked, this,
+                &MainWindow::resetInputStyleToDefault);
+        layout->addWidget(resetButton);
+
+        // Insert warning at the top of the Basic tab scroll area contents
+        QVBoxLayout* basicTabLayout = qobject_cast<QVBoxLayout*>(
+            ui_->inputStyleSimpleModeScrollAreaContents->layout());
+        if (basicTabLayout) {
+            basicTabLayout->insertWidget(0, basicModeWarning_);
+        }
+    }
+    basicModeWarning_->show();
+}
+
+void MainWindow::hideBasicModeWarning() {
+    if (basicModeWarning_) {
+        basicModeWarning_->hide();
+    }
+}
+
+void MainWindow::setBasicTabEnabled(bool enabled) {
+    ui_->inputStylesGrid->setEnabled(enabled);
+}
+
+void MainWindow::applyBasicInputStyle() {
+    int inputStyleIndex = ui_->mainInputStyle->currentIndex();
+
+    if (inputStyleIndex == 0) {  // Romaji
+        currentProfile_->set_submode_entry_point_chars(
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+        addInputTableIfAvailable("Romaji");
+    } else if (inputStyleIndex == 1) {  // JIS Kana
+        currentProfile_->set_submode_entry_point_chars("");
+        addInputTableIfAvailable("Kana");
+    }
+}
+
+void MainWindow::applyBasicPunctuationStyle() {
+    // Skip if punctuation style is disabled (Kana mode)
+    if (!ui_->punctuationStyle->isEnabled()) {
+        return;
+    }
+
+    int punctuationIndex = ui_->punctuationStyle->currentIndex();
+
+    switch (punctuationIndex) {
+        case 0:  // Kuten+Toten: 。、
+            // No additional keymaps needed
+            break;
+        case 1:  // Period+Comma: ．，
+            addKeymapIfAvailable("Fullwidth Period");
+            addKeymapIfAvailable("Fullwidth Comma");
+            break;
+        case 2:  // Kuten+Comma: 。，
+            addKeymapIfAvailable("Fullwidth Comma");
+            break;
+    }
+}
+
+void MainWindow::applyBasicNumberStyle() {
+    // Skip if number style is disabled (Kana mode)
+    if (!ui_->numberStyle->isEnabled()) {
+        return;
+    }
+
+    int numberIndex = ui_->numberStyle->currentIndex();
+
+    if (numberIndex == 0) {  // Fullwidth: １２３４５
+        addKeymapIfAvailable("Fullwidth Number");
+    }
+    // Halfwidth is default, no keymap needed
+}
+
+void MainWindow::applyBasicSymbolStyle() {
+    // Skip if symbol style is disabled (Kana mode)
+    if (!ui_->commonSymbolStyle->isEnabled()) {
+        return;
+    }
+
+    int symbolIndex = ui_->commonSymbolStyle->currentIndex();
+
+    switch (symbolIndex) {
+        case 0:  // Fullwidth Japanese: ！＃＠・「」
+            addKeymapIfAvailable("Fullwidth Symbol");
+            addKeymapIfAvailable("Japanese Symbol");
+            break;
+        case 1:  // Fullwidth Direct: ！＃＠／［］
+            addKeymapIfAvailable("Fullwidth Symbol");
+            break;
+        case 2:  // Halfwidth Direct: !#@/[]
+            // No additional keymaps needed
+            break;
+    }
+}
+
+void MainWindow::applyBasicSpaceStyle() {
+    int spaceIndex = ui_->spaceStyleLabel->currentIndex();
+
+    if (spaceIndex == 0) {  // Fullwidth: "　"
+        addKeymapIfAvailable("Fullwidth Space");
+    }
+    // Halfwidth is default, no keymap needed
+}
+
+void MainWindow::addKeymapIfAvailable(const QString& keymapName) {
+    // Check if keymap is available
+    for (int i = 0; i < currentConfig_.available_keymaps_size(); ++i) {
+        const auto& availableKeymap = currentConfig_.available_keymaps(i);
+        if (QString::fromStdString(availableKeymap.name()) == keymapName) {
+            // Add to enabled keymaps
+            auto* enabledKeymap = currentProfile_->add_enabled_keymaps();
+            enabledKeymap->set_name(availableKeymap.name());
+            enabledKeymap->set_is_built_in(availableKeymap.is_built_in());
+            enabledKeymap->set_filename(availableKeymap.filename());
+            break;
+        }
+    }
+}
+
+void MainWindow::addInputTableIfAvailable(const QString& tableName) {
+    // Check if input table is available
+    for (int i = 0; i < currentConfig_.available_tables_size(); ++i) {
+        const auto& availableTable = currentConfig_.available_tables(i);
+        if (QString::fromStdString(availableTable.name()) == tableName) {
+            // Add to enabled tables
+            auto* enabledTable = currentProfile_->add_enabled_tables();
+            enabledTable->set_name(availableTable.name());
+            enabledTable->set_is_built_in(availableTable.is_built_in());
+            enabledTable->set_filename(availableTable.filename());
+            break;
+        }
+    }
+}
+
+void MainWindow::clearKeymapsAndTables() {
+    if (currentProfile_) {
+        currentProfile_->clear_enabled_keymaps();
+        currentProfile_->clear_enabled_tables();
     }
 }
 
