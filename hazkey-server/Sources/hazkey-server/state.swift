@@ -183,7 +183,12 @@ class HazkeyServerState {
         let hiragana = composingText.value.toHiragana()
         let cursorPos = composingText.value.convertTargetCursorPosition
 
-        if hiragana.count == cursorPos {
+        if (serverConfig.currentProfile.auxTextMode
+            == Hazkey_Config_Profile.AuxTextMode.auxTextDisabled)
+            || (serverConfig.currentProfile.auxTextMode
+                == Hazkey_Config_Profile.AuxTextMode.auxTextShowWhenCursorNotAtEnd
+                && hiragana.count == cursorPos)
+        {
             return Hazkey_ResponseEnvelope.with {
                 $0.status = .success
                 $0.textWithCursor = Hazkey_Commands_TextWithCursor.with {
