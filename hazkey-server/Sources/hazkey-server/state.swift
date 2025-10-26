@@ -10,6 +10,7 @@ class HazkeyServerState {
 
     var isShiftPressedAlone = false
     var isSubInputMode = false
+    var learningDataUpdated = true
 
     var keymap: Keymap
     var currentTableName: String
@@ -26,6 +27,22 @@ class HazkeyServerState {
         self.keymap = serverConfig.loadKeymap()
         self.currentTableName = UUID().uuidString
         serverConfig.loadInputTable(tableName: currentTableName)
+
+        // Create user data directories (history data, dictionary)
+        var userDataDir: URL {
+            FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
+                .appendingPathComponent("hazkey", isDirectory: true)
+        }
+        do {
+            try FileManager.default.createDirectory(
+                at: userDataDir.appendingPathComponent(
+                    "memory", isDirectory: true), withIntermediateDirectories: true)
+            try FileManager.default.createDirectory(
+                at: userDataDir.appendingPathComponent(
+                    "shared", isDirectory: true), withIntermediateDirectories: true)
+        } catch {
+            NSLog("Failed to create user data directoryes")
+        }
 
         // Initialize base convert options
         self.baseConvertRequestOptions = serverConfig.genBaseConvertRequestOptions(
@@ -47,6 +64,10 @@ class HazkeyServerState {
     /// ComposingText
 
     func createComposingTextInstanse() -> Hazkey_ResponseEnvelope {
+        if !learningDataUpdated {
+            converter.commitUpdateLearningData()
+            learningDataUpdated = true
+        }
         composingText = ComposingTextBox()
         currentCandidateList = nil
         isSubInputMode = false
@@ -145,6 +166,10 @@ class HazkeyServerState {
     func completePrefix(candidateIndex: Int) -> Hazkey_ResponseEnvelope {
         if let completedCandidate = currentCandidateList?[candidateIndex] {
             composingText.value.prefixComplete(composingCount: completedCandidate.composingCount)
+            converter.setCompletedData(completedCandidate)
+            // saved when the next composingText is initialized
+            converter.updateLearningData(completedCandidate)
+            learningDataUpdated = false
         } else {
             return Hazkey_ResponseEnvelope.with {
                 $0.status = .failed
@@ -328,6 +353,13 @@ class HazkeyServerState {
         return Hazkey_ResponseEnvelope.with {
             $0.status = .success
             $0.candidates = candidatesResult
+        }
+    }
+
+    func clearProfileLearningData() -> Hazkey_ResponseEnvelope {
+        converter.resetMemory()
+        return Hazkey_ResponseEnvelope.with {
+            $0.status = .success
         }
     }
 

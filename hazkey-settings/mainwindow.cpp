@@ -41,9 +41,10 @@ MainWindow::MainWindow(QWidget* parent)
     if (!loadCurrentConfig()) {
         // If config loading fails, disable UI elements
         setEnabled(false);
-        QMessageBox::critical(this, tr("Configuration Error"),
-                              tr("Failed to load configuration. Please check your "
-                                 "connection to the hazkey server."));
+        QMessageBox::critical(
+            this, tr("Configuration Error"),
+            tr("Failed to load configuration. Please check your "
+               "connection to the hazkey server."));
     }
 }
 
@@ -116,6 +117,10 @@ void MainWindow::connectSignals() {
             &MainWindow::onCheckAllConversion);
     connect(ui_->uncheckAllConversion, &QPushButton::clicked, this,
             &MainWindow::onUncheckAllConversion);
+
+    // Connect clear learning data button
+    connect(ui_->clearLearningData, &QPushButton::clicked, this,
+            &MainWindow::onClearLearningData);
 }
 
 void MainWindow::onButtonClicked(QAbstractButton* button) {
@@ -246,7 +251,8 @@ bool MainWindow::loadCurrentConfig() {
 
 bool MainWindow::saveCurrentConfig() {
     if (!currentProfile_) {
-        QMessageBox::warning(this, tr("Error"), tr("No configuration profile loaded."));
+        QMessageBox::warning(this, tr("Error"),
+                             tr("No configuration profile loaded."));
         return false;
     }
 
@@ -808,9 +814,9 @@ void MainWindow::onBasicInputStyleChanged() {
 
     // Update labels to indicate disabled state
     if (isKana) {
-    ui_->punctuationStyle->setToolTip(tr("Disabled in Kana mode"));
-    ui_->numberStyle->setToolTip(tr("Disabled in Kana mode"));
-    ui_->commonSymbolStyle->setToolTip(tr("Disabled in Kana mode"));
+        ui_->punctuationStyle->setToolTip(tr("Disabled in Kana mode"));
+        ui_->numberStyle->setToolTip(tr("Disabled in Kana mode"));
+        ui_->commonSymbolStyle->setToolTip(tr("Disabled in Kana mode"));
     } else {
         ui_->punctuationStyle->setToolTip("");
         ui_->numberStyle->setToolTip("");
@@ -1063,9 +1069,9 @@ void MainWindow::showBasicModeWarning() {
         warningWidget->setStyleSheet("background-color: yellow; padding: 5px;");
         QHBoxLayout* warningLayout = new QHBoxLayout(warningWidget);
 
-        QLabel* warningLabel = new QLabel(
-            tr("<b>Warning:</b> Current settings can only be edited in Advanced "
-               "mode."));
+        QLabel* warningLabel = new QLabel(tr(
+            "<b>Warning:</b> Current settings can only be edited in Advanced "
+            "mode."));
         warningLabel->setWordWrap(true);
         warningLayout->addWidget(warningLabel);
 
@@ -1261,6 +1267,37 @@ void MainWindow::onUncheckAllConversion() {
     ui_->unicodeCodePointConversion->setChecked(false);
     ui_->romanTypographyConversion->setChecked(false);
     ui_->hazkeyVersionConversion->setChecked(false);
+}
+
+void MainWindow::onClearLearningData() {
+    if (!currentProfile_) {
+        QMessageBox::warning(this, tr("Error"),
+                             tr("No configuration profile loaded."));
+        return;
+    }
+
+    // Show confirmation dialog
+    QMessageBox::StandardButton reply = QMessageBox::question(
+        this, tr("Clear Input History"),
+        tr("Are you sure you want to clear all input history data? This action "
+           "cannot be undone."),
+        QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
+
+    if (reply == QMessageBox::Yes) {
+        // Clear the history using the server connector
+        bool success = server_.clearAllHistory(currentProfile_->profile_id());
+
+        if (success) {
+            QMessageBox::information(
+                this, tr("Success"),
+                tr("Input history has been cleared successfully."));
+        } else {
+            QMessageBox::critical(
+                this, tr("Error"),
+                tr("Failed to clear input history. Please check your "
+                   "connection to the hazkey server."));
+        }
+    }
 }
 
 QString MainWindow::translateKeymapName(const QString& keymapName) {

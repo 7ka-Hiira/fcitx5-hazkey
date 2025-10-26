@@ -238,3 +238,15 @@ void ServerConnector::setCurrentConfig(
         return;
     }
 }
+
+bool ServerConnector::clearAllHistory(const std::string& profileId) {
+    hazkey::RequestEnvelope request;
+    auto clearRequest = request.mutable_clear_all_history();
+    clearRequest->set_profile_id(profileId);
+    auto response = transact(request);
+    if (response == std::nullopt) {
+        return false;
+    }
+    auto responseVal = response.value();
+    return responseVal.status() == hazkey::SUCCESS;
+}

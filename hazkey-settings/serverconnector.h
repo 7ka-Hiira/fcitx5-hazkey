@@ -11,6 +11,7 @@ class ServerConnector {
     ServerConnector();
     std::optional<hazkey::config::CurrentConfig> getConfig();
     void setCurrentConfig(hazkey::config::CurrentConfig);
+    bool clearAllHistory(const std::string& profileId);
 
    private:
     std::string get_socket_path();
