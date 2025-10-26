@@ -110,6 +110,12 @@ void MainWindow::connectSignals() {
     // Connect submode entry point chars change to sync with Basic tab
     connect(ui_->submodeEntryPointChars, &QLineEdit::textChanged, this,
             &MainWindow::onSubmodeEntryChanged);
+
+    // Connect special conversion buttons
+    connect(ui_->checkAllConversion, &QPushButton::clicked, this,
+            &MainWindow::onCheckAllConversion);
+    connect(ui_->uncheckAllConversion, &QPushButton::clicked, this,
+            &MainWindow::onUncheckAllConversion);
 }
 
 void MainWindow::onButtonClicked(QAbstractButton* button) {
@@ -1223,6 +1229,30 @@ void MainWindow::clearKeymapsAndTables() {
         currentProfile_->clear_enabled_keymaps();
         currentProfile_->clear_enabled_tables();
     }
+}
+
+void MainWindow::onCheckAllConversion() {
+    ui_->halfwidthKatakanaConversion->setChecked(true);
+    ui_->extendedEmojiConversion->setChecked(true);
+    ui_->commaSeparatedNumCoversion->setChecked(true);
+    ui_->calendarConversion->setChecked(true);
+    ui_->timeConversion->setChecked(true);
+    ui_->mailDomainConversion->setChecked(true);
+    ui_->unicodeCodePointConversion->setChecked(true);
+    ui_->romanTypographyConversion->setChecked(true);
+    ui_->hazkeyVersionConversion->setChecked(true);
+}
+
+void MainWindow::onUncheckAllConversion() {
+    ui_->halfwidthKatakanaConversion->setChecked(false);
+    ui_->extendedEmojiConversion->setChecked(false);
+    ui_->commaSeparatedNumCoversion->setChecked(false);
+    ui_->calendarConversion->setChecked(false);
+    ui_->timeConversion->setChecked(false);
+    ui_->mailDomainConversion->setChecked(false);
+    ui_->unicodeCodePointConversion->setChecked(false);
+    ui_->romanTypographyConversion->setChecked(false);
+    ui_->hazkeyVersionConversion->setChecked(false);
 }
 
 MainWindow::~MainWindow() { delete ui_; }

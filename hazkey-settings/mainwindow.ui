@@ -641,7 +641,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="pushButton">
+              <widget class="QPushButton" name="checkAllConversion">
                <property name="text">
                 <string>Check All</string>
                </property>

@@ -39,6 +39,8 @@ class MainWindow : public QWidget {
     void onBasicInputStyleChanged();
     void onBasicSettingChanged();
     void resetInputStyleToDefault();
+    void onCheckAllConversion();
+    void onUncheckAllConversion();
 
    private:
     void connectSignals();
