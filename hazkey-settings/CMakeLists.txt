@@ -47,7 +47,17 @@ set(PROJECT_SOURCES
 
 qt_add_executable(hazkey-settings ${PROJECT_SOURCES}
     hazkey-icon.qrc)
-qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
+qt_create_translation(QM_FILES ${PROJECT_SOURCES} ${TS_FILES})
+
+foreach(_qm ${QM_FILES})
+    get_filename_component(_qm_name ${_qm} NAME)
+    set_source_files_properties(${_qm} PROPERTIES QT_RESOURCE_ALIAS ${_qm_name})
+endforeach()
+
+qt_add_resources(hazkey-settings "translations"
+    PREFIX "/i18n"
+    FILES ${QM_FILES}
+)
 
 if(Protobuf_VERSION VERSION_GREATER_EQUAL "3.15")
     # 3.15 ~：stable proto3 optional support

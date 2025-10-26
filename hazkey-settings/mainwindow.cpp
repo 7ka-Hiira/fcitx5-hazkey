@@ -41,9 +41,9 @@ MainWindow::MainWindow(QWidget* parent)
     if (!loadCurrentConfig()) {
         // If config loading fails, disable UI elements
         setEnabled(false);
-        QMessageBox::critical(this, "Configuration Error",
-                              "Failed to load configuration. Please check your "
-                              "connection to the hazkey server.");
+        QMessageBox::critical(this, tr("Configuration Error"),
+                              tr("Failed to load configuration. Please check your "
+                                 "connection to the hazkey server."));
     }
 }
 
@@ -168,7 +168,7 @@ bool MainWindow::loadCurrentConfig() {
         ui_->zenzaiInferenceLimit->setEnabled(false);
         ui_->zenzaiUserPlofile->setEnabled(false);
         QLabel* warningLabel =
-            new QLabel("<b>Warning:</b> Zenzai support not installed.");
+            new QLabel(tr("<b>Warning:</b> Zenzai support not installed."));
         warningLabel->setStyleSheet("background-color: yellow; padding: 5px;");
         ui_->aiTabScrollContentsLayout->insertWidget(1, warningLabel);
     }
@@ -246,7 +246,7 @@ bool MainWindow::loadCurrentConfig() {
 
 bool MainWindow::saveCurrentConfig() {
     if (!currentProfile_) {
-        QMessageBox::warning(this, "Error", "No configuration profile loaded.");
+        QMessageBox::warning(this, tr("Error"), tr("No configuration profile loaded."));
         return false;
     }
 
@@ -305,13 +305,13 @@ bool MainWindow::saveCurrentConfig() {
         return true;
     } catch (const std::exception& e) {
         QMessageBox::critical(
-            this, "Save Error",
-            QString("Failed to save configuration: %1").arg(e.what()));
+            this, tr("Save Error"),
+            tr("Failed to save configuration: %1").arg(e.what()));
         return false;
     } catch (...) {
         QMessageBox::critical(
-            this, "Save Error",
-            "An unknown error occurred while saving configuration.");
+            this, tr("Save Error"),
+            tr("An unknown error occurred while saving configuration."));
         return false;
     }
 }
@@ -345,7 +345,8 @@ void MainWindow::loadInputTables() {
         QString tableName = QString::fromStdString(enabledTable.name());
         enabledTableNames.insert(tableName);
 
-        QListWidgetItem* item = new QListWidgetItem(tableName);
+        QString displayName = translateTableName(tableName);
+        QListWidgetItem* item = new QListWidgetItem(displayName);
 
         // Check if this table is available
         bool isAvailable = false;
@@ -362,10 +363,10 @@ void MainWindow::loadInputTables() {
 
         // Set item appearance based on status
         if (!isAvailable) {
-            item->setText(tableName + " [not found]");
+            item->setText(displayName + " " + tr("[not found]"));
             item->setForeground(QColor(Qt::red));
         } else if (isBuiltIn) {
-            item->setText(tableName + " [built-in]");
+            item->setText(displayName + " " + tr("[built-in]"));
         }
 
         // Store original name and metadata
@@ -382,10 +383,11 @@ void MainWindow::loadInputTables() {
         QString tableName = QString::fromStdString(availableTable.name());
 
         if (!enabledTableNames.contains(tableName)) {
-            QListWidgetItem* item = new QListWidgetItem(tableName);
+            QString displayName = translateTableName(tableName);
+            QListWidgetItem* item = new QListWidgetItem(displayName);
 
             if (availableTable.is_built_in()) {
-                item->setText(tableName + " [built-in]");
+                item->setText(displayName + " " + tr("[built-in]"));
             }
 
             // Store metadata
@@ -463,12 +465,13 @@ void MainWindow::onDisableTable() {
     if (isAvailable) {
         // Reset display text for available list
         QString tableName = item->data(Qt::UserRole).toString();
+        QString displayName = translateTableName(tableName);
         bool isBuiltIn = item->data(Qt::UserRole + 1).toBool();
 
         if (isBuiltIn) {
-            item->setText(tableName + " [built-in]");
+            item->setText(displayName + " " + tr("[built-in]"));
         } else {
-            item->setText(tableName);
+            item->setText(displayName);
         }
         item->setForeground(QColor());  // Reset color
 
@@ -573,7 +576,8 @@ void MainWindow::loadKeymaps() {
         QString keymapName = QString::fromStdString(enabledKeymap.name());
         enabledKeymapNames.insert(keymapName);
 
-        QListWidgetItem* item = new QListWidgetItem(keymapName);
+        QString displayName = translateKeymapName(keymapName);
+        QListWidgetItem* item = new QListWidgetItem(displayName);
 
         // Check if this keymap is available
         bool isAvailable = false;
@@ -590,10 +594,10 @@ void MainWindow::loadKeymaps() {
 
         // Set item appearance based on status
         if (!isAvailable) {
-            item->setText(keymapName + " [not found]");
+            item->setText(displayName + " " + tr("[not found]"));
             item->setForeground(QColor(Qt::red));
         } else if (isBuiltIn) {
-            item->setText(keymapName + " [built-in]");
+            item->setText(displayName + " " + tr("[built-in]"));
         }
 
         // Store original name and metadata
@@ -610,10 +614,11 @@ void MainWindow::loadKeymaps() {
         QString keymapName = QString::fromStdString(availableKeymap.name());
 
         if (!enabledKeymapNames.contains(keymapName)) {
-            QListWidgetItem* item = new QListWidgetItem(keymapName);
+            QString displayName = translateKeymapName(keymapName);
+            QListWidgetItem* item = new QListWidgetItem(displayName);
 
             if (availableKeymap.is_built_in()) {
-                item->setText(keymapName + " [built-in]");
+                item->setText(displayName + " " + tr("[built-in]"));
             }
 
             // Store metadata
@@ -692,12 +697,13 @@ void MainWindow::onDisableKeymap() {
     if (isAvailable) {
         // Reset display text for available list
         QString keymapName = item->data(Qt::UserRole).toString();
+        QString displayName = translateKeymapName(keymapName);
         bool isBuiltIn = item->data(Qt::UserRole + 1).toBool();
 
         if (isBuiltIn) {
-            item->setText(keymapName + " [built-in]");
+            item->setText(displayName + " " + tr("[built-in]"));
         } else {
-            item->setText(keymapName);
+            item->setText(displayName);
         }
         item->setForeground(QColor());  // Reset color
 
@@ -802,9 +808,9 @@ void MainWindow::onBasicInputStyleChanged() {
 
     // Update labels to indicate disabled state
     if (isKana) {
-        ui_->punctuationStyle->setToolTip("Disabled in Kana mode");
-        ui_->numberStyle->setToolTip("Disabled in Kana mode");
-        ui_->commonSymbolStyle->setToolTip("Disabled in Kana mode");
+    ui_->punctuationStyle->setToolTip(tr("Disabled in Kana mode"));
+    ui_->numberStyle->setToolTip(tr("Disabled in Kana mode"));
+    ui_->commonSymbolStyle->setToolTip(tr("Disabled in Kana mode"));
     } else {
         ui_->punctuationStyle->setToolTip("");
         ui_->numberStyle->setToolTip("");
@@ -914,9 +920,9 @@ void MainWindow::syncAdvancedToBasic() {
 
         // Update tooltips
         if (isKanaMode) {
-            ui_->punctuationStyle->setToolTip("Disabled in Kana mode");
-            ui_->numberStyle->setToolTip("Disabled in Kana mode");
-            ui_->commonSymbolStyle->setToolTip("Disabled in Kana mode");
+            ui_->punctuationStyle->setToolTip(tr("Disabled in Kana mode"));
+            ui_->numberStyle->setToolTip(tr("Disabled in Kana mode"));
+            ui_->commonSymbolStyle->setToolTip(tr("Disabled in Kana mode"));
         } else {
             ui_->punctuationStyle->setToolTip("");
             ui_->numberStyle->setToolTip("");
@@ -1058,12 +1064,12 @@ void MainWindow::showBasicModeWarning() {
         QHBoxLayout* warningLayout = new QHBoxLayout(warningWidget);
 
         QLabel* warningLabel = new QLabel(
-            "<b>Warning:</b> Current settings can only be edited in Advanced "
-            "mode.");
+            tr("<b>Warning:</b> Current settings can only be edited in Advanced "
+               "mode."));
         warningLabel->setWordWrap(true);
         warningLayout->addWidget(warningLabel);
 
-        QPushButton* resetButton = new QPushButton("Reset Input Style");
+        QPushButton* resetButton = new QPushButton(tr("Reset Input Style"));
         connect(resetButton, &QPushButton::clicked, this,
                 &MainWindow::resetInputStyleToDefault);
         warningLayout->addWidget(resetButton);
@@ -1255,6 +1261,30 @@ void MainWindow::onUncheckAllConversion() {
     ui_->unicodeCodePointConversion->setChecked(false);
     ui_->romanTypographyConversion->setChecked(false);
     ui_->hazkeyVersionConversion->setChecked(false);
+}
+
+QString MainWindow::translateKeymapName(const QString& keymapName) {
+    if (keymapName == "Fullwidth Period") {
+        return tr("Fullwidth Period");
+    } else if (keymapName == "Fullwidth Comma") {
+        return tr("Fullwidth Comma");
+    } else if (keymapName == "Fullwidth Number") {
+        return tr("Fullwidth Number");
+    } else if (keymapName == "Fullwidth Symbol") {
+        return tr("Fullwidth Symbol");
+    } else if (keymapName == "Fullwidth Space") {
+        return tr("Fullwidth Space");
+    }
+    return keymapName;  // Return original name if no translation found
+}
+
+QString MainWindow::translateTableName(const QString& tableName) {
+    if (tableName == "Romaji") {
+        return tr("Romaji");
+    } else if (tableName == "Kana") {
+        return tr("Kana");
+    }
+    return tableName;  // Return original name if no translation found
 }
 
 MainWindow::~MainWindow() { delete ui_; }
