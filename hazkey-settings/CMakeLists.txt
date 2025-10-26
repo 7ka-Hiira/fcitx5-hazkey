@@ -45,7 +45,8 @@ set(PROJECT_SOURCES
     ${TS_FILES}
 )
 
-qt_add_executable(hazkey-settings ${PROJECT_SOURCES})
+qt_add_executable(hazkey-settings ${PROJECT_SOURCES}
+    hazkey-icon.qrc)
 qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 
 if(Protobuf_VERSION VERSION_GREATER_EQUAL "3.15")
