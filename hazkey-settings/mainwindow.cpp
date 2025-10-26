@@ -968,6 +968,8 @@ void MainWindow::syncAdvancedToBasic() {
     } else {
         showBasicModeWarning();
         setBasicTabEnabled(false);
+        // Automatically switch to Advanced tab when Basic mode is incompatible
+        ui_->inputTableConfigModeTabWidget->setCurrentIndex(1);
     }
 
     isUpdatingFromAdvanced_ = false;
