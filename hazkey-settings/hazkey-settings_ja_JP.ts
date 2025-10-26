@@ -210,12 +210,12 @@
     <message>
         <location filename="mainwindow.ui" line="790"/>
         <source>Punctuation style</source>
-        <translation>句読点のスタイル</translation>
+        <translation>句読点</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="797"/>
         <source>Space style</source>
-        <translation>スペースのスタイル</translation>
+        <translation>スペース</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="805"/>
@@ -250,12 +250,12 @@
     <message>
         <location filename="mainwindow.ui" line="846"/>
         <source>Number style</source>
-        <translation>数字のスタイル</translation>
+        <translation>数字</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="853"/>
         <source>Symbol style</source>
-        <translation>記号のスタイル</translation>
+        <translation>記号</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="861"/>
@@ -271,7 +271,7 @@
     <message>
         <location filename="mainwindow.ui" line="874"/>
         <source>Main input style</source>
-        <translation>メイン入力スタイル</translation>
+        <translation>入力方式</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="901"/>
@@ -440,7 +440,7 @@
     <message>
         <location filename="mainwindow.ui" line="1882"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Conversion engine provided by &lt;a href=&quot;https://azookey.com/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;azooKey&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;変換エンジンは &lt;a href=&quot;https://azookey.com/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;azooKey&lt;/span&gt;&lt;/a&gt; によって提供されています&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;変換エンジンは &lt;a href=&quot;https://azookey.com/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;azooKey&lt;/span&gt;&lt;/a&gt; によって提供されています。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="1933"/>
@@ -525,7 +525,7 @@
         <location filename="mainwindow.cpp" line="627"/>
         <location filename="mainwindow.cpp" line="710"/>
         <source>[built-in]</source>
-        <translation>[組み込み]</translation>
+        <translation>[内蔵]</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="817"/>
@@ -540,7 +540,7 @@
     <message>
         <location filename="mainwindow.cpp" line="1072"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; Current settings can only be edited in Advanced mode.</source>
-        <translation>&lt;b&gt;警告:&lt;/b&gt; 現在の設定は詳細モードでのみ編集できます。</translation>
+        <translation>&lt;b&gt;警告:&lt;/b&gt; 現在の設定は詳細設定モードでのみ編集できます。</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="1078"/>
