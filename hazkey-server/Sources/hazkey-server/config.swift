@@ -174,12 +174,23 @@ class HazkeyServerConfig {
             Hazkey_Config_Profile.AutoConvertMode.autoConvertForMultipleChars
         newConf.auxTextMode = Hazkey_Config_Profile.AuxTextMode.auxTextShowWhenCursorNotAtEnd
         newConf.suggestionListMode =
-            Hazkey_Config_Profile.SuggestionListMode.suggestionListDisabled
+            Hazkey_Config_Profile.SuggestionListMode.suggestionListShowPredictiveResults
         newConf.numSuggestions = 4
         newConf.useRichSuggestion = false
         newConf.numCandidatesPerPage = 9
         newConf.useRichCandidates = false
         newConf.useInputHistory = true
+        newConf.specialConversionMode = Hazkey_Config_Profile.SpecialConversionMode.with {
+            $0.commaSeparatedNumber = true
+            $0.mailDomain = true
+            $0.calendar = true
+            $0.time = true
+            $0.romanTypography = true
+            $0.unicodeCodepoint = true
+            $0.hazkeyVersion = true
+            $0.halfwidthKatakana = true
+            $0.extendedEmoji = true
+        }
         newConf.stopStoreNewHistory = false
         newConf.enabledKeymaps = [
             Hazkey_Config_Profile.EnabledKeymap.with {
