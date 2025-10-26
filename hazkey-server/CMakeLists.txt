@@ -37,10 +37,46 @@ if(NOT SKIP_KKC_PATH_UPDATE)
     file(WRITE ${CMAKE_CURRENT_SOURCE_DIR}/Sources/hazkey-server/path.swift "let systemResourcePath: String = \"${CMAKE_INSTALL_FULL_DATADIR}/hazkey\"")
 endif()
 
+# Auto detect swift library path
+# To bypass issue swiftlang/swift#78003
+execute_process(
+    COMMAND which swift
+    OUTPUT_VARIABLE swift_path_raw
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    RESULT_VARIABLE which_result
+)
+if(which_result EQUAL 0)
+    execute_process(
+        COMMAND readlink -f "${swift_path_raw}"
+        OUTPUT_VARIABLE swift_path_resolved
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+        RESULT_VARIABLE readlink_result
+    )
+    if(readlink_result EQUAL 0)
+        # set relative path from swift binary
+        if("${swift_path_resolved}" MATCHES "/bin/swift[^/]*$")
+            string(REGEX REPLACE "/bin/swift[^/]*$" "" swift_base_dir "${swift_path_resolved}")
+            set(SWIFT_DETECTED_LIB_PATH "${swift_base_dir}/lib/swift/linux")
+
+            message(STATUS "Detected Swift library path: ${SWIFT_DETECTED_LIB_PATH}")
+        else()
+            set(SWIFT_DETECTED_LIB_PATH "")
+            message(STATUS "Resolved swift path '${swift_path_resolved}' does not end with '/bin/swift*'. SWIFT_LIB_PATH not set.")
+        endif()
+    else()
+        set(SWIFT_DETECTED_LIB_PATH "")
+        message(WARNING "Failed to execute 'readlink -f' on '${swift_path_raw}'. SWIFT_LIB_PATH not set.")
+    endif()
+else()
+    set(SWIFT_DETECTED_LIB_PATH "")
+    message(WARNING "Swift executable not found using 'which swift'. SWIFT_LIB_PATH not set.")
+endif()
+
 add_custom_target(build_hazkey_server ALL
     COMMAND ${CMAKE_COMMAND}
         -DSWIFT_BUILD_TYPE=${SWIFT_BUILD_TYPE}
         -DSWIFT_EXECUTABLE=${SWIFT_EXECUTABLE}
+        -DSWIFT_DETECTED_LIB_PATH=${SWIFT_DETECTED_LIB_PATH}
         -DSWIFT_LINK_PATH=${SWIFT_LINK_PATH}
         -DSWIFT_WORK_DIR=${CMAKE_CURRENT_SOURCE_DIR}
         -DLLAMA_STUB_DIR=${CMAKE_CURRENT_BINARY_DIR}/llama-stub

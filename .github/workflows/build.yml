@@ -38,7 +38,7 @@ jobs:
         run: |
           mkdir -p $GITHUB_WORKSPACE/hazkey-server/build
           cd $GITHUB_WORKSPACE/hazkey-server/build
-          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DSWIFT_LINK_PATH=/usr/share/swift/usr/lib/swift/linux -G Ninja ..
+          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -G Ninja ..
           ninja -j$(nproc)
           env DESTDIR=$GITHUB_WORKSPACE/workdir ninja install
 
