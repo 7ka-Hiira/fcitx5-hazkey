@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 
 #include <qlabel.h>
+#include <qnamespace.h>
 
 #include <QAbstractButton>
 #include <QCheckBox>
@@ -342,38 +343,41 @@ void MainWindow::loadInputTables() {
     ui_->enabledTableList->clear();
     ui_->availableTableList->clear();
 
-    // Create sets for quick lookup
-    QSet<QString> enabledTableNames;
+    // Create sets for quick lookup - use (name, isBuiltin) pairs for uniqueness
+    QSet<QPair<QString, bool>> enabledTableKeys;
 
     // Load enabled tables
     for (int i = 0; i < currentProfile_->enabled_tables_size(); ++i) {
         const auto& enabledTable = currentProfile_->enabled_tables(i);
         QString tableName = QString::fromStdString(enabledTable.name());
-        enabledTableNames.insert(tableName);
+        bool isBuiltIn = enabledTable.is_built_in();
+        enabledTableKeys.insert(QPair<QString, bool>(tableName, isBuiltIn));
 
-        QString displayName = translateTableName(tableName);
+        QString displayName =
+            translateTableName(tableName, enabledTable.is_built_in());
         QListWidgetItem* item = new QListWidgetItem(displayName);
 
         // Check if this table is available
         bool isAvailable = false;
-        bool isBuiltIn = false;
 
         for (int j = 0; j < currentConfig_.available_tables_size(); ++j) {
             const auto& availableTable = currentConfig_.available_tables(j);
-            if (availableTable.name() == enabledTable.name()) {
+            if (availableTable.name() == enabledTable.name() &&
+                availableTable.is_built_in() == enabledTable.is_built_in()) {
                 isAvailable = true;
-                isBuiltIn = availableTable.is_built_in();
                 break;
             }
         }
 
         // Set item appearance based on status
-        if (!isAvailable) {
-            item->setText(displayName + " " + tr("[not found]"));
-            item->setForeground(QColor(Qt::red));
-        } else if (isBuiltIn) {
-            item->setText(displayName + " " + tr("[built-in]"));
+        if (isBuiltIn) {
+            displayName = displayName + " " + tr("[built-in]");
         }
+        if (!isAvailable) {
+            displayName = displayName + " " + tr("[not found]");
+            item->setForeground(QColor(Qt::red));
+        }
+        item->setText(displayName);
 
         // Store original name and metadata
         item->setData(Qt::UserRole, tableName);
@@ -387,9 +391,12 @@ void MainWindow::loadInputTables() {
     for (int i = 0; i < currentConfig_.available_tables_size(); ++i) {
         const auto& availableTable = currentConfig_.available_tables(i);
         QString tableName = QString::fromStdString(availableTable.name());
+        bool isBuiltIn = availableTable.is_built_in();
+        QPair<QString, bool> tableKey(tableName, isBuiltIn);
 
-        if (!enabledTableNames.contains(tableName)) {
-            QString displayName = translateTableName(tableName);
+        if (!enabledTableKeys.contains(tableKey)) {
+            QString displayName =
+                translateTableName(tableName, availableTable.is_built_in());
             QListWidgetItem* item = new QListWidgetItem(displayName);
 
             if (availableTable.is_built_in()) {
@@ -431,7 +438,8 @@ void MainWindow::saveInputTables() {
         if (isAvailable) {
             for (int j = 0; j < currentConfig_.available_tables_size(); ++j) {
                 const auto& availableTable = currentConfig_.available_tables(j);
-                if (availableTable.name() == tableName.toStdString()) {
+                if (availableTable.name() == tableName.toStdString() &&
+                    availableTable.is_built_in() == isBuiltIn) {
                     enabledTable->set_filename(availableTable.filename());
                     break;
                 }
@@ -471,8 +479,8 @@ void MainWindow::onDisableTable() {
     if (isAvailable) {
         // Reset display text for available list
         QString tableName = item->data(Qt::UserRole).toString();
-        QString displayName = translateTableName(tableName);
         bool isBuiltIn = item->data(Qt::UserRole + 1).toBool();
+        QString displayName = translateTableName(tableName, isBuiltIn);
 
         if (isBuiltIn) {
             item->setText(displayName + " " + tr("[built-in]"));
@@ -574,24 +582,26 @@ void MainWindow::loadKeymaps() {
     ui_->availableKeymapList->clear();
 
     // Create sets for quick lookup
-    QSet<QString> enabledKeymapNames;
+    QSet<QPair<QString, bool>> enabledKeymapKeys;
 
     // Load enabled keymaps
     for (int i = 0; i < currentProfile_->enabled_keymaps_size(); ++i) {
         const auto& enabledKeymap = currentProfile_->enabled_keymaps(i);
         QString keymapName = QString::fromStdString(enabledKeymap.name());
-        enabledKeymapNames.insert(keymapName);
+        bool isBuiltIn = enabledKeymap.is_built_in();
+        enabledKeymapKeys.insert(QPair<QString, bool>(keymapName, isBuiltIn));
 
-        QString displayName = translateKeymapName(keymapName);
+        QString displayName =
+            translateKeymapName(keymapName, enabledKeymap.is_built_in());
         QListWidgetItem* item = new QListWidgetItem(displayName);
 
         // Check if this keymap is available
         bool isAvailable = false;
-        bool isBuiltIn = false;
 
         for (int j = 0; j < currentConfig_.available_keymaps_size(); ++j) {
             const auto& availableKeymap = currentConfig_.available_keymaps(j);
-            if (availableKeymap.name() == enabledKeymap.name()) {
+            if (availableKeymap.name() == enabledKeymap.name() &&
+                availableKeymap.is_built_in() == enabledKeymap.is_built_in()) {
                 isAvailable = true;
                 isBuiltIn = availableKeymap.is_built_in();
                 break;
@@ -599,12 +609,14 @@ void MainWindow::loadKeymaps() {
         }
 
         // Set item appearance based on status
-        if (!isAvailable) {
-            item->setText(displayName + " " + tr("[not found]"));
-            item->setForeground(QColor(Qt::red));
-        } else if (isBuiltIn) {
-            item->setText(displayName + " " + tr("[built-in]"));
+        if (isBuiltIn) {
+            displayName = displayName + " " + tr("[built-in]");
         }
+        if (!isAvailable) {
+            displayName = displayName + " " + tr("[not found]");
+            item->setForeground(QColor(Qt::red));
+        }
+        item->setText(displayName);
 
         // Store original name and metadata
         item->setData(Qt::UserRole, keymapName);
@@ -618,9 +630,12 @@ void MainWindow::loadKeymaps() {
     for (int i = 0; i < currentConfig_.available_keymaps_size(); ++i) {
         const auto& availableKeymap = currentConfig_.available_keymaps(i);
         QString keymapName = QString::fromStdString(availableKeymap.name());
+        bool isBuiltIn = availableKeymap.is_built_in();
+        QPair<QString, bool> keymapKey(keymapName, isBuiltIn);
 
-        if (!enabledKeymapNames.contains(keymapName)) {
-            QString displayName = translateKeymapName(keymapName);
+        if (!enabledKeymapKeys.contains(keymapKey)) {
+            QString displayName =
+                translateKeymapName(keymapName, availableKeymap.is_built_in());
             QListWidgetItem* item = new QListWidgetItem(displayName);
 
             if (availableKeymap.is_built_in()) {
@@ -663,7 +678,8 @@ void MainWindow::saveKeymaps() {
             for (int j = 0; j < currentConfig_.available_keymaps_size(); ++j) {
                 const auto& availableKeymap =
                     currentConfig_.available_keymaps(j);
-                if (availableKeymap.name() == keymapName.toStdString()) {
+                if (availableKeymap.name() == keymapName.toStdString() &&
+                    availableKeymap.is_built_in() == isBuiltIn) {
                     enabledKeymap->set_filename(availableKeymap.filename());
                     break;
                 }
@@ -703,8 +719,8 @@ void MainWindow::onDisableKeymap() {
     if (isAvailable) {
         // Reset display text for available list
         QString keymapName = item->data(Qt::UserRole).toString();
-        QString displayName = translateKeymapName(keymapName);
         bool isBuiltIn = item->data(Qt::UserRole + 1).toBool();
+        QString displayName = translateKeymapName(keymapName, isBuiltIn);
 
         if (isBuiltIn) {
             item->setText(displayName + " " + tr("[built-in]"));
@@ -995,22 +1011,40 @@ bool MainWindow::isBasicModeCompatible() {
         QString::fromStdString(currentProfile_->submode_entry_point_chars());
 
     // Collect enabled keymaps and tables
-    QSet<QString> enabledKeymaps;
-    QSet<QString> enabledTables;
+    QSet<QString> enabledCustomKeymaps;
+    QSet<QString> enabledCustomTables;
+
+    QSet<QString> enabledBuiltinKeymaps;
+    QSet<QString> enabledBuiltinTables;
 
     for (int i = 0; i < currentProfile_->enabled_keymaps_size(); ++i) {
         const auto& keymap = currentProfile_->enabled_keymaps(i);
-        enabledKeymaps.insert(QString::fromStdString(keymap.name()));
+        QString name = QString::fromStdString(keymap.name());
+        if (keymap.is_built_in()) {
+            enabledBuiltinKeymaps.insert(name);
+        } else {
+            enabledCustomKeymaps.insert(name);
+        }
     }
 
     for (int i = 0; i < currentProfile_->enabled_tables_size(); ++i) {
         const auto& table = currentProfile_->enabled_tables(i);
-        enabledTables.insert(QString::fromStdString(table.name()));
+        QString name = QString::fromStdString(table.name());
+        if (table.is_built_in()) {
+            enabledBuiltinTables.insert(name);
+        } else {
+            enabledCustomKeymaps.insert(name);
+        }
     }
 
-    // Check for valid input style configurations
-    bool hasRomaji = enabledTables.contains("Romaji");
-    bool hasKana = enabledTables.contains("Kana");
+    // Custom keymap check
+    if (enabledCustomTables.size() != 0 || enabledCustomKeymaps.size() != 0) {
+        return false;
+    }
+
+    // Check for valid input style configurations - must be builtin tables
+    bool hasBuiltinRomaji = enabledBuiltinTables.contains("Romaji");
+    bool hasBuiltinKana = enabledBuiltinTables.contains("Kana");
     bool isRomajiSubmode = (submodeEntry == "ABCDEFGHIJKLMNOPQRSTUVWXYZ");
     bool isKanaSubmode = submodeEntry.isEmpty();
 
@@ -1018,19 +1052,18 @@ bool MainWindow::isBasicModeCompatible() {
     // 1. Romaji table only + Romaji submode
     // 2. Kana table only + Kana submode (empty)
     bool isValidInputStyle =
-        (hasRomaji && !hasKana && isRomajiSubmode &&
-         enabledTables.size() == 1) ||
-        (hasKana && !hasRomaji && isKanaSubmode && enabledTables.size() == 1);
+        (hasBuiltinRomaji && !hasBuiltinKana && isRomajiSubmode) ||
+        (hasBuiltinKana && !hasBuiltinRomaji && isKanaSubmode);
 
     if (!isValidInputStyle) {
         return false;  // Invalid input style combination or additional tables
     }
 
     // For Kana mode, only space-related keymaps are allowed
-    if (hasKana && isKanaSubmode) {
+    if (hasBuiltinKana) {
         QSet<QString> allowedKanaModeKeymaps = {"Fullwidth Space"};
 
-        for (const QString& keymap : enabledKeymaps) {
+        for (const QString& keymap : enabledBuiltinKeymaps) {
             if (!allowedKanaModeKeymaps.contains(keymap)) {
                 return false;  // Invalid keymap for Kana mode
             }
@@ -1039,15 +1072,15 @@ bool MainWindow::isBasicModeCompatible() {
     }
 
     // For Romaji mode, check keymap compatibility
-    if (hasRomaji && isRomajiSubmode) {
+    if (hasBuiltinRomaji) {
         QSet<QString> validBasicKeymaps = {
             "Fullwidth Period", "Fullwidth Comma", "Fullwidth Number",
             "Fullwidth Symbol", "Fullwidth Space"};
 
         // Check if all enabled keymaps are valid for Basic mode
-        for (const QString& keymap : enabledKeymaps) {
+        for (const QString& keymap : enabledBuiltinKeymaps) {
             if (!validBasicKeymaps.contains(keymap)) {
-                return false;  // Unknown keymap
+                return false;
             }
         }
 
@@ -1300,7 +1333,11 @@ void MainWindow::onClearLearningData() {
     }
 }
 
-QString MainWindow::translateKeymapName(const QString& keymapName) {
+QString MainWindow::translateKeymapName(const QString& keymapName,
+                                        bool isBuiltin) {
+    if (!isBuiltin) {
+        return keymapName;
+    }
     if (keymapName == "Fullwidth Period") {
         return tr("Fullwidth Period");
     } else if (keymapName == "Fullwidth Comma") {
@@ -1312,16 +1349,20 @@ QString MainWindow::translateKeymapName(const QString& keymapName) {
     } else if (keymapName == "Fullwidth Space") {
         return tr("Fullwidth Space");
     }
-    return keymapName;  // Return original name if no translation found
+    return keymapName;
 }
 
-QString MainWindow::translateTableName(const QString& tableName) {
+QString MainWindow::translateTableName(const QString& tableName,
+                                       bool isBuiltin) {
+    if (!isBuiltin) {
+        return tableName;
+    }
     if (tableName == "Romaji") {
         return tr("Romaji");
     } else if (tableName == "Kana") {
         return tr("Kana");
     }
-    return tableName;  // Return original name if no translation found
+    return tableName;
 }
 
 MainWindow::~MainWindow() { delete ui_; }

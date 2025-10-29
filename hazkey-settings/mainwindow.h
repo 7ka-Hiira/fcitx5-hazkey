@@ -69,8 +69,10 @@ class MainWindow : public QWidget {
     void addKeymapIfAvailable(const QString& keymapName);
     void addInputTableIfAvailable(const QString& tableName);
     void clearKeymapsAndTables();
-    QString translateKeymapName(const QString& keymapName);
-    QString translateTableName(const QString& tableName);
+    QString translateKeymapName(const QString& keymapName,
+                                bool isBuiltin = false);
+    QString translateTableName(const QString& tableName,
+                               bool isBuiltin = false);
     Ui::MainWindow* ui_;
     ServerConnector server_;
     hazkey::config::CurrentConfig currentConfig_;
