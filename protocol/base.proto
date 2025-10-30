@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package hazkey;
 
+option optimize_for = LITE_RUNTIME;
+
 import "commands.proto";
 import "config.proto";
 

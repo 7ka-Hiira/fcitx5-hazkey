@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package hazkey.config;
 
+option optimize_for = LITE_RUNTIME;
+
 message FileHash {
     enum ConfigFileType {
         CONFIG_MAIN = 0;

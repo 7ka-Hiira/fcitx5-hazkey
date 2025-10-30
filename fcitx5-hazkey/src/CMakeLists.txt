@@ -58,7 +58,7 @@ else()
 endif()
 
 target_include_directories(fcitx5-hazkey PRIVATE ${CMAKE_CURRENT_BINARY_DIR} ${Protobuf_INCLUDE_DIRS})
-target_link_libraries(fcitx5-hazkey PRIVATE Fcitx5::Core Fcitx5::Config protobuf ${Protobuf_LIBRARIES})
+target_link_libraries(fcitx5-hazkey PRIVATE Fcitx5::Core Fcitx5::Config ${Protobuf_LITE_LIBRARIES})
 
 
 set_target_properties(fcitx5-hazkey PROPERTIES PREFIX "")

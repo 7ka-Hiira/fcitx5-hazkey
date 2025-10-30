@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package hazkey.commands;
 
+option optimize_for = LITE_RUNTIME;
+
 // Request messages
 
 message NewComposingText {}

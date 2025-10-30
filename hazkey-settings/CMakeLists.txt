@@ -112,7 +112,7 @@ target_include_directories(hazkey-settings PRIVATE
 
 target_link_libraries(hazkey-settings PRIVATE
     Qt6::Widgets
-    ${Protobuf_LIBRARIES}
+    ${Protobuf_LITE_LIBRARIES}
 )
 
 include(GNUInstallDirs)
