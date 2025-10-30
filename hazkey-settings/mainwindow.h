@@ -66,13 +66,11 @@ class MainWindow : public QWidget {
     void applyBasicNumberStyle();
     void applyBasicSymbolStyle();
     void applyBasicSpaceStyle();
-    void addKeymapIfAvailable(const QString& keymapName);
-    void addInputTableIfAvailable(const QString& tableName);
+    void addKeymapIfAvailable(const QString& keymapName, bool isBuiltIn);
+    void addInputTableIfAvailable(const QString& tableName, bool isBuiltIn);
     void clearKeymapsAndTables();
-    QString translateKeymapName(const QString& keymapName,
-                                bool isBuiltin = false);
-    QString translateTableName(const QString& tableName,
-                               bool isBuiltin = false);
+    QString translateKeymapName(const QString& keymapName, bool isBuiltin);
+    QString translateTableName(const QString& tableName, bool isBuiltin);
     Ui::MainWindow* ui_;
     ServerConnector server_;
     hazkey::config::CurrentConfig currentConfig_;

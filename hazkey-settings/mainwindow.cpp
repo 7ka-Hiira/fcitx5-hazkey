@@ -878,11 +878,13 @@ void MainWindow::syncBasicToAdvanced() {
     clearKeymapsAndTables();
 
     // Apply settings based on Basic tab selections
-    applyBasicInputStyle();
     applyBasicPunctuationStyle();
     applyBasicNumberStyle();
     applyBasicSymbolStyle();
     applyBasicSpaceStyle();
+    // Punctuation style must be set before base style becasue
+    // Punctuation keymaps override Japanese Symbol map
+    applyBasicInputStyle();
 
     // Update UI to reflect the changes
     if (currentProfile_) {
@@ -928,9 +930,10 @@ void MainWindow::syncAdvancedToBasic() {
         }
 
         bool isKanaMode = false;
-        if (submodeEntry == "ABCDEFGHIJKLMNOPQRSTUVWXYZ" && hasRomajiTable) {
+        // submodeEntry: already checked in inBasicModeCompatible()
+        if (hasRomajiTable) {
             ui_->mainInputStyle->setCurrentIndex(0);  // Romaji
-        } else if (submodeEntry.isEmpty() && hasKanaTable) {
+        } else if (hasKanaTable) {
             ui_->mainInputStyle->setCurrentIndex(1);  // JIS Kana
             isKanaMode = true;
         }
@@ -1011,19 +1014,19 @@ bool MainWindow::isBasicModeCompatible() {
         QString::fromStdString(currentProfile_->submode_entry_point_chars());
 
     // Collect enabled keymaps and tables
-    QSet<QString> enabledCustomKeymaps;
-    QSet<QString> enabledCustomTables;
+    QList<QString> enabledCustomKeymaps;
+    QList<QString> enabledCustomTables;
 
-    QSet<QString> enabledBuiltinKeymaps;
-    QSet<QString> enabledBuiltinTables;
+    QList<QString> enabledBuiltinKeymaps;
+    QList<QString> enabledBuiltinTables;
 
     for (int i = 0; i < currentProfile_->enabled_keymaps_size(); ++i) {
         const auto& keymap = currentProfile_->enabled_keymaps(i);
         QString name = QString::fromStdString(keymap.name());
         if (keymap.is_built_in()) {
-            enabledBuiltinKeymaps.insert(name);
+            enabledBuiltinKeymaps.append(name);
         } else {
-            enabledCustomKeymaps.insert(name);
+            enabledCustomKeymaps.append(name);
         }
     }
 
@@ -1031,9 +1034,9 @@ bool MainWindow::isBasicModeCompatible() {
         const auto& table = currentProfile_->enabled_tables(i);
         QString name = QString::fromStdString(table.name());
         if (table.is_built_in()) {
-            enabledBuiltinTables.insert(name);
+            enabledBuiltinTables.append(name);
         } else {
-            enabledCustomKeymaps.insert(name);
+            enabledCustomKeymaps.append(name);
         }
     }
 
@@ -1043,25 +1046,25 @@ bool MainWindow::isBasicModeCompatible() {
     }
 
     // Check for valid input style configurations - must be builtin tables
-    bool hasBuiltinRomaji = enabledBuiltinTables.contains("Romaji");
-    bool hasBuiltinKana = enabledBuiltinTables.contains("Kana");
+    bool hasBuiltinRomajiTable = enabledBuiltinTables.contains("Romaji");
+    bool hasBuiltinKanaTable = enabledBuiltinTables.contains("Kana");
+    bool hasBuiltinKanaKeymap = enabledBuiltinKeymaps.contains("JIS Kana");
     bool isRomajiSubmode = (submodeEntry == "ABCDEFGHIJKLMNOPQRSTUVWXYZ");
     bool isKanaSubmode = submodeEntry.isEmpty();
 
     // Valid combinations:
     // 1. Romaji table only + Romaji submode
     // 2. Kana table only + Kana submode (empty)
-    bool isValidInputStyle =
-        (hasBuiltinRomaji && !hasBuiltinKana && isRomajiSubmode) ||
-        (hasBuiltinKana && !hasBuiltinRomaji && isKanaSubmode);
+    bool isValidRomajiInputStyle =
+        (hasBuiltinRomajiTable && !hasBuiltinKanaTable && isRomajiSubmode &&
+         !hasBuiltinKanaKeymap);
+    bool isValidKanaInputStyle =
+        (hasBuiltinKanaTable && !hasBuiltinRomajiTable && isKanaSubmode &&
+         hasBuiltinKanaKeymap);
 
-    if (!isValidInputStyle) {
-        return false;  // Invalid input style combination or additional tables
-    }
-
-    // For Kana mode, only space-related keymaps are allowed
-    if (hasBuiltinKana) {
-        QSet<QString> allowedKanaModeKeymaps = {"Fullwidth Space"};
+    // For Kana mode, only space-related and JIS Kana keymaps are allowed
+    if (isValidKanaInputStyle) {
+        QSet<QString> allowedKanaModeKeymaps = {"Fullwidth Space", "JIS Kana"};
 
         for (const QString& keymap : enabledBuiltinKeymaps) {
             if (!allowedKanaModeKeymaps.contains(keymap)) {
@@ -1069,25 +1072,34 @@ bool MainWindow::isBasicModeCompatible() {
             }
         }
         return true;  // Valid Kana mode
-    }
-
-    // For Romaji mode, check keymap compatibility
-    if (hasBuiltinRomaji) {
+    } else if (isValidRomajiInputStyle) {
         QSet<QString> validBasicKeymaps = {
             "Fullwidth Period", "Fullwidth Comma", "Fullwidth Number",
-            "Fullwidth Symbol", "Fullwidth Space"};
+            "Fullwidth Symbol", "Fullwidth Space", "Japanese Symbol"};
+
+        // Japanese Symbol map should be enabled and placed after punctuations.
+        bool checkedJapaneSymbolMap = false;
 
         // Check if all enabled keymaps are valid for Basic mode
         for (const QString& keymap : enabledBuiltinKeymaps) {
             if (!validBasicKeymaps.contains(keymap)) {
                 return false;
             }
+            if (checkedJapaneSymbolMap &&
+                (keymap == "Fullwidth Period" || keymap == "Fullwidth Comma")) {
+                return false;  // Bad punctuation & Japanese Symbol map order
+            }
+            if (keymap == "Japanese Symbol") {
+                checkedJapaneSymbolMap = true;
+            }
         }
-
+        if (!checkedJapaneSymbolMap) {
+            return false;  // Missing required map
+        }
         return true;  // Valid Romaji mode
+    } else {
+        return false;
     }
-
-    return false;  // Shouldn't reach here
 }
 
 void MainWindow::showBasicModeWarning() {
@@ -1168,10 +1180,12 @@ void MainWindow::applyBasicInputStyle() {
     if (inputStyleIndex == 0) {  // Romaji
         currentProfile_->set_submode_entry_point_chars(
             "ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-        addInputTableIfAvailable("Romaji");
+        addInputTableIfAvailable("Romaji", true);
+        addKeymapIfAvailable("Japanese Symbol", true);
     } else if (inputStyleIndex == 1) {  // JIS Kana
         currentProfile_->set_submode_entry_point_chars("");
-        addInputTableIfAvailable("Kana");
+        addInputTableIfAvailable("Kana", true);
+        addKeymapIfAvailable("JIS Kana", true);
     }
 }
 
@@ -1188,14 +1202,14 @@ void MainWindow::applyBasicPunctuationStyle() {
             // No additional keymaps needed
             break;
         case 1:  // Period+Comma: ．，
-            addKeymapIfAvailable("Fullwidth Period");
-            addKeymapIfAvailable("Fullwidth Comma");
+            addKeymapIfAvailable("Fullwidth Period", true);
+            addKeymapIfAvailable("Fullwidth Comma", true);
             break;
         case 2:  // Kuten+Comma: 。，
-            addKeymapIfAvailable("Fullwidth Comma");
+            addKeymapIfAvailable("Fullwidth Comma", true);
             break;
         case 3:  // Period+Toten: ．、
-            addKeymapIfAvailable("Fullwidth Period");
+            addKeymapIfAvailable("Fullwidth Period", true);
             break;
     }
 }
@@ -1209,7 +1223,7 @@ void MainWindow::applyBasicNumberStyle() {
     int numberIndex = ui_->numberStyle->currentIndex();
 
     if (numberIndex == 0) {  // Fullwidth: １２３４５
-        addKeymapIfAvailable("Fullwidth Number");
+        addKeymapIfAvailable("Fullwidth Number", true);
     }
     // Halfwidth is default, no keymap needed
 }
@@ -1224,7 +1238,7 @@ void MainWindow::applyBasicSymbolStyle() {
 
     switch (symbolIndex) {
         case 0:  // Fullwidth: ！＃＠（
-            addKeymapIfAvailable("Fullwidth Symbol");
+            addKeymapIfAvailable("Fullwidth Symbol", true);
             break;
         case 1:  // Halfwidth: !#@(
             // No additional keymaps needed
@@ -1236,16 +1250,18 @@ void MainWindow::applyBasicSpaceStyle() {
     int spaceIndex = ui_->spaceStyleLabel->currentIndex();
 
     if (spaceIndex == 0) {  // Fullwidth: "　"
-        addKeymapIfAvailable("Fullwidth Space");
+        addKeymapIfAvailable("Fullwidth Space", true);
     }
     // Halfwidth is default, no keymap needed
 }
 
-void MainWindow::addKeymapIfAvailable(const QString& keymapName) {
-    // Check if keymap is available
+void MainWindow::addKeymapIfAvailable(const QString& keymapName,
+                                      bool isBuiltIn) {
+    // Check if keymap is available with exact match on name and built-in status
     for (int i = 0; i < currentConfig_.available_keymaps_size(); ++i) {
         const auto& availableKeymap = currentConfig_.available_keymaps(i);
-        if (QString::fromStdString(availableKeymap.name()) == keymapName) {
+        if (QString::fromStdString(availableKeymap.name()) == keymapName &&
+            availableKeymap.is_built_in() == isBuiltIn) {
             // Add to enabled keymaps
             auto* enabledKeymap = currentProfile_->add_enabled_keymaps();
             enabledKeymap->set_name(availableKeymap.name());
@@ -1256,11 +1272,14 @@ void MainWindow::addKeymapIfAvailable(const QString& keymapName) {
     }
 }
 
-void MainWindow::addInputTableIfAvailable(const QString& tableName) {
-    // Check if input table is available
+void MainWindow::addInputTableIfAvailable(const QString& tableName,
+                                          bool isBuiltIn) {
+    // Check if input table is available with exact match on name and built-in
+    // status
     for (int i = 0; i < currentConfig_.available_tables_size(); ++i) {
         const auto& availableTable = currentConfig_.available_tables(i);
-        if (QString::fromStdString(availableTable.name()) == tableName) {
+        if (QString::fromStdString(availableTable.name()) == tableName &&
+            availableTable.is_built_in() == isBuiltIn) {
             // Add to enabled tables
             auto* enabledTable = currentProfile_->add_enabled_tables();
             enabledTable->set_name(availableTable.name());
@@ -1338,7 +1357,11 @@ QString MainWindow::translateKeymapName(const QString& keymapName,
     if (!isBuiltin) {
         return keymapName;
     }
-    if (keymapName == "Fullwidth Period") {
+    if (keymapName == "JIS Kana") {
+        return tr("JIS Kana");
+    } else if (keymapName == "Japanese Symbol") {
+        return tr("Japanese Symbol");
+    } else if (keymapName == "Fullwidth Period") {
         return tr("Fullwidth Period");
     } else if (keymapName == "Fullwidth Comma") {
         return tr("Fullwidth Comma");

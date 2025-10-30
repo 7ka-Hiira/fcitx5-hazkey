@@ -6,6 +6,8 @@ let KEYMAP_FILE_SIZE_LIMIT = 1024 * 1024  //1MB
 let TABLE_FILE_SIZE_LIMIT = 1024 * 1024  //1MB
 
 let builtInKeymaps = [
+    "JIS Kana",
+    "Japanese Symbol",
     "Fullwidth Period",
     "Fullwidth Comma",
     "Fullwidth Symbol",
@@ -202,6 +204,11 @@ class HazkeyServerConfig {
                 $0.name = "Fullwidth Symbol"
                 $0.isBuiltIn = true
                 $0.filename = "Fullwidth Symbol"
+            },
+            Hazkey_Config_Profile.EnabledKeymap.with {
+                $0.name = "Japanese Symbol"
+                $0.isBuiltIn = true
+                $0.filename = "Japanese Symbol"
             },
             Hazkey_Config_Profile.EnabledKeymap.with {
                 $0.name = "Fullwidth Space"
@@ -410,6 +417,10 @@ class HazkeyServerConfig {
             var newKeymapRule: Keymap
             if enabledKeymap.isBuiltIn {
                 switch enabledKeymap.filename {
+                case "JIS Kana":
+                    newKeymapRule = JISKanaMap
+                case "Japanese Symbol":
+                    newKeymapRule = japaneseSymbolMap
                 case "Fullwidth Period":
                     newKeymapRule = fullwidthPeriodMap
                 case "Fullwidth Comma":
