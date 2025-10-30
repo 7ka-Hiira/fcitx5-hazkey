@@ -5,10 +5,26 @@
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>MIT</project_license>
   <name>fcitx5-hazkey</name>
-  <icon type="cached">hazkey.png</icon>
-  <summary>Hazkey Japanese Input</summary>
+  <name xml:lang="ja">fcitx5-hazkey</name>
+  <summary>Hazkey Japanese Input Method</summary>
+  <summary xml:lang="ja">Hazkey日本語入力</summary>
   <project_group>Fcitx</project_group>
+  <developer id="dev.hiira">
+    <name>Nanaka Hiira</name>
+  </developer>
+  <url type="homepage">https://hazkey.hiira.dev</url>
+  <url type="bugtracker">https://github.com/7ka-Hiira/fcitx5-hazkey/issues</url>
+  <url type="vcs-browser">https://github.com/7ka-Hiira/fcitx5-hazkey</url>
   <releases>
-    <release version="0.0.9" date="2025-05-18"/>
+    <release version="0.0.9" date="2025-05-18">
+    <url type="details">https://github.com/7ka-Hiira/fcitx5-hazkey/releases/tag/0.0.9</url>
+      <description>
+        <p>0.0.9 Release note</p>
+        <ul>
+          <li>Update converter</li>
+          <li>Update zenzai model to v3</li>
+        </ul>
+      </description>
+    </release>
   </releases>
 </component>
