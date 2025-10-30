@@ -20,10 +20,14 @@ extension ComposingText {
 
     func toAlphabet(_ fullwidth: Bool) -> String {
         let romaji = self.input.compactMap {
-            if case let .character(character) = $0.piece {
+            switch $0.piece {
+            case .character(let character):
                 return character
+            case .key(_, let character, _):
+                return character
+            case .compositionSeparator:
+                return nil
             }
-            return nil
         }
         return String(romaji).applyingTransform(.fullwidthToHalfwidth, reverse: fullwidth) ?? ""
     }
