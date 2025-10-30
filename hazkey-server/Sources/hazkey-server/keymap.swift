@@ -473,6 +473,9 @@ let romajiTable = constructInputTable(
         "zj": "↓",
         "zk": "↑",
         "zl": "→",
+        "z/": "・",
+        "z-": "〜",
+        "z.": "…",
     ],
     additionalMapping: [
         [.piece(.character("n")), .piece(.compositionSeparator)]: [.character("ん")],
