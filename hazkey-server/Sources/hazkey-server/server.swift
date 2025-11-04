@@ -6,7 +6,7 @@ class HazkeyServer: SocketManagerDelegate {
     private let processManager: ProcessManager
     private let socketManager: SocketManager
     private let protocolHandler: ProtocolHandler
-    private let zenzaiAvailable: Bool
+    private let llamaAvailable: Bool
     private let state: HazkeyServerState
 
     private let runtimeDir: String
@@ -19,8 +19,8 @@ class HazkeyServer: SocketManagerDelegate {
         self.uid = getuid()
         self.socketPath = "\(runtimeDir)/hazkey-server.\(uid).sock"
 
-        // Check if zenzai is available
-        self.zenzaiAvailable = {
+        // Check if llama.cpp library is available
+        self.llamaAvailable = {
             guard let handle = dlopen(nil, RTLD_NOW) else {
                 NSLog("Failed to dlopen current process")
                 return false
@@ -30,12 +30,12 @@ class HazkeyServer: SocketManagerDelegate {
         }()
 
         // Initialize server state
-        self.state = HazkeyServerState(zenzaiAvailable: zenzaiAvailable)
+        self.state = HazkeyServerState(llamaAvailable: llamaAvailable)
 
         // Initialize managers
         self.processManager = ProcessManager()
         self.socketManager = SocketManager(socketPath: socketPath)
-        self.protocolHandler = ProtocolHandler(zenzaiAvailable: zenzaiAvailable, state: state)
+        self.protocolHandler = ProtocolHandler(state: state)
 
         // Set delegate
         socketManager.delegate = self
@@ -58,15 +58,7 @@ class HazkeyServer: SocketManagerDelegate {
         return protocolHandler.processProto(data: data)
     }
 
-    func socketManager(_ manager: SocketManager, clientDidConnect clientFd: Int32) {
-        // Optional: Handle client connection events if needed
-    }
+    func socketManager(_ manager: SocketManager, clientDidConnect clientFd: Int32) {}
 
-    func socketManager(_ manager: SocketManager, clientDidDisconnect clientFd: Int32) {
-        // Optional: Handle client disconnection events if needed
-    }
-
-    // Getter methods for backward compatibility (if needed elsewhere)
-    var getZenzaiAvailable: Bool { zenzaiAvailable }
-    var getState: HazkeyServerState { state }
+    func socketManager(_ manager: SocketManager, clientDidDisconnect clientFd: Int32) {}
 }

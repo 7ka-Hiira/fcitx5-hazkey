@@ -16,8 +16,8 @@ class HazkeyServerState {
     var currentTableName: String
     var baseConvertRequestOptions: ConvertRequestOptions
 
-    init(zenzaiAvailable: Bool) {
-        self.serverConfig = HazkeyServerConfig()
+    init(llamaAvailable: Bool) {
+        self.serverConfig = HazkeyServerConfig(llamaAvailable: llamaAvailable)
 
         self.converter = KanaKanjiConverter.init(dictionaryURL: serverConfig.dictionaryPath)
 
@@ -43,16 +43,13 @@ class HazkeyServerState {
         }
 
         // Initialize base convert options
-        self.baseConvertRequestOptions = serverConfig.genBaseConvertRequestOptions(
-            zenzaiAvailable: zenzaiAvailable)
+        self.baseConvertRequestOptions = serverConfig.genBaseConvertRequestOptions()
     }
 
-    func setContext(
-        surroundingText: String, anchorIndex: Int, zenzaiAvailable: Bool
-    ) -> Hazkey_ResponseEnvelope {
+    func setContext(surroundingText: String, anchorIndex: Int) -> Hazkey_ResponseEnvelope {
         let leftContext = String(surroundingText.prefix(anchorIndex))
         baseConvertRequestOptions.zenzaiMode = serverConfig.genZenzaiMode(
-            leftContext: leftContext, zenzaiAvailable: zenzaiAvailable)
+            leftContext: leftContext)
 
         return Hazkey_ResponseEnvelope.with {
             $0.status = .success
@@ -361,7 +358,7 @@ class HazkeyServerState {
         }
     }
 
-    func reinitializeConfiguration(zenzaiAvailable: Bool) {
+    func reinitializeConfiguration() {
         NSLog("Reinitializing state configuration...")
 
         self.keymap = serverConfig.loadKeymap()
@@ -370,8 +367,7 @@ class HazkeyServerState {
         serverConfig.loadInputTable(tableName: newTableName)
         self.currentTableName = newTableName
 
-        self.baseConvertRequestOptions = serverConfig.genBaseConvertRequestOptions(
-            zenzaiAvailable: zenzaiAvailable)
+        self.baseConvertRequestOptions = serverConfig.genBaseConvertRequestOptions()
 
         self.composingText = ComposingTextBox()
         self.currentCandidateList = nil

@@ -36,9 +36,10 @@ class HazkeyServerConfig {
     var profiles: [Hazkey_Config_Profile]
     var currentProfile: Hazkey_Config_Profile
     let dictionaryPath: URL
+    let zenzaiAvailable: Bool
     let zenzaiModelPath: URL?
 
-    init() {
+    init(llamaAvailable: Bool) {
         do {
             profiles = try Self.loadConfig()
         } catch {
@@ -66,21 +67,27 @@ class HazkeyServerConfig {
 
         // set zenzai model path
         zenzaiModelPath = {
+            if !llamaAvailable {
+                return nil
+            }
+
             let systemZenzaiModelPath = URL(fileURLWithPath: systemResourcePath)
                 .appendingPathComponent("zenzai.gguf", isDirectory: false)
             if let envPath = ProcessInfo.processInfo.environment["HAZKEY_ZENZAI_MODEL"],
                 fileManager.fileExists(atPath: envPath)
             {
                 return URL(filePath: envPath)
-            } else if fileManager.fileExists(atPath: systemZenzaiModelPath.absoluteString) {
+            } else if fileManager.fileExists(atPath: systemZenzaiModelPath.path) {
                 return systemZenzaiModelPath
             } else {
                 return nil
             }
         }()
+
+        self.zenzaiAvailable = llamaAvailable && zenzaiModelPath != nil
     }
 
-    func getCurrentConfig(zenzaiAvailable: Bool) -> Hazkey_ResponseEnvelope {
+    func getCurrentConfig() -> Hazkey_ResponseEnvelope {
         let profiles: [Hazkey_Config_Profile]
         do {
             profiles = try Self.loadConfig()
@@ -182,11 +189,10 @@ class HazkeyServerConfig {
     func setCurrentConfig(
         _ hashes: [Hazkey_Config_FileHash],
         _ profiles: [Hazkey_Config_Profile],
-        state: HazkeyServerState? = nil,
-        zenzaiAvailable: Bool = false
+        state: HazkeyServerState? = nil
     ) -> Hazkey_ResponseEnvelope {
         do {
-            try saveConfig(profiles, state: state, zenzaiAvailable: zenzaiAvailable)
+            try saveConfig(profiles, state: state)
         } catch {
             return Hazkey_ResponseEnvelope.with {
                 $0.status = .failed
@@ -263,8 +269,7 @@ class HazkeyServerConfig {
 
     func saveConfig(
         _ newProfiles: [Hazkey_Config_Profile],
-        state: HazkeyServerState? = nil,
-        zenzaiAvailable: Bool = false
+        state: HazkeyServerState? = nil
     ) throws {
         let configDir = Self.getConfigDirectory()
         let configPath = configDir.appendingPathComponent("config.json")
@@ -293,7 +298,7 @@ class HazkeyServerConfig {
         currentProfile = profiles[0]
 
         if let state = state {
-            state.reinitializeConfiguration(zenzaiAvailable: zenzaiAvailable)
+            state.reinitializeConfiguration()
         }
     }
 
@@ -345,7 +350,7 @@ class HazkeyServerConfig {
         return homeDir.appendingPathComponent(".config").appendingPathComponent("hazkey")
     }
 
-    func genZenzaiMode(leftContext: String, zenzaiAvailable: Bool)
+    func genZenzaiMode(leftContext: String)
         -> ConvertRequestOptions.ZenzaiMode
     {
         if zenzaiAvailable, let zenzaiModelPath = zenzaiModelPath, currentProfile.zenzaiEnable {
@@ -385,7 +390,7 @@ class HazkeyServerConfig {
         }
     }
 
-    func genBaseConvertRequestOptions(zenzaiAvailable: Bool) -> ConvertRequestOptions {
+    func genBaseConvertRequestOptions() -> ConvertRequestOptions {
         var userDataDir: URL {
             FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
                 .appendingPathComponent("hazkey", isDirectory: true)
@@ -415,7 +420,7 @@ class HazkeyServerConfig {
             return providers.compactMap { $0 }
         }()
 
-        let zenzaiMode = genZenzaiMode(leftContext: "", zenzaiAvailable: zenzaiAvailable)
+        let zenzaiMode = genZenzaiMode(leftContext: "")
 
         return ConvertRequestOptions.init(
             N_best: Int(currentProfile.numCandidatesPerPage),

@@ -2,11 +2,9 @@ import Foundation
 import SwiftProtobuf
 
 class ProtocolHandler {
-    private let zenzaiAvailable: Bool
     private let state: HazkeyServerState
 
-    init(zenzaiAvailable: Bool, state: HazkeyServerState) {
-        self.zenzaiAvailable = zenzaiAvailable
+    init(state: HazkeyServerState) {
         self.state = state
     }
 
@@ -28,8 +26,7 @@ class ProtocolHandler {
         switch query.payload {
         case .setContext(let req):
             response = state.setContext(
-                surroundingText: req.context, anchorIndex: Int(req.anchor),
-                zenzaiAvailable: zenzaiAvailable)
+                surroundingText: req.context, anchorIndex: Int(req.anchor))
         case .newComposingText:
             response = state.createComposingTextInstanse()
         case .inputChar(let req):
@@ -54,12 +51,10 @@ class ProtocolHandler {
         case .getCurrentInputMode:
             response = state.getCurrentInputMode()
         case .getConfig:
-            response = state.serverConfig.getCurrentConfig(
-                zenzaiAvailable: zenzaiAvailable)
+            response = state.serverConfig.getCurrentConfig()
         case .setConfig(let req):
             response = state.serverConfig.setCurrentConfig(
-                req.fileHashes, req.profiles,
-                state: state, zenzaiAvailable: zenzaiAvailable)
+                req.fileHashes, req.profiles, state: state)
         case .clearAllHistory_p:
             response = state.clearProfileLearningData()
         case .getDefaultProfile:
