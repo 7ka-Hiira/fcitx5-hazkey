@@ -16,52 +16,127 @@ jobs:
       - name: Update submodules
         run: git submodule update --init --recursive
 
+      - name: Cache Swift Environment
+        id: cache-swift
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/swift
+          key: ${{ runner.os }}-swift-6.2-RELEASE
+
       - name: Install Swift Environment
+        if: steps.cache-swift.outputs.cache-hit != 'true'
         run: |
           wget https://download.swift.org/swift-6.2-release/ubuntu2204/swift-6.2-RELEASE/swift-6.2-RELEASE-ubuntu22.04.tar.gz
           tar xf swift-6.2-RELEASE-ubuntu22.04.tar.gz
-          sudo mv swift-6.2-RELEASE-ubuntu22.04 /usr/share/swift
-          echo "PATH=/usr/share/swift/usr/bin:$PATH" >> $GITHUB_ENV
+          mv swift-6.2-RELEASE-ubuntu22.04 ${{ github.workspace }}/swift
+
+      - name: Add Swift to PATH
+        run: |
+          echo "PATH=${{ github.workspace }}/swift/usr/bin:$PATH" >> $GITHUB_ENV
+
+      - name: Setup cmake
+        uses: jwlawson/actions-setup-cmake@v2
+        with:
+          cmake-version: "4.1.x"
 
       - name: Install Dependencies
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y build-essential cmake gettext fakeroot protobuf-compiler libprotobuf-dev libprotoc-dev libabsl-dev libabsl20210324 libfcitx5core-dev libfcitx5config-dev libfcitx5utils-dev
-          sudo apt-get install -y ninja-build qt6-base-dev qt6-tools-dev qt6-tools-dev-tools libqt6widgets6 libqt6gui6 qt6-l10n-tools libglx-dev libgl1-mesa-dev libxkbcommon-dev
+          sudo apt-get install -y build-essential gettext fakeroot libfcitx5core-dev libfcitx5config-dev libfcitx5utils-dev
+          sudo apt-get install -y ninja-build qt6-base-dev qt6-tools-dev qt6-tools-dev-tools libqt6widgets6 libqt6gui6 qt6-l10n-tools libxkbcommon-dev
 
       - name: Create Directories
         run: |
-          mkdir -p $GITHUB_WORKSPACE/workdir
-          mkdir -p $GITHUB_WORKSPACE/packages
+          mkdir -p ${{ github.workspace }}/local_deps
+          mkdir -p ${{ github.workspace }}/workdir
+          mkdir -p ${{ github.workspace }}/packages
+
+      - name: Cache C++ Dependencies
+        id: cache-deps
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/local_deps
+          key: ${{ runner.os }}-deps-abseil-v33.0-proto-20240722.1-v1
+
+      - name: Add local_deps to PATH
+        run: |
+          echo "PATH=${{ github.workspace }}/local_deps/bin:$PATH" >> $GITHUB_ENV
+
+      - name: Add local_deps/lib to LIBRARY_PATH
+        run: |
+          echo "LIBRARY_PATH=${{ github.workspace }}/local_deps/lib:$LIBRARY_PATH" >> $GITHUB_ENV
+
+      - name: Build and Install Abseil
+        if: steps.cache-deps.outputs.cache-hit != 'true'
+        run: |
+          git clone --branch 20240722.1 --depth 1 https://github.com/abseil/abseil-cpp.git
+          cd abseil-cpp
+          mkdir build && cd build
+          cmake .. \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DABSL_ENABLE_INSTALL=ON \
+            -DCMAKE_CXX_FLAGS="-fPIC" \
+            -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/local_deps
+          make -j$(nproc)
+          sudo make install
+
+      - name: Build and Install Protobuf
+        if: steps.cache-deps.outputs.cache-hit != 'true'
+        run: |
+          git clone --branch v33.0 --depth 1 https://github.com/protocolbuffers/protobuf.git
+          cd protobuf
+          mkdir build && cd build
+          cmake .. \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DBUILD_SHARED_LIBS=OFF \
+            -Dprotobuf_BUILD_TESTS=OFF \
+            -Dprotobuf_ABSL_PROVIDER=package \
+            -DCMAKE_CXX_FLAGS="-fPIC" \
+            -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/local_deps
+          make -j$(nproc)
+          sudo make install
+
+      - name: Apply static link patch
+        run: |
+          git apply ${{ github.workspace }}/.github/patches/static-link.patch
 
       - name: Build hazkey-server
         run: |
-          mkdir -p $GITHUB_WORKSPACE/hazkey-server/build
-          cd $GITHUB_WORKSPACE/hazkey-server/build
+          mkdir -p ${{ github.workspace }}/hazkey-server/build
+          cd ${{ github.workspace }}/hazkey-server/build
           cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -G Ninja ..
           ninja -j$(nproc)
-          env DESTDIR=$GITHUB_WORKSPACE/workdir ninja install
+          env DESTDIR=${{ github.workspace }}/workdir ninja install
 
       - name: Build hazkey-settings
         run: |
-          mkdir -p $GITHUB_WORKSPACE/hazkey-settings/build
-          cd $GITHUB_WORKSPACE/hazkey-settings/build
-          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -G Ninja ..
+          mkdir -p ${{ github.workspace }}/hazkey-settings/build
+          cd ${{ github.workspace }}/hazkey-settings/build
+          cmake \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INSTALL_PREFIX=/usr \
+            -DCMAKE_CXX_FLAGS=-I${{ github.workspace }}/local_deps/include \
+            -DCMAKE_PREFIX_PATH=${{ github.workspace }}/local_deps \
+            -G Ninja ..
           ninja -j$(nproc)
-          env  DESTDIR=$GITHUB_WORKSPACE/workdir ninja install
+          env  DESTDIR=${{ github.workspace }}/workdir ninja install
 
       - name: Build fcitx5-hazkey
         run: |
-          mkdir -p $GITHUB_WORKSPACE/fcitx5-hazkey/build
-          cd $GITHUB_WORKSPACE/fcitx5-hazkey/build
-          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -G Ninja ..
+          mkdir -p ${{ github.workspace }}/fcitx5-hazkey/build
+          cd ${{ github.workspace }}/fcitx5-hazkey/build
+          cmake -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INSTALL_PREFIX=/usr \
+            -DCMAKE_PREFIX_PATH=${{ github.workspace }}/local_deps \
+            -G Ninja ..
           ninja -j$(nproc)
-          env DESTDIR=$GITHUB_WORKSPACE/workdir ninja install
+          env DESTDIR=${{ github.workspace }}/workdir ninja install
 
       - name: Create tar.gz fcitx5-hazkey package
         run: |
-          cd $GITHUB_WORKSPACE/workdir
-          tar -czvf $GITHUB_WORKSPACE/packages/fcitx5-hazkey-${{ github.ref_name }}-x86_64.tar.gz ./usr
+          cd ${{ github.workspace }}/workdir
+          tar -czvf ${{ github.workspace }}/packages/fcitx5-hazkey-${{ github.ref_name }}-x86_64.tar.gz ./usr
 
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
