@@ -49,8 +49,7 @@ void HazkeyServerConnector::start_hazkey_server() {
 
         if (second_pid == 0) {
             // Grandchild process - this will run the actual server
-            execl(INSTALL_LIBDIR "/hazkey/hazkey-server", "hazkey-server",
-                  (char*)NULL);
+            execlp("hazkey-server", "hazkey-server", (char*)NULL);
             FCITX_ERROR() << "Failed to start hazkey-server\n";
             exit(1);
         } else if (second_pid < 0) {

@@ -19,11 +19,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(Qt6 REQUIRED COMPONENTS Widgets LinguistTools)
 find_package(Protobuf REQUIRED)
 
-configure_file(
-  ${CMAKE_CURRENT_SOURCE_DIR}/env_config.h.in
-  ${CMAKE_CURRENT_BINARY_DIR}/env_config.h
-)
-
 set(TS_FILES hazkey-settings_ja_JP.ts)
 
 # Proto files

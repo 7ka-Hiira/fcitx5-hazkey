@@ -1,8 +1,3 @@
-configure_file(
-  ${CMAKE_CURRENT_SOURCE_DIR}/env_config.h.in
-  ${CMAKE_CURRENT_BINARY_DIR}/env_config.h
-)
-
 set(PROTO_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/../../protocol/base.proto
     ${CMAKE_CURRENT_SOURCE_DIR}/../../protocol/commands.proto

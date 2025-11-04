@@ -1,6 +1,7 @@
 #include "serverconnector.h"
 
 #include <arpa/inet.h>
+#include <dirent.h>
 #include <fcntl.h>
 #include <sys/socket.h>
 #include <sys/un.h>
@@ -12,6 +13,7 @@
 #include <QMessageBox>
 #include <QProcess>
 #include <chrono>
+#include <fstream>
 #include <mutex>
 #include <thread>
 
@@ -35,11 +37,61 @@ std::string ServerConnector::get_socket_path() {
 }
 
 void ServerConnector::restart_hazkey_server() {
-    bool success =
-        QProcess::startDetached(INSTALL_LIBDIR "/hazkey/hazkey-server");
+    bool success = QProcess::startDetached("hazkey-server");
 
     if (!success) {
         qWarning() << "Failed to start hazkey-server.";
+    }
+}
+
+void ServerConnector::kill_existing_hazkey_server() {
+    DIR* proc_dir = opendir("/proc");
+    if (!proc_dir) {
+        return;
+    }
+
+    std::vector<pid_t> hazkey_pids;
+    struct dirent* entry;
+
+    while ((entry = readdir(proc_dir)) != nullptr) {
+        // Skip non-numeric directory names
+        if (!isdigit(entry->d_name[0])) {
+            continue;
+        }
+
+        pid_t pid = atoi(entry->d_name);
+        std::string cmdline_path =
+            "/proc/" + std::string(entry->d_name) + "/cmdline";
+        std::ifstream cmdline_file(cmdline_path);
+        if (!cmdline_file.is_open()) {
+            continue;
+        }
+
+        std::string cmdline;
+        std::getline(cmdline_file, cmdline);
+        cmdline_file.close();
+
+        // Check if the command line contains "hazkey-server"
+        if (cmdline.find("hazkey-server") != std::string::npos) {
+            hazkey_pids.push_back(pid);
+        }
+    }
+
+    closedir(proc_dir);
+
+    // Kill all found hazkey-server processes
+    for (pid_t pid : hazkey_pids) {
+        // First try SIGTERM
+        if (kill(pid, SIGTERM) == 0) {
+            // Wait a bit for graceful shutdown
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
+            // Check if process is still running
+            if (kill(pid, 0) == 0) {
+                // Process still exists, use SIGKILL
+                kill(pid, SIGKILL);
+            }
+        }
     }
 }
 
