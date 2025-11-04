@@ -1,0 +1,16 @@
+#!/usr/bin/env sh
+
+# hazkey-server wrapper script
+# Sets LD_PRELOAD to load libllama.so from XDG_DATA_HOME/hazkey/zenzai/llama/
+# and passes all arguments and environment variables to hazkey-server
+
+# Set default XDG_DATA_HOME if not set
+if [ -z "$XDG_DATA_HOME" ]; then
+    XDG_DATA_HOME="$HOME/.local/share"
+fi
+
+# Set LD_PRELOAD to the libllama.so path
+export LD_PRELOAD="$XDG_DATA_HOME/hazkey/zenzai/llama/libllama.so"
+
+# Execute hazkey-server with all passed arguments
+exec "@CMAKE_INSTALL_FULL_LIBDIR@/hazkey/hazkey-server" "$@"

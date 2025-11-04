@@ -95,14 +95,15 @@ add_dependencies(build_hazkey_server llama)
 install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/swift-build/${SWIFT_BUILD_TYPE}/hazkey-server
         DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}/hazkey)
 
-# create a symlink of hazkey-server in the binary directory
-install(CODE "
-    file(MAKE_DIRECTORY \"\$ENV{DESTDIR}${CMAKE_INSTALL_FULL_BINDIR}\")
-    file(CREATE_LINK
-    \"${CMAKE_INSTALL_FULL_LIBDIR}/hazkey/hazkey-server\"
-    \"\$ENV{DESTDIR}${CMAKE_INSTALL_FULL_BINDIR}/hazkey-server\"
-    SYMBOLIC)
-")
+# configure and install hazkey-server wrapper script
+configure_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/hazkey-server.sh.in
+    ${CMAKE_CURRENT_BINARY_DIR}/hazkey-server
+    @ONLY
+)
+
+install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/hazkey-server
+        DESTINATION ${CMAKE_INSTALL_FULL_BINDIR})
 
 # install llama stub library
 install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/llama-stub/libllama.so
