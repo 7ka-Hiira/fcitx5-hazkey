@@ -19,9 +19,7 @@ class HazkeyServerState {
     init(zenzaiAvailable: Bool) {
         self.serverConfig = HazkeyServerConfig()
 
-        self.converter = KanaKanjiConverter.init(
-            dictionaryURL: self.serverConfig.systemResourceDir.appendingPathComponent(
-                "Dictionary", isDirectory: true))
+        self.converter = KanaKanjiConverter.init(dictionaryURL: serverConfig.dictionaryPath)
 
         // Initialize keymap and table
         self.keymap = serverConfig.loadKeymap()

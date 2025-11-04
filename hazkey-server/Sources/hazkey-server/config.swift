@@ -33,9 +33,10 @@ let builtInInputTables = [
 }
 
 class HazkeyServerConfig {
-    let systemResourceDir = URL(fileURLWithPath: systemResourcePath, isDirectory: true)
     var profiles: [Hazkey_Config_Profile]
     var currentProfile: Hazkey_Config_Profile
+    let dictionaryPath: URL
+    let zenzaiModelPath: URL?
 
     init() {
         do {
@@ -48,6 +49,35 @@ class HazkeyServerConfig {
 
         // TODO: add [0] out of range handling
         currentProfile = profiles[0]
+
+        let fileManager = FileManager()
+
+        // set dictionary path
+        dictionaryPath = {
+            if let envPath = ProcessInfo.processInfo.environment["HAZKEY_DICTIONARY"],
+                fileManager.fileExists(atPath: envPath)
+            {
+                return URL(filePath: envPath)
+            } else {
+                return URL(fileURLWithPath: systemResourcePath).appendingPathComponent(
+                    "Dictionary", isDirectory: true)
+            }
+        }()
+
+        // set zenzai model path
+        zenzaiModelPath = {
+            let systemZenzaiModelPath = URL(fileURLWithPath: systemResourcePath)
+                .appendingPathComponent("zenzai.gguf", isDirectory: false)
+            if let envPath = ProcessInfo.processInfo.environment["HAZKEY_ZENZAI_MODEL"],
+                fileManager.fileExists(atPath: envPath)
+            {
+                return URL(filePath: envPath)
+            } else if fileManager.fileExists(atPath: systemZenzaiModelPath.absoluteString) {
+                return systemZenzaiModelPath
+            } else {
+                return nil
+            }
+        }()
     }
 
     func getCurrentConfig(zenzaiAvailable: Bool) -> Hazkey_ResponseEnvelope {
@@ -318,9 +348,9 @@ class HazkeyServerConfig {
     func genZenzaiMode(leftContext: String, zenzaiAvailable: Bool)
         -> ConvertRequestOptions.ZenzaiMode
     {
-        if zenzaiAvailable && currentProfile.zenzaiEnable {
+        if zenzaiAvailable, let zenzaiModelPath = zenzaiModelPath, currentProfile.zenzaiEnable {
             return ConvertRequestOptions.ZenzaiMode.on(
-                weight: systemResourceDir.appendingPathComponent("zenzai.gguf", isDirectory: false),
+                weight: zenzaiModelPath,
                 inferenceLimit: Int(currentProfile.zenzaiInferLimit),
                 requestRichCandidates: currentProfile.useRichCandidates,
                 personalizationMode: nil,
