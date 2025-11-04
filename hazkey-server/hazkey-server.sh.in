@@ -2,15 +2,33 @@
 
 # hazkey-server wrapper script
 # Sets LD_PRELOAD to load libllama.so from XDG_DATA_HOME/hazkey/zenzai/llama/
-# and passes all arguments and environment variables to hazkey-server
+# and passes all arguments to hazkey-server
+# Checks for missing dependencies and falls back to running without LD_PRELOAD if needed
 
-# Set default XDG_DATA_HOME if not set
 if [ -z "$XDG_DATA_HOME" ]; then
     XDG_DATA_HOME="$HOME/.local/share"
 fi
 
-# Set LD_PRELOAD to the libllama.so path
-export LD_PRELOAD="$XDG_DATA_HOME/hazkey/zenzai/llama/libllama.so"
+if [ -z "$LIBLLAMA_PATH" ]; then
+    LIBLLAMA_PATH="$XDG_DATA_HOME/hazkey/zenzai/llama/libllama.so"
+fi
 
-# Execute hazkey-server with all passed arguments
+# Check if libllama.so exists
+if [ -f "$LIBLLAMA_PATH" ]; then
+    # Check for missing dependencies using ldd
+    MISSING_DEPS=$(LC_ALL=C ldd "$LIBLLAMA_PATH" 2>/dev/null | grep "not found")
+
+    if [ -n "$MISSING_DEPS" ]; then
+        # Log missing dependencies
+        echo "Warning: libllama.so has missing dependencies:" >&2
+        echo "$MISSING_DEPS" >&2
+        echo "Starting hazkey-server without LD_PRELOAD..." >&2
+    else
+        # Execute hazkey-server with LD_PRELOAD
+        export LD_PRELOAD="$LIBLLAMA_PATH"
+    fi
+else
+    echo "Starting hazkey-server without LD_PRELOAD..." >&2
+fi
+
 exec "@CMAKE_INSTALL_FULL_LIBDIR@/hazkey/hazkey-server" "$@"
