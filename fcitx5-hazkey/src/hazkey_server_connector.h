@@ -10,7 +10,6 @@
 
 #include "base.pb.h"
 #include "commands.pb.h"
-#include "env_config.h"
 
 class HazkeyServerConnector {
    public:

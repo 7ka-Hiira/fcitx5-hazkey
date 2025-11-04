@@ -24,7 +24,6 @@
 
 #include "base.pb.h"
 #include "commands.pb.h"
-#include "env_config.h"
 
 static std::mutex transact_mutex;
 
