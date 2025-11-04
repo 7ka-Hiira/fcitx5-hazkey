@@ -17,7 +17,6 @@
 #include <mutex>
 #include <thread>
 
-#include "env_config.h"
 #include "qdir.h"
 #include "qlogging.h"
 
