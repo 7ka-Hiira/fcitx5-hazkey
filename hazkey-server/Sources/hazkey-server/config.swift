@@ -73,10 +73,19 @@ class HazkeyServerConfig {
 
             let systemZenzaiModelPath = URL(fileURLWithPath: systemResourcePath)
                 .appendingPathComponent("zenzai.gguf", isDirectory: false)
+            let userZenzaiModelPath = FileManager.default.urls(
+                for: .applicationSupportDirectory, in: .userDomainMask
+            ).first!
+            .appendingPathComponent("hazkey", isDirectory: true)
+            .appendingPathComponent("zenzai", isDirectory: true)
+            .appendingPathComponent("zenzai.gguf", isDirectory: false)
+
             if let envPath = ProcessInfo.processInfo.environment["HAZKEY_ZENZAI_MODEL"],
                 fileManager.fileExists(atPath: envPath)
             {
                 return URL(filePath: envPath)
+            } else if fileManager.fileExists(atPath: userZenzaiModelPath.path) {
+                return userZenzaiModelPath
             } else if fileManager.fileExists(atPath: systemZenzaiModelPath.path) {
                 return systemZenzaiModelPath
             } else {

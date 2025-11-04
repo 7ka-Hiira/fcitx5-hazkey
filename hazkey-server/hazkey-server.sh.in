@@ -9,6 +9,17 @@ if [ -z "$XDG_DATA_HOME" ]; then
     XDG_DATA_HOME="$HOME/.local/share"
 fi
 
+
+if [ -z "$XDG_CONFIG_HOME" ]; then
+    XDG_CONFIG_HOME="$HOME/.config"
+fi
+
+ENV_FILE="$XDG_CONFIG_HOME/hazkey/environment"
+# Load user defiend environment variables
+if [ -f "$ENV_FILE" ]; then
+    source "$ENV_FILE"
+fi
+
 if [ -z "$LIBLLAMA_PATH" ]; then
     LIBLLAMA_PATH="$XDG_DATA_HOME/hazkey/zenzai/llama/libllama.so"
 fi
