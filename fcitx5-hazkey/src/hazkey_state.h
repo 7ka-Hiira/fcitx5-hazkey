@@ -14,7 +14,7 @@ class HazkeyEngine;
 
 class HazkeyState : public InputContextProperty {
    public:
-    HazkeyState(HazkeyEngine *engine, InputContext *ic);
+    HazkeyState(HazkeyEngine* engine, InputContext* ic);
 
     // complete the prefix and remove from composingText_
     void candidateCompleteHandler(
@@ -22,7 +22,7 @@ class HazkeyState : public InputContextProperty {
     void commitPreedit();
     // handle key event. call candidateKeyEvent or preeditNoPredictKeyEvent
     // depends on the current mode
-    void keyEvent(KeyEvent &keyEvent);
+    void keyEvent(KeyEvent& keyEvent);
     // void loadConfig(std::shared_ptr<HazkeyConfig> &config);
     //  reset to the initial state
     void reset();
@@ -44,18 +44,19 @@ class HazkeyState : public InputContextProperty {
     // update surrounding text
     void updateSurroundingText(std::string appendText = "");
 
+    bool ctrlShortcutHandler(KeyEvent& keyEvent);
     // f6-f10 key handler
-    void functionKeyHandler(KeyEvent &keyEvent);
+    void functionKeyHandler(KeyEvent& keyEvent);
     // convert to hiragana/katakana/alphanumeric directly
     void directCharactorConversion(ConversionMode mode);
     // handle key event in normal mode (no preedit)
-    void noPreeditKeyEvent(KeyEvent &keyEvent);
+    void noPreeditKeyEvent(KeyEvent& keyEvent);
     // handle key event in candidate mode
-    void candidateKeyEvent(KeyEvent &keyEvent,
+    void candidateKeyEvent(KeyEvent& keyEvent,
                            std::shared_ptr<HazkeyCandidateList> candidateList);
     // handle key event in preedit mode
     void preeditKeyEvent(
-        KeyEvent &keyEvent,
+        KeyEvent& keyEvent,
         std::shared_ptr<HazkeyCandidateList> PreeditCandidateList);
     // base function to prepare candidate list
     // make sure composingText_ is not nullptr
@@ -100,19 +101,19 @@ class HazkeyState : public InputContextProperty {
     // event is inputable
     // (simple key / kana
     // key) or not
-    bool isInputableEvent(const KeyEvent &keyEvent);
+    bool isInputableEvent(const KeyEvent& keyEvent);
 
-    bool isAltDigitKeyEvent(const KeyEvent &keyEvent);
+    bool isAltDigitKeyEvent(const KeyEvent& keyEvent);
 
     bool isCursorMoving_ = false;
 
     bool isDirectConversionMode_ = false;
     int livePreeditIndex_ = -1;
     // engine
-    HazkeyEngine *engine_;
+    HazkeyEngine* engine_;
     // fcitx input context
     // pointer
-    InputContext *ic_;
+    InputContext* ic_;
     // preedit class
     HazkeyPreedit preedit_;
 };

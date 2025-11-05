@@ -188,7 +188,9 @@ void HazkeyState::preeditKeyEvent(
             }
             break;
         default:
-            if (isAltDigitKeyEvent(event)) {
+            if (event.key().states() == KeyState::Ctrl) {
+                ctrlShortcutHandler(event);
+            } else if (isAltDigitKeyEvent(event)) {
                 if (PredictCandidateList != nullptr) {
                     auto localIndex = keysym - FcitxKey_1;
                     if (localIndex < PredictCandidateList->pageSize()) {
@@ -228,14 +230,14 @@ void HazkeyState::candidateKeyEvent(
     std::vector<std::string> preedit;
     switch (keysym) {
         case FcitxKey_Right:
-            if (event.key().states() == KeyState::Alt) {
-                candidateList->nextPage();
-            }
+            // if (event.key().states() == KeyState::Alt) {
+            candidateList->nextPage();
+            // }
             break;
         case FcitxKey_Left:
-            if (event.key().states() == KeyState::Alt) {
-                candidateList->prevPage();
-            }
+            // if (event.key().states() == KeyState::Alt) {
+            candidateList->prevPage();
+            // }
             break;
         case FcitxKey_Return:
             candidateCompleteHandler(candidateList);
@@ -271,8 +273,12 @@ void HazkeyState::candidateKeyEvent(
         case FcitxKey_Shift_R:
 
         default:
-            if (isAltDigitKeyEvent(event) ||
-                key.checkKeyList(defaultSelectionKeys)) {
+            if (event.key().states() == KeyState::Ctrl) {
+                if (!ctrlShortcutHandler(event)) {
+                    return event.filter();
+                }
+            } else if (isAltDigitKeyEvent(event) ||
+                       key.checkKeyList(defaultSelectionKeys)) {
                 auto localIndex = isAltDigitKeyEvent(event)
                                       ? keysym - FcitxKey_1
                                       : key.keyListIndex(defaultSelectionKeys);
@@ -319,6 +325,41 @@ void HazkeyState::updateSurroundingText(std::string appendText) {
     } else {
         engine_->server().setContext("", 0);
     }
+}
+
+bool HazkeyState::ctrlShortcutHandler(KeyEvent& event) {
+    auto keysym = event.key().sym();
+    switch (keysym) {
+        case FcitxKey_u:
+        case FcitxKey_U:
+            directCharactorConversion(ConversionMode::Hiragana);
+            isDirectConversionMode_ = true;
+            break;
+        case FcitxKey_i:
+        case FcitxKey_I:
+            directCharactorConversion(ConversionMode::KatakanaFullwidth);
+            isDirectConversionMode_ = true;
+            break;
+        case FcitxKey_o:
+        case FcitxKey_O:
+            directCharactorConversion(ConversionMode::KatakanaHalfwidth);
+            isDirectConversionMode_ = true;
+            break;
+        case FcitxKey_p:
+        case FcitxKey_P:
+            directCharactorConversion(ConversionMode::RawFullwidth);
+            isDirectConversionMode_ = true;
+            break;
+        case FcitxKey_t:
+        case FcitxKey_T:
+            directCharactorConversion(ConversionMode::RawHalfwidth);
+            isDirectConversionMode_ = true;
+            break;
+        default:
+            FCITX_INFO() << "keysym" << keysym;
+            return false;
+    }
+    return true;
 }
 
 void HazkeyState::functionKeyHandler(KeyEvent& event) {
