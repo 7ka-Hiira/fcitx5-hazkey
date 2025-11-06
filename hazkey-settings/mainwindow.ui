@@ -1098,7 +1098,7 @@
                <item>
                 <widget class="QLabel" name="keymapAdvancedNote">
                  <property name="text">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700; font-style:italic;&quot;&gt;Note:&lt;/span&gt;&lt;span style=&quot; font-style:italic;&quot;&gt; You can use custom Keymaps in TSV format, located in &lt;/span&gt;&lt;span style=&quot; font-weight:700; font-style:italic;&quot;&gt;$XDG_CONFIG_HOME/hazkey/keymap&lt;/span&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;. &lt;/span&gt;&lt;a href=&quot;https://hazkey.hiira.dev/docs/input-style#Keymap&quot;&gt;&lt;span style=&quot; font-style:italic; text-decoration: underline; color:#2980b9;&quot;&gt;More info...&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700; font-style:italic;&quot;&gt;Note:&lt;/span&gt;&lt;span style=&quot; font-style:italic;&quot;&gt; You can use custom Keymaps in TSV format, located in &lt;/span&gt;&lt;span style=&quot; font-weight:700; font-style:italic;&quot;&gt;$XDG_CONFIG_HOME/hazkey/keymap&lt;/span&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;. &lt;/span&gt;&lt;a href=&quot;https://hazkey.hiira.dev/docs/settings/input-style-keymap&quot;&gt;&lt;span style=&quot; font-style:italic; text-decoration: underline; color:#2980b9;&quot;&gt;More info...&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                  <property name="wordWrap">
                   <bool>true</bool>
@@ -1298,7 +1298,7 @@
                   </font>
                  </property>
                  <property name="text">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Note:&lt;/span&gt; You can use custom input tables in TSV format, located in &lt;span style=&quot; font-weight:700;&quot;&gt;$XDG_CONFIG_HOME/hazkey/table&lt;/span&gt;. &lt;a href=&quot;https://hazkey.hiira.dev/docs/input-style#InputTable&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;More info...&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Note:&lt;/span&gt; You can use custom input tables in TSV format, located in &lt;span style=&quot; font-weight:700;&quot;&gt;$XDG_CONFIG_HOME/hazkey/table&lt;/span&gt;. &lt;a href=&quot;https://hazkey.hiira.dev/docs/settings/input-style-input-table&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;More info...&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                  <property name="wordWrap">
                   <bool>true</bool>
