@@ -73,27 +73,6 @@ message Profile {
         optional string filename = 3;
     }
 
-    message ZenzaiVersionConfig {
-        message V1 {}
-
-        message V2 {
-            optional string profile = 1;
-        }
-
-        message V3 {
-            optional string profile = 1;
-            optional string topic = 2;
-            optional string style = 3;
-            optional string preference = 4;
-        }
-
-        oneof version {
-            V1 v1 = 1;
-            V2 v2 = 2;
-            V3 v3 = 3;
-        }
-    }
-
     optional string server_version = 4;
 
     string profile_name = 5;
@@ -130,9 +109,13 @@ message Profile {
     optional bool zenzai_enable = 101;
     optional int32 zenzai_infer_limit = 102;
     optional bool zenzai_contextual_mode = 103;
-    optional ZenzaiVersionConfig zenzai_version_config = 104;
     optional bool use_zenzai_custom_weight = 105;
     optional string zenzai_weight_path = 106;
+
+    optional string zenzai_profile = 120;
+    optional string zenzai_topic = 121;
+    optional string zenzai_style = 122;
+    optional string zenzai_preference = 123;
 }
 
 // Request messages

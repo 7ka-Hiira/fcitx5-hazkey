@@ -272,7 +272,7 @@ class HazkeyServerConfig {
         newConf.zenzaiEnable = true
         newConf.zenzaiInferLimit = 10
         newConf.zenzaiContextualMode = true
-        newConf.zenzaiVersionConfig.v3 = Hazkey_Config_Profile.ZenzaiVersionConfig.V3.init()
+        newConf.zenzaiProfile = ""
         return newConf
     }
 
@@ -368,31 +368,15 @@ class HazkeyServerConfig {
                 inferenceLimit: Int(currentProfile.zenzaiInferLimit),
                 requestRichCandidates: currentProfile.useRichCandidates,
                 personalizationMode: nil,
-                versionDependentMode: {
-                    return switch currentProfile.zenzaiVersionConfig.version {
-                    case .v1:
-                        .v1
-                    case .v2(let versionConfig):
-                        .v2(
-                            ConvertRequestOptions.ZenzaiV2DependentMode.init(
-                                profile: versionConfig.profile,
-                                leftSideContext: currentProfile.zenzaiContextualMode
-                                    ? leftContext : nil
-                            ))
-                    case .v3(let versionConfig):
-                        .v3(
-                            ConvertRequestOptions.ZenzaiV3DependentMode.init(
-                                profile: versionConfig.profile,
-                                topic: versionConfig.topic,
-                                style: versionConfig.style,
-                                preference: versionConfig.style,
-                                leftSideContext: currentProfile.zenzaiContextualMode
-                                    ? leftContext : nil
-                            ))
-                    default:
-                        .v1
-                    }
-                }()
+                versionDependentMode: .v3(
+                    ConvertRequestOptions.ZenzaiV3DependentMode.init(
+                        profile: currentProfile.zenzaiProfile,
+                        topic: currentProfile.zenzaiTopic,
+                        style: currentProfile.zenzaiStyle,
+                        preference: currentProfile.zenzaiPreference,
+                        leftSideContext: currentProfile.zenzaiContextualMode
+                            ? leftContext : nil
+                    ))
             )
         } else {
             return ConvertRequestOptions.ZenzaiMode.off

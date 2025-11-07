@@ -17,6 +17,7 @@
 
 #include "./ui_mainwindow.h"
 #include "config_definitions.h"
+#include "config_macros.h"
 #include "serverconnector.h"
 
 MainWindow::MainWindow(QWidget* parent)
@@ -237,6 +238,7 @@ bool MainWindow::loadCurrentConfig() {
     SET_LINEEDIT(ui_->submodeEntryPointChars,
                  currentProfile_->submode_entry_point_chars(),
                  "ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+    SET_LINEEDIT(ui_->zenzaiUserPlofile, currentProfile_->zenzai_profile(), "");
 
     // Load input table configuration
     loadInputTables();
@@ -299,6 +301,8 @@ bool MainWindow::saveCurrentConfig() {
 
     currentProfile_->set_submode_entry_point_chars(
         GET_LINEEDIT_STRING(ui_->submodeEntryPointChars));
+    currentProfile_->set_zenzai_profile(
+        GET_LINEEDIT_STRING(ui_->zenzaiUserPlofile));
 
     // Save input table configuration
     saveInputTables();

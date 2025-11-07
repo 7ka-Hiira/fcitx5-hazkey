@@ -334,15 +334,6 @@ struct Hazkey_Config_Profile: @unchecked Sendable {
   /// Clears the value of `zenzaiContextualMode`. Subsequent reads from it will return its default value.
   mutating func clearZenzaiContextualMode() {_uniqueStorage()._zenzaiContextualMode = nil}
 
-  var zenzaiVersionConfig: Hazkey_Config_Profile.ZenzaiVersionConfig {
-    get {return _storage._zenzaiVersionConfig ?? Hazkey_Config_Profile.ZenzaiVersionConfig()}
-    set {_uniqueStorage()._zenzaiVersionConfig = newValue}
-  }
-  /// Returns true if `zenzaiVersionConfig` has been explicitly set.
-  var hasZenzaiVersionConfig: Bool {return _storage._zenzaiVersionConfig != nil}
-  /// Clears the value of `zenzaiVersionConfig`. Subsequent reads from it will return its default value.
-  mutating func clearZenzaiVersionConfig() {_uniqueStorage()._zenzaiVersionConfig = nil}
-
   var useZenzaiCustomWeight: Bool {
     get {return _storage._useZenzaiCustomWeight ?? false}
     set {_uniqueStorage()._useZenzaiCustomWeight = newValue}
@@ -360,6 +351,42 @@ struct Hazkey_Config_Profile: @unchecked Sendable {
   var hasZenzaiWeightPath: Bool {return _storage._zenzaiWeightPath != nil}
   /// Clears the value of `zenzaiWeightPath`. Subsequent reads from it will return its default value.
   mutating func clearZenzaiWeightPath() {_uniqueStorage()._zenzaiWeightPath = nil}
+
+  var zenzaiProfile: String {
+    get {return _storage._zenzaiProfile ?? String()}
+    set {_uniqueStorage()._zenzaiProfile = newValue}
+  }
+  /// Returns true if `zenzaiProfile` has been explicitly set.
+  var hasZenzaiProfile: Bool {return _storage._zenzaiProfile != nil}
+  /// Clears the value of `zenzaiProfile`. Subsequent reads from it will return its default value.
+  mutating func clearZenzaiProfile() {_uniqueStorage()._zenzaiProfile = nil}
+
+  var zenzaiTopic: String {
+    get {return _storage._zenzaiTopic ?? String()}
+    set {_uniqueStorage()._zenzaiTopic = newValue}
+  }
+  /// Returns true if `zenzaiTopic` has been explicitly set.
+  var hasZenzaiTopic: Bool {return _storage._zenzaiTopic != nil}
+  /// Clears the value of `zenzaiTopic`. Subsequent reads from it will return its default value.
+  mutating func clearZenzaiTopic() {_uniqueStorage()._zenzaiTopic = nil}
+
+  var zenzaiStyle: String {
+    get {return _storage._zenzaiStyle ?? String()}
+    set {_uniqueStorage()._zenzaiStyle = newValue}
+  }
+  /// Returns true if `zenzaiStyle` has been explicitly set.
+  var hasZenzaiStyle: Bool {return _storage._zenzaiStyle != nil}
+  /// Clears the value of `zenzaiStyle`. Subsequent reads from it will return its default value.
+  mutating func clearZenzaiStyle() {_uniqueStorage()._zenzaiStyle = nil}
+
+  var zenzaiPreference: String {
+    get {return _storage._zenzaiPreference ?? String()}
+    set {_uniqueStorage()._zenzaiPreference = newValue}
+  }
+  /// Returns true if `zenzaiPreference` has been explicitly set.
+  var hasZenzaiPreference: Bool {return _storage._zenzaiPreference != nil}
+  /// Clears the value of `zenzaiPreference`. Subsequent reads from it will return its default value.
+  mutating func clearZenzaiPreference() {_uniqueStorage()._zenzaiPreference = nil}
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -672,131 +699,6 @@ struct Hazkey_Config_Profile: @unchecked Sendable {
     fileprivate var _filename: String? = nil
   }
 
-  struct ZenzaiVersionConfig: Sendable {
-    // SwiftProtobuf.Message conformance is added in an extension below. See the
-    // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-    // methods supported on all messages.
-
-    var version: Hazkey_Config_Profile.ZenzaiVersionConfig.OneOf_Version? = nil
-
-    var v1: Hazkey_Config_Profile.ZenzaiVersionConfig.V1 {
-      get {
-        if case .v1(let v)? = version {return v}
-        return Hazkey_Config_Profile.ZenzaiVersionConfig.V1()
-      }
-      set {version = .v1(newValue)}
-    }
-
-    var v2: Hazkey_Config_Profile.ZenzaiVersionConfig.V2 {
-      get {
-        if case .v2(let v)? = version {return v}
-        return Hazkey_Config_Profile.ZenzaiVersionConfig.V2()
-      }
-      set {version = .v2(newValue)}
-    }
-
-    var v3: Hazkey_Config_Profile.ZenzaiVersionConfig.V3 {
-      get {
-        if case .v3(let v)? = version {return v}
-        return Hazkey_Config_Profile.ZenzaiVersionConfig.V3()
-      }
-      set {version = .v3(newValue)}
-    }
-
-    var unknownFields = SwiftProtobuf.UnknownStorage()
-
-    enum OneOf_Version: Equatable, Sendable {
-      case v1(Hazkey_Config_Profile.ZenzaiVersionConfig.V1)
-      case v2(Hazkey_Config_Profile.ZenzaiVersionConfig.V2)
-      case v3(Hazkey_Config_Profile.ZenzaiVersionConfig.V3)
-
-    }
-
-    struct V1: Sendable {
-      // SwiftProtobuf.Message conformance is added in an extension below. See the
-      // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-      // methods supported on all messages.
-
-      var unknownFields = SwiftProtobuf.UnknownStorage()
-
-      init() {}
-    }
-
-    struct V2: Sendable {
-      // SwiftProtobuf.Message conformance is added in an extension below. See the
-      // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-      // methods supported on all messages.
-
-      var profile: String {
-        get {return _profile ?? String()}
-        set {_profile = newValue}
-      }
-      /// Returns true if `profile` has been explicitly set.
-      var hasProfile: Bool {return self._profile != nil}
-      /// Clears the value of `profile`. Subsequent reads from it will return its default value.
-      mutating func clearProfile() {self._profile = nil}
-
-      var unknownFields = SwiftProtobuf.UnknownStorage()
-
-      init() {}
-
-      fileprivate var _profile: String? = nil
-    }
-
-    struct V3: Sendable {
-      // SwiftProtobuf.Message conformance is added in an extension below. See the
-      // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-      // methods supported on all messages.
-
-      var profile: String {
-        get {return _profile ?? String()}
-        set {_profile = newValue}
-      }
-      /// Returns true if `profile` has been explicitly set.
-      var hasProfile: Bool {return self._profile != nil}
-      /// Clears the value of `profile`. Subsequent reads from it will return its default value.
-      mutating func clearProfile() {self._profile = nil}
-
-      var topic: String {
-        get {return _topic ?? String()}
-        set {_topic = newValue}
-      }
-      /// Returns true if `topic` has been explicitly set.
-      var hasTopic: Bool {return self._topic != nil}
-      /// Clears the value of `topic`. Subsequent reads from it will return its default value.
-      mutating func clearTopic() {self._topic = nil}
-
-      var style: String {
-        get {return _style ?? String()}
-        set {_style = newValue}
-      }
-      /// Returns true if `style` has been explicitly set.
-      var hasStyle: Bool {return self._style != nil}
-      /// Clears the value of `style`. Subsequent reads from it will return its default value.
-      mutating func clearStyle() {self._style = nil}
-
-      var preference: String {
-        get {return _preference ?? String()}
-        set {_preference = newValue}
-      }
-      /// Returns true if `preference` has been explicitly set.
-      var hasPreference: Bool {return self._preference != nil}
-      /// Clears the value of `preference`. Subsequent reads from it will return its default value.
-      mutating func clearPreference() {self._preference = nil}
-
-      var unknownFields = SwiftProtobuf.UnknownStorage()
-
-      init() {}
-
-      fileprivate var _profile: String? = nil
-      fileprivate var _topic: String? = nil
-      fileprivate var _style: String? = nil
-      fileprivate var _preference: String? = nil
-    }
-
-    init() {}
-  }
-
   init() {}
 
   fileprivate var _storage = _StorageClass.defaultInstance
@@ -1043,9 +945,12 @@ extension Hazkey_Config_Profile: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
     101: .standard(proto: "zenzai_enable"),
     102: .standard(proto: "zenzai_infer_limit"),
     103: .standard(proto: "zenzai_contextual_mode"),
-    104: .standard(proto: "zenzai_version_config"),
     105: .standard(proto: "use_zenzai_custom_weight"),
     106: .standard(proto: "zenzai_weight_path"),
+    120: .standard(proto: "zenzai_profile"),
+    121: .standard(proto: "zenzai_topic"),
+    122: .standard(proto: "zenzai_style"),
+    123: .standard(proto: "zenzai_preference"),
   ]
 
   fileprivate class _StorageClass {
@@ -1076,9 +981,12 @@ extension Hazkey_Config_Profile: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
     var _zenzaiEnable: Bool? = nil
     var _zenzaiInferLimit: Int32? = nil
     var _zenzaiContextualMode: Bool? = nil
-    var _zenzaiVersionConfig: Hazkey_Config_Profile.ZenzaiVersionConfig? = nil
     var _useZenzaiCustomWeight: Bool? = nil
     var _zenzaiWeightPath: String? = nil
+    var _zenzaiProfile: String? = nil
+    var _zenzaiTopic: String? = nil
+    var _zenzaiStyle: String? = nil
+    var _zenzaiPreference: String? = nil
 
       // This property is used as the initial default value for new instances of the type.
       // The type itself is protecting the reference to its storage via CoW semantics.
@@ -1116,9 +1024,12 @@ extension Hazkey_Config_Profile: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
       _zenzaiEnable = source._zenzaiEnable
       _zenzaiInferLimit = source._zenzaiInferLimit
       _zenzaiContextualMode = source._zenzaiContextualMode
-      _zenzaiVersionConfig = source._zenzaiVersionConfig
       _useZenzaiCustomWeight = source._useZenzaiCustomWeight
       _zenzaiWeightPath = source._zenzaiWeightPath
+      _zenzaiProfile = source._zenzaiProfile
+      _zenzaiTopic = source._zenzaiTopic
+      _zenzaiStyle = source._zenzaiStyle
+      _zenzaiPreference = source._zenzaiPreference
     }
   }
 
@@ -1164,9 +1075,12 @@ extension Hazkey_Config_Profile: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
         case 101: try { try decoder.decodeSingularBoolField(value: &_storage._zenzaiEnable) }()
         case 102: try { try decoder.decodeSingularInt32Field(value: &_storage._zenzaiInferLimit) }()
         case 103: try { try decoder.decodeSingularBoolField(value: &_storage._zenzaiContextualMode) }()
-        case 104: try { try decoder.decodeSingularMessageField(value: &_storage._zenzaiVersionConfig) }()
         case 105: try { try decoder.decodeSingularBoolField(value: &_storage._useZenzaiCustomWeight) }()
         case 106: try { try decoder.decodeSingularStringField(value: &_storage._zenzaiWeightPath) }()
+        case 120: try { try decoder.decodeSingularStringField(value: &_storage._zenzaiProfile) }()
+        case 121: try { try decoder.decodeSingularStringField(value: &_storage._zenzaiTopic) }()
+        case 122: try { try decoder.decodeSingularStringField(value: &_storage._zenzaiStyle) }()
+        case 123: try { try decoder.decodeSingularStringField(value: &_storage._zenzaiPreference) }()
         default: break
         }
       }
@@ -1260,14 +1174,23 @@ extension Hazkey_Config_Profile: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
       try { if let v = _storage._zenzaiContextualMode {
         try visitor.visitSingularBoolField(value: v, fieldNumber: 103)
       } }()
-      try { if let v = _storage._zenzaiVersionConfig {
-        try visitor.visitSingularMessageField(value: v, fieldNumber: 104)
-      } }()
       try { if let v = _storage._useZenzaiCustomWeight {
         try visitor.visitSingularBoolField(value: v, fieldNumber: 105)
       } }()
       try { if let v = _storage._zenzaiWeightPath {
         try visitor.visitSingularStringField(value: v, fieldNumber: 106)
+      } }()
+      try { if let v = _storage._zenzaiProfile {
+        try visitor.visitSingularStringField(value: v, fieldNumber: 120)
+      } }()
+      try { if let v = _storage._zenzaiTopic {
+        try visitor.visitSingularStringField(value: v, fieldNumber: 121)
+      } }()
+      try { if let v = _storage._zenzaiStyle {
+        try visitor.visitSingularStringField(value: v, fieldNumber: 122)
+      } }()
+      try { if let v = _storage._zenzaiPreference {
+        try visitor.visitSingularStringField(value: v, fieldNumber: 123)
       } }()
     }
     try unknownFields.traverse(visitor: &visitor)
@@ -1305,9 +1228,12 @@ extension Hazkey_Config_Profile: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
         if _storage._zenzaiEnable != rhs_storage._zenzaiEnable {return false}
         if _storage._zenzaiInferLimit != rhs_storage._zenzaiInferLimit {return false}
         if _storage._zenzaiContextualMode != rhs_storage._zenzaiContextualMode {return false}
-        if _storage._zenzaiVersionConfig != rhs_storage._zenzaiVersionConfig {return false}
         if _storage._useZenzaiCustomWeight != rhs_storage._useZenzaiCustomWeight {return false}
         if _storage._zenzaiWeightPath != rhs_storage._zenzaiWeightPath {return false}
+        if _storage._zenzaiProfile != rhs_storage._zenzaiProfile {return false}
+        if _storage._zenzaiTopic != rhs_storage._zenzaiTopic {return false}
+        if _storage._zenzaiStyle != rhs_storage._zenzaiStyle {return false}
+        if _storage._zenzaiPreference != rhs_storage._zenzaiPreference {return false}
         return true
       }
       if !storagesAreEqual {return false}
@@ -1519,203 +1445,6 @@ extension Hazkey_Config_Profile.EnabledInputTable: SwiftProtobuf.Message, SwiftP
     if lhs._name != rhs._name {return false}
     if lhs._isBuiltIn != rhs._isBuiltIn {return false}
     if lhs._filename != rhs._filename {return false}
-    if lhs.unknownFields != rhs.unknownFields {return false}
-    return true
-  }
-}
-
-extension Hazkey_Config_Profile.ZenzaiVersionConfig: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = Hazkey_Config_Profile.protoMessageName + ".ZenzaiVersionConfig"
-  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "v1"),
-    2: .same(proto: "v2"),
-    3: .same(proto: "v3"),
-  ]
-
-  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let fieldNumber = try decoder.nextFieldNumber() {
-      // The use of inline closures is to circumvent an issue where the compiler
-      // allocates stack space for every case branch when no optimizations are
-      // enabled. https://github.com/apple/swift-protobuf/issues/1034
-      switch fieldNumber {
-      case 1: try {
-        var v: Hazkey_Config_Profile.ZenzaiVersionConfig.V1?
-        var hadOneofValue = false
-        if let current = self.version {
-          hadOneofValue = true
-          if case .v1(let m) = current {v = m}
-        }
-        try decoder.decodeSingularMessageField(value: &v)
-        if let v = v {
-          if hadOneofValue {try decoder.handleConflictingOneOf()}
-          self.version = .v1(v)
-        }
-      }()
-      case 2: try {
-        var v: Hazkey_Config_Profile.ZenzaiVersionConfig.V2?
-        var hadOneofValue = false
-        if let current = self.version {
-          hadOneofValue = true
-          if case .v2(let m) = current {v = m}
-        }
-        try decoder.decodeSingularMessageField(value: &v)
-        if let v = v {
-          if hadOneofValue {try decoder.handleConflictingOneOf()}
-          self.version = .v2(v)
-        }
-      }()
-      case 3: try {
-        var v: Hazkey_Config_Profile.ZenzaiVersionConfig.V3?
-        var hadOneofValue = false
-        if let current = self.version {
-          hadOneofValue = true
-          if case .v3(let m) = current {v = m}
-        }
-        try decoder.decodeSingularMessageField(value: &v)
-        if let v = v {
-          if hadOneofValue {try decoder.handleConflictingOneOf()}
-          self.version = .v3(v)
-        }
-      }()
-      default: break
-      }
-    }
-  }
-
-  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    // The use of inline closures is to circumvent an issue where the compiler
-    // allocates stack space for every if/case branch local when no optimizations
-    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
-    // https://github.com/apple/swift-protobuf/issues/1182
-    switch self.version {
-    case .v1?: try {
-      guard case .v1(let v)? = self.version else { preconditionFailure() }
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 1)
-    }()
-    case .v2?: try {
-      guard case .v2(let v)? = self.version else { preconditionFailure() }
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 2)
-    }()
-    case .v3?: try {
-      guard case .v3(let v)? = self.version else { preconditionFailure() }
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 3)
-    }()
-    case nil: break
-    }
-    try unknownFields.traverse(visitor: &visitor)
-  }
-
-  static func ==(lhs: Hazkey_Config_Profile.ZenzaiVersionConfig, rhs: Hazkey_Config_Profile.ZenzaiVersionConfig) -> Bool {
-    if lhs.version != rhs.version {return false}
-    if lhs.unknownFields != rhs.unknownFields {return false}
-    return true
-  }
-}
-
-extension Hazkey_Config_Profile.ZenzaiVersionConfig.V1: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = Hazkey_Config_Profile.ZenzaiVersionConfig.protoMessageName + ".V1"
-  static let _protobuf_nameMap = SwiftProtobuf._NameMap()
-
-  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    // Load everything into unknown fields
-    while try decoder.nextFieldNumber() != nil {}
-  }
-
-  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    try unknownFields.traverse(visitor: &visitor)
-  }
-
-  static func ==(lhs: Hazkey_Config_Profile.ZenzaiVersionConfig.V1, rhs: Hazkey_Config_Profile.ZenzaiVersionConfig.V1) -> Bool {
-    if lhs.unknownFields != rhs.unknownFields {return false}
-    return true
-  }
-}
-
-extension Hazkey_Config_Profile.ZenzaiVersionConfig.V2: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = Hazkey_Config_Profile.ZenzaiVersionConfig.protoMessageName + ".V2"
-  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "profile"),
-  ]
-
-  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let fieldNumber = try decoder.nextFieldNumber() {
-      // The use of inline closures is to circumvent an issue where the compiler
-      // allocates stack space for every case branch when no optimizations are
-      // enabled. https://github.com/apple/swift-protobuf/issues/1034
-      switch fieldNumber {
-      case 1: try { try decoder.decodeSingularStringField(value: &self._profile) }()
-      default: break
-      }
-    }
-  }
-
-  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    // The use of inline closures is to circumvent an issue where the compiler
-    // allocates stack space for every if/case branch local when no optimizations
-    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
-    // https://github.com/apple/swift-protobuf/issues/1182
-    try { if let v = self._profile {
-      try visitor.visitSingularStringField(value: v, fieldNumber: 1)
-    } }()
-    try unknownFields.traverse(visitor: &visitor)
-  }
-
-  static func ==(lhs: Hazkey_Config_Profile.ZenzaiVersionConfig.V2, rhs: Hazkey_Config_Profile.ZenzaiVersionConfig.V2) -> Bool {
-    if lhs._profile != rhs._profile {return false}
-    if lhs.unknownFields != rhs.unknownFields {return false}
-    return true
-  }
-}
-
-extension Hazkey_Config_Profile.ZenzaiVersionConfig.V3: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = Hazkey_Config_Profile.ZenzaiVersionConfig.protoMessageName + ".V3"
-  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "profile"),
-    2: .same(proto: "topic"),
-    3: .same(proto: "style"),
-    4: .same(proto: "preference"),
-  ]
-
-  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let fieldNumber = try decoder.nextFieldNumber() {
-      // The use of inline closures is to circumvent an issue where the compiler
-      // allocates stack space for every case branch when no optimizations are
-      // enabled. https://github.com/apple/swift-protobuf/issues/1034
-      switch fieldNumber {
-      case 1: try { try decoder.decodeSingularStringField(value: &self._profile) }()
-      case 2: try { try decoder.decodeSingularStringField(value: &self._topic) }()
-      case 3: try { try decoder.decodeSingularStringField(value: &self._style) }()
-      case 4: try { try decoder.decodeSingularStringField(value: &self._preference) }()
-      default: break
-      }
-    }
-  }
-
-  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    // The use of inline closures is to circumvent an issue where the compiler
-    // allocates stack space for every if/case branch local when no optimizations
-    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
-    // https://github.com/apple/swift-protobuf/issues/1182
-    try { if let v = self._profile {
-      try visitor.visitSingularStringField(value: v, fieldNumber: 1)
-    } }()
-    try { if let v = self._topic {
-      try visitor.visitSingularStringField(value: v, fieldNumber: 2)
-    } }()
-    try { if let v = self._style {
-      try visitor.visitSingularStringField(value: v, fieldNumber: 3)
-    } }()
-    try { if let v = self._preference {
-      try visitor.visitSingularStringField(value: v, fieldNumber: 4)
-    } }()
-    try unknownFields.traverse(visitor: &visitor)
-  }
-
-  static func ==(lhs: Hazkey_Config_Profile.ZenzaiVersionConfig.V3, rhs: Hazkey_Config_Profile.ZenzaiVersionConfig.V3) -> Bool {
-    if lhs._profile != rhs._profile {return false}
-    if lhs._topic != rhs._topic {return false}
-    if lhs._style != rhs._style {return false}
-    if lhs._preference != rhs._preference {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
