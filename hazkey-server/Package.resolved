@@ -1,13 +1,13 @@
 {
-  "originHash" : "457e35d20838dec76f1b2da37d668451c6b0852a8de4bb8bd00f52f26a960236",
+  "originHash" : "523569dacb92223cdd154202f556f21491bbcb28d9fb8d4f679d577e507450c6",
   "pins" : [
     {
       "identity" : "azookeykanakanjiconverter",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/7ka-hiira/AzooKeyKanaKanjiConverter",
       "state" : {
-        "branch" : "d3fa369",
-        "revision" : "d3fa3697fc76e4204bd9cc566c37d70310e7e345"
+        "branch" : "8844d4c",
+        "revision" : "8844d4c21a752044f2d316c1d6e855923a1f6546"
       }
     },
     {

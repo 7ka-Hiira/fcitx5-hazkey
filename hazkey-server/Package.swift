@@ -14,7 +14,7 @@ let package = Package(
     dependencies: [
         .package(
             url: "https://github.com/7ka-hiira/AzooKeyKanaKanjiConverter",
-            branch: "d3fa369",
+            branch: "8844d4c",
             traits: [.trait(name: "Zenzai")]),
         .package(url: "https://github.com/apple/swift-protobuf.git", from: "1.27.0"),
     ],
