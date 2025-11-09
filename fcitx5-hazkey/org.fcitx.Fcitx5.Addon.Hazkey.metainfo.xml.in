@@ -26,5 +26,16 @@
         </ul>
       </description>
     </release>
+    <release version="0.2.0" date="2025-11-09">
+    <url type="details">https://github.com/7ka-Hiira/fcitx5-hazkey/releases/tag/0.2.0</url>
+      <description>
+        <p>0.2.0 Release note</p>
+        <ul>
+          <li>Major structural changes</li>
+          <li>New settings screens and items</li>
+          <li>Improved performance</li>
+        </ul>
+      </description>
+    </release>
   </releases>
 </component>
