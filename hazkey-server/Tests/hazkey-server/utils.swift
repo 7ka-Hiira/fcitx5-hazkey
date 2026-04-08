@@ -2,7 +2,7 @@ import Foundation
 import SwiftGlibc
 import XCTest
 
-@testable import hazkeyServer
+@testable import hazkey_server
 
 // MARK: - Test Configuration
 struct TestConfig {

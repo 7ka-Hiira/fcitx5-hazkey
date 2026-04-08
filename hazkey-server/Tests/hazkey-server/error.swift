@@ -1,7 +1,7 @@
 import Foundation
 import XCTest
 
-@testable import hazkeyServer
+@testable import hazkey_server
 
 final class ErrorHandlingTests: BaseHazkeyServerTestCase {
 

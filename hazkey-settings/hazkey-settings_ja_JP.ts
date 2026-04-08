@@ -760,6 +760,11 @@ UIを更新するには再読み込みボタンを押してください。</tran
         <source>Configuration has been reloaded successfully.</source>
         <translation>設定が正常に再読み込みされました。</translation>
     </message>
+    <message>
+        <location filename="mainwindow.cpp" line="54"/>
+        <source>User Dictionary</source>
+        <translation>単語登録</translation>
+    </message>
 </context>
 <context>
     <name>QObject</name>
@@ -798,6 +803,86 @@ UIを更新するには再読み込みボタンを押してください。</tran
         <location filename="controllers/conversion_tab_controller.cpp" line="153"/>
         <source>Failed to clear input history. Please check your connection to the hazkey server.</source>
         <translation>入力履歴の削除に失敗しました。hazkey-serverとの接続を確認してください。</translation>
+    </message>
+</context>
+<context>
+    <name>UserDictTab</name>
+    <message>
+        <location filename="userdicttab.cpp" line="39"/>
+        <source>Reading</source>
+        <translation>よみ</translation>
+    </message>
+    <message>
+        <location filename="userdicttab.cpp" line="39"/>
+        <location filename="userdicttab.cpp" line="146"/>
+        <source>Word</source>
+        <translation>単語</translation>
+    </message>
+    <message>
+        <location filename="userdicttab.cpp" line="39"/>
+        <location filename="userdicttab.cpp" line="147"/>
+        <source>Comment</source>
+        <translation>コメント</translation>
+    </message>
+    <message>
+        <location filename="userdicttab.cpp" line="52"/>
+        <source>Add</source>
+        <translation>追加</translation>
+    </message>
+    <message>
+        <location filename="userdicttab.cpp" line="53"/>
+        <source>Edit</source>
+        <translation>編集</translation>
+    </message>
+    <message>
+        <location filename="userdicttab.cpp" line="54"/>
+        <source>Delete</source>
+        <translation>削除</translation>
+    </message>
+    <message>
+        <location filename="userdicttab.cpp" line="101"/>
+        <location filename="userdicttab.cpp" line="115"/>
+        <location filename="userdicttab.cpp" line="162"/>
+        <location filename="userdicttab.cpp" line="169"/>
+        <location filename="userdicttab.cpp" line="209"/>
+        <source>User Dictionary</source>
+        <translation>単語登録</translation>
+    </message>
+    <message>
+        <location filename="userdicttab.cpp" line="102"/>
+        <location filename="userdicttab.cpp" line="116"/>
+        <source>Failed to save user dictionary to %1</source>
+        <translation>ユーザー辞書を %1 に保存できませんでした</translation>
+    </message>
+    <message>
+        <location filename="userdicttab.cpp" line="145"/>
+        <source>Reading (hiragana)</source>
+        <translation>よみ (ひらがな)</translation>
+    </message>
+    <message>
+        <location filename="userdicttab.cpp" line="163"/>
+        <source>Reading and Word must not be empty.</source>
+        <translation>「よみ」と「単語」は空にできません。</translation>
+    </message>
+    <message>
+        <location filename="userdicttab.cpp" line="170"/>
+        <source>Tab and newline characters are not allowed.</source>
+        <translation>タブ文字と改行文字は使用できません。</translation>
+    </message>
+    <message>
+        <location filename="userdicttab.cpp" line="181"/>
+        <source>Add Word</source>
+        <translation>単語を追加</translation>
+    </message>
+    <message>
+        <location filename="userdicttab.cpp" line="194"/>
+        <source>Edit Word</source>
+        <translation>単語を編集</translation>
+    </message>
+    <message>
+        <location filename="userdicttab.cpp" line="210"/>
+        <source>Delete &quot;%1&quot; → &quot;%2&quot;?</source>
+        <translation>「%1」→「%2」を削除しますか?</translation>
     </message>
 </context>
 </TS>

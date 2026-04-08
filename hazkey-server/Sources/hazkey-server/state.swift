@@ -2,10 +2,21 @@ import Foundation
 import KanaKanjiConverterModule
 import SwiftUtils
 
+/// Entry kept per displayed candidate so we can distinguish converter results
+/// from user-dictionary injections during commit.
+enum DisplayedCandidate {
+    case fromConverter(Candidate)
+    /// Synthetic candidate from the user dictionary.
+    /// Always represents an exact full-reading match, so on commit the entire
+    /// composing text is consumed.
+    case fromUserDict(word: String)
+}
+
 class HazkeyServerState {
     let serverConfig: HazkeyServerConfig
     let converter: KanaKanjiConverter
-    var currentCandidateList: [Candidate]?
+    let userDictionary: UserDictionary = UserDictionary()
+    var currentCandidateList: [DisplayedCandidate]?
     var composingText: ComposingTextBox = ComposingTextBox()
 
     var isShiftPressedAlone = false
@@ -180,16 +191,23 @@ class HazkeyServerState {
     }
 
     func completePrefix(candidateIndex: Int) -> Hazkey_ResponseEnvelope {
-        if let completedCandidate = currentCandidateList?[candidateIndex] {
-            composingText.value.prefixComplete(composingCount: completedCandidate.composingCount)
-            converter.setCompletedData(completedCandidate)
-            converter.updateLearningData(completedCandidate)
-            learningDataNeedsCommit = true
-        } else {
+        guard let entry = currentCandidateList?[candidateIndex] else {
             return Hazkey_ResponseEnvelope.with {
                 $0.status = .failed
                 $0.errorMessage = "Candidate index \(candidateIndex) not found."
             }
+        }
+        switch entry {
+        case .fromConverter(let completedCandidate):
+            composingText.value.prefixComplete(composingCount: completedCandidate.composingCount)
+            converter.setCompletedData(completedCandidate)
+            converter.updateLearningData(completedCandidate)
+            learningDataNeedsCommit = true
+        case .fromUserDict:
+            // User-dictionary entries always match the full reading, so we
+            // simply clear the composing text. They do not feed the
+            // converter's learning store.
+            composingText = ComposingTextBox()
         }
         return Hazkey_ResponseEnvelope.with {
             $0.status = .success
@@ -293,7 +311,7 @@ class HazkeyServerState {
             _ candidate: Candidate,
             hiraganaPreedit: String,
             hiraganaPreeditLen: Int,
-            serverCandidates: inout [Candidate],
+            serverCandidates: inout [DisplayedCandidate],
             clientCandidates: inout [Hazkey_Commands_CandidatesResult.Candidate]
         ) {
             var clientCandidate = Hazkey_Commands_CandidatesResult.Candidate()
@@ -303,7 +321,7 @@ class HazkeyServerState {
             clientCandidate.subHiragana = String(hiraganaPreedit.dropFirst(endIndex))
 
             clientCandidates.append(clientCandidate)
-            serverCandidates.append(candidate)
+            serverCandidates.append(.fromConverter(candidate))
         }
 
         var options = baseConvertRequestOptions
@@ -347,8 +365,29 @@ class HazkeyServerState {
         let converted = converter.requestCandidates(copiedComposingText, options: options)
         let hiraganaPreedit = copiedComposingText.toHiragana()
         let hiraganaPreeditLen = hiraganaPreedit.count
-        var serverCandidates: [Candidate] = []
+        var serverCandidates: [DisplayedCandidate] = []
         var clientCandidates: [Hazkey_Commands_CandidatesResult.Candidate] = []
+
+        // Inject user dictionary entries that exactly match the current reading.
+        // These are surfaced at the top of the candidate list and bypass learning.
+        // Note: hiraganaPreedit is derived from copiedComposingText which has a
+        // compositionSeparator appended in non-suggest mode, so we look up using
+        // the *original* composing text instead.
+        userDictionary.reloadIfNeeded()
+        let lookupHiragana = composingText.value.toHiragana()
+            .precomposedStringWithCanonicalMapping
+        NSLog(
+            "User dict lookup: '\(lookupHiragana)' (\(userDictionary.count) entries loaded)")
+        let userMatches = userDictionary.exactMatches(hiragana: lookupHiragana)
+        if !userMatches.isEmpty {
+            for match in userMatches {
+                var clientCandidate = Hazkey_Commands_CandidatesResult.Candidate()
+                clientCandidate.text = match.word
+                clientCandidate.subHiragana = ""
+                clientCandidates.append(clientCandidate)
+                serverCandidates.append(.fromUserDict(word: match.word))
+            }
+        }
 
         // predictionResults is empty when prediction=disabled
         for candidate in converted.predictionResults {
@@ -374,7 +413,7 @@ class HazkeyServerState {
                 candidatesResult.liveText = candidate.text
                 candidatesResult.liveTextIndex = Int32(serverCandidates.count)
                 if is_suggest && serverCandidates.count >= N_best {
-                    serverCandidates.append(candidate)
+                    serverCandidates.append(.fromConverter(candidate))
                     break
                 }
             }

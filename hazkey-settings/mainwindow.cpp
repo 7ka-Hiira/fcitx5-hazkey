@@ -10,6 +10,7 @@
 #include <QTimer>
 
 #include "ui_mainwindow.h"
+#include "userdicttab.h"
 
 using hazkey::settings::AboutTabController;
 using hazkey::settings::AiTabController;
@@ -40,6 +41,19 @@ MainWindow::MainWindow(QWidget* parent)
 
     setupControllers();
     aboutTab_->initialize();
+
+    // Add User Dictionary tab (managed independently from server config —
+    // the file is read directly by hazkey-server via mtime polling).
+    {
+        auto* userDictTab = new UserDictTab(ui_->tabWidget);
+        // Insert between "Input Style" and "Dictionary" tabs.
+        const int dictionaryTabIndex =
+            ui_->tabWidget->indexOf(ui_->dictionaryTab);
+        const int insertAt =
+            dictionaryTabIndex >= 0 ? dictionaryTabIndex : ui_->tabWidget->count();
+        ui_->tabWidget->insertTab(insertAt, userDictTab, tr("User Dictionary"));
+    }
+
     connectSignals();
 
     if (!loadCurrentConfig()) {
