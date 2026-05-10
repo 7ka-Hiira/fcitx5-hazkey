@@ -66,7 +66,7 @@ class HazkeyState : public InputContextProperty {
         std::shared_ptr<std::vector<std::string>> preeditSegments);
 
     // prepare candidate list for normal conversion
-    void showNonPredictCandidateList();
+    void showNonPredictCandidateList(bool preserveTarget = false);
     // prepare candidate
     // list for prediction.
     // shorter than normal
@@ -87,6 +87,7 @@ class HazkeyState : public InputContextProperty {
     // preedit text
     void backCandidateCursor(
         std::shared_ptr<HazkeyCandidateList> candidateList);
+    void moveSegmentBoundary(bool expand);
     // update aux; label on
     // the candidate list
     // like "[1/100]"
@@ -106,6 +107,7 @@ class HazkeyState : public InputContextProperty {
     bool isAltDigitKeyEvent(const KeyEvent& keyEvent);
 
     bool isCursorMoving_ = false;
+    bool isClauseBoundaryAdjusting_ = false;
 
     bool isDirectConversionMode_ = false;
     int livePreeditIndex_ = -1;

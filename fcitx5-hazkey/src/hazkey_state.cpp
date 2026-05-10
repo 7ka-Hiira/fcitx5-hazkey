@@ -227,19 +227,29 @@ void HazkeyState::candidateKeyEvent(
     std::vector<std::string> preedit;
     switch (keysym) {
         case FcitxKey_Right:
-            // if (event.key().states() == KeyState::Alt) {
-            candidateList->nextPage();
-            // }
+            if (key.states() == KeyState::Shift) {
+                moveSegmentBoundary(true);
+            } else {
+                candidateList->nextPage();
+            }
             break;
         case FcitxKey_Left:
-            // if (event.key().states() == KeyState::Alt) {
-            candidateList->prevPage();
-            // }
+            if (key.states() == KeyState::Shift) {
+                moveSegmentBoundary(false);
+            } else {
+                candidateList->prevPage();
+            }
             break;
         case FcitxKey_Return:
             candidateCompleteHandler(candidateList);
             break;
         case FcitxKey_Escape:
+            if (isClauseBoundaryAdjusting_) {
+                showNonPredictCandidateList(false);
+                break;
+            }
+            isClauseBoundaryAdjusting_ = false;
+            [[fallthrough]];
         case FcitxKey_BackSpace:
             showPreeditCandidateList();
             break;
@@ -306,7 +316,8 @@ void HazkeyState::candidateCompleteHandler(
     engine_->server().completePrefix(candidateList->globalCursorIndex());
     ic_->commitString(preedit[0]);
     if (preedit.size() > 1) {
-        showNonPredictCandidateList();
+        isClauseBoundaryAdjusting_ = false;
+        showNonPredictCandidateList(false);
     } else {
         reset();
     }
@@ -468,7 +479,11 @@ bool HazkeyState::showCandidateList(bool isSuggest) {
     return response.page_size() > 0;
 }
 
-void HazkeyState::showNonPredictCandidateList() {
+void HazkeyState::showNonPredictCandidateList(bool preserveTarget) {
+    if (!preserveTarget) {
+        engine_->server().moveCursor(1024);
+        isClauseBoundaryAdjusting_ = false;
+    }
     showCandidateList(false);
 
     livePreeditIndex_ = -1;
@@ -524,6 +539,12 @@ void HazkeyState::backCandidateCursor(
     updateCandidateCursor(candidateList);
 }
 
+void HazkeyState::moveSegmentBoundary(bool expand) {
+    isClauseBoundaryAdjusting_ = true;
+    engine_->server().moveCursor(expand ? 1 : -1);
+    showNonPredictCandidateList(true);
+}
+
 /// AUX
 
 void HazkeyState::setCandidateCursorAUX(
@@ -557,6 +578,7 @@ void HazkeyState::reset() {
     isDirectConversionMode_ = false;
     livePreeditIndex_ = -1;
     isCursorMoving_ = false;
+    isClauseBoundaryAdjusting_ = false;
     engine_->server().newComposingText();
     ic_->inputPanel().reset();
 }

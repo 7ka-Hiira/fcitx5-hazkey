@@ -278,6 +278,25 @@ class HazkeyServerState {
 
     /// Candidates
 
+    func candidateRequestText(is_suggest: Bool) -> ComposingText {
+        let usePrefixTarget = !is_suggest && !composingText.value.isAtEndIndex
+        var copiedComposingText =
+            usePrefixTarget
+            ? composingText.value.prefixToCursorPosition()
+            : composingText.value
+
+        if !is_suggest {
+            copiedComposingText.insertAtCursorPosition(
+                [
+                    ComposingText.InputElement(
+                        piece: .compositionSeparator,
+                        inputStyle: .mapped(id: .tableName(currentTableName)))
+                ])
+        }
+
+        return copiedComposingText
+    }
+
     // TODO: return error message
     func getCandidates(is_suggest: Bool) -> Hazkey_ResponseEnvelope {
 
@@ -291,16 +310,16 @@ class HazkeyServerState {
 
         func appendCandidate(
             _ candidate: Candidate,
-            hiraganaPreedit: String,
-            hiraganaPreeditLen: Int,
+            fullHiraganaPreedit: String,
+            requestHiraganaPreeditLen: Int,
             serverCandidates: inout [Candidate],
             clientCandidates: inout [Hazkey_Commands_CandidatesResult.Candidate]
         ) {
             var clientCandidate = Hazkey_Commands_CandidatesResult.Candidate()
             clientCandidate.text = candidate.text
 
-            let endIndex = min(candidate.rubyCount, hiraganaPreeditLen)
-            clientCandidate.subHiragana = String(hiraganaPreedit.dropFirst(endIndex))
+            let endIndex = min(candidate.rubyCount, requestHiraganaPreeditLen)
+            clientCandidate.subHiragana = String(fullHiraganaPreedit.dropFirst(endIndex))
 
             clientCandidates.append(clientCandidate)
             serverCandidates.append(candidate)
@@ -330,21 +349,11 @@ class HazkeyServerState {
 
         options.requireJapanesePrediction = usePrediction ? .manualMix : .disabled
 
-        var copiedComposingText = composingText.value
-
-        if !is_suggest {
-            let _ = copiedComposingText.moveCursorFromCursorPosition(
-                count: copiedComposingText.toHiragana().count)
-            copiedComposingText.insertAtCursorPosition(
-                [
-                    ComposingText.InputElement(
-                        piece: .compositionSeparator,
-                        inputStyle: .mapped(id: .tableName(currentTableName)))
-                ])
-        }
+        let copiedComposingText = candidateRequestText(is_suggest: is_suggest)
 
         var candidatesResult = Hazkey_Commands_CandidatesResult()
         let converted = converter.requestCandidates(copiedComposingText, options: options)
+        let fullHiraganaPreedit = composingText.value.toHiragana()
         let hiraganaPreedit = copiedComposingText.toHiragana()
         let hiraganaPreeditLen = hiraganaPreedit.count
         var serverCandidates: [Candidate] = []
@@ -358,7 +367,9 @@ class HazkeyServerState {
             else { break }
 
             appendCandidate(
-                candidate, hiraganaPreedit: hiraganaPreedit, hiraganaPreeditLen: hiraganaPreeditLen,
+                candidate,
+                fullHiraganaPreedit: fullHiraganaPreedit,
+                requestHiraganaPreeditLen: hiraganaPreeditLen,
                 serverCandidates: &serverCandidates,
                 clientCandidates: &clientCandidates)
         }
@@ -383,8 +394,8 @@ class HazkeyServerState {
 
             appendCandidate(
                 candidate,
-                hiraganaPreedit: hiraganaPreedit,
-                hiraganaPreeditLen: hiraganaPreeditLen,
+                fullHiraganaPreedit: fullHiraganaPreedit,
+                requestHiraganaPreeditLen: hiraganaPreeditLen,
                 serverCandidates: &serverCandidates,
                 clientCandidates: &clientCandidates
             )
