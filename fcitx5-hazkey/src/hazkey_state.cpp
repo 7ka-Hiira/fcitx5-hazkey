@@ -352,6 +352,11 @@ bool HazkeyState::ctrlShortcutHandler(KeyEvent& event) {
             directCharactorConversion(ConversionMode::RawHalfwidth);
             isDirectConversionMode_ = true;
             break;
+        case FcitxKey_h:
+        case FcitxKey_H:
+            engine_->server().deleteLeft();
+            showPreeditCandidateList();
+            break;
         default:
             FCITX_INFO() << "keysym" << keysym;
             return false;
