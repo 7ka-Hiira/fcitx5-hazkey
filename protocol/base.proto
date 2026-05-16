@@ -22,6 +22,7 @@ message RequestEnvelope {
         hazkey.commands.GetCandidates get_candidates = 11;
         hazkey.commands.GetCurrentInputModeInfo get_current_input_mode = 12;
         hazkey.commands.SaveLearningData save_learning_data = 13;
+        hazkey.commands.AdjustClauseBoundary adjust_clause_boundary = 14;
 
         hazkey.config.GetConfig get_config = 100;
         hazkey.config.SetConfig set_config = 101;
@@ -45,6 +46,7 @@ message ResponseEnvelope {
         hazkey.commands.CandidatesResult candidates = 4;
         hazkey.commands.TextWithCursor text_with_cursor = 5;
         hazkey.commands.CurrentInputModeInfo current_input_mode_info = 6;
+        hazkey.commands.ClauseBoundaryResult clause_boundary_result = 7;
         hazkey.config.CurrentConfig current_config = 100;
     }
 }

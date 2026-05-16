@@ -438,12 +438,17 @@ void HazkeyState::directCharactorConversion(ConversionMode mode) {
 /// Show Candidate List
 
 bool HazkeyState::showCandidateList(bool isSuggest) {
+    auto response = engine_->server().getCandidates(isSuggest);
+    return showCandidateList(response);
+}
+
+bool HazkeyState::showCandidateList(
+    const hazkey::commands::CandidatesResult& response,
+    std::optional<std::string> fallbackPreedit) {
     FCITX_DEBUG() << "HazkeyState showCandidateList";
 
-    auto response = engine_->server().getCandidates(isSuggest);
-
     auto candidateResult =
-        std::make_unique<HazkeyCandidateList>(std::move(response.candidates()));
+        std::make_unique<HazkeyCandidateList>(response.candidates());
 
     candidateResult->setSelectionKey(defaultSelectionKeys);
 
@@ -454,6 +459,8 @@ bool HazkeyState::showCandidateList(bool isSuggest) {
         // preedit conversion is enabled and conversion result is found
         // show preedit conversion result
         preedit_.setSimplePreedit(response.live_text());
+    } else if (fallbackPreedit != std::nullopt) {
+        preedit_.setSimplePreedit(*fallbackPreedit);
     } else {
         // preedit conversion is disabled or conversion result is not
         // available show hiragana preedit
@@ -492,6 +499,23 @@ void HazkeyState::showNonPredictCandidateList(bool preserveTarget) {
     // because the first candidate is the result of all preedit text.
     auto currentPreedit = preedit_.text();
     preedit_.setSimplePreeditHighlighted(currentPreedit);
+
+    auto newCandidateList = std::dynamic_pointer_cast<HazkeyCandidateList>(
+        ic_->inputPanel().candidateList());
+    newCandidateList->focus();
+    updateCandidateCursor(newCandidateList);
+    setCandidateCursorAUX(
+        std::static_pointer_cast<HazkeyCandidateList>(newCandidateList));
+}
+
+void HazkeyState::showNonPredictCandidateList(
+    const hazkey::commands::CandidatesResult& response,
+    const std::string& hiragana) {
+    showCandidateList(response, hiragana);
+
+    livePreeditIndex_ = -1;
+
+    preedit_.setSimplePreeditHighlighted(hiragana);
 
     auto newCandidateList = std::dynamic_pointer_cast<HazkeyCandidateList>(
         ic_->inputPanel().candidateList());
@@ -541,8 +565,11 @@ void HazkeyState::backCandidateCursor(
 
 void HazkeyState::moveSegmentBoundary(bool expand) {
     isClauseBoundaryAdjusting_ = true;
-    engine_->server().moveCursor(expand ? 1 : -1);
-    showNonPredictCandidateList(true);
+    auto result = engine_->server().adjustClauseBoundary(expand ? 1 : -1);
+    if (result == std::nullopt) {
+        return;
+    }
+    showNonPredictCandidateList(result->candidates, result->hiragana);
 }
 
 /// AUX

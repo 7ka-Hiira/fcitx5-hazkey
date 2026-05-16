@@ -61,12 +61,18 @@ class HazkeyState : public InputContextProperty {
     // base function to prepare candidate list
     // make sure composingText_ is not nullptr
     bool showCandidateList(bool isSuggest);
+    bool showCandidateList(
+        const hazkey::commands::CandidatesResult &response,
+        std::optional<std::string> fallbackPreedit = std::nullopt);
     std::unique_ptr<HazkeyCandidateList> createCandidateList(
         std::vector<std::vector<std::string>> candidates,
         std::shared_ptr<std::vector<std::string>> preeditSegments);
 
     // prepare candidate list for normal conversion
     void showNonPredictCandidateList(bool preserveTarget = false);
+    void showNonPredictCandidateList(
+        const hazkey::commands::CandidatesResult &response,
+        const std::string &hiragana);
     // prepare candidate
     // list for prediction.
     // shorter than normal

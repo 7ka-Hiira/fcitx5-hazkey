@@ -203,6 +203,36 @@ class HazkeyServerState {
         }
     }
 
+    func adjustClauseBoundary(offset: Int) -> Hazkey_ResponseEnvelope {
+        if composingText.value.isEmpty {
+            return Hazkey_ResponseEnvelope.with {
+                $0.status = .success
+                $0.clauseBoundaryResult = Hazkey_Commands_ClauseBoundaryResult()
+            }
+        }
+
+        let minCursorPosition = 1
+        let maxBackwardOffset =
+            minCursorPosition - composingText.value.convertTargetCursorPosition
+        let maxForwardOffset =
+            composingText.value.convertTarget.count -
+            composingText.value.convertTargetCursorPosition
+        let clampedOffset = max(min(offset, maxForwardOffset), maxBackwardOffset)
+        _ = composingText.value.moveCursorFromCursorPosition(count: clampedOffset)
+
+        let (candidatesResult, serverCandidates) = makeCandidatesResult(
+            is_suggest: false)
+        currentCandidateList = serverCandidates
+
+        return Hazkey_ResponseEnvelope.with {
+            $0.status = .success
+            $0.clauseBoundaryResult = Hazkey_Commands_ClauseBoundaryResult.with {
+                $0.candidates = candidatesResult
+                $0.hiragana = composingText.value.toHiragana()
+            }
+        }
+    }
+
     /// ComposingText -> Characters
 
     func getHiraganaWithCursor() -> Hazkey_ResponseEnvelope {
@@ -297,8 +327,9 @@ class HazkeyServerState {
         return copiedComposingText
     }
 
-    // TODO: return error message
-    func getCandidates(is_suggest: Bool) -> Hazkey_ResponseEnvelope {
+    private func makeCandidatesResult(
+        is_suggest: Bool
+    ) -> (Hazkey_Commands_CandidatesResult, [Candidate]) {
 
         func canAppend(
             isSuggest: Bool,
@@ -401,7 +432,6 @@ class HazkeyServerState {
             )
         }
 
-        self.currentCandidateList = serverCandidates
         candidatesResult.candidates = clientCandidates
 
         // Do not automatically convert if there is only one character
@@ -430,6 +460,14 @@ class HazkeyServerState {
                 return serverConfig.currentProfile.numCandidatesPerPage
             }
         }()
+
+        return (candidatesResult, serverCandidates)
+    }
+
+    // TODO: return error message
+    func getCandidates(is_suggest: Bool) -> Hazkey_ResponseEnvelope {
+        let (candidatesResult, serverCandidates) = makeCandidatesResult(is_suggest: is_suggest)
+        self.currentCandidateList = serverCandidates
 
         return Hazkey_ResponseEnvelope.with {
             $0.status = .success

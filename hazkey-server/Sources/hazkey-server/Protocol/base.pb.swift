@@ -169,6 +169,14 @@ struct Hazkey_RequestEnvelope: Sendable {
     set {payload = .saveLearningData(newValue)}
   }
 
+  var adjustClauseBoundary: Hazkey_Commands_AdjustClauseBoundary {
+    get {
+      if case .adjustClauseBoundary(let v)? = payload {return v}
+      return Hazkey_Commands_AdjustClauseBoundary()
+    }
+    set {payload = .adjustClauseBoundary(newValue)}
+  }
+
   var getConfig: Hazkey_Config_GetConfig {
     get {
       if case .getConfig(let v)? = payload {return v}
@@ -225,6 +233,7 @@ struct Hazkey_RequestEnvelope: Sendable {
     case getCandidates(Hazkey_Commands_GetCandidates)
     case getCurrentInputMode(Hazkey_Commands_GetCurrentInputModeInfo)
     case saveLearningData(Hazkey_Commands_SaveLearningData)
+    case adjustClauseBoundary(Hazkey_Commands_AdjustClauseBoundary)
     case getConfig(Hazkey_Config_GetConfig)
     case setConfig(Hazkey_Config_SetConfig)
     case getDefaultProfile(Hazkey_Config_GetDefaultProfile)
@@ -279,6 +288,14 @@ struct Hazkey_ResponseEnvelope: Sendable {
     set {payload = .currentInputModeInfo(newValue)}
   }
 
+  var clauseBoundaryResult: Hazkey_Commands_ClauseBoundaryResult {
+    get {
+      if case .clauseBoundaryResult(let v)? = payload {return v}
+      return Hazkey_Commands_ClauseBoundaryResult()
+    }
+    set {payload = .clauseBoundaryResult(newValue)}
+  }
+
   var currentConfig: Hazkey_Config_CurrentConfig {
     get {
       if case .currentConfig(let v)? = payload {return v}
@@ -294,6 +311,7 @@ struct Hazkey_ResponseEnvelope: Sendable {
     case candidates(Hazkey_Commands_CandidatesResult)
     case textWithCursor(Hazkey_Commands_TextWithCursor)
     case currentInputModeInfo(Hazkey_Commands_CurrentInputModeInfo)
+    case clauseBoundaryResult(Hazkey_Commands_ClauseBoundaryResult)
     case currentConfig(Hazkey_Config_CurrentConfig)
 
   }
@@ -329,6 +347,7 @@ extension Hazkey_RequestEnvelope: SwiftProtobuf.Message, SwiftProtobuf._MessageI
     11: .standard(proto: "get_candidates"),
     12: .standard(proto: "get_current_input_mode"),
     13: .standard(proto: "save_learning_data"),
+    14: .standard(proto: "adjust_clause_boundary"),
     100: .standard(proto: "get_config"),
     101: .standard(proto: "set_config"),
     102: .standard(proto: "get_default_profile"),
@@ -511,6 +530,19 @@ extension Hazkey_RequestEnvelope: SwiftProtobuf.Message, SwiftProtobuf._MessageI
           self.payload = .saveLearningData(v)
         }
       }()
+      case 14: try {
+        var v: Hazkey_Commands_AdjustClauseBoundary?
+        var hadOneofValue = false
+        if let current = self.payload {
+          hadOneofValue = true
+          if case .adjustClauseBoundary(let m) = current {v = m}
+        }
+        try decoder.decodeSingularMessageField(value: &v)
+        if let v = v {
+          if hadOneofValue {try decoder.handleConflictingOneOf()}
+          self.payload = .adjustClauseBoundary(v)
+        }
+      }()
       case 100: try {
         var v: Hazkey_Config_GetConfig?
         var hadOneofValue = false
@@ -639,6 +671,10 @@ extension Hazkey_RequestEnvelope: SwiftProtobuf.Message, SwiftProtobuf._MessageI
       guard case .saveLearningData(let v)? = self.payload else { preconditionFailure() }
       try visitor.visitSingularMessageField(value: v, fieldNumber: 13)
     }()
+    case .adjustClauseBoundary?: try {
+      guard case .adjustClauseBoundary(let v)? = self.payload else { preconditionFailure() }
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 14)
+    }()
     case .getConfig?: try {
       guard case .getConfig(let v)? = self.payload else { preconditionFailure() }
       try visitor.visitSingularMessageField(value: v, fieldNumber: 100)
@@ -680,6 +716,7 @@ extension Hazkey_ResponseEnvelope: SwiftProtobuf.Message, SwiftProtobuf._Message
     4: .same(proto: "candidates"),
     5: .standard(proto: "text_with_cursor"),
     6: .standard(proto: "current_input_mode_info"),
+    7: .standard(proto: "clause_boundary_result"),
     100: .standard(proto: "current_config"),
   ]
 
@@ -738,6 +775,19 @@ extension Hazkey_ResponseEnvelope: SwiftProtobuf.Message, SwiftProtobuf._Message
           self.payload = .currentInputModeInfo(v)
         }
       }()
+      case 7: try {
+        var v: Hazkey_Commands_ClauseBoundaryResult?
+        var hadOneofValue = false
+        if let current = self.payload {
+          hadOneofValue = true
+          if case .clauseBoundaryResult(let m) = current {v = m}
+        }
+        try decoder.decodeSingularMessageField(value: &v)
+        if let v = v {
+          if hadOneofValue {try decoder.handleConflictingOneOf()}
+          self.payload = .clauseBoundaryResult(v)
+        }
+      }()
       case 100: try {
         var v: Hazkey_Config_CurrentConfig?
         var hadOneofValue = false
@@ -783,6 +833,10 @@ extension Hazkey_ResponseEnvelope: SwiftProtobuf.Message, SwiftProtobuf._Message
     case .currentInputModeInfo?: try {
       guard case .currentInputModeInfo(let v)? = self.payload else { preconditionFailure() }
       try visitor.visitSingularMessageField(value: v, fieldNumber: 6)
+    }()
+    case .clauseBoundaryResult?: try {
+      guard case .clauseBoundaryResult(let v)? = self.payload else { preconditionFailure() }
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 7)
     }()
     case .currentConfig?: try {
       guard case .currentConfig(let v)? = self.payload else { preconditionFailure() }
