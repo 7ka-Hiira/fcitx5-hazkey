@@ -49,6 +49,13 @@ class HazkeyServerConnector {
 
     void moveCursor(int offset);
 
+    struct ClauseBoundaryResult {
+        hazkey::commands::CandidatesResult candidates;
+        std::string hiragana;
+    };
+
+    std::optional<ClauseBoundaryResult> adjustClauseBoundary(int offset);
+
     void setContext(std::string context, int anchor);
 
     void setServerConfig(int zenzaiEnabled, int zenzaiInferLimit,

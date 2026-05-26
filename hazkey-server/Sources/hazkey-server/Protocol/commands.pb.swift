@@ -154,6 +154,18 @@ struct Hazkey_Commands_MoveCursor: Sendable {
   init() {}
 }
 
+struct Hazkey_Commands_AdjustClauseBoundary: Sendable {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var offset: Int32 = 0
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
 struct Hazkey_Commands_PrefixComplete: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
@@ -346,6 +358,29 @@ struct Hazkey_Commands_CandidatesResult: Sendable {
   }
 
   init() {}
+}
+
+struct Hazkey_Commands_ClauseBoundaryResult: Sendable {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var candidates: Hazkey_Commands_CandidatesResult {
+    get {return _candidates ?? Hazkey_Commands_CandidatesResult()}
+    set {_candidates = newValue}
+  }
+  /// Returns true if `candidates` has been explicitly set.
+  var hasCandidates: Bool {return self._candidates != nil}
+  /// Clears the value of `candidates`. Subsequent reads from it will return its default value.
+  mutating func clearCandidates() {self._candidates = nil}
+
+  var hiragana: String = String()
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+
+  fileprivate var _candidates: Hazkey_Commands_CandidatesResult? = nil
 }
 
 struct Hazkey_Commands_CurrentInputModeInfo: Sendable {
@@ -566,6 +601,38 @@ extension Hazkey_Commands_MoveCursor: SwiftProtobuf.Message, SwiftProtobuf._Mess
   }
 
   static func ==(lhs: Hazkey_Commands_MoveCursor, rhs: Hazkey_Commands_MoveCursor) -> Bool {
+    if lhs.offset != rhs.offset {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Hazkey_Commands_AdjustClauseBoundary: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".AdjustClauseBoundary"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "offset"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularInt32Field(value: &self.offset) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if self.offset != 0 {
+      try visitor.visitSingularInt32Field(value: self.offset, fieldNumber: 1)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Hazkey_Commands_AdjustClauseBoundary, rhs: Hazkey_Commands_AdjustClauseBoundary) -> Bool {
     if lhs.offset != rhs.offset {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
@@ -938,6 +1005,48 @@ extension Hazkey_Commands_CandidatesResult.Candidate: SwiftProtobuf.Message, Swi
   static func ==(lhs: Hazkey_Commands_CandidatesResult.Candidate, rhs: Hazkey_Commands_CandidatesResult.Candidate) -> Bool {
     if lhs.text != rhs.text {return false}
     if lhs.subHiragana != rhs.subHiragana {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Hazkey_Commands_ClauseBoundaryResult: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".ClauseBoundaryResult"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "candidates"),
+    2: .same(proto: "hiragana"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularMessageField(value: &self._candidates) }()
+      case 2: try { try decoder.decodeSingularStringField(value: &self.hiragana) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
+    try { if let v = self._candidates {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 1)
+    } }()
+    if !self.hiragana.isEmpty {
+      try visitor.visitSingularStringField(value: self.hiragana, fieldNumber: 2)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Hazkey_Commands_ClauseBoundaryResult, rhs: Hazkey_Commands_ClauseBoundaryResult) -> Bool {
+    if lhs._candidates != rhs._candidates {return false}
+    if lhs.hiragana != rhs.hiragana {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
