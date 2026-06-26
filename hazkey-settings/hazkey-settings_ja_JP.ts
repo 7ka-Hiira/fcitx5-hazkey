@@ -224,7 +224,7 @@ UIを更新するには再読み込みボタンを押してください。</tran
     </message>
     <message>
         <location filename="mainwindow.ui" line="160"/>
-        <location filename="mainwindow.ui" line="192"/>
+        <location filename="mainwindow.ui" line="215"/>
         <source>Always</source>
         <translation>常時</translation>
     </message>
@@ -235,433 +235,438 @@ UIを更新するには再読み込みボタンを押してください。</tran
     </message>
     <message>
         <location filename="mainwindow.ui" line="170"/>
-        <location filename="mainwindow.ui" line="202"/>
-        <location filename="mainwindow.ui" line="234"/>
+        <location filename="mainwindow.ui" line="225"/>
+        <location filename="mainwindow.ui" line="257"/>
         <source>Disabled</source>
         <translation>無効</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="184"/>
+        <source>Min. characters for auto-conversion</source>
+        <translation>自動変換の最小文字数</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="207"/>
         <source>Show auxiliary text</source>
         <translation>補助テキストを表示</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="197"/>
+        <location filename="mainwindow.ui" line="220"/>
         <source>When cursor not at end</source>
         <translation>カーソルが末尾にないとき</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="216"/>
+        <location filename="mainwindow.ui" line="239"/>
         <source>Suggestion list mode</source>
         <translation>提案リストのモード</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="224"/>
+        <location filename="mainwindow.ui" line="247"/>
         <source>Normal conversion</source>
         <translation>通常変換</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="229"/>
+        <location filename="mainwindow.ui" line="252"/>
         <source>Predictive conversion</source>
         <translation>予測変換</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="248"/>
+        <location filename="mainwindow.ui" line="271"/>
         <source>Number of suggestions</source>
         <translation>提案の数</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="275"/>
+        <location filename="mainwindow.ui" line="298"/>
         <source>Conversion UI</source>
         <translation>変換UI</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="320"/>
+        <location filename="mainwindow.ui" line="343"/>
         <source>Number of candidates per page</source>
         <translation>1ページあたりの候補数</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="357"/>
+        <location filename="mainwindow.ui" line="380"/>
         <source>Convertion</source>
         <translation>変換</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="410"/>
+        <location filename="mainwindow.ui" line="433"/>
         <source>Personalization</source>
         <translation>学習</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="449"/>
+        <location filename="mainwindow.ui" line="472"/>
         <source>Manage input history data</source>
         <translation>入力履歴データの管理</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="456"/>
+        <location filename="mainwindow.ui" line="479"/>
         <source>Clear all input history data</source>
         <translation>すべての入力履歴を削除</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="468"/>
+        <location filename="mainwindow.ui" line="491"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Note:&lt;/span&gt; Saved personalization data is shared across profiles.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;メモ:&lt;/span&gt; 保存された入力履歴データはプロファイル間で共有されます。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="475"/>
+        <location filename="mainwindow.ui" line="498"/>
         <source>Adjust conversion based on input history</source>
         <translation>入力履歴に基づいて変換を調整</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="482"/>
+        <location filename="mainwindow.ui" line="505"/>
         <source>Stop storing new input history</source>
         <translation>新しい入力履歴の保存を停止</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="505"/>
+        <location filename="mainwindow.ui" line="528"/>
         <source>Special conversions</source>
         <translation>特殊変換</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="544"/>
+        <location filename="mainwindow.ui" line="567"/>
         <source>Roman typography</source>
         <translation>タイポグラフィー</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="551"/>
+        <location filename="mainwindow.ui" line="574"/>
         <source>Mail domain</source>
         <translation>メールドメイン</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="558"/>
+        <location filename="mainwindow.ui" line="581"/>
         <source>Unicode code point</source>
         <translation>Unicodeコードポイント</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="565"/>
+        <location filename="mainwindow.ui" line="588"/>
         <source>Time</source>
         <translation>時刻</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="572"/>
+        <location filename="mainwindow.ui" line="595"/>
         <source>Hazkey version</source>
         <translation>Hazkeyバージョン</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="579"/>
+        <location filename="mainwindow.ui" line="602"/>
         <source>Comma separated number</source>
         <translation>カンマ区切り数値</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="586"/>
+        <location filename="mainwindow.ui" line="609"/>
         <source>Calendar</source>
         <translation>日付</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="593"/>
+        <location filename="mainwindow.ui" line="616"/>
         <source>Halfwidth katakana</source>
         <translation>半角カタカナ</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="603"/>
+        <location filename="mainwindow.ui" line="626"/>
         <source>Extended Emoji</source>
         <translation>拡張絵文字</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="639"/>
+        <location filename="mainwindow.ui" line="662"/>
         <source>Uncheck All</source>
         <translation>すべて無効化</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="646"/>
+        <location filename="mainwindow.ui" line="669"/>
         <source>Check All</source>
         <translation>すべて有効化</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="673"/>
-        <location filename="mainwindow.ui" line="727"/>
+        <location filename="mainwindow.ui" line="696"/>
+        <location filename="mainwindow.ui" line="750"/>
         <source>Input Style</source>
         <translation>入力スタイル</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="686"/>
+        <location filename="mainwindow.ui" line="709"/>
         <source>Basic</source>
         <translation>基本設定</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="767"/>
+        <location filename="mainwindow.ui" line="790"/>
         <source>Kuten+Toten: 。、</source>
         <translation>句点+読点: 。、</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="772"/>
+        <location filename="mainwindow.ui" line="795"/>
         <source>Period+Comma: ．，</source>
         <translation>ピリオド+カンマ: ．，</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="777"/>
+        <location filename="mainwindow.ui" line="800"/>
         <source>Kuten+Comma: 。，</source>
         <translation>句点+カンマ: 。，</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="782"/>
+        <location filename="mainwindow.ui" line="805"/>
         <source>Period+Toten: ．、</source>
         <translation>ピリオド+読点: ．、</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="790"/>
+        <location filename="mainwindow.ui" line="813"/>
         <source>Punctuation style</source>
         <translation>句読点</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="797"/>
+        <location filename="mainwindow.ui" line="820"/>
         <source>Space style</source>
         <translation>スペース</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="805"/>
+        <location filename="mainwindow.ui" line="828"/>
         <source>Fullwidth: １２３４５</source>
         <translation>全角: １２３４５</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="810"/>
+        <location filename="mainwindow.ui" line="833"/>
         <source>Halfwidth: 12345</source>
         <translation>半角: 12345</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="819"/>
+        <location filename="mainwindow.ui" line="842"/>
         <source>Fullwidth: &quot;&#x3000;&quot;</source>
         <translation>全角: &quot;&#x3000;&quot;</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="824"/>
+        <location filename="mainwindow.ui" line="847"/>
         <source>Halfwidth: &quot; &quot;</source>
         <translation>半角: &quot; &quot;</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="833"/>
+        <location filename="mainwindow.ui" line="856"/>
         <source>Fullwidth: ！＃＠（</source>
         <translation>全角: ！＃＠（</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="838"/>
+        <location filename="mainwindow.ui" line="861"/>
         <source>Halfwidth: !#@(</source>
         <translation>半角: !#@(</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="846"/>
+        <location filename="mainwindow.ui" line="869"/>
         <source>Number style</source>
         <translation>数字</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="853"/>
+        <location filename="mainwindow.ui" line="876"/>
         <source>Symbol style</source>
         <translation>記号</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="861"/>
+        <location filename="mainwindow.ui" line="884"/>
         <source>Romaji</source>
         <translation>ローマ字</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="866"/>
+        <location filename="mainwindow.ui" line="889"/>
         <source>JIS Kana</source>
         <translation>JISかな</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="874"/>
+        <location filename="mainwindow.ui" line="897"/>
         <source>Main input style</source>
         <translation>入力方式</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="901"/>
+        <location filename="mainwindow.ui" line="924"/>
         <source>Advanced</source>
         <translation>詳細設定</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="923"/>
+        <location filename="mainwindow.ui" line="946"/>
         <source>Keymap</source>
         <translation>キーマップ</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="970"/>
-        <location filename="mainwindow.ui" line="1195"/>
+        <location filename="mainwindow.ui" line="993"/>
+        <location filename="mainwindow.ui" line="1218"/>
         <source>Move Up</source>
         <translation>上へ移動</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="989"/>
-        <location filename="mainwindow.ui" line="1214"/>
+        <location filename="mainwindow.ui" line="1012"/>
+        <location filename="mainwindow.ui" line="1237"/>
         <source>Move Down</source>
         <translation>下へ移動</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1015"/>
-        <location filename="mainwindow.ui" line="1240"/>
+        <location filename="mainwindow.ui" line="1038"/>
+        <location filename="mainwindow.ui" line="1263"/>
         <source>Enable</source>
         <translation>有効化</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1034"/>
-        <location filename="mainwindow.ui" line="1259"/>
+        <location filename="mainwindow.ui" line="1057"/>
+        <location filename="mainwindow.ui" line="1282"/>
         <source>Disable</source>
         <translation>無効化</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1069"/>
+        <location filename="mainwindow.ui" line="1092"/>
         <source>Available keymaps:</source>
         <translation>利用可能なキーマップ:</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1092"/>
+        <location filename="mainwindow.ui" line="1115"/>
         <source>Enabled keymaps:</source>
         <translation>有効なキーマップ:</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1101"/>
+        <location filename="mainwindow.ui" line="1124"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700; font-style:italic;&quot;&gt;Note:&lt;/span&gt;&lt;span style=&quot; font-style:italic;&quot;&gt; You can use custom Keymaps in TSV format, located in &lt;/span&gt;&lt;span style=&quot; font-weight:700; font-style:italic;&quot;&gt;$XDG_CONFIG_HOME/hazkey/keymap&lt;/span&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;. &lt;/span&gt;&lt;a href=&quot;https://hazkey.hiira.dev/docs/settings/input-style-keymap&quot;&gt;&lt;span style=&quot; font-style:italic; text-decoration: underline; color:#2980b9;&quot;&gt;More info...&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700; font-style:italic;&quot;&gt;メモ:&lt;/span&gt;&lt;span style=&quot; font-style:italic;&quot;&gt; &lt;/span&gt;&lt;span style=&quot; font-weight:700; font-style:italic;&quot;&gt;$XDG_CONFIG_HOME/hazkey/keymap&lt;/span&gt;&lt;span style=&quot; font-style:italic;&quot;&gt; に配置されたTSV形式のキーマップを利用することができます。&lt;/span&gt;&lt;a href=&quot;https://hazkey.hiira.dev/docs/settings/input-style-keymap&quot;&gt;&lt;span style=&quot; font-style:italic; text-decoration: underline; color:#2980b9;&quot;&gt;詳細...&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1118"/>
+        <location filename="mainwindow.ui" line="1141"/>
         <source>Input Table</source>
         <translation>入力テーブル</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1141"/>
+        <location filename="mainwindow.ui" line="1164"/>
         <source>Enabled tables:</source>
         <translation>有効なテーブル:</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1148"/>
+        <location filename="mainwindow.ui" line="1171"/>
         <source>Available tables:</source>
         <translation>利用可能なテーブル:</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1301"/>
+        <location filename="mainwindow.ui" line="1324"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Note:&lt;/span&gt; You can use custom input tables in TSV format, located in &lt;span style=&quot; font-weight:700;&quot;&gt;$XDG_CONFIG_HOME/hazkey/table&lt;/span&gt;. &lt;a href=&quot;https://hazkey.hiira.dev/docs/settings/input-style-input-table&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;More info...&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;メモ:&lt;/span&gt; &lt;span style=&quot; font-weight:700;&quot;&gt;$XDG_CONFIG_HOME/hazkey/table&lt;/span&gt; に配置されたTSV形式の入力テーブルを利用することができます。&lt;a href=&quot;https://hazkey.hiira.dev/docs/settings/input-style-input-table&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;詳細...&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1318"/>
+        <location filename="mainwindow.ui" line="1341"/>
         <source>Options</source>
         <translation>オプション</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1341"/>
+        <location filename="mainwindow.ui" line="1364"/>
         <source>Direct mode entry point characters</source>
         <translation>直接入力モードの開始文字</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1382"/>
+        <location filename="mainwindow.ui" line="1405"/>
         <source>Dictionary</source>
         <translation>辞書</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1427"/>
+        <location filename="mainwindow.ui" line="1450"/>
         <source>This feature is not yet implemented</source>
         <translation>この機能は未実装です</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1437"/>
+        <location filename="mainwindow.ui" line="1460"/>
         <source>Use user dictionary</source>
         <translation>ユーザー辞書を使用</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1452"/>
+        <location filename="mainwindow.ui" line="1475"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Note:&lt;/span&gt; User dictionaries are shared across profiles.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;メモ:&lt;/span&gt; ユーザー辞書はプロファイル間で共有されます。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1486"/>
+        <location filename="mainwindow.ui" line="1509"/>
         <source>Import...</source>
         <translation>インポート...</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1496"/>
+        <location filename="mainwindow.ui" line="1519"/>
         <source>Export...</source>
         <translation>エクスポート...</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1506"/>
+        <location filename="mainwindow.ui" line="1529"/>
         <source>New</source>
         <translation>新規</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1519"/>
+        <location filename="mainwindow.ui" line="1542"/>
         <source>Delete</source>
         <translation>削除</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1538"/>
+        <location filename="mainwindow.ui" line="1561"/>
         <source>AI</source>
         <translation>AI</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1591"/>
+        <location filename="mainwindow.ui" line="1614"/>
         <source>Zenzai (Neural Conversion)</source>
         <translation>Zenzai（ニューラル変換）</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1656"/>
+        <location filename="mainwindow.ui" line="1679"/>
         <source>Inference limit</source>
         <translation>推論制限</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1693"/>
+        <location filename="mainwindow.ui" line="1716"/>
         <source>Backend</source>
         <translation>バックエンド</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1822"/>
+        <location filename="mainwindow.ui" line="1845"/>
         <source>0.0.0</source>
         <translation>0.0.0</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1646"/>
+        <location filename="mainwindow.ui" line="1669"/>
         <source>Use contextual conversion</source>
         <translation>文脈変換を使用</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1686"/>
+        <location filename="mainwindow.ui" line="1709"/>
         <source>User profile</source>
         <translation>ユーザープロファイル</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1639"/>
+        <location filename="mainwindow.ui" line="1662"/>
         <source>Enable Zenzai</source>
         <translation>Zenzaiを有効化</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1720"/>
+        <location filename="mainwindow.ui" line="1743"/>
         <source>About</source>
         <translation>情報</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1809"/>
+        <location filename="mainwindow.ui" line="1832"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:36pt;&quot;&gt;Hazkey&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:36pt;&quot;&gt;Hazkey&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1892"/>
+        <location filename="mainwindow.ui" line="1915"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Conversion engine provided by &lt;a href=&quot;https://azookey.com/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;azooKey&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;変換エンジンは &lt;a href=&quot;https://azookey.com/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;azooKey&lt;/span&gt;&lt;/a&gt; によって提供されています。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1943"/>
+        <location filename="mainwindow.ui" line="1966"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://hazkey.hiira.dev/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;Website&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://hazkey.hiira.dev/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;ウェブサイト&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1956"/>
+        <location filename="mainwindow.ui" line="1979"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://hazkey.hiira.dev/docs&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;Document&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://hazkey.hiira.dev/docs&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;ドキュメント&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1969"/>
+        <location filename="mainwindow.ui" line="1992"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/7ka-Hiira/fcitx5-hazkey&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;Source code&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/7ka-Hiira/fcitx5-hazkey&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;ソースコード&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1982"/>
+        <location filename="mainwindow.ui" line="2005"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/7ka-Hiira/fcitx5-hazkey/issues&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;Issue report&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/7ka-Hiira/fcitx5-hazkey/issues&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;不具合報告&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>

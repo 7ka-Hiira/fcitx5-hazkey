@@ -89,6 +89,7 @@ message Profile {
     optional SuggestionListMode suggestion_list_mode = 13;
     optional bool use_rich_suggestion = 14;
     optional int32 num_suggestions = 15;
+    optional int32 auto_convert_min_chars = 16;
 
     optional bool use_default_conversion_ui_settings = 20;
     optional int32 num_candidates_per_page = 21;
