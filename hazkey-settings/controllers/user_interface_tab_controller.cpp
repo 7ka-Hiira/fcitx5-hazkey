@@ -26,6 +26,9 @@ void UserInterfaceTabController::loadFromConfig() {
 
     SET_SPINBOX(ui_->numSuggestion, context_.currentProfile->num_suggestions(),
                 ConfigDefs::SpinboxDefaults::NUM_SUGGESTIONS);
+    SET_SPINBOX(ui_->autoConvertMinChars,
+                context_.currentProfile->auto_convert_min_chars(),
+                ConfigDefs::SpinboxDefaults::AUTO_CONVERT_MIN_CHARS);
     SET_SPINBOX(ui_->numCandidatesPerPage,
                 context_.currentProfile->num_candidates_per_page(),
                 ConfigDefs::SpinboxDefaults::NUM_CANDIDATES_PER_PAGE);
@@ -43,6 +46,8 @@ void UserInterfaceTabController::saveToConfig() {
 
     context_.currentProfile->set_num_suggestions(
         GET_SPINBOX_INT(ui_->numSuggestion));
+    context_.currentProfile->set_auto_convert_min_chars(
+        GET_SPINBOX_INT(ui_->autoConvertMinChars));
     context_.currentProfile->set_num_candidates_per_page(
         GET_SPINBOX_INT(ui_->numCandidatesPerPage));
 }

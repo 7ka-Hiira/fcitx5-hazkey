@@ -393,13 +393,15 @@ class HazkeyServerState {
         self.currentCandidateList = serverCandidates
         candidatesResult.candidates = clientCandidates
 
-        // Do not automatically convert if there is only one character
         if serverConfig.currentProfile.autoConvertMode
             == Hazkey_Config_Profile.AutoConvertMode.autoConvertForMultipleChars
-            && hiraganaPreedit.count == 1
         {
-            candidatesResult.liveText = ""
-            candidatesResult.liveTextIndex = -1
+            let minChars = serverConfig.currentProfile.autoConvertMinChars > 0
+                ? Int(serverConfig.currentProfile.autoConvertMinChars) : 2
+            if hiraganaPreedit.count < minChars {
+                candidatesResult.liveText = ""
+                candidatesResult.liveTextIndex = -1
+            }
         } else if serverConfig.currentProfile.autoConvertMode
             == Hazkey_Config_Profile.AutoConvertMode.autoConvertDisabled
         {

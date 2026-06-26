@@ -164,6 +164,7 @@ struct CheckboxDefaults {
 
 struct SpinboxDefaults {
     static constexpr int NUM_SUGGESTIONS = 5;
+    static constexpr int AUTO_CONVERT_MIN_CHARS = 2;
     static constexpr int NUM_CANDIDATES_PER_PAGE = 10;
     static constexpr int ZENZAI_INFERENCE_LIMIT = 100;
 };

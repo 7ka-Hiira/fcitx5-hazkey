@@ -194,6 +194,15 @@ struct Hazkey_Config_Profile: @unchecked Sendable {
   /// Clears the value of `numSuggestions`. Subsequent reads from it will return its default value.
   mutating func clearNumSuggestions() {_uniqueStorage()._numSuggestions = nil}
 
+  var autoConvertMinChars: Int32 {
+    get {return _storage._autoConvertMinChars ?? 0}
+    set {_uniqueStorage()._autoConvertMinChars = newValue}
+  }
+  /// Returns true if `autoConvertMinChars` has been explicitly set.
+  var hasAutoConvertMinChars: Bool {return _storage._autoConvertMinChars != nil}
+  /// Clears the value of `autoConvertMinChars`. Subsequent reads from it will return its default value.
+  mutating func clearAutoConvertMinChars() {_uniqueStorage()._autoConvertMinChars = nil}
+
   var useDefaultConversionUiSettings: Bool {
     get {return _storage._useDefaultConversionUiSettings ?? false}
     set {_uniqueStorage()._useDefaultConversionUiSettings = newValue}
@@ -1002,6 +1011,7 @@ extension Hazkey_Config_Profile: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
     13: .standard(proto: "suggestion_list_mode"),
     14: .standard(proto: "use_rich_suggestion"),
     15: .standard(proto: "num_suggestions"),
+    16: .standard(proto: "auto_convert_min_chars"),
     20: .standard(proto: "use_default_conversion_ui_settings"),
     21: .standard(proto: "num_candidates_per_page"),
     22: .standard(proto: "use_rich_candidates"),
@@ -1039,6 +1049,7 @@ extension Hazkey_Config_Profile: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
     var _suggestionListMode: Hazkey_Config_Profile.SuggestionListMode? = nil
     var _useRichSuggestion: Bool? = nil
     var _numSuggestions: Int32? = nil
+    var _autoConvertMinChars: Int32? = nil
     var _useDefaultConversionUiSettings: Bool? = nil
     var _numCandidatesPerPage: Int32? = nil
     var _useRichCandidates: Bool? = nil
@@ -1083,6 +1094,7 @@ extension Hazkey_Config_Profile: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
       _suggestionListMode = source._suggestionListMode
       _useRichSuggestion = source._useRichSuggestion
       _numSuggestions = source._numSuggestions
+      _autoConvertMinChars = source._autoConvertMinChars
       _useDefaultConversionUiSettings = source._useDefaultConversionUiSettings
       _numCandidatesPerPage = source._numCandidatesPerPage
       _useRichCandidates = source._useRichCandidates
@@ -1135,6 +1147,7 @@ extension Hazkey_Config_Profile: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
         case 13: try { try decoder.decodeSingularEnumField(value: &_storage._suggestionListMode) }()
         case 14: try { try decoder.decodeSingularBoolField(value: &_storage._useRichSuggestion) }()
         case 15: try { try decoder.decodeSingularInt32Field(value: &_storage._numSuggestions) }()
+        case 16: try { try decoder.decodeSingularInt32Field(value: &_storage._autoConvertMinChars) }()
         case 20: try { try decoder.decodeSingularBoolField(value: &_storage._useDefaultConversionUiSettings) }()
         case 21: try { try decoder.decodeSingularInt32Field(value: &_storage._numCandidatesPerPage) }()
         case 22: try { try decoder.decodeSingularBoolField(value: &_storage._useRichCandidates) }()
@@ -1198,6 +1211,9 @@ extension Hazkey_Config_Profile: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
       } }()
       try { if let v = _storage._numSuggestions {
         try visitor.visitSingularInt32Field(value: v, fieldNumber: 15)
+      } }()
+      try { if let v = _storage._autoConvertMinChars {
+        try visitor.visitSingularInt32Field(value: v, fieldNumber: 16)
       } }()
       try { if let v = _storage._useDefaultConversionUiSettings {
         try visitor.visitSingularBoolField(value: v, fieldNumber: 20)
@@ -1292,6 +1308,7 @@ extension Hazkey_Config_Profile: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
         if _storage._suggestionListMode != rhs_storage._suggestionListMode {return false}
         if _storage._useRichSuggestion != rhs_storage._useRichSuggestion {return false}
         if _storage._numSuggestions != rhs_storage._numSuggestions {return false}
+        if _storage._autoConvertMinChars != rhs_storage._autoConvertMinChars {return false}
         if _storage._useDefaultConversionUiSettings != rhs_storage._useDefaultConversionUiSettings {return false}
         if _storage._numCandidatesPerPage != rhs_storage._numCandidatesPerPage {return false}
         if _storage._useRichCandidates != rhs_storage._useRichCandidates {return false}
