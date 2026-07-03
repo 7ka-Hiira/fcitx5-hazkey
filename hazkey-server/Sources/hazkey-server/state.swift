@@ -308,23 +308,25 @@ class HazkeyServerState {
 
     /// Candidates
 
+    func ensureCompositionSeparatorForConversion() {
+        guard composingText.value.isAtEndIndex else {
+            return
+        }
+        if composingText.value.input.last?.piece == .compositionSeparator {
+            return
+        }
+        composingText.value.insertAtCursorPosition([
+            ComposingText.InputElement(
+                piece: .compositionSeparator,
+                inputStyle: .mapped(id: .tableName(currentTableName)))
+        ])
+    }
+
     func candidateRequestText(is_suggest: Bool) -> ComposingText {
         let usePrefixTarget = !is_suggest && !composingText.value.isAtEndIndex
-        var copiedComposingText =
-            usePrefixTarget
+        return usePrefixTarget
             ? composingText.value.prefixToCursorPosition()
             : composingText.value
-
-        if !is_suggest {
-            copiedComposingText.insertAtCursorPosition(
-                [
-                    ComposingText.InputElement(
-                        piece: .compositionSeparator,
-                        inputStyle: .mapped(id: .tableName(currentTableName)))
-                ])
-        }
-
-        return copiedComposingText
     }
 
     private func makeCandidatesResult(
@@ -466,6 +468,9 @@ class HazkeyServerState {
 
     // TODO: return error message
     func getCandidates(is_suggest: Bool) -> Hazkey_ResponseEnvelope {
+        if !is_suggest {
+            ensureCompositionSeparatorForConversion()
+        }
         let (candidatesResult, serverCandidates) = makeCandidatesResult(is_suggest: is_suggest)
         self.currentCandidateList = serverCandidates
 
