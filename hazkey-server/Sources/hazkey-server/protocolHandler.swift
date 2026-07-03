@@ -41,6 +41,8 @@ class ProtocolHandler {
             response = state.completePrefix(candidateIndex: Int(req.index))
         case .moveCursor(let req):
             response = state.moveCursor(offset: Int(req.offset))
+        case .adjustClauseBoundary(let req):
+            response = state.adjustClauseBoundary(offset: Int(req.offset))
         case .getHiraganaWithCursor:
             response = state.getHiraganaWithCursor()
         case .getComposingString(let req):

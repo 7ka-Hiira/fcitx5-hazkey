@@ -37,6 +37,10 @@ message MoveCursor {
     int32 offset = 1;
 }
 
+message AdjustClauseBoundary {
+    int32 offset = 1;
+}
+
 message PrefixComplete {
     int32 index = 1;
 }
@@ -90,6 +94,11 @@ message CandidatesResult {
     string live_text = 2;
     int32 live_text_index = 3;
     int32 page_size = 4;
+}
+
+message ClauseBoundaryResult {
+    CandidatesResult candidates = 1;
+    string hiragana = 2;
 }
 
 message CurrentInputModeInfo {
