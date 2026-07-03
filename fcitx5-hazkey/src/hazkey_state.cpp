@@ -176,11 +176,19 @@ void HazkeyState::preeditKeyEvent(
             }
             break;
         case FcitxKey_Left:
-            isCursorMoving_ = true;
-            engine_->server().moveCursor(-1);
+            if (key.states() == KeyState::Shift) {
+                showNonPredictCandidateList();
+                moveSegmentBoundary(false);
+            } else {
+                isCursorMoving_ = true;
+                engine_->server().moveCursor(-1);
+            }
             break;
         case FcitxKey_Right:
-            if (isCursorMoving_) {
+            if (key.states() == KeyState::Shift) {
+                showNonPredictCandidateList();
+                moveSegmentBoundary(true);
+            } else if (isCursorMoving_) {
                 engine_->server().moveCursor(1);
             }
             break;

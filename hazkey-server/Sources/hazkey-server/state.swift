@@ -204,6 +204,7 @@ class HazkeyServerState {
     }
 
     func adjustClauseBoundary(offset: Int) -> Hazkey_ResponseEnvelope {
+        isShiftPressedAlone = false
         if composingText.value.isEmpty {
             return Hazkey_ResponseEnvelope.with {
                 $0.status = .success
