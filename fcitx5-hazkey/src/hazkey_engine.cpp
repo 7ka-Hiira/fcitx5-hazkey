@@ -8,6 +8,18 @@
 
 namespace fcitx {
 
+namespace {
+
+bool hasVisiblePreedit(InputContext *inputContext) {
+    const auto &inputPanel = inputContext->inputPanel();
+    if (inputContext->capabilityFlags().test(CapabilityFlag::Preedit)) {
+        return !inputPanel.clientPreedit().toString().empty();
+    }
+    return !inputPanel.preedit().toString().empty();
+}
+
+}  // namespace
+
 HazkeyEngine::HazkeyEngine(Instance *instance)
     : instance_(instance), factory_([this](InputContext &ic) {
           return new HazkeyState(this, &ic);
@@ -24,7 +36,9 @@ void HazkeyEngine::keyEvent([[maybe_unused]] const InputMethodEntry &entry,
 
     auto inputContext = keyEvent.inputContext();
     inputContext->propertyFor(&factory_)->keyEvent(keyEvent);
-    inputContext->updatePreedit();
+    if (keyEvent.accepted()) {
+        inputContext->updatePreedit();
+    }
     inputContext->updateUserInterface(UserInterfaceComponent::InputPanel);
 }
 
@@ -35,7 +49,6 @@ void HazkeyEngine::activate([[maybe_unused]] const InputMethodEntry &entry,
     auto inputContext = event.inputContext();
     auto state = inputContext->propertyFor(&factory_);
     state->reset();
-    inputContext->updatePreedit();
     inputContext->updateUserInterface(UserInterfaceComponent::InputPanel);
 }
 
@@ -44,9 +57,14 @@ void HazkeyEngine::deactivate([[maybe_unused]] const InputMethodEntry &entry,
     FCITX_DEBUG() << "HazkeyEngine deactivate";
     auto inputContext = event.inputContext();
     auto state = inputContext->propertyFor(&factory_);
-    state->commitPreedit();
+    bool hadVisiblePreedit = hasVisiblePreedit(inputContext);
+    if (hadVisiblePreedit) {
+        state->commitPreedit();
+    }
     state->reset();
-    inputContext->updatePreedit();
+    if (hadVisiblePreedit) {
+        inputContext->updatePreedit();
+    }
     inputContext->updateUserInterface(UserInterfaceComponent::InputPanel);
 }
 
