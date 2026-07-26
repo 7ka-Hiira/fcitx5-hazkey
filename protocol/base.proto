@@ -28,6 +28,8 @@ message RequestEnvelope {
         hazkey.config.GetDefaultProfile get_default_profile = 102;
         hazkey.config.ClearAllHistory clear_all_history = 103;
         hazkey.config.ReloadZenzaiModel reload_zenzai_model = 104;
+        hazkey.config.GetUserDictionary get_user_dictionary = 105;
+        hazkey.config.SetUserDictionary set_user_dictionary = 106;
     }
 }
 
@@ -46,5 +48,6 @@ message ResponseEnvelope {
         hazkey.commands.TextWithCursor text_with_cursor = 5;
         hazkey.commands.CurrentInputModeInfo current_input_mode_info = 6;
         hazkey.config.CurrentConfig current_config = 100;
+        hazkey.config.UserDictionaryResult user_dictionary = 101;
     }
 }

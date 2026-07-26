@@ -35,6 +35,7 @@ let builtInInputTables = [
 class HazkeyServerConfig {
     var profiles: [Hazkey_Config_Profile]
     var currentProfile: Hazkey_Config_Profile
+    var userDictionaryEntries: [Hazkey_Config_UserDictionaryEntry]
     let dictionaryPath: URL
     var zenzaiAvailable: Bool
     var zenzaiModelPath: URL?
@@ -51,6 +52,13 @@ class HazkeyServerConfig {
 
         // TODO: add [0] out of range handling
         currentProfile = profiles[0]
+
+        do {
+            userDictionaryEntries = try Self.loadUserDictionary()
+        } catch {
+            NSLog("Failed to load user dictionary: \(error)")
+            userDictionaryEntries = []
+        }
 
         let fileManager = FileManager()
 
@@ -201,6 +209,46 @@ class HazkeyServerConfig {
         }
     }
 
+    func getUserDictionary() -> Hazkey_ResponseEnvelope {
+        let entries: [Hazkey_Config_UserDictionaryEntry]
+        do {
+            entries = try Self.loadUserDictionary()
+        } catch {
+            return Hazkey_ResponseEnvelope.with {
+                $0.status = .failed
+                $0.errorMessage = "\(error)"
+            }
+        }
+
+        return Hazkey_ResponseEnvelope.with {
+            $0.status = .success
+            $0.userDictionary = Hazkey_Config_UserDictionaryResult.with {
+                $0.entries = entries
+            }
+        }
+    }
+
+    func setUserDictionary(
+        _ newEntries: [Hazkey_Config_UserDictionaryEntry],
+        state: HazkeyServerState? = nil
+    ) -> Hazkey_ResponseEnvelope {
+        do {
+            try saveUserDictionary(newEntries, state: state)
+        } catch {
+            return Hazkey_ResponseEnvelope.with {
+                $0.status = .failed
+                $0.errorMessage = "\(error)"
+            }
+        }
+
+        return Hazkey_ResponseEnvelope.with {
+            $0.status = .success
+            $0.userDictionary = Hazkey_Config_UserDictionaryResult.with {
+                $0.entries = newEntries
+            }
+        }
+    }
+
     static func genDefaultConfig() -> Hazkey_Config_Profile {
         var newConf = Hazkey_Config_Profile.init()
         newConf.profileName = "Default"
@@ -261,6 +309,7 @@ class HazkeyServerConfig {
         newConf.zenzaiInferLimit = 10
         newConf.zenzaiContextualMode = true
         newConf.zenzaiProfile = ""
+        newConf.useUserDictionary = true
         return newConf
     }
 
@@ -333,6 +382,73 @@ class HazkeyServerConfig {
 
         NSLog("Config loaded from: \(configPath.path)")
         return configs
+    }
+
+    func saveUserDictionary(
+        _ newEntries: [Hazkey_Config_UserDictionaryEntry],
+        state: HazkeyServerState? = nil
+    ) throws {
+        let configDir = Self.getConfigDirectory()
+        let dictPath = configDir.appendingPathComponent("user_dictionary.json")
+
+        try FileManager.default.createDirectory(
+            at: configDir, withIntermediateDirectories: true, attributes: nil)
+
+        var jsonObjects: [Any] = []
+        var encodeOptions = JSONEncodingOptions()
+        encodeOptions.alwaysPrintEnumsAsInts = true
+        encodeOptions.useDeterministicOrdering = true
+        for entry in newEntries {
+            let jsonData = try entry.jsonUTF8Data(options: encodeOptions)
+            let jsonObject = try JSONSerialization.jsonObject(with: jsonData, options: [])
+            jsonObjects.append(jsonObject)
+        }
+
+        let jsonData = try JSONSerialization.data(
+            withJSONObject: jsonObjects, options: [.prettyPrinted, .sortedKeys])
+
+        try jsonData.write(to: dictPath)
+
+        NSLog("User dictionary saved to: \(dictPath.path)")
+
+        userDictionaryEntries = newEntries
+
+        if let state = state {
+            state.reinitializeConfiguration()
+        }
+    }
+
+    static func loadUserDictionary() throws -> [Hazkey_Config_UserDictionaryEntry] {
+        let configDir = Self.getConfigDirectory()
+        let dictPath = configDir.appendingPathComponent("user_dictionary.json")
+
+        // Check if the user dictionary file exists
+        guard FileManager.default.fileExists(atPath: dictPath.path) else {
+            NSLog(
+                "User dictionary file does not exist at: \(dictPath.path), returning empty dictionary"
+            )
+            return []
+        }
+
+        // Read file contents
+        let jsonData = try Data(contentsOf: dictPath)
+
+        // Parse JSON array
+        let jsonArray =
+            try JSONSerialization.jsonObject(with: jsonData, options: []) as! [[String: Any]]
+
+        var entries: [Hazkey_Config_UserDictionaryEntry] = []
+        var decodeOptions = JSONDecodingOptions()
+        decodeOptions.ignoreUnknownFields = true
+        for jsonObject in jsonArray {
+            let jsonObjectData = try JSONSerialization.data(withJSONObject: jsonObject, options: [])
+            let entry = try Hazkey_Config_UserDictionaryEntry(
+                jsonUTF8Data: jsonObjectData, options: decodeOptions)
+            entries.append(entry)
+        }
+
+        NSLog("User dictionary loaded from: \(dictPath.path)")
+        return entries
     }
 
     static func getConfigDirectory() -> URL {

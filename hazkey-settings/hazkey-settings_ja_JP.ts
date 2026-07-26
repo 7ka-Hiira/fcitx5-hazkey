@@ -117,6 +117,127 @@ UIを更新するには再読み込みボタンを押してください。</tran
     </message>
 </context>
 <context>
+    <name>DictionaryTabController</name>
+    <message>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="74"/>
+        <source>Reading</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="74"/>
+        <source>Word</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="74"/>
+        <source>Class</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="122"/>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="225"/>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="283"/>
+        <source>Error</source>
+        <translation type="unfinished">エラー</translation>
+    </message>
+    <message>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="123"/>
+        <source>Failed to save the user dictionary. Please check that the hazkey server is running.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="176"/>
+        <source>Delete Entry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="177"/>
+        <source>Are you sure you want to delete the selected dictionary entries?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="217"/>
+        <source>Import User Dictionary</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="218"/>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="276"/>
+        <source>Text files (*.txt *.tsv);;All files (*)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="226"/>
+        <source>Failed to open the file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="268"/>
+        <source>Import Complete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="269"/>
+        <source>Imported %1 dictionary entries.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="274"/>
+        <source>Export User Dictionary</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="284"/>
+        <source>Failed to save the file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="299"/>
+        <source>Export Complete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="300"/>
+        <source>The user dictionary has been exported successfully.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="307"/>
+        <source>Edit Dictionary Entry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="308"/>
+        <source>New Dictionary Entry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="330"/>
+        <source>Reading:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="331"/>
+        <source>Word:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="332"/>
+        <source>Class:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="351"/>
+        <source>Invalid Entry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="352"/>
+        <source>Please fill in both the reading and the word.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>InputStyleTabController</name>
     <message>
         <location filename="controllers/input_style_tab_controller.cpp" line="131"/>
@@ -556,121 +677,120 @@ UIを更新するには再読み込みボタンを押してください。</tran
         <translation>辞書</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1427"/>
         <source>This feature is not yet implemented</source>
-        <translation>この機能は未実装です</translation>
+        <translation type="vanished">この機能は未実装です</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1437"/>
+        <location filename="mainwindow.ui" line="1427"/>
         <source>Use user dictionary</source>
         <translation>ユーザー辞書を使用</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1452"/>
+        <location filename="mainwindow.ui" line="1439"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Note:&lt;/span&gt; User dictionaries are shared across profiles.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;メモ:&lt;/span&gt; ユーザー辞書はプロファイル間で共有されます。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1486"/>
+        <location filename="mainwindow.ui" line="1470"/>
         <source>Import...</source>
         <translation>インポート...</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1496"/>
+        <location filename="mainwindow.ui" line="1477"/>
         <source>Export...</source>
         <translation>エクスポート...</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1506"/>
+        <location filename="mainwindow.ui" line="1484"/>
         <source>New</source>
         <translation>新規</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1519"/>
+        <location filename="mainwindow.ui" line="1494"/>
         <source>Delete</source>
         <translation>削除</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1538"/>
+        <location filename="mainwindow.ui" line="1513"/>
         <source>AI</source>
         <translation>AI</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1591"/>
+        <location filename="mainwindow.ui" line="1566"/>
         <source>Zenzai (Neural Conversion)</source>
         <translation>Zenzai（ニューラル変換）</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1656"/>
+        <location filename="mainwindow.ui" line="1631"/>
         <source>Inference limit</source>
         <translation>推論制限</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1693"/>
+        <location filename="mainwindow.ui" line="1668"/>
         <source>Backend</source>
         <translation>バックエンド</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1822"/>
+        <location filename="mainwindow.ui" line="1797"/>
         <source>0.0.0</source>
         <translation>0.0.0</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1646"/>
+        <location filename="mainwindow.ui" line="1621"/>
         <source>Use contextual conversion</source>
         <translation>文脈変換を使用</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1686"/>
+        <location filename="mainwindow.ui" line="1661"/>
         <source>User profile</source>
         <translation>ユーザープロファイル</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1639"/>
+        <location filename="mainwindow.ui" line="1614"/>
         <source>Enable Zenzai</source>
         <translation>Zenzaiを有効化</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1720"/>
+        <location filename="mainwindow.ui" line="1695"/>
         <source>About</source>
         <translation>情報</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1809"/>
+        <location filename="mainwindow.ui" line="1784"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:36pt;&quot;&gt;Hazkey&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:36pt;&quot;&gt;Hazkey&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1892"/>
+        <location filename="mainwindow.ui" line="1867"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Conversion engine provided by &lt;a href=&quot;https://azookey.com/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;azooKey&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;変換エンジンは &lt;a href=&quot;https://azookey.com/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;azooKey&lt;/span&gt;&lt;/a&gt; によって提供されています。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1943"/>
+        <location filename="mainwindow.ui" line="1918"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://hazkey.hiira.dev/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;Website&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://hazkey.hiira.dev/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;ウェブサイト&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1956"/>
+        <location filename="mainwindow.ui" line="1931"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://hazkey.hiira.dev/docs&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;Document&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://hazkey.hiira.dev/docs&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;ドキュメント&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1969"/>
+        <location filename="mainwindow.ui" line="1944"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/7ka-Hiira/fcitx5-hazkey&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;Source code&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/7ka-Hiira/fcitx5-hazkey&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;ソースコード&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1982"/>
+        <location filename="mainwindow.ui" line="1957"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/7ka-Hiira/fcitx5-hazkey/issues&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;Issue report&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/7ka-Hiira/fcitx5-hazkey/issues&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;不具合報告&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="48"/>
-        <location filename="mainwindow.cpp" line="206"/>
-        <location filename="mainwindow.cpp" line="213"/>
-        <location filename="mainwindow.cpp" line="220"/>
-        <location filename="mainwindow.cpp" line="226"/>
+        <location filename="mainwindow.cpp" line="208"/>
+        <location filename="mainwindow.cpp" line="215"/>
+        <location filename="mainwindow.cpp" line="222"/>
+        <location filename="mainwindow.cpp" line="228"/>
         <source>Configuration Error</source>
         <translation>設定エラー</translation>
     </message>
@@ -680,28 +800,28 @@ UIを更新するには再読み込みボタンを押してください。</tran
         <translation>設定の読み込みに失敗しました。hazkeyサーバーへの接続を確認してください。</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="154"/>
+        <location filename="mainwindow.cpp" line="156"/>
         <source>Error</source>
         <translation>エラー</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="155"/>
+        <location filename="mainwindow.cpp" line="157"/>
         <source>No configuration profile loaded.</source>
         <translation>設定プロファイルが読み込まれていません。</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="170"/>
-        <location filename="mainwindow.cpp" line="175"/>
+        <location filename="mainwindow.cpp" line="172"/>
+        <location filename="mainwindow.cpp" line="177"/>
         <source>Save Error</source>
         <translation>保存エラー</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="171"/>
+        <location filename="mainwindow.cpp" line="173"/>
         <source>Failed to save configuration: %1</source>
         <translation>設定の保存に失敗しました: %1</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="176"/>
+        <location filename="mainwindow.cpp" line="178"/>
         <source>An unknown error occurred while saving configuration.</source>
         <translation>設定の保存中に不明なエラーが発生しました。</translation>
     </message>
@@ -711,52 +831,52 @@ UIを更新するには再読み込みボタンを押してください。</tran
         <translation>再読み込み</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="183"/>
+        <location filename="mainwindow.cpp" line="185"/>
         <source>Reload Configuration</source>
         <translation>設定を再読み込み</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="184"/>
+        <location filename="mainwindow.cpp" line="186"/>
         <source>Reloading will discard any unsaved changes. Continue?</source>
         <translation>再読み込みすると、保存されていない変更は失われます。続行しますか？</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="192"/>
+        <location filename="mainwindow.cpp" line="194"/>
         <source>Connection Error</source>
         <translation>接続エラー</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="193"/>
+        <location filename="mainwindow.cpp" line="195"/>
         <source>Failed to connect to server.</source>
         <translation>サーバーへの接続に失敗しました。</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="207"/>
+        <location filename="mainwindow.cpp" line="209"/>
         <source>Failed to load configuration from server.</source>
         <translation>サーバーから設定を読み込めませんでした。</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="214"/>
+        <location filename="mainwindow.cpp" line="216"/>
         <source>No profile found in configuration.</source>
         <translation>設定にプロファイルが見つかりません。</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="221"/>
+        <location filename="mainwindow.cpp" line="223"/>
         <source>Failed to access profile.</source>
         <translation>プロファイルへのアクセスに失敗しました。</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="227"/>
+        <location filename="mainwindow.cpp" line="229"/>
         <source>Failed to update UI.</source>
         <translation>UIの更新に失敗しました。</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="233"/>
+        <location filename="mainwindow.cpp" line="235"/>
         <source>Reload Complete</source>
         <translation>再読み込み完了</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="234"/>
+        <location filename="mainwindow.cpp" line="236"/>
         <source>Configuration has been reloaded successfully.</source>
         <translation>設定が正常に再読み込みされました。</translation>
     </message>
@@ -798,6 +918,54 @@ UIを更新するには再読み込みボタンを押してください。</tran
         <location filename="controllers/conversion_tab_controller.cpp" line="153"/>
         <source>Failed to clear input history. Please check your connection to the hazkey server.</source>
         <translation>入力履歴の削除に失敗しました。hazkey-serverとの接続を確認してください。</translation>
+    </message>
+</context>
+<context>
+    <name>hazkey::settings</name>
+    <message>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="43"/>
+        <source>General Noun</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="45"/>
+        <source>Proper Noun</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="47"/>
+        <source>Person Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="49"/>
+        <source>Family Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="51"/>
+        <source>Given Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="53"/>
+        <source>Organization Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="55"/>
+        <source>Place Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="57"/>
+        <source>Number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="59"/>
+        <source>Symbol</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

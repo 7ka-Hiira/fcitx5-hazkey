@@ -411,6 +411,15 @@ struct Hazkey_Config_Profile: @unchecked Sendable {
   /// Clears the value of `zenzaiPreference`. Subsequent reads from it will return its default value.
   mutating func clearZenzaiPreference() {_uniqueStorage()._zenzaiPreference = nil}
 
+  var useUserDictionary: Bool {
+    get {return _storage._useUserDictionary ?? false}
+    set {_uniqueStorage()._useUserDictionary = newValue}
+  }
+  /// Returns true if `useUserDictionary` has been explicitly set.
+  var hasUseUserDictionary: Bool {return _storage._useUserDictionary != nil}
+  /// Clears the value of `useUserDictionary`. Subsequent reads from it will return its default value.
+  mutating func clearUseUserDictionary() {_uniqueStorage()._useUserDictionary = nil}
+
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   enum AutoConvertMode: SwiftProtobuf.Enum, Swift.CaseIterable {
@@ -727,6 +736,90 @@ struct Hazkey_Config_Profile: @unchecked Sendable {
   fileprivate var _storage = _StorageClass.defaultInstance
 }
 
+struct Hazkey_Config_UserDictionaryEntry: Sendable {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var id: String = String()
+
+  var reading: String = String()
+
+  var word: String = String()
+
+  var wordClass: Hazkey_Config_UserDictionaryEntry.WordClass = .unspecified
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  enum WordClass: SwiftProtobuf.Enum, Swift.CaseIterable {
+    typealias RawValue = Int
+    case unspecified // = 0
+    case generalNoun // = 1
+    case properNoun // = 2
+    case personName // = 3
+    case personFamilyName // = 4
+    case personGivenName // = 5
+    case organizationName // = 6
+    case placeName // = 7
+    case number // = 8
+    case symbol // = 9
+    case UNRECOGNIZED(Int)
+
+    init() {
+      self = .unspecified
+    }
+
+    init?(rawValue: Int) {
+      switch rawValue {
+      case 0: self = .unspecified
+      case 1: self = .generalNoun
+      case 2: self = .properNoun
+      case 3: self = .personName
+      case 4: self = .personFamilyName
+      case 5: self = .personGivenName
+      case 6: self = .organizationName
+      case 7: self = .placeName
+      case 8: self = .number
+      case 9: self = .symbol
+      default: self = .UNRECOGNIZED(rawValue)
+      }
+    }
+
+    var rawValue: Int {
+      switch self {
+      case .unspecified: return 0
+      case .generalNoun: return 1
+      case .properNoun: return 2
+      case .personName: return 3
+      case .personFamilyName: return 4
+      case .personGivenName: return 5
+      case .organizationName: return 6
+      case .placeName: return 7
+      case .number: return 8
+      case .symbol: return 9
+      case .UNRECOGNIZED(let i): return i
+      }
+    }
+
+    // The compiler won't synthesize support with the UNRECOGNIZED case.
+    static let allCases: [Hazkey_Config_UserDictionaryEntry.WordClass] = [
+      .unspecified,
+      .generalNoun,
+      .properNoun,
+      .personName,
+      .personFamilyName,
+      .personGivenName,
+      .organizationName,
+      .placeName,
+      .number,
+      .symbol,
+    ]
+
+  }
+
+  init() {}
+}
+
 struct Hazkey_Config_GetConfig: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
@@ -777,6 +870,40 @@ struct Hazkey_Config_ReloadZenzaiModel: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+struct Hazkey_Config_GetUserDictionary: Sendable {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+struct Hazkey_Config_SetUserDictionary: Sendable {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var entries: [Hazkey_Config_UserDictionaryEntry] = []
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  init() {}
+}
+
+struct Hazkey_Config_UserDictionaryResult: Sendable {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var entries: [Hazkey_Config_UserDictionaryEntry] = []
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -1027,6 +1154,7 @@ extension Hazkey_Config_Profile: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
     121: .standard(proto: "zenzai_topic"),
     122: .standard(proto: "zenzai_style"),
     123: .standard(proto: "zenzai_preference"),
+    150: .standard(proto: "use_user_dictionary"),
   ]
 
   fileprivate class _StorageClass {
@@ -1064,6 +1192,7 @@ extension Hazkey_Config_Profile: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
     var _zenzaiTopic: String? = nil
     var _zenzaiStyle: String? = nil
     var _zenzaiPreference: String? = nil
+    var _useUserDictionary: Bool? = nil
 
       // This property is used as the initial default value for new instances of the type.
       // The type itself is protecting the reference to its storage via CoW semantics.
@@ -1108,6 +1237,7 @@ extension Hazkey_Config_Profile: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
       _zenzaiTopic = source._zenzaiTopic
       _zenzaiStyle = source._zenzaiStyle
       _zenzaiPreference = source._zenzaiPreference
+      _useUserDictionary = source._useUserDictionary
     }
   }
 
@@ -1160,6 +1290,7 @@ extension Hazkey_Config_Profile: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
         case 121: try { try decoder.decodeSingularStringField(value: &_storage._zenzaiTopic) }()
         case 122: try { try decoder.decodeSingularStringField(value: &_storage._zenzaiStyle) }()
         case 123: try { try decoder.decodeSingularStringField(value: &_storage._zenzaiPreference) }()
+        case 150: try { try decoder.decodeSingularBoolField(value: &_storage._useUserDictionary) }()
         default: break
         }
       }
@@ -1274,6 +1405,9 @@ extension Hazkey_Config_Profile: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
       try { if let v = _storage._zenzaiPreference {
         try visitor.visitSingularStringField(value: v, fieldNumber: 123)
       } }()
+      try { if let v = _storage._useUserDictionary {
+        try visitor.visitSingularBoolField(value: v, fieldNumber: 150)
+      } }()
     }
     try unknownFields.traverse(visitor: &visitor)
   }
@@ -1317,6 +1451,7 @@ extension Hazkey_Config_Profile: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
         if _storage._zenzaiTopic != rhs_storage._zenzaiTopic {return false}
         if _storage._zenzaiStyle != rhs_storage._zenzaiStyle {return false}
         if _storage._zenzaiPreference != rhs_storage._zenzaiPreference {return false}
+        if _storage._useUserDictionary != rhs_storage._useUserDictionary {return false}
         return true
       }
       if !storagesAreEqual {return false}
@@ -1533,6 +1668,71 @@ extension Hazkey_Config_Profile.EnabledInputTable: SwiftProtobuf.Message, SwiftP
   }
 }
 
+extension Hazkey_Config_UserDictionaryEntry: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".UserDictionaryEntry"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "id"),
+    2: .same(proto: "reading"),
+    3: .same(proto: "word"),
+    4: .standard(proto: "word_class"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularStringField(value: &self.id) }()
+      case 2: try { try decoder.decodeSingularStringField(value: &self.reading) }()
+      case 3: try { try decoder.decodeSingularStringField(value: &self.word) }()
+      case 4: try { try decoder.decodeSingularEnumField(value: &self.wordClass) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.id.isEmpty {
+      try visitor.visitSingularStringField(value: self.id, fieldNumber: 1)
+    }
+    if !self.reading.isEmpty {
+      try visitor.visitSingularStringField(value: self.reading, fieldNumber: 2)
+    }
+    if !self.word.isEmpty {
+      try visitor.visitSingularStringField(value: self.word, fieldNumber: 3)
+    }
+    if self.wordClass != .unspecified {
+      try visitor.visitSingularEnumField(value: self.wordClass, fieldNumber: 4)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Hazkey_Config_UserDictionaryEntry, rhs: Hazkey_Config_UserDictionaryEntry) -> Bool {
+    if lhs.id != rhs.id {return false}
+    if lhs.reading != rhs.reading {return false}
+    if lhs.word != rhs.word {return false}
+    if lhs.wordClass != rhs.wordClass {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Hazkey_Config_UserDictionaryEntry.WordClass: SwiftProtobuf._ProtoNameProviding {
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    0: .same(proto: "WORD_CLASS_UNSPECIFIED"),
+    1: .same(proto: "GENERAL_NOUN"),
+    2: .same(proto: "PROPER_NOUN"),
+    3: .same(proto: "PERSON_NAME"),
+    4: .same(proto: "PERSON_FAMILY_NAME"),
+    5: .same(proto: "PERSON_GIVEN_NAME"),
+    6: .same(proto: "ORGANIZATION_NAME"),
+    7: .same(proto: "PLACE_NAME"),
+    8: .same(proto: "NUMBER"),
+    9: .same(proto: "SYMBOL"),
+  ]
+}
+
 extension Hazkey_Config_GetConfig: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   static let protoMessageName: String = _protobuf_package + ".GetConfig"
   static let _protobuf_nameMap = SwiftProtobuf._NameMap()
@@ -1655,6 +1855,89 @@ extension Hazkey_Config_ReloadZenzaiModel: SwiftProtobuf.Message, SwiftProtobuf.
   }
 
   static func ==(lhs: Hazkey_Config_ReloadZenzaiModel, rhs: Hazkey_Config_ReloadZenzaiModel) -> Bool {
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Hazkey_Config_GetUserDictionary: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".GetUserDictionary"
+  static let _protobuf_nameMap = SwiftProtobuf._NameMap()
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    // Load everything into unknown fields
+    while try decoder.nextFieldNumber() != nil {}
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Hazkey_Config_GetUserDictionary, rhs: Hazkey_Config_GetUserDictionary) -> Bool {
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Hazkey_Config_SetUserDictionary: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".SetUserDictionary"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "entries"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeRepeatedMessageField(value: &self.entries) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.entries.isEmpty {
+      try visitor.visitRepeatedMessageField(value: self.entries, fieldNumber: 1)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Hazkey_Config_SetUserDictionary, rhs: Hazkey_Config_SetUserDictionary) -> Bool {
+    if lhs.entries != rhs.entries {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension Hazkey_Config_UserDictionaryResult: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".UserDictionaryResult"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "entries"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeRepeatedMessageField(value: &self.entries) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.entries.isEmpty {
+      try visitor.visitRepeatedMessageField(value: self.entries, fieldNumber: 1)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: Hazkey_Config_UserDictionaryResult, rhs: Hazkey_Config_UserDictionaryResult) -> Bool {
+    if lhs.entries != rhs.entries {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }

@@ -59,6 +59,8 @@ class HazkeyServerState {
 
         // Initialize base convert options
         self.baseConvertRequestOptions = serverConfig.genBaseConvertRequestOptions()
+
+        applyUserDictionary()
     }
 
     func setContext(surroundingText: String, anchorIndex: Int) -> Hazkey_ResponseEnvelope {
@@ -449,7 +451,61 @@ class HazkeyServerState {
         self.isSubInputMode = false
         self.isShiftPressedAlone = false
 
+        applyUserDictionary()
+
         NSLog("State configuration reinitialized successfully")
     }
 
+    /// Feeds the user-registered dictionary entries into the conversion
+    /// engine's dynamic user dictionary, honoring the current profile's
+    /// `use_user_dictionary` toggle. User dictionary entries themselves are
+    /// shared across all profiles; only whether they are applied is
+    /// profile-specific.
+    func applyUserDictionary() {
+        guard serverConfig.currentProfile.useUserDictionary else {
+            converter.importDynamicUserDictionary([])
+            return
+        }
+
+        let dicdata = serverConfig.userDictionaryEntries.map { entry -> DicdataElement in
+            let (cid, mid) = entry.wordClass.dicdataIds
+            return DicdataElement(
+                word: entry.word,
+                ruby: entry.reading.toKatakana(),
+                cid: cid,
+                mid: mid,
+                value: -10
+            )
+        }
+        converter.importDynamicUserDictionary(dicdata)
+    }
+
+}
+
+extension Hazkey_Config_UserDictionaryEntry.WordClass {
+    /// Maps a user dictionary word class to the underlying conversion
+    /// engine's connection ID (part of speech) and meaning ID pair.
+    var dicdataIds: (cid: Int, mid: Int) {
+        switch self {
+        case .properNoun:
+            return (CIDData.固有名詞.cid, MIDData.一般.mid)
+        case .personName:
+            return (CIDData.人名一般.cid, MIDData.一般.mid)
+        case .personFamilyName:
+            return (CIDData.人名姓.cid, MIDData.人名姓.mid)
+        case .personGivenName:
+            return (CIDData.人名名.cid, MIDData.人名名.mid)
+        case .organizationName:
+            return (CIDData.固有名詞組織.cid, MIDData.組織.mid)
+        case .placeName:
+            return (CIDData.地名一般.cid, MIDData.一般.mid)
+        case .number:
+            return (CIDData.数.cid, MIDData.数.mid)
+        case .symbol:
+            return (CIDData.記号.cid, MIDData.一般.mid)
+        default:
+            // Covers .generalNoun, .unspecified, and .UNRECOGNIZED.
+            return (CIDData.一般名詞.cid, MIDData.一般.mid)
+        }
+    }
 }

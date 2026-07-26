@@ -209,6 +209,22 @@ struct Hazkey_RequestEnvelope: Sendable {
     set {payload = .reloadZenzaiModel(newValue)}
   }
 
+  var getUserDictionary: Hazkey_Config_GetUserDictionary {
+    get {
+      if case .getUserDictionary(let v)? = payload {return v}
+      return Hazkey_Config_GetUserDictionary()
+    }
+    set {payload = .getUserDictionary(newValue)}
+  }
+
+  var setUserDictionary: Hazkey_Config_SetUserDictionary {
+    get {
+      if case .setUserDictionary(let v)? = payload {return v}
+      return Hazkey_Config_SetUserDictionary()
+    }
+    set {payload = .setUserDictionary(newValue)}
+  }
+
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   enum OneOf_Payload: Equatable, Sendable {
@@ -230,6 +246,8 @@ struct Hazkey_RequestEnvelope: Sendable {
     case getDefaultProfile(Hazkey_Config_GetDefaultProfile)
     case clearAllHistory_p(Hazkey_Config_ClearAllHistory)
     case reloadZenzaiModel(Hazkey_Config_ReloadZenzaiModel)
+    case getUserDictionary(Hazkey_Config_GetUserDictionary)
+    case setUserDictionary(Hazkey_Config_SetUserDictionary)
 
   }
 
@@ -287,6 +305,14 @@ struct Hazkey_ResponseEnvelope: Sendable {
     set {payload = .currentConfig(newValue)}
   }
 
+  var userDictionary: Hazkey_Config_UserDictionaryResult {
+    get {
+      if case .userDictionary(let v)? = payload {return v}
+      return Hazkey_Config_UserDictionaryResult()
+    }
+    set {payload = .userDictionary(newValue)}
+  }
+
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   enum OneOf_Payload: Equatable, Sendable {
@@ -295,6 +321,7 @@ struct Hazkey_ResponseEnvelope: Sendable {
     case textWithCursor(Hazkey_Commands_TextWithCursor)
     case currentInputModeInfo(Hazkey_Commands_CurrentInputModeInfo)
     case currentConfig(Hazkey_Config_CurrentConfig)
+    case userDictionary(Hazkey_Config_UserDictionaryResult)
 
   }
 
@@ -334,6 +361,8 @@ extension Hazkey_RequestEnvelope: SwiftProtobuf.Message, SwiftProtobuf._MessageI
     102: .standard(proto: "get_default_profile"),
     103: .standard(proto: "clear_all_history"),
     104: .standard(proto: "reload_zenzai_model"),
+    105: .standard(proto: "get_user_dictionary"),
+    106: .standard(proto: "set_user_dictionary"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -576,6 +605,32 @@ extension Hazkey_RequestEnvelope: SwiftProtobuf.Message, SwiftProtobuf._MessageI
           self.payload = .reloadZenzaiModel(v)
         }
       }()
+      case 105: try {
+        var v: Hazkey_Config_GetUserDictionary?
+        var hadOneofValue = false
+        if let current = self.payload {
+          hadOneofValue = true
+          if case .getUserDictionary(let m) = current {v = m}
+        }
+        try decoder.decodeSingularMessageField(value: &v)
+        if let v = v {
+          if hadOneofValue {try decoder.handleConflictingOneOf()}
+          self.payload = .getUserDictionary(v)
+        }
+      }()
+      case 106: try {
+        var v: Hazkey_Config_SetUserDictionary?
+        var hadOneofValue = false
+        if let current = self.payload {
+          hadOneofValue = true
+          if case .setUserDictionary(let m) = current {v = m}
+        }
+        try decoder.decodeSingularMessageField(value: &v)
+        if let v = v {
+          if hadOneofValue {try decoder.handleConflictingOneOf()}
+          self.payload = .setUserDictionary(v)
+        }
+      }()
       default: break
       }
     }
@@ -659,6 +714,14 @@ extension Hazkey_RequestEnvelope: SwiftProtobuf.Message, SwiftProtobuf._MessageI
       guard case .reloadZenzaiModel(let v)? = self.payload else { preconditionFailure() }
       try visitor.visitSingularMessageField(value: v, fieldNumber: 104)
     }()
+    case .getUserDictionary?: try {
+      guard case .getUserDictionary(let v)? = self.payload else { preconditionFailure() }
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 105)
+    }()
+    case .setUserDictionary?: try {
+      guard case .setUserDictionary(let v)? = self.payload else { preconditionFailure() }
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 106)
+    }()
     case nil: break
     }
     try unknownFields.traverse(visitor: &visitor)
@@ -681,6 +744,7 @@ extension Hazkey_ResponseEnvelope: SwiftProtobuf.Message, SwiftProtobuf._Message
     5: .standard(proto: "text_with_cursor"),
     6: .standard(proto: "current_input_mode_info"),
     100: .standard(proto: "current_config"),
+    101: .standard(proto: "user_dictionary"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -751,6 +815,19 @@ extension Hazkey_ResponseEnvelope: SwiftProtobuf.Message, SwiftProtobuf._Message
           self.payload = .currentConfig(v)
         }
       }()
+      case 101: try {
+        var v: Hazkey_Config_UserDictionaryResult?
+        var hadOneofValue = false
+        if let current = self.payload {
+          hadOneofValue = true
+          if case .userDictionary(let m) = current {v = m}
+        }
+        try decoder.decodeSingularMessageField(value: &v)
+        if let v = v {
+          if hadOneofValue {try decoder.handleConflictingOneOf()}
+          self.payload = .userDictionary(v)
+        }
+      }()
       default: break
       }
     }
@@ -787,6 +864,10 @@ extension Hazkey_ResponseEnvelope: SwiftProtobuf.Message, SwiftProtobuf._Message
     case .currentConfig?: try {
       guard case .currentConfig(let v)? = self.payload else { preconditionFailure() }
       try visitor.visitSingularMessageField(value: v, fieldNumber: 100)
+    }()
+    case .userDictionary?: try {
+      guard case .userDictionary(let v)? = self.payload else { preconditionFailure() }
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 101)
     }()
     case nil: break
     }

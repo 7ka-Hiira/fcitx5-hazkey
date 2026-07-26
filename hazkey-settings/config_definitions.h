@@ -160,6 +160,7 @@ struct CheckboxDefaults {
     static constexpr bool UNICODE_CODEPOINT = false;
     static constexpr bool ROMAN_TYPOGRAPHY = false;
     static constexpr bool HAZKEY_VERSION = false;
+    static constexpr bool USE_USER_DICT = true;
 };
 
 struct SpinboxDefaults {

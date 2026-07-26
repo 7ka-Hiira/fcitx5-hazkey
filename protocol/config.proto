@@ -122,6 +122,30 @@ message Profile {
     optional string zenzai_topic = 121;
     optional string zenzai_style = 122;
     optional string zenzai_preference = 123;
+
+    // User dictionaries are shared across profiles; this only toggles
+    // whether this profile applies the shared dictionary during conversion.
+    optional bool use_user_dictionary = 150;
+}
+
+message UserDictionaryEntry {
+    enum WordClass {
+        WORD_CLASS_UNSPECIFIED = 0;
+        GENERAL_NOUN = 1;
+        PROPER_NOUN = 2;
+        PERSON_NAME = 3;
+        PERSON_FAMILY_NAME = 4;
+        PERSON_GIVEN_NAME = 5;
+        ORGANIZATION_NAME = 6;
+        PLACE_NAME = 7;
+        NUMBER = 8;
+        SYMBOL = 9;
+    }
+
+    string id = 1;
+    string reading = 2;
+    string word = 3;
+    WordClass word_class = 4;
 }
 
 // Request messages
@@ -141,7 +165,17 @@ message ClearAllHistory {
 
 message ReloadZenzaiModel {}
 
+message GetUserDictionary {}
+
+message SetUserDictionary {
+    repeated UserDictionaryEntry entries = 1;
+}
+
 // Response messages
+
+message UserDictionaryResult {
+    repeated UserDictionaryEntry entries = 1;
+}
 
 message CurrentConfig {
     repeated FileHash file_hashes = 1;

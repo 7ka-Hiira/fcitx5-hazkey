@@ -329,3 +329,36 @@ bool ServerConnector::reloadZenzaiModel() {
     auto responseVal = response.value();
     return responseVal.status() == hazkey::SUCCESS;
 }
+
+std::optional<hazkey::config::UserDictionaryResult>
+ServerConnector::getUserDictionary() {
+    hazkey::RequestEnvelope request;
+    auto _ = request.mutable_get_user_dictionary();
+    auto response = transact(request);
+    if (response == std::nullopt) {
+        return std::nullopt;
+    }
+    auto responseVal = response.value();
+    if (responseVal.status() != hazkey::SUCCESS) {
+        return std::nullopt;
+    }
+    if (!responseVal.has_user_dictionary()) {
+        return std::nullopt;
+    }
+    return responseVal.user_dictionary();
+}
+
+bool ServerConnector::setUserDictionary(
+    const std::vector<hazkey::config::UserDictionaryEntry>& entries) {
+    hazkey::RequestEnvelope request;
+    auto props = request.mutable_set_user_dictionary();
+    for (const auto& entry : entries) {
+        *props->add_entries() = entry;
+    }
+    auto response = transact(request);
+    if (response == std::nullopt) {
+        return false;
+    }
+    auto responseVal = response.value();
+    return responseVal.status() == hazkey::SUCCESS;
+}

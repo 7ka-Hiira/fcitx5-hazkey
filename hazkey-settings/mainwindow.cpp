@@ -60,13 +60,15 @@ void MainWindow::setupControllers() {
     conversionTab_ =
         std::make_unique<ConversionTabController>(ui_, this, &server_, this);
     inputStyleTab_ = std::make_unique<InputStyleTabController>(ui_, this);
-    dictionaryTab_ = std::make_unique<DictionaryTabController>(this);
+    dictionaryTab_ =
+        std::make_unique<DictionaryTabController>(ui_, this, &server_, this);
     aiTab_ = std::make_unique<AiTabController>(ui_, this, networkManager_.get(),
                                                this);
     aboutTab_ = std::make_unique<AboutTabController>(ui_, this);
 
     conversionTab_->connectSignals();
     inputStyleTab_->connectSignals();
+    dictionaryTab_->connectSignals();
     aiTab_->connectSignals();
 }
 

@@ -64,6 +64,10 @@ class ProtocolHandler {
             response = Hazkey_ResponseEnvelope.with {
                 $0.status = .success
             }
+        case .getUserDictionary:
+            response = state.serverConfig.getUserDictionary()
+        case .setUserDictionary(let req):
+            response = state.serverConfig.setUserDictionary(req.entries, state: state)
         case .getDefaultProfile:
             NSLog("Unimplemented: getDefaultProfile")
             response = Hazkey_ResponseEnvelope.with {
