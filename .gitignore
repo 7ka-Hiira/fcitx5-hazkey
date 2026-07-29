@@ -1,13 +1,52 @@
-/.cache
-/build
+```
+# Protocol buffer generated files
+protocol/*.pb.cc
+protocol/*.pb.h
 
-/.vscode
-/.zed
-/.idea
+# Build artifacts
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dll
+*.dylib
+*.exe
 
-/zenz-v3.gguf
+# Dependencies
+node_modules/
+venv/
+.venv/
+__pycache__/
+.mypy_cache/
+.pytest_cache/
+target/
+.gradle/
 
-/CMakeFiles
-/CMakeCache.txt
+# Build directories
+build/
+dist/
+out/
 
-/compile_commands.json
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.tmp
+
+# Logs
+*.log
+
+# Coverage
+coverage/
+htmlcov/
+.coverage
+
+# System files
+.DS_Store
+Thumbs.db
+.env
+.env.local
+*.env.*
+```

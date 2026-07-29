@@ -23,6 +23,7 @@
 #include "config_definitions.h"
 #include "config_macros.h"
 #include "mainwindow.h"
+#include "ui_mainwindow.h"
 
 namespace hazkey::settings {
 
