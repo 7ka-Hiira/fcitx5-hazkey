@@ -119,120 +119,120 @@ UIを更新するには再読み込みボタンを押してください。</tran
 <context>
     <name>DictionaryTabController</name>
     <message>
-        <location filename="controllers/dictionary_tab_controller.cpp" line="74"/>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="75"/>
         <source>Reading</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="controllers/dictionary_tab_controller.cpp" line="74"/>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="75"/>
         <source>Word</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="controllers/dictionary_tab_controller.cpp" line="74"/>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="75"/>
         <source>Class</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="controllers/dictionary_tab_controller.cpp" line="122"/>
-        <location filename="controllers/dictionary_tab_controller.cpp" line="225"/>
-        <location filename="controllers/dictionary_tab_controller.cpp" line="283"/>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="123"/>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="226"/>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="284"/>
         <source>Error</source>
         <translation type="unfinished">エラー</translation>
     </message>
     <message>
-        <location filename="controllers/dictionary_tab_controller.cpp" line="123"/>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="124"/>
         <source>Failed to save the user dictionary. Please check that the hazkey server is running.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="controllers/dictionary_tab_controller.cpp" line="176"/>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="177"/>
         <source>Delete Entry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="controllers/dictionary_tab_controller.cpp" line="177"/>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="178"/>
         <source>Are you sure you want to delete the selected dictionary entries?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="controllers/dictionary_tab_controller.cpp" line="217"/>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="218"/>
         <source>Import User Dictionary</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="controllers/dictionary_tab_controller.cpp" line="218"/>
-        <location filename="controllers/dictionary_tab_controller.cpp" line="276"/>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="219"/>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="277"/>
         <source>Text files (*.txt *.tsv);;All files (*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="controllers/dictionary_tab_controller.cpp" line="226"/>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="227"/>
         <source>Failed to open the file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="controllers/dictionary_tab_controller.cpp" line="268"/>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="269"/>
         <source>Import Complete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="controllers/dictionary_tab_controller.cpp" line="269"/>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="270"/>
         <source>Imported %1 dictionary entries.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="controllers/dictionary_tab_controller.cpp" line="274"/>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="275"/>
         <source>Export User Dictionary</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="controllers/dictionary_tab_controller.cpp" line="284"/>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="285"/>
         <source>Failed to save the file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="controllers/dictionary_tab_controller.cpp" line="299"/>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="300"/>
         <source>Export Complete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="controllers/dictionary_tab_controller.cpp" line="300"/>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="301"/>
         <source>The user dictionary has been exported successfully.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="controllers/dictionary_tab_controller.cpp" line="307"/>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="308"/>
         <source>Edit Dictionary Entry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="controllers/dictionary_tab_controller.cpp" line="308"/>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="309"/>
         <source>New Dictionary Entry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="controllers/dictionary_tab_controller.cpp" line="330"/>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="331"/>
         <source>Reading:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="controllers/dictionary_tab_controller.cpp" line="331"/>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="332"/>
         <source>Word:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="controllers/dictionary_tab_controller.cpp" line="332"/>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="333"/>
         <source>Class:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="controllers/dictionary_tab_controller.cpp" line="351"/>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="352"/>
         <source>Invalid Entry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="controllers/dictionary_tab_controller.cpp" line="352"/>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="353"/>
         <source>Please fill in both the reading and the word.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -923,47 +923,47 @@ UIを更新するには再読み込みボタンを押してください。</tran
 <context>
     <name>hazkey::settings</name>
     <message>
-        <location filename="controllers/dictionary_tab_controller.cpp" line="43"/>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="44"/>
         <source>General Noun</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="controllers/dictionary_tab_controller.cpp" line="45"/>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="46"/>
         <source>Proper Noun</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="controllers/dictionary_tab_controller.cpp" line="47"/>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="48"/>
         <source>Person Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="controllers/dictionary_tab_controller.cpp" line="49"/>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="50"/>
         <source>Family Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="controllers/dictionary_tab_controller.cpp" line="51"/>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="52"/>
         <source>Given Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="controllers/dictionary_tab_controller.cpp" line="53"/>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="54"/>
         <source>Organization Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="controllers/dictionary_tab_controller.cpp" line="55"/>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="56"/>
         <source>Place Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="controllers/dictionary_tab_controller.cpp" line="57"/>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="58"/>
         <source>Number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="controllers/dictionary_tab_controller.cpp" line="59"/>
+        <location filename="controllers/dictionary_tab_controller.cpp" line="60"/>
         <source>Symbol</source>
         <translation type="unfinished"></translation>
     </message>
