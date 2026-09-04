@@ -1,7 +1,7 @@
 import Foundation
 import XCTest
 
-@testable import hazkey-server
+@testable import hazkey_server
 
 class BaseHazkeyServerTestCase: XCTestCase {
   var client: HazkeyServerClient!

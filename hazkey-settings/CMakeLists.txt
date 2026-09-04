@@ -55,6 +55,8 @@ set(PROJECT_SOURCES
     controllers/dual_list_controller.h
     serverconnector.cpp
     serverconnector.h
+    userdicttab.cpp
+    userdicttab.h
     config_definitions.h
     config_macros.h
     ${TS_FILES}
