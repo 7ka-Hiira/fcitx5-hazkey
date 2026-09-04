@@ -1,7 +1,7 @@
 import Foundation
 import XCTest
 
-@testable import hazkeyServer
+@testable import hazkey_server
 
 final class ErrorHandlingTests: BaseHazkeyServerTestCase {
 
@@ -12,11 +12,7 @@ final class ErrorHandlingTests: BaseHazkeyServerTestCase {
     XCTAssertEqual(inputResponse.status, .success)
 
     // Try to get composing string with invalid character type
-    var query = Hazkey_Commands_QueryData()
-    query.function = .getComposingString
-    query.getComposingString = Hazkey_Commands_QueryData.GetComposingStringProps.with {
-      $0.charType = .UNRECOGNIZED(999)  // Invalid char type
-    }
+    let query = QueryDataBuilder.getComposingString(charType: .UNRECOGNIZED(999))
 
     let response = try sendQuery(query)
     XCTAssertEqual(response.status, .failed, "Invalid character type should result in failure")
@@ -44,7 +40,7 @@ final class ErrorHandlingTests: BaseHazkeyServerTestCase {
     let getStringQuery = QueryDataBuilder.getComposingString()
     let stringResponse = try sendQuery(getStringQuery)
     XCTAssertEqual(stringResponse.status, .success)
-    XCTAssertEqual(stringResponse.result, "", "New instance should have empty composing text")
+    XCTAssertEqual(stringResponse.text, "", "New instance should have empty composing text")
   }
 
   func testLargeInputString() throws {
@@ -59,6 +55,6 @@ final class ErrorHandlingTests: BaseHazkeyServerTestCase {
     let getStringQuery = QueryDataBuilder.getComposingString()
     let stringResponse = try sendQuery(getStringQuery)
     XCTAssertEqual(stringResponse.status, .success)
-    XCTAssertEqual(stringResponse.result, "あ", "Should only process first character")
+    XCTAssertEqual(stringResponse.text, "あ", "Should only process first character")
   }
 }

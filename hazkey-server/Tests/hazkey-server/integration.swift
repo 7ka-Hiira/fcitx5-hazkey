@@ -1,15 +1,15 @@
 import Foundation
 import XCTest
 
-@testable import hazkeyServer
+@testable import hazkey_server
 
 final class IntegrationTests: BaseHazkeyServerTestCase {
 
   func testCompleteInputWorkflow() throws {
     // 1. Set custom configuration
     let configQuery = QueryDataBuilder.setConfig(
-      numberFullwidth: 1,
-      symbolFullwidth: 1
+      numberFullwidth: true,
+      symbolFullwidth: true
     )
     let configResponse = try sendQuery(configQuery)
     XCTAssertEqual(configResponse.status, .success)
@@ -31,14 +31,14 @@ final class IntegrationTests: BaseHazkeyServerTestCase {
     let getStringQuery = QueryDataBuilder.getComposingString(charType: .hiragana)
     let stringResponse = try sendQuery(getStringQuery)
     XCTAssertEqual(stringResponse.status, .success)
-    XCTAssertEqual(stringResponse.result, "こんにちは", "Should compose complete hiragana string")
+    XCTAssertEqual(stringResponse.text, "こんにちは", "Should compose complete hiragana string")
 
     // 5. Get candidates
     let candidatesQuery = QueryDataBuilder.getCandidates()
     let candidatesResponse = try sendQuery(candidatesQuery)
     XCTAssertEqual(candidatesResponse.status, .success)
 
-    if case .candidates(let candidatesResult) = candidatesResponse.props {
+    if case .candidates(let candidatesResult) = candidatesResponse.payload {
       XCTAssertFalse(candidatesResult.candidates.isEmpty, "Should return candidates for 'こんにちは'")
 
       // Check if we get "こんにちは" or "今日は" as candidates
@@ -54,8 +54,8 @@ final class IntegrationTests: BaseHazkeyServerTestCase {
   func testNumberAndSymbolConversion() throws {
     // Configure for fullwidth conversion
     let configQuery = QueryDataBuilder.setConfig(
-      numberFullwidth: 1,
-      symbolFullwidth: 1
+      numberFullwidth: true,
+      symbolFullwidth: true
     )
     let configResponse = try sendQuery(configQuery)
     XCTAssertEqual(configResponse.status, .success)
@@ -72,7 +72,7 @@ final class IntegrationTests: BaseHazkeyServerTestCase {
     let getNumberQuery = QueryDataBuilder.getComposingString()
     let numberStringResponse = try sendQuery(getNumberQuery)
     XCTAssertEqual(numberStringResponse.status, .success)
-    XCTAssertEqual(numberStringResponse.result, "５", "Number should be converted to fullwidth")
+    XCTAssertEqual(numberStringResponse.text, "５", "Number should be converted to fullwidth")
   }
 
   func testMultipleSessionsSequentially() throws {
@@ -94,6 +94,6 @@ final class IntegrationTests: BaseHazkeyServerTestCase {
     let session2GetQuery = QueryDataBuilder.getComposingString()
     let session2StringResponse = try sendQuery(session2GetQuery)
     XCTAssertEqual(session2StringResponse.status, .success)
-    XCTAssertEqual(session2StringResponse.result, "", "New session should start with empty state")
+    XCTAssertEqual(session2StringResponse.text, "", "New session should start with empty state")
   }
 }

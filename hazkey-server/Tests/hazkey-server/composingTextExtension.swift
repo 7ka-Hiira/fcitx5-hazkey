@@ -1,7 +1,7 @@
 import Foundation
 import XCTest
 
-@testable import hazkeyServer
+@testable import hazkey_server
 
 final class TextInputTests: BaseHazkeyServerTestCase {
 
@@ -13,7 +13,7 @@ final class TextInputTests: BaseHazkeyServerTestCase {
     let getStringQuery = QueryDataBuilder.getComposingString(charType: .hiragana)
     let stringResponse = try sendQuery(getStringQuery)
     XCTAssertEqual(stringResponse.status, .success)
-    XCTAssertEqual(stringResponse.result, "あ", "Should return the input hiragana character")
+    XCTAssertEqual(stringResponse.text, "あ", "Should return the input hiragana character")
   }
 
   func testMultipleCharacterInput() throws {
@@ -28,11 +28,17 @@ final class TextInputTests: BaseHazkeyServerTestCase {
     let getStringQuery = QueryDataBuilder.getComposingString(charType: .hiragana)
     let stringResponse = try sendQuery(getStringQuery)
     XCTAssertEqual(stringResponse.status, .success)
-    XCTAssertEqual(stringResponse.result, "あいう", "Should concatenate multiple hiragana characters")
+    XCTAssertEqual(stringResponse.text, "あいう", "Should concatenate multiple hiragana characters")
   }
 
   func testDirectInput() throws {
-    let inputQuery = QueryDataBuilder.inputText("A", isDirect: true)
+    XCTAssertEqual(
+      try sendQuery(QueryDataBuilder.modifierEvent(type: .shift, event: .press)).status,
+      .success)
+    XCTAssertEqual(
+      try sendQuery(QueryDataBuilder.modifierEvent(type: .shift, event: .release)).status,
+      .success)
+    let inputQuery = QueryDataBuilder.inputText("A")
     let inputResponse = try sendQuery(inputQuery)
     XCTAssertEqual(inputResponse.status, .success, "Direct input should succeed")
 
@@ -40,7 +46,7 @@ final class TextInputTests: BaseHazkeyServerTestCase {
     let stringResponse = try sendQuery(getStringQuery)
     XCTAssertEqual(stringResponse.status, .success)
     XCTAssertEqual(
-      stringResponse.result, "A", "Direct input should preserve the original character")
+      stringResponse.text, "A", "Direct input should preserve the original character")
   }
 
   func testEmptyStringInput() throws {
@@ -54,7 +60,7 @@ final class TextInputTests: BaseHazkeyServerTestCase {
 
   func testNumericInputWithFullwidthConfiguration() throws {
     // Set configuration for fullwidth numbers
-    let configQuery = QueryDataBuilder.setConfig(numberFullwidth: 1)
+    let configQuery = QueryDataBuilder.setConfig(numberFullwidth: true)
     let configResponse = try sendQuery(configQuery)
     XCTAssertEqual(configResponse.status, .success)
 
@@ -70,7 +76,7 @@ final class TextInputTests: BaseHazkeyServerTestCase {
     let getStringQuery = QueryDataBuilder.getComposingString(charType: .hiragana)
     let stringResponse = try sendQuery(getStringQuery)
     XCTAssertEqual(stringResponse.status, .success)
-    XCTAssertEqual(stringResponse.result, "１", "Only first character should be processed")
+    XCTAssertEqual(stringResponse.text, "１", "Only first character should be processed")
   }
 
   func testCharacterTypeConversion() throws {
@@ -79,7 +85,7 @@ final class TextInputTests: BaseHazkeyServerTestCase {
     XCTAssertEqual(inputResponse.status, .success)
 
     // Test different character type outputs
-    let testCases: [(Hazkey_Commands_QueryData.GetComposingStringProps.CharType, String)] = [
+    let testCases: [(Hazkey_Commands_GetComposingString.CharType, String)] = [
       (.hiragana, "あ"),
       (.katakanaFull, "ア"),
       (.katakanaHalf, "ｱ"),
@@ -90,7 +96,7 @@ final class TextInputTests: BaseHazkeyServerTestCase {
       let stringResponse = try sendQuery(getStringQuery)
       XCTAssertEqual(stringResponse.status, .success)
       XCTAssertEqual(
-        stringResponse.result, expected,
+        stringResponse.text, expected,
         "Character type \(charType) should return \(expected)")
     }
   }

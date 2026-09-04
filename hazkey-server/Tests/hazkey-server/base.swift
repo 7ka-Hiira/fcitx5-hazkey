@@ -1,7 +1,7 @@
 import Foundation
 import XCTest
 
-@testable import hazkey-server
+@testable import hazkey_server
 
 class BaseHazkeyServerTestCase: XCTestCase {
   var client: HazkeyServerClient!
@@ -43,10 +43,10 @@ class BaseHazkeyServerTestCase: XCTestCase {
 
   // Helper method for sending queries with better error reporting
   func sendQuery(
-    _ query: Hazkey_Commands_QueryData,
+    _ query: Hazkey_RequestEnvelope,
     file: StaticString = #file,
     line: UInt = #line
-  ) throws -> Hazkey_Commands_ResultData {
+  ) throws -> Hazkey_ResponseEnvelope {
     do {
       return try client.sendQuery(query)
     } catch {
