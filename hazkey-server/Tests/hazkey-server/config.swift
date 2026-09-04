@@ -1,17 +1,13 @@
 import Foundation
 import XCTest
 
-@testable import hazkeyServer
+@testable import hazkey_server
 
 final class ConfigurationTests: BaseHazkeyServerTestCase {
   func testSetCustomConfiguration() throws {
     let query = QueryDataBuilder.setConfig(
-      commaStyle: 1,
-      numberFullwidth: 1,
-      periodStyle: 2,
-      spaceFullwidth: 1,
-      symbolFullwidth: 1,
-      tenCombining: 1,
+      numberFullwidth: true,
+      symbolFullwidth: true,
       zenzaiEnabled: true,
       zenzaiInferLimit: 5
     )
@@ -24,13 +20,23 @@ final class ConfigurationTests: BaseHazkeyServerTestCase {
     XCTAssertTrue(
       response.errorMessage.isEmpty,
       "Error message should be empty on success")
+
+    let currentConfigResponse = try sendQuery(QueryDataBuilder.getConfig())
+    XCTAssertEqual(currentConfigResponse.status, .success)
+    guard case .currentConfig(let currentConfig) = currentConfigResponse.payload,
+      let profile = currentConfig.profiles.first
+    else {
+      return XCTFail("Response should contain the current profile")
+    }
+    XCTAssertTrue(profile.zenzaiEnable)
+    XCTAssertEqual(profile.zenzaiInferLimit, 5)
   }
 
   func testConfigurationPersistence() throws {
     // Set a custom configuration
     let customConfig = QueryDataBuilder.setConfig(
-      numberFullwidth: 1,
-      symbolFullwidth: 1
+      numberFullwidth: true,
+      symbolFullwidth: true
     )
     let configResponse = try sendQuery(customConfig)
     XCTAssertEqual(configResponse.status, .success)
@@ -51,7 +57,7 @@ final class ConfigurationTests: BaseHazkeyServerTestCase {
 
     // With fullwidth numbers enabled, "1" should become "１"
     XCTAssertEqual(
-      stringResponse.result, "１",
+      stringResponse.text, "１",
       "Number should be converted to fullwidth when numberFullwidth is enabled")
   }
 }
